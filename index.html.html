@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frações — 7º Ano</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ─────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --s-verde:   #1a7a4a;
+  --s-verde2:  #2ecc71;
+  --s-vmenta:  #d8f3dc;
+  --s-vbg:     #edfaf3;
+  --s-azul:    #1565c0;
+  --s-azul2:   #42a5f5;
+  --s-abg:     #e3f2fd;
+  --s-acl:     #bbdefb;
+  --s-roxo:    #6a1b9a;
+  --s-roxo2:   #ab47bc;
+  --s-rbg:     #f3e5f5;
+  --s-rcl:     #e1bee7;
+  --s-lj:      #e65100;
+  --s-lj2:     #ff9800;
+  --s-ljbg:    #fff8e1;
+  --s-ljcl:    #ffe0b2;
+  --s-rosa:    #c2185b;
+  --s-rosa2:   #f06292;
+  --s-rbgpk:   #fce4ec;
+  --s-rclpk:   #f8bbd0;
+  --s-creme:   #fffdf8;
+  --s-escuro:  #1c1c1c;
+  --max: 860px;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--s-creme);
+  color: var(--s-escuro);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ── NAV FIXA ─────────────────────────────────── */
+#topbar {
+  position: sticky; top: 0; z-index: 200;
+  background: #fff;
+  border-bottom: 3px solid var(--s-vmenta);
+  display: flex; align-items: center; gap: 0; overflow-x: auto;
+  padding: 0 1rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+}
+#topbar a {
+  font-size: .75rem; font-weight: 700;
+  padding: .6rem .85rem;
+  text-decoration: none; white-space: nowrap;
+  color: var(--s-verde); border-bottom: 3px solid transparent;
+  margin-bottom: -3px; transition: all .18s;
+}
+#topbar a:hover { background: var(--s-vbg); }
+#topbar a.spy-ativo { border-bottom-color: var(--s-verde2); color: var(--s-verde); }
+#btn-animal {
+  margin-left: auto; flex-shrink: 0;
+  background: var(--s-lj2); color: #3a2500;
+  border: none; border-radius: 20px;
+  padding: 6px 14px; font-family: 'Sora',sans-serif;
+  font-size: .76rem; font-weight: 700; cursor: pointer;
+  transition: transform .15s;
+}
+#btn-animal:hover { transform: scale(1.04); }
+body.modo-animal #btn-animal { background: #fff; color: var(--s-roxo); border: 2px solid var(--s-roxo2); }
+
+/* ── HERO ─────────────────────────────────────── */
+#hero {
+  background: linear-gradient(135deg, var(--s-verde) 0%, #1a9e5c 60%, var(--s-verde2) 100%);
+  color: #fff; padding: 3.5rem 1.5rem 5rem; position: relative; overflow: hidden;
+}
+#hero::after {
+  content:''; position:absolute; bottom:-2px; left:0;
+  width:100%; height:60px; background: var(--s-creme);
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+.hero-deco {
+  position: absolute; font-size: 5rem; opacity: .1; right: 2rem; top: 1.5rem;
+  line-height: 1; user-select: none;
+}
+#hero h1 { font-size: 2.4rem; font-weight: 800; line-height: 1.1; }
+#hero .sub { opacity: .85; font-size: .9rem; margin-top: .4rem; }
+.tira-cor {
+  display: flex; gap: 6px; margin-top: 1.6rem; flex-wrap: wrap;
+}
+.tira-cor span {
+  padding: 5px 14px; border-radius: 20px; font-size: .78rem; font-weight: 700; color: #fff;
+}
+
+/* ── SECTION WRAPPER ──────────────────────────── */
+.bloco {
+  padding: 3.5rem 1.4rem;
+  position: relative;
+}
+.bloco-inner { max-width: var(--max); margin: 0 auto; }
+
+/* cores de fundo alternadas */
+.bloco:nth-child(odd)  { background: var(--s-creme); }
+.bloco:nth-child(even) { background: #f4f9f6; }
+
+/* cabeçalho de seção */
+.sec-header {
+  display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.6rem;
+}
+.sec-emoji {
+  font-size: 2.4rem; line-height: 1;
+  background: #fff; border-radius: 16px;
+  padding: .5rem .7rem; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  flex-shrink: 0;
+}
+.sec-header h2 { font-size: 1.55rem; font-weight: 800; line-height: 1.2; margin-bottom: .2rem; }
+.sec-header p  { font-size: .88rem; color: #555; }
+
+/* divisor ondulado entre blocos */
+.wave {
+  width: 100%; overflow: hidden; line-height: 0;
+  margin-bottom: -2px;
+}
+.wave svg { display: block; }
+
+/* ── FRAÇÃO INLINE ────────────────────────────── */
+.fr {
+  display: inline-flex; flex-direction: column; align-items: center;
+  font-weight: 700; font-size: 1em; vertical-align: middle;
+  margin: 0 3px; line-height: 1.15;
+}
+.fr .ln { width: 100%; min-width: 14px; height: 2px; background: currentColor; margin: 2px 0; }
+.fr.lg { font-size: 1.5em; }
+.fr.xl { font-size: 2em; }
+
+/* ── CADERNO ──────────────────────────────────── */
+.caderno {
+  background: #fff; border-left: 5px solid var(--s-azul);
+  border-radius: 0 14px 14px 0; padding: 1.3rem 1.5rem;
+  margin: 1.4rem 0; box-shadow: 0 2px 14px rgba(0,0,0,.06);
+  position: relative;
+}
+.caderno-tag {
+  position: absolute; top: 0; left: 0;
+  background: var(--s-azul); color: #fff;
+  font-size: .68rem; font-weight: 700; letter-spacing: .8px;
+  text-transform: uppercase; padding: 3px 11px;
+  border-radius: 0 0 9px 0;
+}
+.caderno-body { margin-top: 1.2rem; font-family: 'Lora',serif; font-size: .95rem; line-height: 1.85; }
+.caderno-body strong { color: var(--s-azul); }
+.def {
+  background: var(--s-abg); border-radius: 9px;
+  padding: 9px 14px; margin: .7rem 0; font-style: italic;
+}
+.ex-res {
+  background: #f4f9f6; border: 1.5px dashed var(--s-verde2);
+  border-radius: 9px; padding: 10px 14px; margin: .7rem 0;
+}
+
+/* ── CARDS ────────────────────────────────────── */
+.card { background:#fff; border-radius:14px; padding:1.2rem; margin:.9rem 0; box-shadow:0 2px 10px rgba(0,0,0,.06); border-top:4px solid var(--s-verde2); }
+.card.am { border-top-color: var(--s-lj2); }
+.card.az { border-top-color: var(--s-azul2); }
+.card.rx { border-top-color: var(--s-roxo2); }
+.card.pk { border-top-color: var(--s-rosa2); }
+
+.destaque {
+  background: #fff9e6; border-left: 4px solid var(--s-lj2);
+  border-radius: 0 10px 10px 0; padding: 10px 14px; margin: .8rem 0;
+  font-size: .92rem;
+}
+
+/* ── BARRA VISUAL ─────────────────────────────── */
+.barra-wrap {
+  display: flex; height: 44px; border-radius: 10px;
+  overflow: hidden; border: 2px solid var(--s-verde);
+  cursor: pointer; margin: .5rem 0;
+}
+.seg { flex:1; border-right: 2px solid rgba(255,255,255,.6); transition: background .2s; }
+.seg:last-child { border-right: none; }
+.seg.on  { background: var(--s-verde); }
+.seg.off { background: var(--s-vmenta); }
+.barra-hint { font-size: .76rem; color: #777; font-style: italic; }
+
+/* ── BARRAS EQUIVALÊNCIA ─────────────────────── */
+.eq-bar {
+  display: flex; align-items: center; gap: .8rem; margin-bottom: .5rem;
+}
+.eq-label { font-weight: 700; font-size: .9rem; width: 38px; flex-shrink: 0; }
+.eq-track {
+  flex: 1; display: flex; height: 32px; border-radius: 7px;
+  overflow: hidden; border: 2px solid var(--s-verde);
+}
+.eq-seg { flex: 1; border-right: 2px solid #fff; }
+.eq-seg:last-child { border-right: none; }
+.eq-seg.on  { background: var(--s-verde); }
+.eq-seg.off { background: var(--s-vmenta); }
+
+/* ── RETA NUMÉRICA ────────────────────────────── */
+.reta-wrap { background: #fff; border-radius: 14px; padding: 1.3rem; margin: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,.06); overflow-x: auto; }
+.reta-svg  { width: 100%; min-width: 300px; }
+
+/* ── AQUÁRIOS ─────────────────────────────────── */
+.aquarios { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+.aquario  { background: #fff; border-radius: 14px; padding: 1.1rem; box-shadow: 0 2px 10px rgba(0,0,0,.06); text-align: center; }
+.aquario h4 { font-size: .9rem; font-weight: 700; margin-bottom: .6rem; }
+.aquario .peixes { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: .6rem; }
+.peixe { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+.peixe.doente { background: #ffe5e5; }
+.peixe.saudavel { background: var(--s-abg); }
+.aquario .fr-big { font-size: 1.5rem; font-weight: 800; }
+
+/* ── PASSOS ───────────────────────────────────── */
+.passos { display: flex; flex-direction: column; gap: .6rem; margin: .9rem 0; }
+.passo {
+  display: flex; align-items: flex-start; gap: .8rem;
+  background: #fff; border-radius: 11px; padding: .8rem 1rem;
+  box-shadow: 0 1px 6px rgba(0,0,0,.05);
+}
+.passo-num {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: .85rem; color: #fff;
+}
+.passo-txt { font-size: .92rem; line-height: 1.6; }
+
+/* ── MODO ANIMAL ─────────────────────────────── */
+body:not(.modo-animal) .animal-bloco { display: none; }
+body.modo-animal .normal-bloco       { display: none; }
+.animal-bloco {
+  background: #fff8ee; border: 2px dashed var(--s-lj2);
+  border-radius: 16px; padding: 1.3rem; margin: 1rem 0;
+}
+.animal-bloco h4 { font-size: 1rem; font-weight: 700; color: var(--s-lj); margin-bottom: .6rem; }
+.ap { /* passo animal */
+  background: #fff; border-left: 4px solid var(--s-lj2);
+  border-radius: 0 10px 10px 0; padding: 9px 13px; margin: .5rem 0; font-size: .92rem;
+}
+.ap strong { color: var(--s-lj); }
+.partes-wrap { display: flex; gap: 6px; flex-wrap: wrap; margin: .6rem 0; }
+.parte {
+  width: 48px; height: 48px; border-radius: 9px;
+  border: 2px solid var(--s-lj2); background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; cursor: pointer; transition: background .2s; user-select: none;
+}
+.parte.marcada { background: var(--s-ljcl); }
+
+/* ── ATIVIDADES ───────────────────────────────── */
+.ativ { background:#fff; border-radius:14px; padding:1.3rem; margin:1rem 0; box-shadow:0 2px 10px rgba(0,0,0,.06); }
+.ativ h4 { font-size: .95rem; font-weight: 700; color: var(--s-verde); margin-bottom: .5rem; }
+.linha-r { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin: .6rem 0; }
+.fi { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; }
+.fi input {
+  font-family: 'Sora',sans-serif; font-size: 1rem; font-weight: 700;
+  width: 52px; text-align: center; border: 2px solid #b2d8be;
+  border-radius: 7px; padding: 5px 4px; color: var(--s-verde);
+  outline: none;
+}
+.fi input:focus { border-color: var(--s-verde); }
+.fi .lnh { width: 52px; height: 2px; background: var(--s-verde); border-radius: 2px; }
+select.sel {
+  font-family: 'Sora',sans-serif; font-size: .88rem;
+  padding: 7px 10px; border: 2px solid #b2d8be; border-radius: 8px;
+  color: var(--s-verde); background: #fff; outline: none;
+}
+select.sel:focus { border-color: var(--s-verde); }
+.btn-v {
+  font-family: 'Sora',sans-serif; font-weight: 700; font-size: .87rem;
+  padding: 8px 20px; background: var(--s-verde); color: #fff;
+  border: none; border-radius: 10px; cursor: pointer; margin-top: .5rem; transition: background .2s;
+}
+.btn-v:hover { background: #145c38; }
+.rb { margin-top: .7rem; padding: 9px 14px; border-radius: 9px; font-weight: 600; font-size: .88rem; display: none; }
+.rb.ok  { display: block; background: #d4f5dd; color: #1a5c2a; }
+.rb.err { display: block; background: #ffe5e5; color: #7a0000; }
+
+/* ── QUIZ ─────────────────────────────────────── */
+.quiz-q { background:#fff; border-radius:14px; padding:1.3rem; margin:1rem 0; box-shadow:0 2px 10px rgba(0,0,0,.06); border-top:4px solid var(--s-verde2); }
+.enun { font-weight: 700; font-size: .95rem; margin-bottom: .8rem; }
+.opcoes { display: flex; flex-direction: column; gap: .4rem; }
+.opc {
+  font-family:'Sora',sans-serif; font-size:.88rem; font-weight:600;
+  text-align:left; padding:9px 14px; border:2px solid #c6dfd0;
+  border-radius:9px; background:#fff; cursor:pointer; color:var(--s-escuro); transition:all .18s;
+}
+.opc:hover:not(:disabled) { background: var(--s-vmenta); border-color: var(--s-verde2); }
+.opc.certa  { background: #d4f5dd; border-color: var(--s-verde);  color: #1a5c2a; }
+.opc.errada { background: #ffe5e5; border-color: #d44; color: #7a0000; }
+.fb { display:none; margin-top:.7rem; font-size:.87rem; font-weight:600; padding:8px 12px; border-radius:8px; }
+.fb.ok  { display:block; background:#d4f5dd; color:#1a5c2a; }
+.fb.err { display:block; background:#ffe5e5; color:#7a1a1a; }
+.placar { font-size: 1rem; font-weight: 800; color: var(--s-verde); background: var(--s-vmenta); padding: 8px 18px; border-radius: 20px; display: inline-block; margin-bottom: 1rem; }
+#res-final { display:none; background:var(--s-vmenta); border-radius:14px; padding:1.4rem; text-align:center; margin-top:1rem; }
+#res-final .big { font-size: 2.8rem; }
+#res-final p { font-weight:800; font-size:1.1rem; color:var(--s-verde); margin:.4rem 0 0; }
+
+/* ── BORDAS DE SEÇÃO coloridas ───────────────── */
+#s-intro    { border-top: 6px solid var(--s-verde2); }
+#s-conceito { border-top: 6px solid var(--s-azul2); }
+#s-equiv    { border-top: 6px solid var(--s-roxo2); }
+#s-comparar { border-top: 6px solid var(--s-lj2); }
+#s-reta     { border-top: 6px solid var(--s-rosa2); }
+#s-ativ     { border-top: 6px solid var(--s-verde2); }
+#s-quiz     { border-top: 6px solid var(--s-azul2); }
+
+/* ── FOOTER ───────────────────────────────────── */
+footer { background: var(--s-verde); color: #fff; text-align: center; padding: 1.5rem; font-size: .82rem; opacity: .9; }
+
+/* ── RESPONSIVE ───────────────────────────────── */
+@media(max-width:560px){
+  #hero h1 { font-size: 1.7rem; }
+  .aquarios { grid-template-columns: 1fr; }
+  .sec-header h2 { font-size: 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ────────────────────────────────────── -->
+<div id="hero">
+  <div class="hero-deco">🌿</div>
+  <h1>Frações,<br>Comparação e Ordem</h1>
+  <p class="sub">Matemática · 7º Ano · Bimestre 2</p>
+  <div class="tira-cor">
+    <span style="background:#1a9e5c">🌿 Introdução</span>
+    <span style="background:#1565c0">📒 Conceito</span>
+    <span style="background:#6a1b9a">🔁 Equivalência</span>
+    <span style="background:#e65100">⚖️ Comparação</span>
+    <span style="background:#c2185b">📏 Reta Numérica</span>
+    <span style="background:#2e7d52">✏️ Atividades</span>
+    <span style="background:#0277bd">🎯 Quiz</span>
+  </div>
+</div>
+
+<!-- ── NAV ─────────────────────────────────────── -->
+<div id="topbar">
+  <a href="#s-intro">🌿 Introdução</a>
+  <a href="#s-conceito">📒 Conceito</a>
+  <a href="#s-equiv">🔁 Equivalência</a>
+  <a href="#s-comparar">⚖️ Comparação</a>
+  <a href="#s-reta">📏 Reta</a>
+  <a href="#s-ativ">✏️ Atividades</a>
+  <a href="#s-quiz">🎯 Quiz</a>
+  <button id="btn-animal" onclick="toggleAnimal()">🐾 Modo Animal</button>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SEÇÃO 1 — INTRODUÇÃO
+════════════════════════════════════════════════ -->
+<section class="bloco" id="s-intro">
+<div class="bloco-inner">
+  <div class="sec-header">
+    <div class="sec-emoji">🌿</div>
+    <div>
+      <h2 style="color:var(--s-verde)">Por que precisamos de frações?</h2>
+      <p>Situações do dia a dia que os inteiros não conseguem descrever</p>
+    </div>
+  </div>
+
+  <div class="normal-bloco">
+    <div class="card">
+      <p>🌊 Pesquisadores monitoram um rio dividido em <strong>5 trechos</strong>. Apenas <strong>2 trechos</strong> ainda têm água limpa. Como expressar isso com um único número?</p>
+    </div>
+    <div class="card am">
+      <p>🐢 De 20 tartarugas marinhas marcadas, 12 retornaram à praia de desova. Que parte do grupo voltou?</p>
+    </div>
+    <p>Os números inteiros não dão conta dessas respostas. Para isso, usamos as <strong>frações</strong>.</p>
+    <div class="destaque">
+      💡 <strong>Ideia central:</strong> uma fração descreve <em>quantas partes de um todo</em> estamos considerando.
+    </div>
+  </div>
+
+  <div class="animal-bloco">
+    <h4>🦜 Uma história para começar</h4>
+    <p>Uma floresta tem <strong>4 árvores grandes</strong>. Em cada árvore mora um animal.</p>
+    <div class="partes-wrap" id="arvores">
+      <div class="parte" onclick="this.classList.toggle('marcada')">🌳</div>
+      <div class="parte" onclick="this.classList.toggle('marcada')">🌳</div>
+      <div class="parte" onclick="this.classList.toggle('marcada')">🌳</div>
+      <div class="parte" onclick="this.classList.toggle('marcada')">🌳</div>
+    </div>
+    <p>Uma chuva forte derrubou <strong>1 árvore</strong>. Clique nela para marcar! 🌧️</p>
+    <p style="margin-top:.6rem">1 árvore derrubada de 4 = fração <span class="fr lg"><span>1</span><div class="ln"></div><span>4</span></span></p>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SEÇÃO 2 — CONCEITO
+════════════════════════════════════════════════ -->
+<section class="bloco" id="s-conceito">
+<div class="bloco-inner">
+  <div class="sec-header">
+    <div class="sec-emoji">📒</div>
+    <div>
+      <h2 style="color:var(--s-azul)">O que é uma fração?</h2>
+      <p>Numerador, denominador e fração como divisão</p>
+    </div>
+  </div>
+
+  <div class="caderno">
+    <div class="caderno-tag">📓 Copie no caderno</div>
+    <div class="caderno-body">
+      <p><strong>O que é uma fração?</strong></p>
+      <div class="def">Fração é uma maneira de representar <strong>uma ou mais partes de um todo</strong> que foi dividido em partes iguais.</div>
+      <p>Escrevemos uma fração assim: <span class="fr"><span>a</span><div class="ln"></div><span>b</span></span></p>
+      <ul style="padding-left:1.2rem;margin:.5rem 0 .8rem">
+        <li><strong>Numerador (a)</strong> → quantas partes estamos usando</li>
+        <li><strong>Denominador (b)</strong> → em quantas partes iguais o todo foi cortado (nunca pode ser zero)</li>
+      </ul>
+      <div class="ex-res">
+        <strong>Exemplo:</strong> Uma área de reflorestamento foi dividida em 5 partes iguais. Em 3 já foram plantadas mudas.<br>
+        → A fração plantada é <span class="fr"><span>3</span><div class="ln"></div><span>5</span></span> — lê-se "três quintos".
+      </div>
+    </div>
+  </div>
+
+  <div class="normal-bloco">
+    <h3 style="color:var(--s-azul);margin-bottom:.5rem">Visualizando: trechos de um rio</h3>
+    <p>O rio tem <strong>5 trechos</strong>. Verde = limpo. Clique para alternar:</p>
+    <div class="barra-wrap" id="barra-rio">
+      <div class="seg on"  onclick="toggleSeg(this)"></div>
+      <div class="seg on"  onclick="toggleSeg(this)"></div>
+      <div class="seg on"  onclick="toggleSeg(this)"></div>
+      <div class="seg off" onclick="toggleSeg(this)"></div>
+      <div class="seg off" onclick="toggleSeg(this)"></div>
+    </div>
+    <p id="txt-rio" style="font-weight:700;color:var(--s-verde);margin-top:.4rem">3 trechos limpos de 5 → fração limpa: ³⁄₅</p>
+    <p class="barra-hint">🟢 limpo · ⬜ poluído · clique para explorar</p>
+  </div>
+
+  <div class="animal-bloco">
+    <h4>🐸 O lago das rãs</h4>
+    <p>Um lago foi dividido em <strong>4 partes iguais</strong>:</p>
+    <div class="partes-wrap">
+      <div class="parte marcada">🐸</div>
+      <div class="parte marcada">🐸</div>
+      <div class="parte marcada">🐸</div>
+      <div class="parte" style="opacity:.4">💀</div>
+    </div>
+    <div class="ap"><strong>Passo 1:</strong> Total de partes? → <strong>4</strong> (denominador)</div>
+    <div class="ap"><strong>Passo 2:</strong> Partes com rãs? → <strong>3</strong> (numerador)</div>
+    <div class="ap"><strong>Passo 3:</strong> Fração = <span class="fr"><span>3</span><div class="ln"></div><span>4</span></span> — "três quartos do lago tem rãs"</div>
+  </div>
+
+  <div class="caderno" style="margin-top:1.2rem">
+    <div class="caderno-tag">📓 Copie no caderno</div>
+    <div class="caderno-body">
+      <p><strong>Fração também é uma divisão</strong></p>
+      <p>Toda fração pode ser lida como uma divisão. O numerador é dividido pelo denominador.</p>
+      <div class="def">
+        <span class="fr"><span>2</span><div class="ln"></div><span>3</span></span> é a mesma coisa que 2 ÷ 3 &nbsp;·&nbsp; De forma geral: <span class="fr"><span>a</span><div class="ln"></div><span>b</span></span> = a ÷ b
+      </div>
+      <div class="ex-res">
+        <strong>Exemplo:</strong> Se 2 barras de chocolate são divididas igualmente entre 3 pessoas, cada uma recebe <span class="fr"><span>2</span><div class="ln"></div><span>3</span></span> de uma barra — nem 1 inteira, nem menos de meia.
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SEÇÃO 3 — EQUIVALÊNCIA
+════════════════════════════════════════════════ -->
+<section class="bloco" id="s-equiv">
+<div class="bloco-inner">
+  <div class="sec-header">
+    <div class="sec-emoji">🔁</div>
+    <div>
+      <h2 style="color:var(--s-roxo)">Frações Equivalentes e Simplificação</h2>
+      <p>Frações diferentes podem representar a mesma quantidade</p>
+    </div>
+  </div>
+
+  <div class="caderno">
+    <div class="caderno-tag">📓 Copie no caderno</div>
+    <div class="caderno-body">
+      <p><strong>Frações equivalentes</strong> são frações diferentes que representam a mesma quantidade.</p>
+      <div class="def">Para encontrar frações equivalentes, multiplique ou divida o numerador e o denominador pelo <strong>mesmo número</strong> (diferente de zero). A quantidade representada não muda.</div>
+      <div class="ex-res">
+        <strong>Exemplo 1 — aumentando os termos:</strong><br>
+        <span class="fr"><span>1</span><div class="ln"></div><span>2</span></span> = <span class="fr"><span>1×3</span><div class="ln"></div><span>2×3</span></span> = <span class="fr"><span>3</span><div class="ln"></div><span>6</span></span> &nbsp;·&nbsp; multipliquei tudo por 3, mas a fração continua valendo a metade.
+      </div>
+      <div class="ex-res">
+        <strong>Exemplo 2 — simplificando:</strong><br>
+        <span class="fr"><span>12</span><div class="ln"></div><span>20</span></span> → o maior número que divide 12 e 20 ao mesmo tempo é o 4 (MDC = 4)<br>
+        <span class="fr"><span>12÷4</span><div class="ln"></div><span>20÷4</span></span> = <span class="fr"><span>3</span><div class="ln"></div><span>5</span></span> → essa é a <strong>forma mais simples</strong> (irredutível).
+      </div>
+      <p><strong>Fração irredutível</strong> é quando numerador e denominador não têm mais nenhum divisor em comum além do 1.</p>
+    </div>
+  </div>
+
+  <div class="normal-bloco">
+    <h3 style="color:var(--s-roxo);margin-bottom:.5rem">Visualizando equivalência</h3>
+    <p>As barras têm o mesmo tamanho. Observe como ½, ²⁄₄ e ³⁄₆ são iguais:</p>
+    <div style="background:#fff;border-radius:12px;padding:1.2rem;box-shadow:0 2px 10px rgba(0,0,0,.06);margin:.8rem 0">
+      <div class="eq-bar"><span class="eq-label">½</span><div class="eq-track"><div class="eq-seg on"></div><div class="eq-seg off"></div></div></div>
+      <div class="eq-bar"><span class="eq-label">²⁄₄</span><div class="eq-track"><div class="eq-seg on"></div><div class="eq-seg on"></div><div class="eq-seg off"></div><div class="eq-seg off"></div></div></div>
+      <div class="eq-bar"><span class="eq-label">³⁄₆</span><div class="eq-track"><div class="eq-seg on"></div><div class="eq-seg on"></div><div class="eq-seg on"></div><div class="eq-seg off"></div><div class="eq-seg off"></div><div class="eq-seg off"></div></div></div>
+      <p style="margin-top:.5rem;font-size:.8rem;color:#666">🟢 parte colorida = parte que estamos considerando</p>
+    </div>
+  </div>
+
+  <div class="animal-bloco">
+    <h4>🦋 Borboletas no jardim</h4>
+    <p>Metade das flores tem borboletas — em três jardins de tamanhos diferentes:</p>
+    <div class="ap"><strong>2 flores → 1 com borboleta 🦋</strong> → Fração: <span class="fr"><span>1</span><div class="ln"></div><span>2</span></span></div>
+    <div class="ap"><strong>4 flores → 2 com borboleta 🦋🦋</strong> → Fração: <span class="fr"><span>2</span><div class="ln"></div><span>4</span></span></div>
+    <div class="ap"><strong>6 flores → 3 com borboleta 🦋🦋🦋</strong> → Fração: <span class="fr"><span>3</span><div class="ln"></div><span>6</span></span></div>
+    <p style="margin-top:.6rem">As três frações representam a <strong>mesma quantidade</strong>. São <strong>equivalentes</strong>! ✅</p>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SEÇÃO 4 — COMPARAÇÃO
+════════════════════════════════════════════════ -->
+<section class="bloco" id="s-comparar">
+<div class="bloco-inner">
+  <div class="sec-header">
+    <div class="sec-emoji">⚖️</div>
+    <div>
+      <h2 style="color:var(--s-lj)">Comparação e Ordenação de Frações</h2>
+      <p>Como descobrir qual fração é maior</p>
+    </div>
+  </div>
+
+  <div class="caderno">
+    <div class="caderno-tag">📓 Copie no caderno</div>
+    <div class="caderno-body">
+      <p><strong>Como comparar frações?</strong></p>
+      <p><strong>Situação 1 — mesmo denominador:</strong> compara só os numeradores. O maior numerador é a maior fração.</p>
+      <div class="def"><span class="fr"><span>3</span><div class="ln"></div><span>7</span></span> &lt; <span class="fr"><span>5</span><div class="ln"></div><span>7</span></span> &nbsp; porque 3 &lt; 5 (o todo está cortado do mesmo jeito — basta ver quem tem mais partes)</div>
+      <p><strong>Situação 2 — mesmo numerador:</strong> o maior denominador gera a menor fração (partes menores).</p>
+      <div class="def"><span class="fr"><span>2</span><div class="ln"></div><span>3</span></span> &gt; <span class="fr"><span>2</span><div class="ln"></div><span>7</span></span> &nbsp; dividir em 3 pedaços dá pedaços maiores do que dividir em 7</div>
+      <p><strong>Situação 3 — denominadores diferentes:</strong> transforma as duas frações para ficarem com o mesmo denominador, usando o MMC.</p>
+      <div class="ex-res">
+        Comparar <span class="fr"><span>2</span><div class="ln"></div><span>3</span></span> e <span class="fr"><span>3</span><div class="ln"></div><span>4</span></span> &nbsp;→&nbsp; MMC(3,4) = 12<br>
+        <span class="fr"><span>2</span><div class="ln"></div><span>3</span></span> = <span class="fr"><span>8</span><div class="ln"></div><span>12</span></span> &nbsp;·&nbsp; <span class="fr"><span>3</span><div class="ln"></div><span>4</span></span> = <span class="fr"><span>9</span><div class="ln"></div><span>12</span></span> &nbsp;→&nbsp; Como 8 &lt; 9: <span class="fr"><span>2</span><div class="ln"></div><span>3</span></span> &lt; <span class="fr"><span>3</span><div class="ln"></div><span>4</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="normal-bloco">
+    <div class="card am">
+      <p>🌲 O Parque Alfa perdeu <span class="fr"><span>2</span><div class="ln"></div><span>5</span></span> de sua área. O Parque Beta perdeu <span class="fr"><span>3</span><div class="ln"></div><span>8</span></span>. Qual perdeu mais?</p>
+      <p style="margin-top:.5rem">MMC(5,8) = 40 &nbsp;→&nbsp; <span class="fr"><span>2</span><div class="ln"></div><span>5</span></span> = <span class="fr"><span>16</span><div class="ln"></div><span>40</span></span> &nbsp; e &nbsp; <span class="fr"><span>3</span><div class="ln"></div><span>8</span></span> = <span class="fr"><span>15</span><div class="ln"></div><span>40</span></span></p>
+      <p>Como 16 &gt; 15 → <strong>Parque Alfa perdeu mais área.</strong></p>
+    </div>
+  </div>
+
+  <div class="animal-bloco">
+    <h4>🐠 Dois aquários</h4>
+    <div class="aquarios">
+      <div class="aquario" style="border-top:4px solid var(--s-azul)">
+        <h4 style="color:var(--s-azul)">Aquário A — 5 espaços</h4>
+        <div class="peixes">
+          <div class="peixe doente">🤒</div><div class="peixe doente">🤒</div>
+          <div class="peixe saudavel">🐠</div><div class="peixe saudavel">🐠</div><div class="peixe saudavel">🐠</div>
+        </div>
+        <div class="fr-big" style="color:var(--s-azul)">2/5</div>
+      </div>
+      <div class="aquario" style="border-top:4px solid var(--s-roxo)">
+        <h4 style="color:var(--s-roxo)">Aquário B — 8 espaços</h4>
+        <div class="peixes">
+          <div class="peixe doente">🤒</div><div class="peixe doente">🤒</div><div class="peixe doente">🤒</div>
+          <div class="peixe saudavel">🐠</div><div class="peixe saudavel">🐠</div>
+          <div class="peixe saudavel">🐠</div><div class="peixe saudavel">🐠</div><div class="peixe saudavel">🐠</div>
+        </div>
+        <div class="fr-big" style="color:var(--s-roxo)">3/8</div>
+      </div>
+    </div>
+    <div class="passos">
+      <div class="passo"><div class="passo-num" style="background:var(--s-verde)">1</div><div class="passo-txt">MMC(5, 8) = 40</div></div>
+      <div class="passo"><div class="passo-num" style="background:var(--s-azul)">2</div><div class="passo-txt"><span class="fr"><span>2</span><div class="ln"></div><span>5</span></span> = <span class="fr"><span>16</span><div class="ln"></div><span>40</span></span> &nbsp; e &nbsp; <span class="fr"><span>3</span><div class="ln"></div><span>8</span></span> = <span class="fr"><span>15</span><div class="ln"></div><span>40</span></span></div></div>
+      <div class="passo"><div class="passo-num" style="background:var(--s-lj)">3</div><div class="passo-txt">16 &gt; 15 → <strong>Aquário A tem mais peixes doentes proporcionalmente</strong> 🏥</div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SEÇÃO 5 — RETA NUMÉRICA
+════════════════════════════════════════════════ -->
+<section class="bloco" id="s-reta">
+<div class="bloco-inner">
+  <div class="sec-header">
+    <div class="sec-emoji">📏</div>
+    <div>
+      <h2 style="color:var(--s-rosa)">Frações na Reta Numérica</h2>
+      <p>Onde cada fração fica na reta</p>
+    </div>
+  </div>
+
+  <div class="caderno">
+    <div class="caderno-tag">📓 Copie no caderno</div>
+    <div class="caderno-body">
+      <p><strong>Frações na reta numérica</strong></p>
+      <p>Toda fração tem um lugar certo na reta numérica, entre dois números inteiros.</p>
+      <div class="def">Para marcar <span class="fr"><span>a</span><div class="ln"></div><span>b</span></span> na reta: divida o espaço entre dois inteiros em <strong>b partes iguais</strong> e conte <strong>a partes</strong> a partir do zero.</div>
+      <div class="ex-res">
+        <strong>Exemplo:</strong> Marcar <span class="fr"><span>3</span><div class="ln"></div><span>4</span></span> na reta.<br>
+        → Divida o trecho entre 0 e 1 em 4 partes iguais.<br>
+        → Conte 3 partes a partir do 0. Esse ponto é <span class="fr"><span>3</span><div class="ln"></div><span>4</span></span>.<br>
+        → Quando o numerador é maior que o denominador (ex: <span class="fr"><span>5</span><div class="ln"></div><span>4</span></span>), o ponto fica <strong>depois do 1</strong> na reta.
+      </div>
+    </div>
+  </div>
+
+  <div class="reta-wrap">
+    <p style="font-weight:700;font-size:.9rem;margin-bottom:.8rem">📏 Reta interativa — clique em uma fração para marcá-la:</p>
+    <svg class="reta-svg" viewBox="0 0 560 100" id="reta-svg">
+      <line x1="30" y1="50" x2="530" y2="50" stroke="#1a7a4a" stroke-width="2.5"/>
+      <polygon points="530,50 520,44 520,56" fill="#1a7a4a"/>
+      <polygon points="30,50 40,44 40,56" fill="#1a7a4a"/>
+      <line x1="80"  y1="40" x2="80"  y2="60" stroke="#1a7a4a" stroke-width="2"/>
+      <text x="80"  y="75" text-anchor="middle" font-size="13" font-family="Sora,sans-serif" font-weight="700" fill="#1c1c1c">0</text>
+      <line x1="330" y1="40" x2="330" y2="60" stroke="#1a7a4a" stroke-width="2"/>
+      <text x="330" y="75" text-anchor="middle" font-size="13" font-family="Sora,sans-serif" font-weight="700" fill="#1c1c1c">1</text>
+      <line x1="480" y1="40" x2="480" y2="60" stroke="#1a7a4a" stroke-width="2"/>
+      <text x="480" y="75" text-anchor="middle" font-size="13" font-family="Sora,sans-serif" font-weight="700" fill="#1c1c1c">1½</text>
+      <line x1="142" y1="44" x2="142" y2="56" stroke="#aaa" stroke-width="1.5"/>
+      <text x="142" y="34" text-anchor="middle" font-size="10" font-family="Sora,sans-serif" fill="#555">¼</text>
+      <line x1="205" y1="44" x2="205" y2="56" stroke="#aaa" stroke-width="1.5"/>
+      <text x="205" y="34" text-anchor="middle" font-size="10" font-family="Sora,sans-serif" fill="#555">½</text>
+      <line x1="267" y1="44" x2="267" y2="56" stroke="#aaa" stroke-width="1.5"/>
+      <text x="267" y="34" text-anchor="middle" font-size="10" font-family="Sora,sans-serif" fill="#555">¾</text>
+      <line x1="392" y1="44" x2="392" y2="56" stroke="#aaa" stroke-width="1.5"/>
+      <text x="392" y="34" text-anchor="middle" font-size="10" font-family="Sora,sans-serif" fill="#555">⁵⁄₄</text>
+      <line x1="436" y1="44" x2="436" y2="56" stroke="#aaa" stroke-width="1.5"/>
+      <text x="436" y="34" text-anchor="middle" font-size="10" font-family="Sora,sans-serif" fill="#555">⁶⁄₄</text>
+      <circle id="pt-14" cx="142" cy="50" r="9" fill="white" stroke="#aaa" stroke-width="2" style="cursor:pointer" onclick="marcarPonto('pt-14','¼')"/>
+      <circle id="pt-24" cx="205" cy="50" r="9" fill="white" stroke="#aaa" stroke-width="2" style="cursor:pointer" onclick="marcarPonto('pt-24','½')"/>
+      <circle id="pt-34" cx="267" cy="50" r="9" fill="white" stroke="#aaa" stroke-width="2" style="cursor:pointer" onclick="marcarPonto('pt-34','¾')"/>
+      <circle id="pt-44" cx="330" cy="50" r="9" fill="white" stroke="#aaa" stroke-width="2" style="cursor:pointer" onclick="marcarPonto('pt-44','1')"/>
+      <circle id="pt-54" cx="392" cy="50" r="9" fill="white" stroke="#aaa" stroke-width="2" style="cursor:pointer" onclick="marcarPonto('pt-54','⁵⁄₄')"/>
+      <circle id="pt-64" cx="436" cy="50" r="9" fill="white" stroke="#aaa" stroke-width="2" style="cursor:pointer" onclick="marcarPonto('pt-64','⁶⁄₄')"/>
+    </svg>
+    <p id="txt-reta" style="font-size:.87rem;color:#777;margin-top:.3rem">Clique em um ponto para ver a fração.</p>
+  </div>
+
+  <div class="animal-bloco">
+    <h4>🐾 A trilha dos animais</h4>
+    <p>Uma trilha de 1 km. Vários animais pararam no caminho:</p>
+    <div class="ap">🦊 A raposa parou em <span class="fr"><span>1</span><div class="ln"></div><span>4</span></span> — <strong>antes</strong> da metade</div>
+    <div class="ap">🐇 O coelho parou na metade → <span class="fr"><span>1</span><div class="ln"></div><span>2</span></span></div>
+    <div class="ap">🦡 O texugo parou em <span class="fr"><span>3</span><div class="ln"></div><span>4</span></span> — quase no fim</div>
+    <p style="margin-top:.6rem">Na reta: 🦊 ── 🐇 ── 🦡 ── chegada 🏁</p>
+    <p>Ordem crescente: <span class="fr"><span>1</span><div class="ln"></div><span>4</span></span> &lt; <span class="fr"><span>1</span><div class="ln"></div><span>2</span></span> &lt; <span class="fr"><span>3</span><div class="ln"></div><span>4</span></span></p>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SEÇÃO 6 — ATIVIDADES
+════════════════════════════════════════════════ -->
+<section class="bloco" id="s-ativ">
+<div class="bloco-inner">
+  <div class="sec-header">
+    <div class="sec-emoji">✏️</div>
+    <div>
+      <h2 style="color:var(--s-verde)">Atividades</h2>
+      <p>Resolva cada situação e verifique sua resposta</p>
+    </div>
+  </div>
+
+  <!-- Ativ 1 -->
+  <div class="ativ normal-bloco">
+    <h4>1. 🌿 Reflorestamento</h4>
+    <p>Uma ONG plantou mudas em 8 setores de uma reserva. Em 6 setores as mudas sobreviveram. Escreva a fração e simplifique.</p>
+    <div class="linha-r">
+      <span>Fração:</span>
+      <div class="fi"><input type="text" id="a1n" placeholder="?"><div class="lnh"></div><input type="text" id="a1d" placeholder="?"></div>
+      <span>Simplificada:</span>
+      <div class="fi"><input type="text" id="a1sn" placeholder="?"><div class="lnh"></div><input type="text" id="a1sd" placeholder="?"></div>
+    </div>
+    <button class="btn-v" onclick="v1()">Verificar</button>
+    <div id="r1" class="rb"></div>
+  </div>
+  <div class="animal-bloco">
+    <h4>1. 🌱 Mudas de árvore</h4>
+    <p>Foram plantadas <strong>8 mudas</strong>. Clique nas 6 que sobreviveram:</p>
+    <div class="partes-wrap">
+      <div class="parte" onclick="this.classList.toggle('marcada')">🌱</div>
+      <div class="parte" onclick="this.classList.toggle('marcada')">🌱</div>
+      <div class="parte" onclick="this.classList.toggle('marcada')">🌱</div>
+      <div class="parte" onclick="this.classList.toggle('marcada')">🌱</div>
+      <div class="parte" onclick="this.classList.toggle('marcada')">🌱</div>
+      <div class="parte" onclick="this.classList.toggle('marcada')">🌱</div>
+      <div class="parte" onclick="this.classList.toggle('marcada')">🌱</div>
+      <div class="parte" onclick="this.classList.toggle('marcada')">🌱</div>
+    </div>
+    <div class="ap"><strong>Total de mudas:</strong> 8 → denominador = 8</div>
+    <div class="ap"><strong>Mudas vivas:</strong> 6 → numerador = 6</div>
+    <div class="ap"><strong>Fração:</strong> <span class="fr lg"><span>6</span><div class="ln"></div><span>8</span></span> &nbsp; ÷2 → <span class="fr lg"><span>3</span><div class="ln"></div><span>4</span></span> ✅</div>
+  </div>
+
+  <!-- Ativ 2 -->
+  <div class="ativ normal-bloco">
+    <h4>2. 🐟 Monitoramento de peixes</h4>
+    <p>Em um rio foram identificadas 15 espécies de peixes. 10 delas são nativas. Escreva a fração em forma irredutível.</p>
+    <div class="linha-r">
+      <div class="fi"><input type="text" id="a2n" placeholder="?"><div class="lnh"></div><input type="text" id="a2d" placeholder="?"></div>
+    </div>
+    <button class="btn-v" onclick="v2()">Verificar</button>
+    <div id="r2" class="rb"></div>
+  </div>
+  <div class="animal-bloco">
+    <h4>2. 🐟 Peixes nativos do rio</h4>
+    <div class="ap"><strong>Total de espécies:</strong> 15 → denominador = 15</div>
+    <div class="ap"><strong>Espécies nativas:</strong> 10 → numerador = 10</div>
+    <div class="ap"><strong>Fração:</strong> <span class="fr"><span>10</span><div class="ln"></div><span>15</span></span> → MDC(10,15) = 5 → divide por 5 → <span class="fr lg"><span>2</span><div class="ln"></div><span>3</span></span> ✅</div>
+  </div>
+
+  <!-- Ativ 3 -->
+  <div class="ativ normal-bloco">
+    <h4>3. ⚖️ Comparando áreas</h4>
+    <p>Dois sítios foram reflorestados. O Sítio A reflorestou <span class="fr"><span>3</span><div class="ln"></div><span>5</span></span> de sua área; o Sítio B reflorestou <span class="fr"><span>5</span><div class="ln"></div><span>8</span></span>. Qual reflorestou maior proporção?</p>
+    <div class="linha-r">
+      <select id="a3sel" class="sel">
+        <option value="">Escolha...</option>
+        <option value="A">Sítio A (3/5)</option>
+        <option value="B">Sítio B (5/8)</option>
+        <option value="I">São iguais</option>
+      </select>
+    </div>
+    <button class="btn-v" onclick="v3()">Verificar</button>
+    <div id="r3" class="rb"></div>
+  </div>
+  <div class="animal-bloco">
+    <h4>3. 🦌 Dois habitats</h4>
+    <div class="ap"><strong>Habitat A:</strong> <span class="fr"><span>3</span><div class="ln"></div><span>5</span></span> → MMC(5,8) = 40 → <span class="fr"><span>24</span><div class="ln"></div><span>40</span></span></div>
+    <div class="ap"><strong>Habitat B:</strong> <span class="fr"><span>5</span><div class="ln"></div><span>8</span></span> → <span class="fr"><span>25</span><div class="ln"></div><span>40</span></span></div>
+    <div class="ap">25 &gt; 24 → <strong>Habitat B é maior</strong> 🦌 ✅</div>
+  </div>
+
+  <!-- Ativ 4 -->
+  <div class="ativ normal-bloco">
+    <h4>4. 📏 Reta numérica</h4>
+    <p>Ordene do menor para o maior: <span class="fr"><span>3</span><div class="ln"></div><span>4</span></span>, <span class="fr"><span>1</span><div class="ln"></div><span>2</span></span>, <span class="fr"><span>5</span><div class="ln"></div><span>4</span></span>, <span class="fr"><span>1</span><div class="ln"></div><span>4</span></span>.</p>
+    <div class="linha-r" style="align-items:center;gap:.4rem">
+      <select id="o1" class="sel"><option value="">1º</option><option>1/4</option><option>1/2</option><option>3/4</option><option>5/4</option></select>
+      <span>&lt;</span>
+      <select id="o2" class="sel"><option value="">2º</option><option>1/4</option><option>1/2</option><option>3/4</option><option>5/4</option></select>
+      <span>&lt;</span>
+      <select id="o3" class="sel"><option value="">3º</option><option>1/4</option><option>1/2</option><option>3/4</option><option>5/4</option></select>
+      <span>&lt;</span>
+      <select id="o4" class="sel"><option value="">4º</option><option>1/4</option><option>1/2</option><option>3/4</option><option>5/4</option></select>
+    </div>
+    <button class="btn-v" onclick="v4()">Verificar</button>
+    <div id="r4" class="rb"></div>
+  </div>
+  <div class="animal-bloco">
+    <h4>4. 🐾 A corrida dos animais</h4>
+    <div class="ap">🐢 Tartaruga: <span class="fr"><span>1</span><div class="ln"></div><span>4</span></span> da pista — <strong>a menor</strong></div>
+    <div class="ap">🐇 Coelho: <span class="fr"><span>1</span><div class="ln"></div><span>2</span></span> da pista</div>
+    <div class="ap">🦊 Raposa: <span class="fr"><span>3</span><div class="ln"></div><span>4</span></span> da pista</div>
+    <div class="ap">🦅 Águia: <span class="fr"><span>5</span><div class="ln"></div><span>4</span></span> — passou a linha de chegada!</div>
+    <p style="margin-top:.5rem">Ordem: 🐢 &lt; 🐇 &lt; 🦊 &lt; 🦅 &nbsp;→&nbsp; <span class="fr"><span>1</span><div class="ln"></div><span>4</span></span> &lt; <span class="fr"><span>1</span><div class="ln"></div><span>2</span></span> &lt; <span class="fr"><span>3</span><div class="ln"></div><span>4</span></span> &lt; <span class="fr"><span>5</span><div class="ln"></div><span>4</span></span> ✅</p>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     SEÇÃO 7 — QUIZ
+════════════════════════════════════════════════ -->
+<section class="bloco" id="s-quiz">
+<div class="bloco-inner">
+  <div class="sec-header">
+    <div class="sec-emoji">🎯</div>
+    <div>
+      <h2 style="color:var(--s-azul)">Quiz — Frações</h2>
+      <p>5 questões para testar o que você aprendeu</p>
+    </div>
+  </div>
+
+  <div class="placar" id="placar">Pontos: 0 / 5</div>
+
+  <div class="quiz-q" id="q1">
+    <p class="enun">1. Uma reserva tem 12 nascentes de água. 8 estão preservadas. Qual fração irredutível representa as nascentes preservadas?</p>
+    <div class="opcoes">
+      <button class="opc" onclick="resp('q1',this,false)">A) 8/12</button>
+      <button class="opc" onclick="resp('q1',this,true)">B) 2/3</button>
+      <button class="opc" onclick="resp('q1',this,false)">C) 3/4</button>
+      <button class="opc" onclick="resp('q1',this,false)">D) 1/2</button>
+    </div>
+    <div class="fb" id="fq1"></div>
+  </div>
+
+  <div class="quiz-q" id="q2">
+    <p class="enun">2. Qual das frações abaixo é equivalente a 4/6?</p>
+    <div class="opcoes">
+      <button class="opc" onclick="resp('q2',this,false)">A) 3/5</button>
+      <button class="opc" onclick="resp('q2',this,true)">B) 2/3</button>
+      <button class="opc" onclick="resp('q2',this,false)">C) 4/8</button>
+      <button class="opc" onclick="resp('q2',this,false)">D) 6/10</button>
+    </div>
+    <div class="fb" id="fq2"></div>
+  </div>
+
+  <div class="quiz-q" id="q3">
+    <p class="enun">3. Dois grupos monitoraram animais. O grupo A registrou 3/5 das espécies previstas; o grupo B registrou 5/9. Qual grupo registrou mais?</p>
+    <div class="opcoes">
+      <button class="opc" onclick="resp('q3',this,true)">A) Grupo A — pois 27/45 &gt; 25/45</button>
+      <button class="opc" onclick="resp('q3',this,false)">B) Grupo B — pois 5 &gt; 3</button>
+      <button class="opc" onclick="resp('q3',this,false)">C) São iguais</button>
+      <button class="opc" onclick="resp('q3',this,false)">D) Não é possível comparar</button>
+    </div>
+    <div class="fb" id="fq3"></div>
+  </div>
+
+  <div class="quiz-q" id="q4">
+    <p class="enun">4. Na reta numérica, onde se localiza 5/4?</p>
+    <div class="opcoes">
+      <button class="opc" onclick="resp('q4',this,false)">A) Entre 0 e 1/2</button>
+      <button class="opc" onclick="resp('q4',this,false)">B) Exatamente em 1</button>
+      <button class="opc" onclick="resp('q4',this,true)">C) Entre 1 e 2</button>
+      <button class="opc" onclick="resp('q4',this,false)">D) Antes de 0</button>
+    </div>
+    <div class="fb" id="fq4"></div>
+  </div>
+
+  <div class="quiz-q" id="q5">
+    <p class="enun">5. Ordene as frações em ordem crescente: 2/3, 3/4, 1/2, 5/6.</p>
+    <div class="opcoes">
+      <button class="opc" onclick="resp('q5',this,true)">A) 1/2 &lt; 2/3 &lt; 3/4 &lt; 5/6</button>
+      <button class="opc" onclick="resp('q5',this,false)">B) 2/3 &lt; 1/2 &lt; 3/4 &lt; 5/6</button>
+      <button class="opc" onclick="resp('q5',this,false)">C) 1/2 &lt; 3/4 &lt; 2/3 &lt; 5/6</button>
+      <button class="opc" onclick="resp('q5',this,false)">D) 5/6 &lt; 3/4 &lt; 2/3 &lt; 1/2</button>
+    </div>
+    <div class="fb" id="fq5"></div>
+  </div>
+
+  <div id="res-final">
+    <div class="big" id="ef">🌱</div>
+    <p id="tf"></p>
+  </div>
+</div>
+</section>
+
+<footer>Matemática · 7º Ano · Frações, Comparação e Ordem</footer>
+
+<script>
+// ── MODO ANIMAL ───────────────────────────────
+function toggleAnimal() {
+  document.body.classList.toggle('modo-animal');
+  const on = document.body.classList.contains('modo-animal');
+  document.getElementById('btn-animal').textContent = on ? '🐾 Modo Animal ✓' : '🐾 Modo Animal';
+}
+
+// ── BARRA RIO ─────────────────────────────────
+function toggleSeg(el) {
+  el.classList.toggle('on');
+  el.classList.toggle('off');
+  const segs = document.querySelectorAll('#barra-rio .seg');
+  const on = [...segs].filter(s => s.classList.contains('on')).length;
+  document.getElementById('txt-rio').innerHTML =
+    `${on} trechos limpos de ${segs.length} → fração limpa: <strong>${on}⁄${segs.length}</strong>`;
+}
+
+// ── RETA ──────────────────────────────────────
+const pts = {};
+function marcarPonto(id, label) {
+  const c = document.getElementById(id);
+  if (pts[id]) {
+    c.setAttribute('fill','white'); c.setAttribute('stroke','#aaa');
+    delete pts[id];
+  } else {
+    c.setAttribute('fill','#1a7a4a'); c.setAttribute('stroke','#1a7a4a');
+    pts[id] = label;
+  }
+  const m = Object.values(pts);
+  document.getElementById('txt-reta').textContent =
+    m.length ? 'Selecionadas: ' + m.join(', ') : 'Clique em um ponto para ver a fração.';
+}
+
+// ── ATIVIDADES ────────────────────────────────
+function v1() {
+  const n=document.getElementById('a1n').value.trim(), d=document.getElementById('a1d').value.trim();
+  const sn=document.getElementById('a1sn').value.trim(), sd=document.getElementById('a1sd').value.trim();
+  const r=document.getElementById('r1');
+  const fOk=(n==='6'&&d==='8')||(n==='3'&&d==='4');
+  const sOk=sn==='3'&&sd==='4';
+  if(fOk&&sOk){r.textContent='✅ Correto! 6/8 = 3/4 (MDC = 2).'; r.className='rb ok';}
+  else if(fOk){r.textContent='✅ Fração certa! Simplifique: 6/8 ÷ 2 = 3/4.'; r.className='rb err';}
+  else{r.textContent='❌ Dica: 6 setores de 8 → 6/8. MDC(6,8)=2 → 3/4.'; r.className='rb err';}
+}
+function v2() {
+  const n=document.getElementById('a2n').value.trim(), d=document.getElementById('a2d').value.trim();
+  const r=document.getElementById('r2');
+  if((n==='2'&&d==='3')||(n==='10'&&d==='15')){r.textContent='✅ Correto! 10/15 ÷5 = 2/3.'; r.className='rb ok';}
+  else{r.textContent='❌ Dica: 10/15. MDC=5 → 2/3.'; r.className='rb err';}
+}
+function v3() {
+  const s=document.getElementById('a3sel').value, r=document.getElementById('r3');
+  if(s==='B'){r.textContent='✅ Correto! 3/5=24/40 e 5/8=25/40 → Sítio B.'; r.className='rb ok';}
+  else if(!s){r.textContent='⚠️ Selecione uma opção.'; r.className='rb err';}
+  else{r.textContent='❌ MMC(5,8)=40 → 3/5=24/40 e 5/8=25/40 → Sítio B (25>24).'; r.className='rb err';}
+}
+function v4() {
+  const o=[document.getElementById('o1').value,document.getElementById('o2').value,
+           document.getElementById('o3').value,document.getElementById('o4').value];
+  const r=document.getElementById('r4');
+  if(o[0]==='1/4'&&o[1]==='1/2'&&o[2]==='3/4'&&o[3]==='5/4'){
+    r.textContent='✅ Correto! 1/4 < 1/2 < 3/4 < 5/4 (5/4 > 1, pois num > den).'; r.className='rb ok';
+  } else if(o.includes('')){r.textContent='⚠️ Selecione todas as posições.'; r.className='rb err';}
+  else{r.textContent='❌ Denominador comum 4: 1/4 < 2/4 < 3/4 < 5/4.'; r.className='rb err';}
+}
+
+// ── QUIZ ──────────────────────────────────────
+let pontos=0; const feitas=new Set();
+function resp(qid,btn,ok) {
+  if(feitas.has(qid)) return;
+  feitas.add(qid);
+  document.querySelectorAll(`#${qid} .opc`).forEach(b=>b.disabled=true);
+  const fb=document.getElementById('f'+qid);
+  if(ok){ btn.classList.add('certa'); pontos++;
+    fb.textContent='✅ Correto!'; fb.className='fb ok';
+  } else {
+    btn.classList.add('errada');
+    document.querySelectorAll(`#${qid} .opc`).forEach(b=>{
+      if(b.getAttribute('onclick').includes('true')) b.classList.add('certa');
+    });
+    fb.textContent='❌ Não foi desta vez. Veja a resposta correta.'; fb.className='fb err';
+  }
+  document.getElementById('placar').textContent=`Pontos: ${pontos} / 5`;
+  if(feitas.size===5){
+    setTimeout(()=>{
+      const d=document.getElementById('res-final'); d.style.display='block';
+      const es=['😔','😐','🙂','😊','🌟','🏆'];
+      const ts=['Continue estudando!','Quase lá! Reveja equivalência.','Bom! Pratique mais.','Muito bem!','Excelente! Perfeito!'];
+      document.getElementById('ef').textContent=es[pontos];
+      document.getElementById('tf').textContent=`${pontos} de 5 — ${ts[Math.min(pontos,4)]}`;
+    },400);
+  }
+}
+
+// ── SPY SCROLL (destaca nav ao rolar) ─────────
+const sections = document.querySelectorAll('section.bloco');
+const links    = document.querySelectorAll('#topbar a');
+window.addEventListener('scroll', () => {
+  let atual = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) atual = s.id;
+  });
+  links.forEach(a => {
+    a.classList.toggle('spy-ativo', a.getAttribute('href') === '#' + atual);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>
