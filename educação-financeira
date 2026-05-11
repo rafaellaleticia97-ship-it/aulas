@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Matemática do Dia a Dia · Educação Financeira</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100vh;background:linear-gradient(135deg,#e8f0fe 0%,#fce4ec 100%);display:flex;align-items:center;justify-content:center;padding:20px;font-family:'Lato',sans-serif}
+  .card{width:100%;max-width:680px;background:white;border-radius:28px;box-shadow:0 12px 60px #1a3a5c22;padding:36px 36px 28px;min-height:560px;display:flex;flex-direction:column}
+  .progress-bar{height:6px;background:#e2e8f0;border-radius:99px;margin-bottom:10px}
+  .progress-fill{height:6px;background:linear-gradient(90deg,#1a3a5c,#2563a8);border-radius:99px;transition:width .5s}
+  .slide-count{font-size:12px;color:#94a3b8;text-align:right;margin-bottom:20px;font-family:'Lato',sans-serif}
+  .content{flex:1}
+  .nav{display:flex;justify-content:space-between;margin-top:28px;padding-top:16px;border-top:1px solid #f1f5f9}
+  .btn{background:#2563a8;color:white;border:none;border-radius:12px;padding:12px 24px;font-family:'Playfair Display',serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px #2563a840}
+  .btn:disabled{background:#e2e8f0;color:#94a3b8;box-shadow:none;cursor:default}
+  .btn:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 4px 16px #2563a860}
+  .tag{display:inline-block;background:#dbeafe;color:#1a3a5c;border-radius:99px;padding:3px 14px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:'Lato',sans-serif}
+  h1{font-family:'Playfair Display',serif;color:#1a3a5c;line-height:1.1}
+  h2{font-family:'Playfair Display',serif;color:#1a3a5c;font-size:clamp(20px,3vw,28px);margin:14px 0 8px}
+  .sub{color:#64748b;font-style:italic;margin-bottom:20px;font-size:14px}
+  .box{border-radius:14px;padding:16px 18px;margin-bottom:12px}
+  .box-blue{background:#dbeafe}
+  .box-green{background:#dcfce7}
+  .box-orange{background:#ffedd5}
+  .box-yellow{background:#fef9c3}
+  .box-pink{background:#fce7f3}
+  input[type=number],input[type=text]{width:100%;padding:11px 14px;border-radius:10px;border:2px solid #dbeafe;font-size:15px;font-family:'Lato',sans-serif;outline:none;color:#1a3a5c;transition:border .2s}
+  input:focus{border-color:#2563a8}
+  input[type=range]{width:100%;accent-color:#c2410c;margin-top:8px}
+  .result{border-radius:16px;padding:20px 24px;text-align:center;margin-top:16px;animation:fadeIn .4s}
+  .result-val{font-family:'Playfair Display',serif;font-size:36px;font-weight:900}
+  .chat-box{background:#f8fafc;border-radius:14px;padding:14px;margin-bottom:12px;overflow-y:auto;max-height:200px;min-height:120px;display:flex;flex-direction:column;gap:10px}
+  .msg{padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.6;max-width:85%}
+  .msg-user{align-self:flex-end;background:#2563a8;color:white;border-radius:18px 18px 4px 18px}
+  .msg-ai{align-self:flex-start;background:white;color:#1a3a5c;border-radius:18px 18px 18px 4px;box-shadow:0 1px 4px #0001}
+  .chat-input-row{display:flex;gap:10px}
+  .send-btn{background:#2563a8;color:white;border:none;border-radius:10px;padding:10px 18px;font-family:'Playfair Display',serif;font-weight:700;cursor:pointer;font-size:14px;white-space:nowrap}
+  .send-btn:disabled{background:#e2e8f0;color:#94a3b8;cursor:default}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .quiz-btn{background:white;border:2px solid #e2e8f0;border-radius:14px;padding:14px;cursor:pointer;font-family:'Lato',sans-serif;color:#1a3a5c;font-size:14px;font-weight:700;transition:all .3s;text-align:center}
+  .quiz-btn:hover{border-color:#2563a8;background:#dbeafe}
+  .quiz-btn.correta{background:#dcfce7;border-color:#166534;color:#166534}
+  .quiz-btn.errada{background:#ffedd5;border-color:#c2410c;color:#c2410c}
+  .opcao-card{background:white;border:2px solid #e2e8f0;border-radius:16px;padding:18px 12px;cursor:pointer;transition:all .2s;text-align:center}
+  .opcao-card:hover{transform:scale(1.04)}
+  .opcao-card.sel{border-color:currentColor;transform:scale(1.06);box-shadow:0 4px 16px #0002}
+  .bars{display:flex;align-items:flex-end;gap:8px;height:150px;margin-bottom:10px}
+  .bar{flex:1;border-radius:6px 6px 0 0;transition:height .5s;background:linear-gradient(180deg,#c2410c,#fbbf24)}
+  .bar-label{font-size:10px;color:#94a3b8;text-align:center;margin-top:4px}
+  .bar-val{font-size:10px;color:#c2410c;font-weight:700;text-align:center}
+  .fato{display:flex;align-items:flex-start;gap:14px;border-radius:14px;padding:14px 18px;margin-bottom:10px;opacity:0;transform:translateY(20px);transition:all .5s}
+  .fato.show{opacity:1;transform:translateY(0)}
+  .capa-center{text-align:center;padding:30px 10px}
+  .tags-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:20px}
+  .encerramento-item{border-radius:12px;padding:13px 16px;font-weight:700;font-size:14px;margin-bottom:10px}
+  .enc-banner{background:linear-gradient(135deg,#1a3a5c,#2563a8);border-radius:18px;padding:24px;color:white;text-align:center;margin-top:20px}
+  .sugestoes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .sug-btn{background:#dbeafe;border:none;border-radius:20px;padding:6px 14px;font-family:'Lato',sans-serif;color:#1a3a5c;font-size:12px;cursor:pointer}
+  .sug-btn:hover{background:#bfdbfe}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  @media(max-width:500px){.card{padding:24px 18px 18px}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+  <div class="slide-count" id="count"></div>
+  <div class="content" id="content"></div>
+  <div class="nav">
+    <button class="btn" id="prev" onclick="navegar(-1)">← Anterior</button>
+    <button class="btn" id="next" onclick="navegar(1)">Próximo →</button>
+  </div>
+</div>
+
+<script>
+let atual = 0;
+const TOTAL = 9;
+
+function navegar(dir){
+  atual = Math.max(0, Math.min(TOTAL-1, atual+dir));
+  renderizar();
+}
+
+function renderizar(){
+  const prog = document.getElementById('prog');
+  const count = document.getElementById('count');
+  const content = document.getElementById('content');
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+
+  prog.style.width = (atual/(TOTAL-1)*100)+'%';
+  count.textContent = (atual+1)+' / '+TOTAL;
+  prev.disabled = atual===0;
+  next.disabled = atual===TOTAL-1;
+
+  const fns = [slideCapa,slideDinamica,slideDados,slideCalculo,slideQuiz,slideJuros,slideOrcamento,slideIA,slideEncerramento];
+  content.innerHTML = '';
+  content.style.animation='none';
+  content.offsetHeight;
+  content.style.animation='fadeIn .4s ease';
+  fns[atual]();
+}
+
+// SLIDE 0 — CAPA
+function slideCapa(){
+  document.getElementById('content').innerHTML = `
+  <div class="capa-center">
+    <div style="font-size:68px;margin-bottom:14px">🌸</div>
+    <div style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2563a8;margin-bottom:14px">Licenciatura em Matemática · Projeto de Extensão</div>
+    <h1 style="font-size:clamp(26px,5vw,44px);margin-bottom:8px">Matemática do Dia a Dia</h1>
+    <h2 style="font-style:italic;font-weight:400;color:#2563a8;font-size:clamp(17px,3vw,26px);margin-bottom:24px">Educação Financeira para Mulheres</h2>
+    <div style="display:inline-block;background:#dbeafe;border-radius:12px;padding:10px 24px;color:#1a3a5c;font-weight:600;font-size:14px">Dia das Mães · 10 de maio de 2026</div>
+    <div class="tags-row">
+      <span class="tag">ODS 5 · Igualdade de Gênero</span>
+      <span class="tag">ODS 8 · Trabalho e Renda</span>
+    </div>
+  </div>`;
+}
+
+// SLIDE 1 — DINÂMICA
+function slideDinamica(){
+  const opcoes=[
+    {p:'Preocupação',e:'😟',bg:'#ffedd5',c:'#c2410c'},
+    {p:'Alívio',e:'😮‍💨',bg:'#dcfce7',c:'#166534'},
+    {p:'Sonho',e:'✨',bg:'#fef9c3',c:'#ca8a04'},
+    {p:'Sufoco',e:'😰',bg:'#fce7f3',c:'#9d174d'},
+    {p:'Esperança',e:'🌱',bg:'#dcfce7',c:'#166534'},
+    {p:'Confusão',e:'😵',bg:'#dbeafe',c:'#2563a8'},
+  ];
+  let html=`<span class="tag">Momento 1 · Abertura</span>
+  <h2>O que vem à sua cabeça quando você pensa em dinheiro?</h2>
+  <p class="sub">Escolha a palavra que mais combina com você agora:</p>
+  <div class="grid2">`;
+  opcoes.forEach((o,i)=>{
+    html+=`<div class="opcao-card" id="op${i}" onclick="escolherOpcao(${i},'${o.c}','${o.bg}','${o.p}')" style="cursor:pointer">
+      <div style="font-size:30px;margin-bottom:8px">${o.e}</div>
+      <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:14px;color:#1a3a5c">${o.p}</div>
+    </div>`;
+  });
+  html+=`</div><div id="feedback"></div>`;
+  document.getElementById('content').innerHTML=html;
+}
+function escolherOpcao(i,cor,bg,palavra){
+  document.querySelectorAll('.opcao-card').forEach(el=>{
+    el.style.background='white'; el.style.borderColor='#e2e8f0'; el.classList.remove('sel');
+  });
+  const el=document.getElementById('op'+i);
+  el.style.background=bg; el.style.borderColor=cor; el.style.color=cor; el.classList.add('sel');
+  document.getElementById('feedback').innerHTML=`
+  <div class="box box-blue" style="margin-top:16px;animation:fadeIn .4s">
+    💬 <b>"${palavra}"</b> — Obrigada por compartilhar! Essa relação é exatamente o que vamos transformar hoje.
+  </div>`;
+}
+
+// SLIDE 2 — DADOS
+function slideDados(){
+  const fatos=[
+    {e:'👩‍👧',t:'As mulheres gerenciam o orçamento de mais de 60% dos lares brasileiros',bg:'#dbeafe',c:'#1a3a5c'},
+    {e:'💸',t:'Mesmo assim, ganham em média 20% menos que os homens pelo mesmo trabalho',bg:'#ffedd5',c:'#c2410c'},
+    {e:'📚',t:'Apenas 35% das mulheres se sentem seguras tomando decisões financeiras',bg:'#fce7f3',c:'#9d174d'},
+    {e:'💡',t:'Educação financeira muda isso — e a matemática é a ferramenta!',bg:'#dcfce7',c:'#166534'},
+  ];
+  let html=`<span class="tag">Momento 1 · Por que estamos aqui?</span><h2>Você sabia?</h2>`;
+  fatos.forEach((f,i)=>{
+    html+=`<div class="fato" id="f${i}" style="background:${f.bg}">
+      <span style="font-size:28px;flex-shrink:0">${f.e}</span>
+      <p style="color:${f.c};font-weight:600;font-size:15px;line-height:1.5">${f.t}</p>
+    </div>`;
+  });
+  document.getElementById('content').innerHTML=html;
+  fatos.forEach((_,i)=>{
+    setTimeout(()=>document.getElementById('f'+i)?.classList.add('show'), i*650);
+  });
+}
+
+// SLIDE 3 — CALCULADORA
+function slideCalculo(){
+  document.getElementById('content').innerHTML=`
+  <span class="tag">Momento 2 · Matemática que você já usa</span>
+  <h2>Calculadora de Desconto</h2>
+  <p class="sub">Quanto você economiza com aquele desconto?</p>
+  <div class="grid2" style="margin-bottom:16px">
+    <div>
+      <label style="display:block;font-weight:700;color:#1a3a5c;margin-bottom:6px;font-size:13px">Preço original (R$)</label>
+      <input type="number" id="preco" placeholder="Ex: 80" oninput="calcDesc()"/>
+    </div>
+    <div>
+      <label style="display:block;font-weight:700;color:#1a3a5c;margin-bottom:6px;font-size:13px">Desconto (%)</label>
+      <input type="number" id="desc" placeholder="Ex: 30" oninput="calcDesc()"/>
+    </div>
+  </div>
+  <div id="res-desc"></div>
+  <div class="box box-blue" style="margin-top:14px">
+    <b>Como calcular:</b> Preço × Desconto ÷ 100 = valor do desconto. Preço − desconto = preço final.
+  </div>`;
+}
+function calcDesc(){
+  const p=parseFloat(document.getElementById('preco').value);
+  const d=parseFloat(document.getElementById('desc').value);
+  const el=document.getElementById('res-desc');
+  if(p&&d&&d<=100){
+    const eco=(p*d/100).toFixed(2);
+    const final=(p-p*d/100).toFixed(2);
+    el.innerHTML=`<div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div class="result" style="flex:1;background:#dcfce7">
+        <div style="font-size:12px;font-weight:700;color:#166534;margin-bottom:4px">VOCÊ PAGA</div>
+        <div class="result-val" style="color:#166534">R$ ${final}</div>
+      </div>
+      <div class="result" style="flex:1;background:#dbeafe">
+        <div style="font-size:12px;font-weight:700;color:#2563a8;margin-bottom:4px">VOCÊ ECONOMIZA</div>
+        <div class="result-val" style="color:#2563a8">R$ ${eco}</div>
+      </div>
+    </div>`;
+  } else el.innerHTML='';
+}
+
+// SLIDE 4 — QUIZ
+let quizRespondido=false;
+function slideQuiz(){
+  quizRespondido=false;
+  document.getElementById('content').innerHTML=`
+  <span class="tag">Momento 2 · Teste seus conhecimentos</span>
+  <h2>Quiz rápido! 🧠</h2>
+  <div class="box box-blue" style="margin-bottom:20px">
+    <p style="font-weight:600;font-size:15px;line-height:1.5;color:#1a3a5c">Uma TV custa R$ 1.200,00. A loja oferece 25% de desconto à vista. Qual o preço final?</p>
+  </div>
+  <div class="grid2">
+    <button class="quiz-btn" onclick="respQuiz(this,false)">R$ 975,00</button>
+    <button class="quiz-btn" onclick="respQuiz(this,true)">R$ 900,00</button>
+    <button class="quiz-btn" onclick="respQuiz(this,false)">R$ 850,00</button>
+    <button class="quiz-btn" onclick="respQuiz(this,false)">R$ 960,00</button>
+  </div>
+  <div id="quiz-fb"></div>`;
+}
+function respQuiz(btn,correta){
+  if(quizRespondido)return;
+  quizRespondido=true;
+  document.querySelectorAll('.quiz-btn').forEach(b=>b.style.pointerEvents='none');
+  btn.classList.add(correta?'correta':'errada');
+  document.querySelectorAll('.quiz-btn').forEach(b=>{
+    if(b.textContent.includes('900'))b.classList.add('correta');
+  });
+  document.getElementById('quiz-fb').innerHTML=`
+  <div class="box ${correta?'box-green':'box-orange'}" style="margin-top:16px;animation:fadeIn .4s;font-weight:700;color:${correta?'#166534':'#c2410c'}">
+    ${correta?'🎉 Muito bem!':'😊 Quase!'} 1.200 × 25 ÷ 100 = R$ 300 de desconto → 1.200 − 300 = <b>R$ 900,00</b> ✅
+  </div>`;
+}
+
+// SLIDE 5 — JUROS
+function slideJuros(){
+  document.getElementById('content').innerHTML=`
+  <span class="tag">Momento 3 · Armadilhas Financeiras</span>
+  <h2>O Perigo do Rotativo do Cartão</h2>
+  <p class="sub">Veja como a dívida cresce com juros compostos de 15% ao mês</p>
+  <label style="font-weight:700;color:#1a3a5c;font-size:13px">
+    Valor inicial: <b id="val-label" style="color:#c2410c">R$ 1.000</b>
+  </label>
+  <input type="range" min="100" max="5000" step="100" value="1000" id="divida-range" oninput="atualizarJuros()"/>
+  <div class="bars" id="bars"></div>
+  <div id="juros-res"></div>`;
+  atualizarJuros();
+}
+function atualizarJuros(){
+  const v=parseInt(document.getElementById('divida-range').value);
+  document.getElementById('val-label').textContent='R$ '+v.toLocaleString('pt-BR');
+  const meses=[0,1,2,3,4,5,6];
+  const vals=meses.map(m=>+(v*Math.pow(1.15,m)).toFixed(2));
+  const max=vals[6];
+  let barsHtml='';
+  meses.forEach((m,i)=>{
+    const h=Math.max(8,(vals[i]/max)*130);
+    barsHtml+=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px">
+      <div class="bar-val">R$${(vals[i]/1000).toFixed(1)}k</div>
+      <div class="bar" style="height:${h}px;width:100%"></div>
+      <div class="bar-label">${m}m</div>
+    </div>`;
+  });
+  document.getElementById('bars').innerHTML=barsHtml;
+  document.getElementById('juros-res').innerHTML=`
+  <div class="box box-orange" style="border-left:4px solid #c2410c;font-weight:700;color:#c2410c">
+    ⚠️ R$ ${v.toLocaleString('pt-BR')} no rotativo → em 6 meses: <b>R$ ${max.toLocaleString('pt-BR',{minimumFractionDigits:2})}</b>
+    — a dívida ${(max/v).toFixed(1)}x maior!
+  </div>`;
+}
+
+// SLIDE 6 — ORÇAMENTO
+function slideOrcamento(){
+  document.getElementById('content').innerHTML=`
+  <span class="tag">Momento 4 · Monte seu Orçamento</span>
+  <h2>Seu Orçamento Agora</h2>
+  <p class="sub">Preencha os campos e veja seu saldo:</p>
+  <div class="box box-green" style="margin-bottom:10px">
+    <label style="display:block;font-weight:700;color:#166534;margin-bottom:6px;font-size:14px">💰 Tudo que entra no mês (R$)</label>
+    <input type="number" id="renda" placeholder="Salário, bicos, pensão..." oninput="calcOrc()"/>
+  </div>
+  <div class="box box-blue" style="margin-bottom:10px">
+    <label style="display:block;font-weight:700;color:#1a3a5c;margin-bottom:6px;font-size:14px">🏠 Despesas fixas (R$)</label>
+    <input type="number" id="fixas" placeholder="Aluguel, água, luz, escola..." oninput="calcOrc()"/>
+  </div>
+  <div class="box box-yellow" style="margin-bottom:14px">
+    <label style="display:block;font-weight:700;color:#ca8a04;margin-bottom:6px;font-size:14px">🛒 Despesas variáveis (R$)</label>
+    <input type="number" id="vars" placeholder="Mercado, transporte..." oninput="calcOrc()"/>
+  </div>
+  <div id="res-orc"></div>`;
+}
+function calcOrc(){
+  const r=parseFloat(document.getElementById('renda').value)||0;
+  const f=parseFloat(document.getElementById('fixas').value)||0;
+  const v=parseFloat(document.getElementById('vars').value)||0;
+  if(!r&&!f&&!v)return;
+  const saldo=r-f-v;
+  const ok=saldo>=0;
+  document.getElementById('res-orc').innerHTML=`
+  <div class="result ${ok?'box-green':'box-orange'}">
+    <div style="font-size:12px;font-weight:700;color:${ok?'#166534':'#c2410c'};margin-bottom:4px">${ok?'✅ SOBRA POR MÊS':'⚠️ FALTA POR MÊS'}</div>
+    <div class="result-val" style="color:${ok?'#166534':'#c2410c'}">R$ ${Math.abs(saldo).toFixed(2).replace('.',',')}</div>
+    <p style="font-size:13px;color:${ok?'#166534':'#c2410c'};margin-top:8px">
+      ${ok?`Guarde pelo menos <b>R$ ${(saldo*.3).toFixed(2)}</b> como reserva de emergência!`:'Hora de revisar as despesas variáveis e buscar alternativas.'}
+    </p>
+  </div>`;
+}
+
+// SLIDE 7 — IA
+let historico=[];
+function slideIA(){
+  historico=[];
+  const sugs=['Como começar a economizar com pouco?','O que é reserva de emergência?','Como fugir das dívidas do cartão?','Como explicar juros para minha filha?'];
+  let sugHtml='';
+  sugs.forEach(s=>{
+    sugHtml+=`<button class="sug-btn" onclick="usarSugestao('${s}')">${s}</button>`;
+  });
+  document.getElementById('content').innerHTML=`
+  <span class="tag">Momento 5 · Tire suas Dúvidas</span>
+  <h2>Pergunte à Assistente Financeira 💬</h2>
+  <p class="sub" style="margin-bottom:10px">Powered by IA · Educação financeira para mulheres</p>
+  <div class="sugestoes">${sugHtml}</div>
+  <div class="chat-box" id="chat-box">
+    <div class="msg msg-ai">Olá! 🌸 Estou aqui para tirar suas dúvidas sobre educação financeira. O que você quer saber?</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" id="chat-input" placeholder="Digite sua dúvida..." onkeydown="if(event.key==='Enter')enviarChat()"/>
+    <button class="send-btn" id="send-btn" onclick="enviarChat()">Enviar →</button>
+  </div>`;
+}
+function usarSugestao(s){
+  document.getElementById('chat-input').value=s;
+  enviarChat();
+}
+async function enviarChat(){
+  const input=document.getElementById('chat-input');
+  const msg=input.value.trim();
+  if(!msg)return;
+  input.value='';
+  document.getElementById('send-btn').disabled=true;
+  adicionarMsg(msg,'user');
+  historico.push({role:'user',content:msg});
+  adicionarMsg('Pensando... ✨','ai','typing');
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:`Você é uma assistente especialista em educação financeira para mulheres brasileiras. 
+Está numa palestra de extensão universitária de Licenciatura em Matemática no Dia das Mães.
+Responda de forma acolhedora, simples e prática, com exemplos do cotidiano.
+Sem jargões. Máximo 3 parágrafos curtos. Use emojis com moderação.
+Foco em: porcentagem, juros, orçamento, reserva de emergência, armadilhas financeiras.`,
+        messages:historico,
+      })
+    });
+    const data=await res.json();
+    const texto=data.content?.map(b=>b.text||'').join('')||'Desculpe, não consegui responder agora.';
+    document.getElementById('typing')?.remove();
+    adicionarMsg(texto,'ai');
+    historico.push({role:'assistant',content:texto});
+  }catch{
+    document.getElementById('typing')?.remove();
+    adicionarMsg('Ops! Erro de conexão. Tente novamente.','ai');
+  }
+  document.getElementById('send-btn').disabled=false;
+  input.focus();
+}
+function adicionarMsg(texto,tipo,id){
+  const box=document.getElementById('chat-box');
+  const div=document.createElement('div');
+  div.className='msg msg-'+tipo;
+  if(id)div.id=id;
+  div.textContent=texto;
+  box.appendChild(div);
+  box.scrollTop=box.scrollHeight;
+}
+
+// SLIDE 8 — ENCERRAMENTO
+function slideEncerramento(){
+  const resumo=[
+    {t:'Porcentagem é simples: parte de 100 🔢',bg:'#dbeafe',c:'#1a3a5c'},
+    {t:'Juros compostos crescem rápido — cuidado com o rotativo! ⚠️',bg:'#ffedd5',c:'#c2410c'},
+    {t:'Orçamento honesto é o primeiro passo 📊',bg:'#dcfce7',c:'#166534'},
+    {t:'Reserva de emergência: comece pequeno, comece já! 🌱',bg:'#fef9c3',c:'#ca8a04'},
+  ];
+  let html=`<div style="text-align:center;margin-bottom:20px">
+    <div style="font-size:52px;margin-bottom:10px">🌸</div>
+    <span class="tag">Encerramento</span>
+    <h2 style="margin-top:12px">Você já sabia de muito isso!</h2>
+    <p class="sub">Hoje a gente só colocou em números o que você já fazia na prática.</p>
+  </div>`;
+  resumo.forEach(r=>{
+    html+=`<div class="encerramento-item" style="background:${r.bg};color:${r.c}">${r.t}</div>`;
+  });
+  html+=`<div class="enc-banner">
+    <p style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;line-height:1.5">
+      Feliz Dia das Mães! 🌸<br>Que esse conhecimento seja mais um presente que fica com vocês para sempre.
+    </p>
+  </div>`;
+  document.getElementById('content').innerHTML=html;
+}
+
+renderizar();
+</script>
+</body>
+</html>
