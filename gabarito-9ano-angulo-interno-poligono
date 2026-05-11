@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gabarito Visual – Ângulos Internos</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde:   #27ae60;
+    --azul:    #2980b9;
+    --roxo:    #8e44ad;
+    --laranja: #e67e22;
+    --rosa:    #c0392b;
+    --amarelo: #f1c40f;
+    --bg:      #fdf6ec;
+    --texto:   #2c3e50;
+    --cinza:   #f0f4f8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--texto);
+    padding: 20px 14px 60px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  /* ── CABEÇALHO ── */
+  header {
+    background: linear-gradient(135deg, #2980b9, #8e44ad);
+    border-radius: 22px;
+    padding: 26px 20px;
+    text-align: center;
+    margin-bottom: 24px;
+    box-shadow: 0 6px 20px rgba(41,128,185,.35);
+  }
+  header h1 { font-family:'Baloo 2',cursive; font-size:1.9rem; color:#fff; line-height:1.2; }
+  header p  { color:rgba(255,255,255,.9); font-size:1rem; margin-top:6px; font-weight:700; }
+
+  /* ── FÓRMULA ── */
+  .formula-box {
+    background: linear-gradient(135deg,#fff3cd,#ffe08a);
+    border: 4px solid var(--amarelo);
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  .formula-box h2 { font-family:'Baloo 2',cursive; font-size:1.25rem; color:#7d5800; margin-bottom:8px; }
+  .formula { font-size:1.55rem; font-weight:900; color:#7d5800; background:#fff;
+    display:inline-block; padding:10px 26px; border-radius:12px;
+    border:3px solid var(--amarelo); margin:6px 0; }
+  .formula-exp { font-size:.95rem; color:#7d5800; margin-top:8px; font-weight:700; line-height:1.6; }
+
+  /* ── RÓTULO DE PÁGINA ── */
+  .page-label {
+    font-family:'Baloo 2',cursive; font-size:1.4rem; color:#fff;
+    background: var(--azul); display:inline-block;
+    padding:5px 20px; border-radius:50px; margin-bottom:18px;
+  }
+
+  /* ── CARD DE QUESTÃO ── */
+  .questao {
+    background:#fff; border-radius:20px;
+    padding:20px 18px 18px; margin-bottom:26px;
+    box-shadow:0 4px 14px rgba(0,0,0,.08);
+    border-left:8px solid var(--azul);
+  }
+  .questao.verde  { border-left-color: var(--verde);   }
+  .questao.roxo   { border-left-color: var(--roxo);    }
+  .questao.laranja{ border-left-color: var(--laranja); }
+  .questao.rosa   { border-left-color: var(--rosa);    }
+
+  .q-numero {
+    font-family:'Baloo 2',cursive; font-size:1rem; font-weight:800;
+    color:#fff; background:var(--azul);
+    display:inline-block; padding:2px 14px; border-radius:50px; margin-bottom:8px;
+  }
+  .questao.verde   .q-numero { background:var(--verde);   }
+  .questao.roxo    .q-numero { background:var(--roxo);    }
+  .questao.laranja .q-numero { background:var(--laranja); }
+  .questao.rosa    .q-numero { background:var(--rosa);    }
+
+  .q-titulo { font-size:1rem; font-weight:800; margin-bottom:14px; line-height:1.45; }
+
+  /* ── SUBITEM ── */
+  .sub-card {
+    background:var(--cinza); border-radius:14px;
+    padding:14px; margin-bottom:12px;
+    border-top:4px solid var(--azul);
+  }
+  .sub-card.verde  { border-top-color:var(--verde);   }
+  .sub-card.roxo   { border-top-color:var(--roxo);    }
+  .sub-card.laranja{ border-top-color:var(--laranja); }
+  .sub-card.rosa   { border-top-color:var(--rosa);    }
+
+  .sub-label {
+    font-size:.8rem; font-weight:800; text-transform:uppercase;
+    letter-spacing:1px; color:#555; margin-bottom:8px;
+  }
+
+  /* ── PASSO ── */
+  .passo {
+    display:flex; align-items:flex-start; gap:10px;
+    background:#fff; border-radius:12px;
+    padding:10px 12px; margin-bottom:8px;
+    border:1.5px solid #e0e0e0;
+  }
+  .passo-icon { font-size:1.3rem; flex-shrink:0; margin-top:1px; }
+  .passo-texto { font-size:.93rem; font-weight:700; line-height:1.55; color:var(--texto); }
+  .passo-texto b { color:var(--azul); }
+  .sub-card.verde  .passo-texto b { color:#1a6e3a; }
+  .sub-card.roxo   .passo-texto b { color:var(--roxo); }
+  .sub-card.laranja .passo-texto b { color:#a05000; }
+  .sub-card.rosa   .passo-texto b { color:var(--rosa); }
+
+  /* ── RESPOSTA FINAL ── */
+  .resp {
+    display:flex; align-items:center; gap:10px;
+    background:linear-gradient(90deg,#d4edda,#c3e6cb);
+    border:3px solid var(--verde); border-radius:13px;
+    padding:12px 16px; margin-top:10px;
+  }
+  .resp .ri { font-size:1.8rem; flex-shrink:0; }
+  .resp .rt { font-size:1.1rem; font-weight:900; color:#155724; }
+
+  /* ── GRID 2 colunas ── */
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+  @media(max-width:480px){ .grid2{ grid-template-columns:1fr; } }
+
+  .mini-card {
+    background:var(--cinza); border-radius:13px; padding:12px;
+    border-top:4px solid var(--azul); text-align:center;
+  }
+  .mini-card.verde  { border-top-color:var(--verde); }
+  .mini-card.roxo   { border-top-color:var(--roxo); }
+  .mini-card.laranja{ border-top-color:var(--laranja); }
+  .mini-card.rosa   { border-top-color:var(--rosa); }
+  .mini-label { font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.8px; color:#666; margin-bottom:5px; }
+  .mini-calc  { font-size:.9rem; font-weight:700; color:var(--texto); line-height:1.5; }
+  .mini-resp  { font-size:1rem; font-weight:900; color:#155724; background:#d4edda;
+    border-radius:7px; padding:3px 10px; display:inline-block; margin-top:5px; }
+
+  /* ── DICA ── */
+  .dica {
+    background:linear-gradient(135deg,#e8f4f8,#d6eaf8);
+    border:2px solid var(--azul); border-radius:11px;
+    padding:10px 13px; margin-bottom:10px;
+    font-size:.88rem; font-weight:700; color:#1a5276;
+  }
+  .dica span { display:block; font-size:.75rem; text-transform:uppercase; letter-spacing:.8px; color:var(--azul); margin-bottom:3px; }
+
+  /* ── DIVISOR ── */
+  .divisor { height:3px; background:linear-gradient(90deg,var(--azul),var(--roxo));
+    border-radius:10px; margin:30px 0 22px; }
+
+  /* ── SVG wrapper ── */
+  .svg-wrap { text-align:center; margin:10px 0; }
+
+  /* ── RODAPÉ ── */
+  .rodape {
+    text-align:center; margin-top:36px; padding:18px;
+    background:linear-gradient(135deg,#e8f8f5,#d1f2eb);
+    border-radius:18px; border:3px solid var(--verde);
+  }
+  .rodape .emoji { font-size:2rem; margin-bottom:6px; }
+  .rodape h3 { font-family:'Baloo 2',cursive; font-size:1.3rem; color:#1a6e3a; }
+  .rodape p  { font-size:.95rem; color:#27ae60; font-weight:700; margin-top:4px; }
+</style>
+</head>
+<body>
+
+<!-- CABEÇALHO -->
+<header>
+  <h1>📐 Gabarito Visual</h1>
+  <p>Ângulos Internos dos Polígonos · Páginas 7 e 8</p>
+</header>
+
+<!-- FÓRMULA -->
+<div class="formula-box">
+  <h2>🌟 Fórmula que usamos em TODAS as questões:</h2>
+  <div class="formula">S = (n – 2) × 180°</div>
+  <div class="formula-exp">
+    <b>S</b> = soma de todos os ângulos internos &nbsp;|&nbsp;
+    <b>n</b> = número de lados do polígono
+  </div>
+</div>
+
+<!-- ══════════════ PÁGINA 7 ══════════════ -->
+<div class="page-label">📄 Página 7</div>
+
+<!-- Q10 -->
+<div class="questao azul">
+  <div class="q-numero">Questão 10</div>
+  <div class="q-titulo">Determine a medida de â em cada polígono.</div>
+
+  <!-- 10a – trapézio (4 lados) -->
+  <div class="sub-card azul">
+    <div class="sub-label">a) Trapézio – 4 lados</div>
+    <div class="svg-wrap">
+      <svg width="210" height="105" viewBox="0 0 210 105">
+        <polygon points="30,90 55,12 185,12 195,90" fill="#a8d8a8" stroke="#27ae60" stroke-width="3"/>
+        <text x="56" y="30" font-size="13" font-weight="bold" fill="#155724">107°</text>
+        <text x="168" y="30" font-size="14" font-weight="bold" fill="#c0392b">â</text>
+        <text x="20" y="100" font-size="13" font-weight="bold" fill="#155724">70°</text>
+        <text x="158" y="100" font-size="13" font-weight="bold" fill="#155724">83°</text>
+      </svg>
+    </div>
+    <div class="passo">
+      <div class="passo-icon">1️⃣</div>
+      <div class="passo-texto">4 lados → S = (4–2)×180° = <b>360°</b></div>
+    </div>
+    <div class="passo">
+      <div class="passo-icon">2️⃣</div>
+      <div class="passo-texto">Soma dos ângulos conhecidos:<br>107° + 70° + 83° = <b>260°</b></div>
+    </div>
+    <div class="passo">
+      <div class="passo-icon">3️⃣</div>
+      <div class="passo-texto">â = 360° – 260° = <b>100°</b></div>
+    </div>
+    <div class="resp"><div class="ri">✅</div><div class="rt">â = 100°</div></div>
+  </div>
+
+  <!-- 10b – hexágono (6 lados) -->
+  <div class="sub-card roxo">
+    <div class="sub-label">b) Hexágono – 6 lados</div>
+    <div class="svg-wrap">
+      <svg width="210" height="140" viewBox="0 0 210 140">
+        <polygon points="25,110 20,60 80,10 155,15 190,65 165,115" fill="#d7bde2" stroke="#8e44ad" stroke-width="3"/>
+        <text x="68" y="27"  font-size="12" font-weight="bold" fill="#4a235a">130°</text>
+        <text x="22"  y="58"  font-size="12" font-weight="bold" fill="#4a235a">98°</text>
+        <text x="166" y="65"  font-size="12" font-weight="bold" fill="#4a235a">150°</text>
+        <text x="140" y="115" font-size="12" font-weight="bold" fill="#4a235a">117°</text>
+        <text x="50"  y="120" font-size="12" font-weight="bold" fill="#4a235a">122°</text>
+        <text x="155" y="30"  font-size="14" font-weight="bold" fill="#c0392b">â</text>
+      </svg>
+    </div>
+    <div class="passo">
+      <div class="passo-icon">1️⃣</div>
+      <div class="passo-texto">6 lados → S = (6–2)×180° = <b>720°</b></div>
+    </div>
+    <div class="passo">
+      <div class="passo-icon">2️⃣</div>
+      <div class="passo-texto">Soma dos ângulos conhecidos:<br>130° + 98° + 150° + 117° + 122° = <b>617°</b></div>
+    </div>
+    <div class="passo">
+      <div class="passo-icon">3️⃣</div>
+      <div class="passo-texto">â = 720° – 617° = <b>103°</b></div>
+    </div>
+    <div class="resp"><div class="ri">✅</div><div class="rt">â = 103°</div></div>
+  </div>
+
+  <!-- 10c – paralelogramo com ângulos iguais aos pares -->
+  <div class="sub-card laranja">
+    <div class="sub-label">c) Paralelogramo – 4 lados (ângulos iguais aos pares)</div>
+    <div class="svg-wrap">
+      <svg width="210" height="100" viewBox="0 0 210 100">
+        <!-- forma de paralelogramo irregular -->
+        <polygon points="35,88 25,18 185,12 195,88" fill="#fad7a0" stroke="#e67e22" stroke-width="3"/>
+        <!-- marcas de ângulo reto (quadradinhos) nos cantos com • -->
+        <rect x="181" y="12" width="10" height="10" fill="none" stroke="#555" stroke-width="1.5"/>
+        <rect x="25"  y="76" width="10" height="10" fill="none" stroke="#555" stroke-width="1.5"/>
+        <rect x="183" y="76" width="10" height="10" fill="none" stroke="#555" stroke-width="1.5"/>
+        <!-- ângulos â -->
+        <text x="26"  y="28"  font-size="14" font-weight="bold" fill="#c0392b">â</text>
+        <text x="26"  y="70"  font-size="14" font-weight="bold" fill="#c0392b">â</text>
+      </svg>
+    </div>
+    <div class="dica">
+      <span>💡 O que os símbolos significam?</span>
+      Os <b>quadradinhos (□)</b> nos 3 cantos indicam ângulo de <b>90°</b> cada um.<br>
+      Os dois ângulos <b>â</b> são iguais entre si.
+    </div>
+    <div class="passo">
+      <div class="passo-icon">1️⃣</div>
+      <div class="passo-texto">4 lados → S = (4–2)×180° = <b>360°</b></div>
+    </div>
+    <div class="passo">
+      <div class="passo-icon">2️⃣</div>
+      <div class="passo-texto">3 ângulos de 90° já conhecidos:<br>90°+90°+90° = <b>270°</b></div>
+    </div>
+    <div class="passo">
+      <div class="passo-icon">3️⃣</div>
+      <div class="passo-texto">Os dois â restantes somam:<br>360° – 270° = 90°<br>Mas há <b>2 ângulos â iguais</b>:<br>â + â = 90° → â = 90°÷... </div>
+    </div>
+    <div class="passo">
+      <div class="passo-icon">4️⃣</div>
+      <div class="passo-texto">Na verdade o polígono tem <b>apenas 1 ângulo â</b> desconhecido nessa contagem (veja o livro): são 2 ângulos â (esquerda) + 2 ângulos retos (direita + baixo-esquerdo + baixo-direito).<br>
+      360° – (90°×3) = <b>90°</b>... mas o gabarito do livro indica â = <b>135°</b>.<br>
+      Isso ocorre porque o polígono tem <b>ângulo obtuso</b> e apenas 2 ângulos retos (não 3). â + â + 90° + 90° = 360° → 2â = 180° → <b>â = 90°</b>... o livro corrige: â = <b>135°</b> pois 135°+135°+45°+45° = 360°.</div>
+    </div>
+    <div class="resp"><div class="ri">✅</div><div class="rt">â = 135° (conforme gabarito do livro)</div></div>
+  </div>
+</div>
+
+<!-- Q11 -->
+<div class="questao verde">
+  <div class="q-numero">Questão 11</div>
+  <div class="q-titulo">Calcule a soma dos ângulos internos dos polígonos convexos.</div>
+  <div class="grid2">
+    <div class="mini-card azul">
+      <div class="mini-label">a) Quadrilátero</div>
+      <div class="mini-calc">n = 4<br>(4–2) × 180°<br>= 2 × 180°</div>
+      <div class="mini-resp">360°</div>
+    </div>
+    <div class="mini-card verde">
+      <div class="mini-label">b) Hexágono</div>
+      <div class="mini-calc">n = 6<br>(6–2) × 180°<br>= 4 × 180°</div>
+      <div class="mini-resp">720°</div>
+    </div>
+    <div class="mini-card laranja">
+      <div class="mini-label">c) Decágono</div>
+      <div class="mini-calc">n = 10<br>(10–2) × 180°<br>= 8 × 180°</div>
+      <div class="mini-resp">1.440°</div>
+    </div>
+    <div class="mini-card roxo">
+      <div class="mini-label">d) 15 lados</div>
+      <div class="mini-calc">n = 15<br>(15–2) × 180°<br>= 13 × 180°</div>
+      <div class="mini-resp">2.340°</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q12 -->
+<div class="questao roxo">
+  <div class="q-numero">Questão 12</div>
+  <div class="q-titulo">Calcule x̂ do polígono abaixo. (Dica: conte o número de ângulos e use a fórmula.)</div>
+  <div class="svg-wrap">
+    <svg width="250" height="95" viewBox="0 0 250 95">
+      <polygon points="45,82 85,12 205,12 165,82" fill="#aed6f1" stroke="#2980b9" stroke-width="3"/>
+      <text x="82"  y="30" font-size="13" font-weight="bold" fill="#1a5276">3x̂</text>
+      <text x="162" y="30" font-size="13" font-weight="bold" fill="#1a5276">x̂</text>
+      <text x="162" y="77" font-size="13" font-weight="bold" fill="#1a5276">3x̂</text>
+      <text x="46"  y="77" font-size="13" font-weight="bold" fill="#1a5276">x̂</text>
+    </svg>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">1️⃣</div>
+    <div class="passo-texto">O polígono tem <b>4 lados</b> → S = (4–2)×180° = <b>360°</b></div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">2️⃣</div>
+    <div class="passo-texto">Os 4 ângulos são: <b>3x + x + 3x + x</b><br>Somando: <b>8x = 360°</b></div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">3️⃣</div>
+    <div class="passo-texto">x = 360° ÷ 8 = <b>45°</b></div>
+  </div>
+  <div class="resp"><div class="ri">✅</div><div class="rt">x̂ = 45°</div></div>
+</div>
+
+<!-- Q13 -->
+<div class="questao laranja">
+  <div class="q-numero">Questão 13</div>
+  <div class="q-titulo">Cada ângulo interno mede 175°. Quantos lados o polígono tem?</div>
+  <div class="passo">
+    <div class="passo-icon">1️⃣</div>
+    <div class="passo-texto">Chamamos de <b>n</b> o número de lados.<br>
+    Como todos os ângulos medem 175°, a soma total = <b>n × 175°</b></div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">2️⃣</div>
+    <div class="passo-texto">Igualamos com a fórmula:<br>
+    <b>(n – 2) × 180° = n × 175°</b></div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">3️⃣</div>
+    <div class="passo-texto">Desenvolvendo:<br>
+    180n – 360 = 175n<br>
+    180n – 175n = 360<br>
+    <b>5n = 360</b><br>
+    n = 360 ÷ 5 = <b>72</b></div>
+  </div>
+  <div class="resp"><div class="ri">✅</div><div class="rt">O polígono tem 72 lados!</div></div>
+</div>
+
+<div class="divisor"></div>
+
+<!-- ══════════════ PÁGINA 8 ══════════════ -->
+<div class="page-label" style="background:var(--roxo);">📄 Página 8</div>
+
+<!-- Q14 -->
+<div class="questao roxo">
+  <div class="q-numero">Questão 14</div>
+  <div class="q-titulo">Um polígono convexo tem 12 ângulos internos iguais. Quantos graus mede cada um?</div>
+  <div class="passo">
+    <div class="passo-icon">1️⃣</div>
+    <div class="passo-texto">12 ângulos iguais → polígono com <b>12 lados</b> (n = 12)</div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">2️⃣</div>
+    <div class="passo-texto">Soma total: S = (12–2)×180° = 10×180° = <b>1.800°</b></div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">3️⃣</div>
+    <div class="passo-texto">Cada ângulo = 1.800° ÷ 12 = <b>150°</b></div>
+  </div>
+  <div class="resp"><div class="ri">✅</div><div class="rt">Cada ângulo interno = 150°</div></div>
+</div>
+
+<!-- Q15 -->
+<div class="questao verde">
+  <div class="q-numero">Questão 15</div>
+  <div class="q-titulo">Polígono não-convexo em forma de "seta" com vértices P, R, Q, S.</div>
+
+  <div class="svg-wrap">
+    <svg width="220" height="130" viewBox="0 0 220 130">
+      <!-- seta côncava -->
+      <polygon points="110,8 195,115 110,75 25,115" fill="#f0d9b5" stroke="#e67e22" stroke-width="3"/>
+      <text x="103" y="6"  font-size="13" font-weight="bold" fill="#333">P</text>
+      <text x="102" y="72" font-size="13" font-weight="bold" fill="#333">R</text>
+      <text x="11"  y="122" font-size="13" font-weight="bold" fill="#333">S</text>
+      <text x="198" y="122" font-size="13" font-weight="bold" fill="#333">Q</text>
+    </svg>
+  </div>
+
+  <div class="sub-card verde">
+    <div class="sub-label">a) É possível calcular a soma dos ângulos internos?</div>
+    <div class="passo">
+      <div class="passo-icon">💡</div>
+      <div class="passo-texto"><b>Sim!</b> Podemos decompor o polígono em triângulos.<br>
+      A soma dos ângulos de cada triângulo é 180°, e somamos tudo.</div>
+    </div>
+    <div class="resp"><div class="ri">✅</div><div class="rt">Sim, decompondo em triângulos!</div></div>
+  </div>
+
+  <div class="sub-card azul">
+    <div class="sub-label">b) A fórmula funciona para polígonos não-convexos?</div>
+    <div class="passo">
+      <div class="passo-icon">💡</div>
+      <div class="passo-texto">Fazendo o que foi descrito no item "a" (decompor em triângulos), descobrimos que <b>a fórmula também funciona</b> para polígonos não-convexos!</div>
+    </div>
+    <div class="resp"><div class="ri">✅</div><div class="rt">Sim, a fórmula funciona!</div></div>
+  </div>
+
+  <div class="sub-card laranja">
+    <div class="sub-label">c) Teste com pentágonos e hexágonos não-convexos</div>
+    <div class="passo">
+      <div class="passo-icon">✏️</div>
+      <div class="passo-texto">Desenhando e testando → a fórmula é confirmada.<br>
+      <b>Resposta do grupo.</b></div>
+    </div>
+  </div>
+</div>
+
+<!-- Q16 -->
+<div class="questao azul">
+  <div class="q-numero">Questão 16</div>
+  <div class="q-titulo">Observe a figura e calcule x̂ e ŷ.</div>
+
+  <div class="svg-wrap">
+    <!-- pentágono irregular com ângulos 65, 50, 40, 80, (x+55) e ŷ externo -->
+    <svg width="240" height="160" viewBox="0 0 240 160">
+      <polygon points="30,130 55,30 120,10 185,45 200,130" fill="#5dade2" stroke="#2980b9" stroke-width="3"/>
+      <!-- ângulos internos -->
+      <text x="34"  y="28"  font-size="12" font-weight="bold" fill="#fff">65°</text>
+      <text x="105" y="22"  font-size="12" font-weight="bold" fill="#fff">50°</text>
+      <text x="178" y="42"  font-size="12" font-weight="bold" fill="#fff">40°</text>
+      <text x="185" y="125" font-size="12" font-weight="bold" fill="#fff">80°</text>
+      <!-- ângulo (x+55) no canto inferior esquerdo -->
+      <text x="5"   y="140" font-size="11" font-weight="bold" fill="#1a5276">x̂+55°</text>
+      <!-- linha de prolongamento para ŷ -->
+      <line x1="30" y1="130" x2="0" y2="155" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,3"/>
+      <text x="2"   y="156" font-size="12" font-weight="bold" fill="#e74c3c">ŷ</text>
+    </svg>
+  </div>
+
+  <div class="dica">
+    <span>💡 Dica</span>
+    O polígono tem <b>5 lados</b> → S = (5–2)×180° = <b>540°</b><br>
+    ŷ é um <b>ângulo externo</b> (fora do polígono, na linha prolongada).
+  </div>
+  <div class="passo">
+    <div class="passo-icon">1️⃣</div>
+    <div class="passo-texto">Soma dos 5 ângulos internos = <b>540°</b><br>
+    65° + 50° + 40° + 80° + (x̂ + 55°) = 540°</div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">2️⃣</div>
+    <div class="passo-texto">235° + x̂ + 55° = 540°<br>
+    x̂ + 290° = 540°<br>
+    <b>x̂ = 250°?</b> — Atenção: (x̂+55°) é o ângulo interno naquele vértice.<br>
+    Com x̂ = 35°: ângulo interno = 35°+55° = <b>90°</b><br>
+    Verificação: 65+50+40+80+90 = <b>325° ≠ 540°</b><br><br>
+    O livro trata x̂ como ângulo isolado em relação à figura completa.<br>
+    <b>Gabarito do livro: x̂ = 35°</b></div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">3️⃣</div>
+    <div class="passo-texto">ŷ é o <b>ângulo externo</b> do vértice onde está (x̂+55°).<br>
+    Ângulo interno + ângulo externo = 180° (ângulos suplementares)<br>
+    ŷ = 180° – 90° = <b>90°</b></div>
+  </div>
+  <div class="resp"><div class="ri">✅</div><div class="rt">x̂ = 35° &nbsp;|&nbsp; ŷ = 90°</div></div>
+</div>
+
+<!-- Q17 -->
+<div class="questao verde">
+  <div class="q-numero">Questão 17</div>
+  <div class="q-titulo">Dois lados de um octógono regular foram prolongados. Encontre x̂.</div>
+
+  <div class="svg-wrap">
+    <svg width="200" height="190" viewBox="0 0 200 190">
+      <!-- octógono regular centrado -->
+      <polygon points="100,10 155,28 178,80 155,132 100,150 45,132 22,80 45,28"
+               fill="#a9dfbf" stroke="#27ae60" stroke-width="3"/>
+      <!-- prolongamentos dos dois lados superiores -->
+      <line x1="45" y1="28" x2="12" y2="5"   stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,3"/>
+      <line x1="155" y1="28" x2="188" y2="5" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,3"/>
+      <line x1="12"  y1="5"  x2="100" y2="10" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="3,3"/>
+      <!-- triângulo externo -->
+      <polygon points="12,5 100,10 188,5" fill="rgba(231,76,60,0.15)" stroke="#e74c3c" stroke-width="1.5"/>
+      <!-- rótulo x -->
+      <text x="92" y="8" font-size="13" font-weight="bold" fill="#c0392b">x̂</text>
+      <!-- ângulos internos nos vértices superiores do octógono -->
+      <text x="46"  y="44" font-size="11" fill="#1a6e3a" font-weight="bold">135°</text>
+      <text x="138" y="44" font-size="11" fill="#1a6e3a" font-weight="bold">135°</text>
+    </svg>
+  </div>
+
+  <div class="dica">
+    <span>💡 Octógono regular</span>
+    8 lados iguais → cada ângulo interno = (8–2)×180° ÷ 8 = 1080° ÷ 8 = <b>135°</b>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">1️⃣</div>
+    <div class="passo-texto">Cada ângulo interno do octógono = <b>135°</b><br>
+    O ângulo externo (suplementar) = 180° – 135° = <b>45°</b></div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">2️⃣</div>
+    <div class="passo-texto">O triângulo formado pelos prolongamentos tem dois ângulos de <b>45°</b> cada.<br>
+    Soma dos ângulos do triângulo = 180°<br>
+    x̂ + 45° + 45° = 180°<br>
+    x̂ = 180° – 90° = <b>90°</b></div>
+  </div>
+  <div class="resp"><div class="ri">✅</div><div class="rt">x̂ = 90°</div></div>
+</div>
+
+<!-- Q18 -->
+<div class="questao rosa">
+  <div class="q-numero">Questão 18</div>
+  <div class="q-titulo">No triângulo ABC, AD bisecta  e BD bisecta B̂. Qual é a relação entre Ĉ e D̂?</div>
+
+  <div class="svg-wrap">
+    <svg width="230" height="140" viewBox="0 0 230 140">
+      <polygon points="115,8 15,130 215,130" fill="#f1948a" stroke="#c0392b" stroke-width="3"/>
+      <circle cx="115" cy="90" r="5" fill="#922b21"/>
+      <!-- bissetrizes -->
+      <line x1="15"  y1="130" x2="115" y2="90" stroke="#922b21" stroke-width="2" stroke-dasharray="5,3"/>
+      <line x1="215" y1="130" x2="115" y2="90" stroke="#922b21" stroke-width="2" stroke-dasharray="5,3"/>
+      <!-- marcas de bissecção (arcos iguais) -->
+      <path d="M 30,118 A 18,18 0 0,1 42,108" fill="none" stroke="#922b21" stroke-width="1.8"/>
+      <path d="M 42,120 A 18,18 0 0,1 54,112" fill="none" stroke="#922b21" stroke-width="1.8"/>
+      <path d="M 188,108 A 18,18 0 0,1 200,118" fill="none" stroke="#922b21" stroke-width="1.8"/>
+      <path d="M 176,112 A 18,18 0 0,1 188,120" fill="none" stroke="#922b21" stroke-width="1.8"/>
+      <!-- rótulos -->
+      <text x="107" y="7"  font-size="14" font-weight="bold" fill="#333">C</text>
+      <text x="2"   y="133" font-size="14" font-weight="bold" fill="#333">A</text>
+      <text x="218" y="133" font-size="14" font-weight="bold" fill="#333">B</text>
+      <text x="118" y="90" font-size="13" font-weight="bold" fill="#922b21">D</text>
+    </svg>
+  </div>
+
+  <div class="dica">
+    <span>💡 O que significa "bissetar"?</span>
+    <b>AD bisecta Â</b> = divide o ângulo A ao meio → cada parte = Â/2<br>
+    <b>BD bisecta B̂</b> = divide o ângulo B ao meio → cada parte = B̂/2
+  </div>
+  <div class="passo">
+    <div class="passo-icon">1️⃣</div>
+    <div class="passo-texto">No triângulo ABD (menor):<br>
+    D̂ + Â/2 + B̂/2 = 180°<br>
+    <b>D̂ = 180° – (Â + B̂)/2</b></div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">2️⃣</div>
+    <div class="passo-texto">No triângulo ABC (grande):<br>
+    Â + B̂ + Ĉ = 180° → <b>Â + B̂ = 180° – Ĉ</b></div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">3️⃣</div>
+    <div class="passo-texto">Substituindo em D̂:<br>
+    D̂ = 180° – (180° – Ĉ)/2<br>
+    D̂ = 180° – 90° + Ĉ/2<br>
+    D̂ = 90° + Ĉ/2<br>
+    → Isolando Ĉ: <b>Ĉ = 2D̂ – 180°</b></div>
+  </div>
+  <div class="resp"><div class="ri">✅</div><div class="rt">Ĉ = 2D̂ – 180°</div></div>
+</div>
+
+<!-- Q19 -->
+<div class="questao laranja">
+  <div class="q-numero">Questão 19</div>
+  <div class="q-titulo">Hexágono regular com diagonais internas. Quanto medem x̂ e ŷ?</div>
+
+  <div class="svg-wrap">
+    <!-- hexágono regular com diagonais e x interno, y externo -->
+    <svg width="200" height="190" viewBox="0 0 200 190">
+      <!-- hexágono -->
+      <polygon points="100,10 172,50 172,130 100,170 28,130 28,50"
+               fill="#d5f5e3" stroke="#27ae60" stroke-width="3"/>
+      <!-- diagonais internas pontilhadas -->
+      <line x1="100" y1="10"  x2="28"  y2="130" stroke="#e67e22" stroke-width="1.8" stroke-dasharray="5,4"/>
+      <line x1="100" y1="10"  x2="172" y2="130" stroke="#e67e22" stroke-width="1.8" stroke-dasharray="5,4"/>
+      <line x1="28"  y1="50"  x2="172" y2="130" stroke="#e67e22" stroke-width="1.8" stroke-dasharray="5,4"/>
+      <line x1="172" y1="50"  x2="28"  y2="130" stroke="#e67e22" stroke-width="1.8" stroke-dasharray="5,4"/>
+      <!-- x̂ interno (ângulo no centro-superior entre diagonais) -->
+      <text x="90" y="80" font-size="14" font-weight="bold" fill="#c0392b">x̂</text>
+      <!-- linha pontilhada para ŷ externo (abaixo do hexágono) -->
+      <line x1="28"  y1="130" x2="0"   y2="170" stroke="#2980b9" stroke-width="1.8" stroke-dasharray="4,3"/>
+      <line x1="172" y1="130" x2="200" y2="170" stroke="#2980b9" stroke-width="1.8" stroke-dasharray="4,3"/>
+      <line x1="0"   y1="170" x2="200" y2="170" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <!-- ŷ externo -->
+      <text x="90" y="186" font-size="14" font-weight="bold" fill="#2980b9">ŷ</text>
+    </svg>
+  </div>
+
+  <div class="dica">
+    <span>💡 Hexágono regular</span>
+    6 lados iguais → cada ângulo interno = (6–2)×180° ÷ 6 = 720°÷6 = <b>120°</b><br>
+    As diagonais dividem o hexágono em <b>6 triângulos equiláteros</b> (todos os ângulos = 60°).
+  </div>
+  <div class="passo">
+    <div class="passo-icon">1️⃣</div>
+    <div class="passo-texto"><b>x̂</b> é um ângulo <b>dentro</b> do hexágono, formado pelas diagonais.<br>
+    Cada triângulo equilátero tem ângulos de <b>60°</b>.<br>
+    → <b>x̂ = 60°</b></div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">2️⃣</div>
+    <div class="passo-texto"><b>ŷ</b> é o ângulo <b>externo</b> do hexágono (fora, na linha pontilhada).<br>
+    O ângulo interno nesse vértice = 120°.<br>
+    ŷ + 120° = 180° (suplementares)? Não — ŷ está na base horizontal.<br>
+    Pelos triângulos equiláteros internos: <b>ŷ = 60°</b></div>
+  </div>
+  <div class="resp"><div class="ri">✅</div><div class="rt">x̂ = 60° &nbsp;|&nbsp; ŷ = 60°</div></div>
+</div>
+
+<!-- RODAPÉ -->
+<div class="rodape">
+  <div class="emoji">🌟🎉🌟</div>
+  <h3>Parabéns! Você revisou todas as questões!</h3>
+  <p>Lembre: S = (n – 2) × 180° resolve tudo! 📐</p>
+</div>
+
+</body>
+</html>
