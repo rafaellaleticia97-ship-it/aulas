@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decimais — Soma e Subtração</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #1a73e8;
+    --verde: #0fb97a;
+    --laranja: #ff7043;
+    --amarelo: #ffcc02;
+    --roxo: #7c4dff;
+    --rosa: #e91e8c;
+    --bg: #f0f6ff;
+    --card: #ffffff;
+    --texto: #1a2340;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--texto);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #1a73e8 0%, #7c4dff 100%);
+    color: #fff;
+    padding: 28px 20px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.07'%3E%3Ccircle cx='30' cy='30' r='8'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 30px;
+    padding: 6px 18px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    font-weight: 800;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    line-height: 1.1;
+  }
+  header p {
+    margin-top: 10px;
+    font-size: 1.05rem;
+    opacity: 0.9;
+  }
+  .floating-nums {
+    position: absolute;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 800;
+    opacity: 0.12;
+    color: #fff;
+    pointer-events: none;
+    animation: floatUp 6s infinite ease-in-out;
+  }
+  @keyframes floatUp {
+    0%,100%{transform:translateY(0) rotate(-5deg)}
+    50%{transform:translateY(-20px) rotate(5deg)}
+  }
+
+  /* ── NAV TABS ── */
+  .nav-wrap {
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    position: sticky; top: 0; z-index: 100;
+    padding: 0 16px;
+  }
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    padding: 14px 18px;
+    border: none;
+    background: transparent;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #888;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all .25s;
+  }
+  .tab-btn:hover { color: var(--azul); }
+  .tab-btn.active {
+    color: var(--azul);
+    border-bottom-color: var(--azul);
+  }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 16px 60px;
+  }
+  .section { display: none; animation: fadeIn .4s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  }
+  .card-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .emoji { font-size: 1.4rem; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    background: linear-gradient(135deg, #e8f4ff 0%, #f0e8ff 100%);
+    border-left: 5px solid var(--azul);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  .highlight strong { color: var(--azul); }
+
+  /* ── PONTO DECIMAL VISUAL ── */
+  .decimal-number {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.6rem;
+    font-weight: 800;
+  }
+  .decimal-number .digit {
+    background: var(--azul);
+    color: #fff;
+    border-radius: 8px;
+    padding: 4px 10px;
+    margin: 1px;
+    display: inline-block;
+    transition: transform .2s;
+  }
+  .decimal-number .digit:hover { transform: scale(1.15); }
+  .decimal-number .dot {
+    color: var(--laranja);
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0 2px;
+  }
+  .decimal-number .digit.decimal { background: var(--verde); }
+
+  /* ── TABLE PLACE VALUE ── */
+  .place-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+  .place-table th {
+    padding: 12px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #fff;
+  }
+  .place-table th.inteiro { background: var(--azul); }
+  .place-table th.dec { background: var(--verde); }
+  .place-table th.sep { background: var(--laranja); }
+  .place-table td {
+    padding: 14px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    font-weight: 800;
+    border: 2px solid #f0f0f0;
+  }
+  .place-table tr:nth-child(odd) td { background: #fafafa; }
+
+  /* ── CONTA VERTICALMENTE ── */
+  .conta {
+    display: inline-block;
+    font-family: 'Baloo 2', cursive;
+    font-size: 2rem;
+    font-weight: 800;
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    text-align: right;
+    line-height: 1.5;
+  }
+  .conta .op { color: var(--azul); }
+  .conta .linha { border-top: 3px solid var(--texto); margin: 8px 0; }
+  .conta .resultado { color: var(--verde); }
+  .conta .dot-col { color: var(--laranja); }
+  .conta-wrap { text-align: center; margin: 20px 0; }
+
+  /* ── PASSO A PASSO ── */
+  .steps { list-style: none; margin: 16px 0; }
+  .steps li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px dashed #e0e0e0;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .steps li:last-child { border-bottom: none; }
+  .step-num {
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--azul);
+    color: #fff;
+    font-weight: 900;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── QUIZ ── */
+  .quiz-question {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-align: center;
+    margin: 16px 0 24px;
+    color: var(--roxo);
+  }
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .opt-btn {
+    padding: 16px;
+    border-radius: 14px;
+    border: 3px solid #e0e0e0;
+    background: #fff;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    color: var(--texto);
+  }
+  .opt-btn:hover:not(:disabled) {
+    border-color: var(--roxo);
+    background: #f5f0ff;
+    transform: scale(1.03);
+  }
+  .opt-btn.correct {
+    border-color: var(--verde);
+    background: #e8fff5;
+    color: var(--verde);
+  }
+  .opt-btn.wrong {
+    border-color: var(--laranja);
+    background: #fff3ee;
+    color: var(--laranja);
+  }
+  .feedback {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 14px;
+    border-radius: 12px;
+    min-height: 50px;
+    transition: all .3s;
+  }
+  .feedback.ok { background: #e8fff5; color: var(--verde); }
+  .feedback.err { background: #fff3ee; color: var(--laranja); }
+
+  .quiz-progress {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .qp-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #ddd;
+    transition: background .3s;
+  }
+  .qp-dot.done { background: var(--verde); }
+  .qp-dot.active { background: var(--azul); }
+
+  .score-badge {
+    display: none;
+    text-align: center;
+    padding: 30px;
+    font-family: 'Baloo 2', cursive;
+  }
+  .score-badge .big { font-size: 3.5rem; }
+  .score-badge .msg { font-size: 1.2rem; color: #555; margin-top: 8px; }
+
+  /* ── CALCULADORA INTERATIVA ── */
+  .calc-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 14px 0;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.3rem;
+  }
+  .num-input {
+    width: 100px;
+    padding: 10px 12px;
+    border: 3px solid #ddd;
+    border-radius: 12px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--texto);
+    text-align: center;
+    transition: border-color .2s;
+  }
+  .num-input:focus { outline: none; border-color: var(--azul); }
+  .op-select {
+    padding: 10px 14px;
+    border: 3px solid #ddd;
+    border-radius: 12px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: #fff;
+    cursor: pointer;
+    color: var(--azul);
+    transition: border-color .2s;
+  }
+  .op-select:focus { outline: none; border-color: var(--azul); }
+  .calc-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--azul), var(--roxo));
+    color: #fff;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 14px rgba(26,115,232,0.3);
+  }
+  .calc-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,115,232,0.4); }
+  .calc-result {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--verde);
+    padding: 16px 24px;
+    background: #e8fff5;
+    border-radius: 14px;
+    min-height: 60px;
+    margin-top: 12px;
+    text-align: center;
+    border: 2px solid #b2f0d8;
+    transition: all .3s;
+  }
+
+  /* ── JOGO ── */
+  .game-area {
+    background: linear-gradient(135deg, #1a2340, #2d1b6b);
+    border-radius: 20px;
+    padding: 28px;
+    color: #fff;
+    text-align: center;
+    min-height: 300px;
+    position: relative;
+    overflow: hidden;
+  }
+  .game-area::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='20' cy='20' r='4'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  .game-score {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .game-score .pts {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .timer-bar-wrap {
+    flex: 1;
+    margin: 0 14px;
+    height: 10px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .timer-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #0fb97a, #ffcc02, #ff7043);
+    border-radius: 10px;
+    transition: width .1s linear;
+  }
+  .game-q {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 10px 0 24px;
+    position: relative;
+  }
+  .game-opts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    position: relative;
+  }
+  .game-opt {
+    padding: 14px;
+    border-radius: 14px;
+    border: 2px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .game-opt:hover:not(:disabled) {
+    background: rgba(255,255,255,0.2);
+    border-color: var(--amarelo);
+    transform: scale(1.04);
+  }
+  .game-opt.g-correct { background: rgba(15,185,122,0.4); border-color: var(--verde); }
+  .game-opt.g-wrong { background: rgba(255,112,67,0.4); border-color: var(--laranja); }
+  .game-msg {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 16px;
+    min-height: 30px;
+    position: relative;
+  }
+  .start-btn {
+    padding: 16px 40px;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #ffcc02, #ff7043);
+    color: #1a2340;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.3rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 6px 24px rgba(255,112,67,0.4);
+    margin-top: 20px;
+  }
+  .start-btn:hover { transform: scale(1.05); }
+
+  /* ── BTN NEXT ── */
+  .next-btn {
+    display: block;
+    margin: 20px auto 0;
+    padding: 12px 32px;
+    background: linear-gradient(135deg, var(--azul), var(--roxo));
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .2s;
+  }
+  .next-btn:hover { transform: translateY(-2px); }
+
+  /* ── CHIPS ── */
+  .chip {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin: 3px;
+  }
+  .chip-blue { background: #e8f0ff; color: var(--azul); }
+  .chip-green { background: #e8fff5; color: var(--verde); }
+  .chip-orange { background: #fff3ee; color: var(--laranja); }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:500px) {
+    .options-grid, .game-opts { grid-template-columns: 1fr; }
+    .conta { font-size: 1.5rem; }
+    .game-q { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <span class="floating-nums" style="left:5%;top:20%;font-size:3rem;animation-delay:0s;">3,14</span>
+  <span class="floating-nums" style="right:8%;top:30%;font-size:2.5rem;animation-delay:1.5s;">0,7</span>
+  <span class="floating-nums" style="left:20%;bottom:25%;font-size:2rem;animation-delay:.7s;">+</span>
+  <span class="floating-nums" style="right:22%;bottom:20%;font-size:2rem;animation-delay:2s;">−</span>
+
+  <div class="badge">📚 6.º Ano • Matemática</div>
+  <h1>Soma e Subtração<br>de Decimais</h1>
+  <p>Aprenda de forma interativa e divirta-se com os exercícios!</p>
+</header>
+
+<!-- NAV TABS -->
+<div class="nav-wrap">
+  <div class="nav-tabs">
+    <button class="tab-btn active" data-tab="intro">🏠 Início</button>
+    <button class="tab-btn" data-tab="soma">➕ Soma</button>
+    <button class="tab-btn" data-tab="sub">➖ Subtração</button>
+    <button class="tab-btn" data-tab="calc">🔢 Calculadora</button>
+    <button class="tab-btn" data-tab="quiz">📝 Quiz</button>
+    <button class="tab-btn" data-tab="jogo">🎮 Jogo</button>
+  </div>
+</div>
+
+<main>
+
+  <!-- ===== INTRO ===== -->
+  <section class="section active" id="intro">
+    <div class="card">
+      <div class="card-title"><span class="emoji">🤔</span> O que são números decimais?</div>
+      <p>Números decimais são usados quando precisamos de mais precisão do que os números inteiros. A <strong>vírgula</strong> separa a parte inteira da parte decimal.</p>
+      <div class="highlight">
+        <strong>Exemplo:</strong> No número <strong>12,35</strong><br>
+        → <strong>12</strong> é a parte inteira (doze)<br>
+        → <strong>35</strong> é a parte decimal (trinta e cinco centésimos)
+      </div>
+      <div style="text-align:center;margin:24px 0;">
+        <div class="decimal-number">
+          <span class="digit">1</span>
+          <span class="digit">2</span>
+          <span class="dot">,</span>
+          <span class="digit decimal">3</span>
+          <span class="digit decimal">5</span>
+        </div>
+        <p style="margin-top:12px;color:#888;font-size:.9rem;">🖱️ Passe o mouse nos dígitos!</p>
+      </div>
+      <table class="place-table">
+        <thead>
+          <tr>
+            <th class="inteiro" colspan="2">Parte Inteira</th>
+            <th class="sep">Vírgula</th>
+            <th class="dec" colspan="2">Parte Decimal</th>
+          </tr>
+          <tr>
+            <th class="inteiro">Dezenas</th>
+            <th class="inteiro">Unidades</th>
+            <th class="sep">,</th>
+            <th class="dec">Décimos</th>
+            <th class="dec">Centésimos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>2</td><td style="color:var(--laranja);font-size:1.8rem;font-weight:900;">,</td><td>3</td><td>5</td></tr>
+          <tr><td>0</td><td>7</td><td style="color:var(--laranja);font-size:1.8rem;font-weight:900;">,</td><td>4</td><td>0</td></tr>
+          <tr><td>1</td><td>0</td><td style="color:var(--laranja);font-size:1.8rem;font-weight:900;">,</td><td>9</td><td>9</td></tr>
+        </tbody>
+      </table>
+      <div class="highlight" style="border-color:var(--amarelo);background:linear-gradient(135deg,#fffde8,#fff8e1);">
+        💡 <strong>Dica do professor:</strong> Pense no dinheiro! R$ 12,35 tem 12 reais e 35 centavos. Você trabalha com decimais todo dia!
+      </div>
+      <button class="next-btn" onclick="setTab('soma')">Próximo: Soma ➡️</button>
+    </div>
+  </section>
+
+  <!-- ===== SOMA ===== -->
+  <section class="section" id="soma">
+    <div class="card">
+      <div class="card-title"><span class="emoji">➕</span> Somando Decimais</div>
+      <div class="highlight">
+        <strong>Regra de ouro:</strong> Alinhe sempre as vírgulas uma embaixo da outra. Depois é só somar coluna por coluna, da direita para a esquerda!
+      </div>
+      <ul class="steps">
+        <li><div class="step-num">1</div><div>Escreva os números um embaixo do outro, <strong>alinhando as vírgulas</strong>.</div></li>
+        <li><div class="step-num">2</div><div>Complete com zeros à direita se necessário (ex: 7,4 → 7,40).</div></li>
+        <li><div class="step-num">3</div><div>Some de direita para esquerda, como você já faz com números inteiros.</div></li>
+        <li><div class="step-num">4</div><div>Coloque a <strong>vírgula no resultado</strong> na mesma posição.</div></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="emoji">📐</span> Exemplo 1 — 3,25 + 1,40</div>
+      <div class="conta-wrap">
+        <div class="conta">
+          3<span class="dot-col">,</span>25<br>
+          <span class="op">+</span>&nbsp;1<span class="dot-col">,</span>40<br>
+          <div class="linha"></div>
+          <span class="resultado">4<span class="dot-col">,</span>65</span>
+        </div>
+      </div>
+      <div class="highlight">
+        ✅ <strong>3,25 + 1,40 = 4,65</strong><br>
+        Somamos: 5+0=5 → 2+4=6 → vírgula → 3+1=4
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="emoji">📐</span> Exemplo 2 — 5,7 + 2,36</div>
+      <div class="conta-wrap">
+        <div class="conta">
+          5<span class="dot-col">,</span>7<u>0</u><br>
+          <span class="op">+</span>&nbsp;2<span class="dot-col">,</span>36<br>
+          <div class="linha"></div>
+          <span class="resultado">8<span class="dot-col">,</span>06</span>
+        </div>
+      </div>
+      <div class="highlight">
+        ⚠️ <strong>Atenção!</strong> 5,7 vira 5,70 (completamos com zero). Aí: 0+6=6 → 7+3=10 (escrevo 0 e levo 1) → 5+2+1=8<br>
+        Resultado: <strong>8,06</strong>
+      </div>
+      <button class="next-btn" onclick="setTab('sub')">Próximo: Subtração ➡️</button>
+    </div>
+  </section>
+
+  <!-- ===== SUBTRAÇÃO ===== -->
+  <section class="section" id="sub">
+    <div class="card">
+      <div class="card-title"><span class="emoji">➖</span> Subtraindo Decimais</div>
+      <div class="highlight">
+        <strong>Mesma ideia!</strong> Alinhe as vírgulas, complete com zeros e subtraia coluna por coluna. Se não puder subtrair, <strong>empreste da coluna à esquerda</strong>!
+      </div>
+      <ul class="steps">
+        <li><div class="step-num">1</div><div>Escreva o maior número em cima e o menor embaixo, <strong>alinhando as vírgulas</strong>.</div></li>
+        <li><div class="step-num">2</div><div>Complete com zeros à direita se necessário.</div></li>
+        <li><div class="step-num">3</div><div>Subtraia da direita para a esquerda. Se precisar, <strong>empreste 1 da coluna ao lado</strong>.</div></li>
+        <li><div class="step-num">4</div><div>Baixe a <strong>vírgula</strong> na mesma posição.</div></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="emoji">📐</span> Exemplo 1 — 8,75 − 3,20</div>
+      <div class="conta-wrap">
+        <div class="conta">
+          8<span class="dot-col">,</span>75<br>
+          <span class="op">−</span>&nbsp;3<span class="dot-col">,</span>20<br>
+          <div class="linha"></div>
+          <span class="resultado">5<span class="dot-col">,</span>55</span>
+        </div>
+      </div>
+      <div class="highlight">
+        ✅ <strong>8,75 − 3,20 = 5,55</strong><br>
+        5−0=5 → 7−2=5 → vírgula → 8−3=5
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="emoji">📐</span> Exemplo 2 — 6,3 − 2,58</div>
+      <div class="conta-wrap">
+        <div class="conta">
+          6<span class="dot-col">,</span>3<u>0</u><br>
+          <span class="op">−</span>&nbsp;2<span class="dot-col">,</span>58<br>
+          <div class="linha"></div>
+          <span class="resultado">3<span class="dot-col">,</span>72</span>
+        </div>
+      </div>
+      <div class="highlight">
+        ⚠️ <strong>Emprestando!</strong> 6,3 vira 6,30.<br>
+        0−8 não dá! Peço emprestado: 10−8=2, mas o 3 fica 2.<br>
+        2−5 não dá! Peço emprestado: 12−5=7, mas o 6 fica 5.<br>
+        5−2=3 → Resultado: <strong>3,72</strong>
+      </div>
+      <button class="next-btn" onclick="setTab('calc')">Próximo: Calculadora ➡️</button>
+    </div>
+  </section>
+
+  <!-- ===== CALCULADORA ===== -->
+  <section class="section" id="calc">
+    <div class="card">
+      <div class="card-title"><span class="emoji">🔢</span> Calculadora Interativa</div>
+      <p>Digite dois números decimais e escolha a operação. Veja o resultado e os passos!</p>
+      <div class="calc-row" style="margin-top:20px;">
+        <input class="num-input" type="number" id="n1" step="0.01" value="3.25" placeholder="Ex: 3,25">
+        <select class="op-select" id="op">
+          <option value="+">➕ Soma</option>
+          <option value="-">➖ Subtração</option>
+        </select>
+        <input class="num-input" type="number" id="n2" step="0.01" value="1.40" placeholder="Ex: 1,40">
+        <button class="calc-btn" onclick="calcular()">= Calcular</button>
+      </div>
+      <div class="calc-result" id="calc-result">Aguardando...</div>
+      <div id="conta-viz" class="conta-wrap" style="margin-top:20px;"></div>
+      <div id="calc-dica" style="margin-top:10px;"></div>
+    </div>
+  </section>
+
+  <!-- ===== QUIZ ===== -->
+  <section class="section" id="quiz">
+    <div class="card">
+      <div class="card-title"><span class="emoji">📝</span> Quiz — Teste seus conhecimentos!</div>
+
+      <div class="quiz-progress" id="quiz-progress"></div>
+
+      <div id="quiz-area">
+        <div class="quiz-question" id="q-text"></div>
+        <div class="options-grid" id="q-opts"></div>
+        <div class="feedback" id="q-feedback"></div>
+        <button class="next-btn" id="q-next" onclick="nextQuestion()" style="display:none">Próxima ➡️</button>
+      </div>
+
+      <div class="score-badge" id="score-badge">
+        <div class="big" id="score-emoji">🏆</div>
+        <div id="score-text" class="big"></div>
+        <div class="msg" id="score-msg"></div>
+        <button class="next-btn" onclick="restartQuiz()" style="margin-top:16px">🔄 Jogar de novo</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== JOGO ===== -->
+  <section class="section" id="jogo">
+    <div class="card">
+      <div class="card-title"><span class="emoji">🎮</span> Desafio Rápido!</div>
+      <p>Responda o máximo de contas em 60 segundos. Cada acerto vale 10 pontos!</p>
+
+      <div class="game-area" id="game-area">
+        <div id="game-start">
+          <div style="font-size:3rem;margin-bottom:10px;">⚡</div>
+          <div style="font-family:'Baloo 2';font-size:1.5rem;font-weight:800;">Pronto para o desafio?</div>
+          <div style="margin-top:10px;opacity:0.8;">Você tem 60 segundos!</div>
+          <button class="start-btn" onclick="startGame()">🚀 Começar!</button>
+        </div>
+        <div id="game-play" style="display:none">
+          <div class="game-score">
+            <div class="pts">⭐ <span id="g-pts">0</span> pts</div>
+            <div class="timer-bar-wrap"><div class="timer-bar" id="g-timer"></div></div>
+            <div class="pts">⏱ <span id="g-time">60</span>s</div>
+          </div>
+          <div class="game-q" id="g-q"></div>
+          <div class="game-opts" id="g-opts"></div>
+          <div class="game-msg" id="g-msg"></div>
+        </div>
+        <div id="game-end" style="display:none;text-align:center;padding:20px 0;">
+          <div style="font-size:3.5rem;margin-bottom:10px;" id="g-trophy">🏅</div>
+          <div style="font-family:'Baloo 2';font-size:2rem;font-weight:800;">Fim de jogo!</div>
+          <div style="font-size:1.3rem;margin:10px 0;">Pontuação: <strong id="g-final-pts" style="color:var(--amarelo)">0</strong></div>
+          <div style="opacity:0.8;margin-bottom:16px;" id="g-acertos"></div>
+          <button class="start-btn" onclick="startGame()">🔄 Jogar de novo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* ───────── TABS ───────── */
+function setTab(id) {
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === id);
+  });
+  document.querySelectorAll('.section').forEach(s => {
+    s.classList.toggle('active', s.id === id);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.tab-btn').forEach(b => {
+  b.addEventListener('click', () => setTab(b.dataset.tab));
+});
+
+/* ───────── CALCULADORA ───────── */
+function calcular() {
+  const n1 = parseFloat(document.getElementById('n1').value);
+  const n2 = parseFloat(document.getElementById('n2').value);
+  const op = document.getElementById('op').value;
+  if (isNaN(n1) || isNaN(n2)) return;
+
+  const res = op === '+' ? n1 + n2 : n1 - n2;
+  const resFmt = res.toFixed(Math.max(casas(n1), casas(n2)));
+
+  document.getElementById('calc-result').textContent = `${fmt(n1)} ${op} ${fmt(n2)} = ${fmt(parseFloat(resFmt))}`;
+
+  const maxC = Math.max(casas(n1), casas(n2));
+  const s1 = n1.toFixed(maxC);
+  const s2 = n2.toFixed(maxC);
+  const sr = parseFloat(resFmt).toFixed(maxC);
+
+  document.getElementById('conta-viz').innerHTML = `
+    <div class="conta">
+      ${fmt2(s1)}<br>
+      <span class="op">${op}</span>&nbsp;${fmt2(s2)}<br>
+      <div class="linha"></div>
+      <span class="resultado">${fmt2(sr)}</span>
+    </div>`;
+
+  let dica = op === '+' ?
+    '💡 Alinhamos as vírgulas e somamos coluna por coluna da direita para a esquerda!' :
+    '💡 Alinhamos as vírgulas e subtraímos da direita para a esquerda, emprestando quando necessário!';
+  document.getElementById('calc-dica').innerHTML = `<div class="highlight">${dica}</div>`;
+}
+
+function casas(n) {
+  const s = n.toString();
+  return s.includes('.') ? s.split('.')[1].length : 0;
+}
+function fmt(n) { return n.toString().replace('.', ','); }
+function fmt2(s) { return s.replace('.', '<span class="dot-col">,</span>'); }
+
+/* ───────── QUIZ ───────── */
+const perguntas = [
+  { q: '2,5 + 3,4 = ?', opts: ['5,9','5,7','6,9','5,0'], certa: 0, exp: '2,5 + 3,4: somamos 5+4=9 e 2+3=5 → 5,9' },
+  { q: '7,8 − 4,3 = ?', opts: ['3,5','4,5','3,1','2,5'], certa: 0, exp: '7,8 − 4,3: 8−3=5 e 7−4=3 → 3,5' },
+  { q: '1,25 + 2,50 = ?', opts: ['3,75','3,70','4,75','3,25'], certa: 0, exp: '1,25 + 2,50: 5+0=5, 2+5=7, 1+2=3 → 3,75' },
+  { q: '9,0 − 3,6 = ?', opts: ['5,4','6,4','5,6','4,4'], certa: 0, exp: '9,0 − 3,6: 0−6 não dá, empresto: 10−6=4, 8−3=5 → 5,4' },
+  { q: '0,75 + 0,25 = ?', opts: ['1,00','0,90','1,50','0,75'], certa: 0, exp: '0,75 + 0,25: 5+5=10(0,sobe1), 7+2+1=10(0,sobe1), 0+0+1=1 → 1,00' },
+  { q: '5,60 − 2,35 = ?', opts: ['3,25','3,35','2,25','4,25'], certa: 0, exp: '5,60 − 2,35: 0−5 não dá, empresto: 10−5=5, 5−3=2 (virou 4), 4−2=2... espera: 60−35=25, 5−2=3 → 3,25' },
+  { q: '4,1 + 5,9 = ?', opts: ['10,0','9,0','10,10','9,10'], certa: 0, exp: '1+9=10(0,sobe1), 4+5+1=10 → 10,0' },
+  { q: '12,50 − 7,25 = ?', opts: ['5,25','5,75','4,25','6,25'], certa: 0, exp: '50−25=25 e 12−7=5 → 5,25' },
+];
+
+// Embaralha opções mantendo índice certo
+const qs = perguntas.map(p => {
+  const idx = p.certa;
+  const correta = p.opts[idx];
+  const embaralhadas = [...p.opts].sort(() => Math.random() - 0.5);
+  return { ...p, opts: embaralhadas, certa: embaralhadas.indexOf(correta) };
+}).sort(() => Math.random() - 0.5);
+
+let qIdx = 0, score = 0, answered = false;
+
+function renderProgress() {
+  const prog = document.getElementById('quiz-progress');
+  prog.innerHTML = qs.map((_, i) =>
+    `<div class="qp-dot ${i < qIdx ? 'done' : i === qIdx ? 'active' : ''}"></div>`
+  ).join('');
+}
+
+function renderQuestion() {
+  if (qIdx >= qs.length) { showScore(); return; }
+  answered = false;
+  const q = qs[qIdx];
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-feedback').textContent = '';
+  document.getElementById('q-feedback').className = 'feedback';
+  document.getElementById('q-next').style.display = 'none';
+
+  const optsEl = document.getElementById('q-opts');
+  optsEl.innerHTML = q.opts.map((o, i) =>
+    `<button class="opt-btn" onclick="checkAnswer(${i})">${o}</button>`
+  ).join('');
+  renderProgress();
+}
+
+function checkAnswer(i) {
+  if (answered) return;
+  answered = true;
+  const q = qs[qIdx];
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(b => b.disabled = true);
+  const fb = document.getElementById('q-feedback');
+
+  if (i === q.certa) {
+    btns[i].classList.add('correct');
+    fb.textContent = '🎉 Correto! ' + q.exp;
+    fb.className = 'feedback ok';
+    score++;
+  } else {
+    btns[i].classList.add('wrong');
+    btns[q.certa].classList.add('correct');
+    fb.textContent = '❌ Ops! ' + q.exp;
+    fb.className = 'feedback err';
+  }
+  document.getElementById('q-next').style.display = 'block';
+}
+
+function nextQuestion() {
+  qIdx++;
+  renderQuestion();
+}
+
+function showScore() {
+  document.getElementById('quiz-area').style.display = 'none';
+  const badge = document.getElementById('score-badge');
+  badge.style.display = 'block';
+  const pct = Math.round(score / qs.length * 100);
+  let emoji = pct >= 80 ? '🏆' : pct >= 60 ? '😊' : '💪';
+  let msg = pct >= 80 ? 'Excelente! Você dominou os decimais!' :
+            pct >= 60 ? 'Bom trabalho! Continue praticando!' :
+            'Não desista! Revise os conteúdos e tente de novo.';
+  document.getElementById('score-emoji').textContent = emoji;
+  document.getElementById('score-text').textContent = `${score}/${qs.length} (${pct}%)`;
+  document.getElementById('score-msg').textContent = msg;
+}
+
+function restartQuiz() {
+  qIdx = 0; score = 0;
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('score-badge').style.display = 'none';
+  renderQuestion();
+}
+
+renderQuestion();
+
+/* ───────── JOGO ───────── */
+let gPts = 0, gTime = 60, gTimer = null, gRight = 0, gTotal = 0;
+let gAnswer = 0;
+
+function randDec() { return parseFloat((Math.random() * 9 + 0.1).toFixed(2)); }
+
+function gerarQuestao() {
+  let a = randDec(), b = randDec();
+  const op = Math.random() > 0.5 ? '+' : '-';
+  if (op === '-' && b > a) [a, b] = [b, a];
+  const res = parseFloat((op === '+' ? a + b : a - b).toFixed(2));
+  gAnswer = res;
+  document.getElementById('g-q').textContent = `${fmt(a)} ${op} ${fmt(b)} = ?`;
+
+  // 3 distratores
+  const opcs = [res];
+  while (opcs.length < 4) {
+    const d = parseFloat((res + (Math.random() * 2 - 1)).toFixed(2));
+    if (!opcs.includes(d) && d >= 0) opcs.push(d);
+  }
+  opcs.sort(() => Math.random() - 0.5);
+
+  const el = document.getElementById('g-opts');
+  el.innerHTML = opcs.map(o =>
+    `<button class="game-opt" onclick="checkGame(${o},this)">${fmt(o)}</button>`
+  ).join('');
+  document.getElementById('g-msg').textContent = '';
+}
+
+function checkGame(val, btn) {
+  if (btn.disabled) return;
+  document.querySelectorAll('.game-opt').forEach(b => b.disabled = true);
+  gTotal++;
+  if (Math.abs(val - gAnswer) < 0.001) {
+    btn.classList.add('g-correct');
+    gPts += 10; gRight++;
+    document.getElementById('g-msg').textContent = '✅ Correto! +10 pts';
+    document.getElementById('g-pts').textContent = gPts;
+  } else {
+    btn.classList.add('g-wrong');
+    document.getElementById('g-msg').textContent = '❌ Errado! A resposta era ' + fmt(gAnswer);
+    // highlight correct
+    document.querySelectorAll('.game-opt').forEach(b => {
+      if (Math.abs(parseFloat(b.textContent.replace(',','.')) - gAnswer) < 0.001)
+        b.classList.add('g-correct');
+    });
+  }
+  setTimeout(() => { if (gTime > 0) gerarQuestao(); }, 1200);
+}
+
+function startGame() {
+  gPts = 0; gTime = 60; gRight = 0; gTotal = 0;
+  document.getElementById('game-start').style.display = 'none';
+  document.getElementById('game-end').style.display = 'none';
+  document.getElementById('game-play').style.display = 'block';
+  document.getElementById('g-pts').textContent = '0';
+  document.getElementById('g-time').textContent = '60';
+  document.getElementById('g-timer').style.width = '100%';
+  gerarQuestao();
+  clearInterval(gTimer);
+  gTimer = setInterval(() => {
+    gTime--;
+    document.getElementById('g-time').textContent = gTime;
+    document.getElementById('g-timer').style.width = (gTime / 60 * 100) + '%';
+    if (gTime <= 0) {
+      clearInterval(gTimer);
+      endGame();
+    }
+  }, 1000);
+}
+
+function endGame() {
+  document.getElementById('game-play').style.display = 'none';
+  document.getElementById('game-end').style.display = 'block';
+  document.getElementById('g-final-pts').textContent = gPts;
+  document.getElementById('g-acertos').textContent = `${gRight} acertos de ${gTotal} questões`;
+  let t = gPts >= 100 ? '🏆' : gPts >= 50 ? '🥈' : '🎯';
+  document.getElementById('g-trophy').textContent = t;
+}
+</script>
+</body>
+</html>
