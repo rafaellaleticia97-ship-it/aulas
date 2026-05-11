@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retas e Equações Lineares – 8º Ano</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #2ecc71;
+    --verde-escuro: #27ae60;
+    --azul: #3498db;
+    --azul-escuro: #2980b9;
+    --amarelo: #f1c40f;
+    --laranja: #e67e22;
+    --roxo: #9b59b6;
+    --vermelho: #e74c3c;
+    --cinza-claro: #f0f4f8;
+    --cinza: #bdc3c7;
+    --texto: #2c3e50;
+    --branco: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: var(--texto);
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 40px 30px 30px;
+    background: white;
+    border-radius: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, var(--verde), var(--azul), var(--roxo), var(--laranja));
+  }
+  .header-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--texto);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .header h1 span { color: #667eea; }
+  .header p {
+    font-size: 1.05rem;
+    color: #666;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  /* SECTION CARD */
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.12);
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .section-title h2 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--texto);
+  }
+
+  /* MACHINE */
+  .machine-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 24px 0;
+  }
+  .machine-box {
+    background: var(--cinza-claro);
+    border: 3px solid var(--cinza);
+    border-radius: 16px;
+    padding: 16px 24px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: center;
+    min-width: 90px;
+  }
+  .machine-box.entrada { border-color: var(--azul); background: #ebf5fb; color: var(--azul-escuro); }
+  .machine-box.operacao { border-color: var(--verde); background: #eafaf1; color: var(--verde-escuro); font-size: 1.3rem; }
+  .machine-box.saida { border-color: var(--roxo); background: #f5eef8; color: var(--roxo); }
+  .arrow {
+    font-size: 2rem;
+    color: var(--cinza);
+    font-weight: 900;
+  }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; margin: 16px 0; }
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    font-size: 1rem;
+  }
+  thead th {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 12px 20px;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  tbody tr { transition: background 0.2s; }
+  tbody tr:hover { background: #f0f4ff; }
+  tbody td {
+    padding: 11px 20px;
+    text-align: center;
+    border-bottom: 1px solid #e8e8e8;
+    font-weight: 600;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* FORMULA BOX */
+  .formula {
+    background: linear-gradient(135deg, #667eea22, #764ba222);
+    border: 2.5px solid #667eea;
+    border-radius: 16px;
+    padding: 20px 28px;
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 800;
+    font-family: 'Baloo 2', cursive;
+    color: #4a4a8a;
+    margin: 20px 0;
+    letter-spacing: 1px;
+  }
+
+  /* HIGHLIGHT BOX */
+  .highlight {
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    font-size: 0.98rem;
+    line-height: 1.6;
+  }
+  .highlight.verde  { background: #eafaf1; border-left: 5px solid var(--verde); }
+  .highlight.azul   { background: #ebf5fb; border-left: 5px solid var(--azul); }
+  .highlight.amarelo{ background: #fef9e7; border-left: 5px solid var(--amarelo); }
+  .highlight.roxo   { background: #f5eef8; border-left: 5px solid var(--roxo); }
+  .highlight.laranja{ background: #fef5e7; border-left: 5px solid var(--laranja); }
+  .highlight-title { font-weight: 800; font-size: 1rem; margin-bottom: 6px; }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 14px; margin: 16px 0; }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--cinza-claro);
+    border-radius: 14px;
+    padding: 14px 18px;
+  }
+  .step-num {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+  .step-text { font-size: 0.97rem; line-height: 1.5; padding-top: 4px; }
+
+  /* QUIZ */
+  .quiz-question {
+    background: var(--cinza-claro);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 18px;
+  }
+  .quiz-q { font-weight: 700; font-size: 1rem; margin-bottom: 14px; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    background: white;
+    border: 2.5px solid var(--cinza);
+    border-radius: 12px;
+    padding: 12px 18px;
+    font-size: 0.95rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+  }
+  .option-btn:hover { border-color: #667eea; background: #f0f4ff; }
+  .option-btn.correct { background: #eafaf1; border-color: var(--verde); color: var(--verde-escuro); }
+  .option-btn.wrong   { background: #fdedec; border-color: var(--vermelho); color: var(--vermelho); }
+  .feedback { margin-top: 10px; font-weight: 700; font-size: 0.95rem; display: none; }
+  .feedback.show { display: block; }
+  .feedback.ok { color: var(--verde-escuro); }
+  .feedback.err { color: var(--vermelho); }
+
+  /* GRAPH CANVAS */
+  .graph-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  canvas {
+    border-radius: 14px;
+    border: 2px solid #e0e0e0;
+    background: #fafafa;
+    max-width: 100%;
+  }
+
+  /* INTERACTIVE */
+  .interactive-section {
+    background: linear-gradient(135deg, #fef9e7, #fef5e7);
+    border: 2px dashed var(--amarelo);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+  .interactive-section h3 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.15rem;
+    margin-bottom: 16px;
+    color: var(--texto);
+  }
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .input-row label { font-weight: 700; font-size: 0.95rem; }
+  .input-row input {
+    width: 70px;
+    padding: 8px 12px;
+    border: 2px solid var(--cinza);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    text-align: center;
+  }
+  .input-row input:focus { outline: none; border-color: #667eea; }
+  .calc-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 22px;
+    font-size: 0.95rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .calc-btn:hover { opacity: 0.85; }
+  .calc-result {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #4a4a8a;
+    margin-top: 8px;
+    min-height: 28px;
+  }
+
+  /* SUMMARY CARD */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .summary-item {
+    background: var(--cinza-claro);
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+  }
+  .summary-item .icon { font-size: 2rem; margin-bottom: 8px; }
+  .summary-item .label { font-size: 0.85rem; color: #777; font-weight: 600; margin-bottom: 4px; }
+  .summary-item .value { font-size: 1.1rem; font-weight: 800; color: var(--texto); }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    color: rgba(255,255,255,0.8);
+    font-size: 0.9rem;
+    padding: 24px;
+    font-weight: 600;
+  }
+
+  p { line-height: 1.65; color: #444; font-size: 0.97rem; }
+  strong { color: var(--texto); }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.8rem; }
+    .card { padding: 22px 18px; }
+    .machine-wrapper { gap: 8px; }
+    .arrow { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-badge">📐 Matemática · 8º Ano · Bimestre 2</div>
+    <h1>Retas e <span>Equações Lineares</span></h1>
+    <p>Vamos entender como funções podem ser escritas em forma algébrica e representadas como retas no plano cartesiano.</p>
+  </div>
+
+  <!-- SEÇÃO 1: A MÁQUINA -->
+  <div class="card" style="animation-delay:0.1s">
+    <div class="section-title">
+      <div class="section-icon" style="background:#ebf5fb;">🤖</div>
+      <h2>1. A Máquina de Calcular</h2>
+    </div>
+    <p>Imagina uma máquina mágica: você coloca um número (chamado de <strong>x</strong>), ela faz uma operação e devolve outro número (chamado de <strong>y</strong>). Aqui embaixo, a máquina <strong>multiplica tudo por 2</strong>:</p>
+
+    <div class="machine-wrapper">
+      <div class="machine-box entrada">x<br><small>entrada</small></div>
+      <div class="arrow">→</div>
+      <div class="machine-box operacao">×2</div>
+      <div class="arrow">→</div>
+      <div class="machine-box saida">y<br><small>saída</small></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Entrada (x)</th><th>Operação</th><th>Saída (y)</th></tr></thead>
+        <tbody>
+          <tr><td>−1</td><td>−1 × 2</td><td>−2</td></tr>
+          <tr><td>2,5</td><td>2,5 × 2</td><td>5</td></tr>
+          <tr><td>3</td><td>3 × 2</td><td>6</td></tr>
+          <tr><td>4,5</td><td>4,5 × 2</td><td>9</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="highlight verde">
+      <div class="highlight-title">💡 Percebeu o padrão?</div>
+      A saída <strong>y</strong> é sempre o dobro da entrada <strong>x</strong>. Isso pode ser escrito assim:
+    </div>
+    <div class="formula">y = 2 · x</div>
+    <p>Essa é a <strong>forma algébrica</strong> da função. Em vez de usar uma tabela enorme, a gente resume tudo numa expressão!</p>
+  </div>
+
+  <!-- SEÇÃO 2: FORMA GERAL -->
+  <div class="card" style="animation-delay:0.2s">
+    <div class="section-title">
+      <div class="section-icon" style="background:#f5eef8;">📝</div>
+      <h2>2. A Forma Geral: y = a·x + b</h2>
+    </div>
+
+    <p>Funções que envolvem somar, subtrair, multiplicar ou dividir por números fixos podem ser escritas no formato:</p>
+    <div class="formula">y = a · x + b</div>
+
+    <div class="summary-grid">
+      <div class="summary-item">
+        <div class="icon">🔢</div>
+        <div class="label">a =</div>
+        <div class="value">coeficiente angular</div>
+      </div>
+      <div class="summary-item">
+        <div class="icon">➕</div>
+        <div class="label">b =</div>
+        <div class="value">coeficiente linear</div>
+      </div>
+      <div class="summary-item">
+        <div class="icon">📌</div>
+        <div class="label">Condição</div>
+        <div class="value">a ≠ 0</div>
+      </div>
+    </div>
+
+    <div class="highlight amarelo">
+      <div class="highlight-title">🎯 Definição importante</div>
+      Quando uma função pode ser escrita como <strong>y = a·x + b</strong> com <strong>a ≠ 0</strong>, ela se chama <strong>Função do 1º Grau</strong> (ou função afim). O gráfico dela é sempre uma <strong>reta</strong>!
+    </div>
+
+    <p><strong>Exemplo:</strong> Considere a função x → +3 → n → ×2 → y</p>
+    <p style="margin-top:10px;">Primeiro somamos 3, depois multiplicamos por 2: <code>(x + 3) · 2 = y</code></p>
+    <p style="margin-top:6px;">Distribuindo: <code>2x + 6 = y</code>, então <strong>a = 2</strong> e <strong>b = 6</strong>.</p>
+    <div class="formula">y = 2·x + 6</div>
+  </div>
+
+  <!-- SEÇÃO 3: CONSTRUINDO TABELA E GRÁFICO -->
+  <div class="card" style="animation-delay:0.3s">
+    <div class="section-title">
+      <div class="section-icon" style="background:#eafaf1;">📊</div>
+      <h2>3. Do Plano Cartesiano à Reta</h2>
+    </div>
+
+    <p>Vamos usar a função <strong>y = x + 1</strong> para construir uma tabela de pontos e depois plotar no plano cartesiano:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>x</th><th>y = x + 1</th><th>Ponto (x, y)</th></tr></thead>
+        <tbody>
+          <tr><td>−2</td><td>−2 + 1 = −1</td><td>(−2, −1)</td></tr>
+          <tr><td>−1</td><td>−1 + 1 = 0</td><td>(−1, 0)</td></tr>
+          <tr><td>0</td><td>0 + 1 = 1</td><td>(0, 1)</td></tr>
+          <tr><td>1</td><td>1 + 1 = 2</td><td>(1, 2)</td></tr>
+          <tr><td>2</td><td>2 + 1 = 3</td><td>(2, 3)</td></tr>
+          <tr><td>3</td><td>3 + 1 = 4</td><td>(3, 4)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="graph-container">
+      <canvas id="grafico1" width="420" height="340"></canvas>
+    </div>
+
+    <div class="highlight azul">
+      <div class="highlight-title">🔑 Conclusão-chave</div>
+      Os pontos ficam todos alinhados! Ligando-os, formamos uma <strong>reta</strong>. Por isso, o gráfico de toda função do 1º grau é sempre uma reta.
+    </div>
+  </div>
+
+  <!-- SEÇÃO 4: EQUAÇÃO LINEAR -->
+  <div class="card" style="animation-delay:0.35s">
+    <div class="section-title">
+      <div class="section-icon" style="background:#fef5e7;">⚖️</div>
+      <h2>4. Equação Linear do 1º Grau</h2>
+    </div>
+
+    <p>Às vezes a função aparece numa forma diferente, como:</p>
+    <div class="formula">−4x + 2y = 2</div>
+
+    <p>Para usar essa função, precisamos <strong>isolar o y</strong>. Veja os passos:</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-text">Começamos com: <strong>−4x + 2y = 2</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Isolamos o 2y: <strong>2y = 4x + 2</strong></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Dividimos tudo por 2: <strong>y = ½(4x + 2)</strong></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">Simplificamos: <strong>y = 2x + 1</strong> ✅</div></div>
+    </div>
+
+    <div class="highlight roxo">
+      <div class="highlight-title">📌 Definição</div>
+      Uma expressão da forma <strong>cx + dy = e</strong> é chamada de <strong>equação linear do 1º grau</strong> em x e y, quando c, d e e são números e c, d não são nulos. Ela representa uma reta no plano!
+    </div>
+
+    <p style="margin-top:14px;">Para traçar a reta de <strong>y = 2x + 1</strong>, basta encontrar 2 pontos:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>x escolhido</th><th>Cálculo</th><th>Ponto</th></tr></thead>
+        <tbody>
+          <tr><td>x = 1</td><td>y = 2·1 + 1 = 3</td><td>(1, 3)</td></tr>
+          <tr><td>x = −2</td><td>y = 2·(−2) + 1 = −3</td><td>(−2, −3)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="graph-container">
+      <canvas id="grafico2" width="420" height="340"></canvas>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 5: CALCULADORA INTERATIVA -->
+  <div class="card" style="animation-delay:0.4s">
+    <div class="section-title">
+      <div class="section-icon" style="background:#fef9e7;">🧮</div>
+      <h2>5. Calculadora Interativa</h2>
+    </div>
+    <p>Experimente calcular o valor de y para qualquer função no formato <strong>y = a·x + b</strong>:</p>
+
+    <div class="interactive-section">
+      <h3>🎮 Monte sua função e descubra o y!</h3>
+      <div class="input-row">
+        <label>a =</label>
+        <input type="number" id="val-a" value="2" step="0.5">
+        <label>b =</label>
+        <input type="number" id="val-b" value="1" step="0.5">
+        <label>x =</label>
+        <input type="number" id="val-x" value="3" step="1">
+        <button class="calc-btn" onclick="calcular()">Calcular →</button>
+      </div>
+      <div class="calc-result" id="calc-result"></div>
+      <div id="calc-formula" style="font-size:0.9rem; color:#666; margin-top:6px;"></div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 6: QUIZ -->
+  <div class="card" style="animation-delay:0.45s">
+    <div class="section-title">
+      <div class="section-icon" style="background:#fdedec;">🧠</div>
+      <h2>6. Teste seus Conhecimentos!</h2>
+    </div>
+
+    <!-- Q1 -->
+    <div class="quiz-question">
+      <div class="quiz-q">1. Qual é a forma algébrica de uma <strong>função do 1º grau</strong>?</div>
+      <div class="options">
+        <button class="option-btn" onclick="responder(this, false, 'q1')">y = ax² + b</button>
+        <button class="option-btn" onclick="responder(this, true, 'q1')">y = ax + b  (com a ≠ 0)</button>
+        <button class="option-btn" onclick="responder(this, false, 'q1')">y = a + b</button>
+        <button class="option-btn" onclick="responder(this, false, 'q1')">y = x²</button>
+      </div>
+      <div class="feedback" id="q1-feedback"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-question">
+      <div class="quiz-q">2. Na função <strong>y = 3x + 5</strong>, qual é o valor de y quando x = 2?</div>
+      <div class="options">
+        <button class="option-btn" onclick="responder(this, false, 'q2')">8</button>
+        <button class="option-btn" onclick="responder(this, false, 'q2')">10</button>
+        <button class="option-btn" onclick="responder(this, true, 'q2')">11</button>
+        <button class="option-btn" onclick="responder(this, false, 'q2')">13</button>
+      </div>
+      <div class="feedback" id="q2-feedback"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-question">
+      <div class="quiz-q">3. O gráfico de uma função do 1º grau é sempre…</div>
+      <div class="options">
+        <button class="option-btn" onclick="responder(this, false, 'q3')">Uma parábola</button>
+        <button class="option-btn" onclick="responder(this, true, 'q3')">Uma reta</button>
+        <button class="option-btn" onclick="responder(this, false, 'q3')">Um círculo</button>
+        <button class="option-btn" onclick="responder(this, false, 'q3')">Uma curva qualquer</button>
+      </div>
+      <div class="feedback" id="q3-feedback"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-question">
+      <div class="quiz-q">4. A equação <strong>−4x + 2y = 2</strong>, isolando y, fica:</div>
+      <div class="options">
+        <button class="option-btn" onclick="responder(this, false, 'q4')">y = −2x + 1</button>
+        <button class="option-btn" onclick="responder(this, false, 'q4')">y = 4x + 2</button>
+        <button class="option-btn" onclick="responder(this, true, 'q4')">y = 2x + 1</button>
+        <button class="option-btn" onclick="responder(this, false, 'q4')">y = −4x + 2</button>
+      </div>
+      <div class="feedback" id="q4-feedback"></div>
+    </div>
+  </div>
+
+  <!-- RESUMÃO -->
+  <div class="card" style="animation-delay:0.5s; border: 3px solid #667eea;">
+    <div class="section-title">
+      <div class="section-icon" style="background:#ebf5fb;">⭐</div>
+      <h2>Resumão da Aula</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">✓</div><div class="step-text"><strong>Forma algébrica</strong> é uma expressão matemática que representa uma função usando variáveis (x e y).</div></div>
+      <div class="step"><div class="step-num">✓</div><div class="step-text"><strong>Função do 1º grau:</strong> y = ax + b, com a ≠ 0. O a é o coeficiente angular e o b é o linear.</div></div>
+      <div class="step"><div class="step-num">✓</div><div class="step-text"><strong>Gráfico:</strong> sempre uma reta no plano cartesiano. Bastam 2 pontos para traçar!</div></div>
+      <div class="step"><div class="step-num">✓</div><div class="step-text"><strong>Equação linear do 1º grau:</strong> cx + dy = e. Isolando y, obtemos a função do 1º grau.</div></div>
+    </div>
+  </div>
+
+  <div class="footer">🎓 Aula baseada na BNCC – Habilidade EF08MA07 · Retas e Equações Lineares</div>
+</div>
+
+<script>
+// ---- GRÁFICO 1: y = x + 1 ----
+(function() {
+  const canvas = document.getElementById('grafico1');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const ox = W / 2, oy = H / 2;
+  const scale = 40;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid
+  ctx.strokeStyle = '#e8e8e8';
+  ctx.lineWidth = 1;
+  for (let i = -5; i <= 5; i++) {
+    ctx.beginPath(); ctx.moveTo(ox + i*scale, 0); ctx.lineTo(ox + i*scale, H); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, oy + i*scale); ctx.lineTo(W, oy + i*scale); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = '#555'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(W, oy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ox, 0); ctx.lineTo(ox, H); ctx.stroke();
+
+  // Labels
+  ctx.fillStyle = '#888'; ctx.font = 'bold 11px Nunito,sans-serif'; ctx.textAlign = 'center';
+  for (let i = -4; i <= 4; i++) {
+    if (i !== 0) {
+      ctx.fillText(i, ox + i*scale, oy + 16);
+      ctx.fillText(-i, ox + 6, oy + i*scale + 4);
+    }
+  }
+  ctx.fillStyle = '#555'; ctx.font = 'bold 13px Nunito,sans-serif';
+  ctx.fillText('x', W - 12, oy - 8);
+  ctx.fillText('y', ox + 12, 14);
+
+  // Line y = x + 1
+  ctx.strokeStyle = '#667eea'; ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(ox + (-5)*scale, oy - (-5+1)*scale);
+  ctx.lineTo(ox + 4*scale, oy - (4+1)*scale);
+  ctx.stroke();
+
+  // Points
+  const pts = [[-2,-1],[-1,0],[0,1],[1,2],[2,3],[3,4]];
+  pts.forEach(([x,y]) => {
+    ctx.beginPath();
+    ctx.arc(ox + x*scale, oy - y*scale, 6, 0, Math.PI*2);
+    ctx.fillStyle = '#e74c3c'; ctx.fill();
+    ctx.strokeStyle = 'white'; ctx.lineWidth = 2; ctx.stroke();
+
+    ctx.fillStyle = '#333'; ctx.font = 'bold 11px Nunito,sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(`(${x},${y})`, ox + x*scale + 8, oy - y*scale - 4);
+  });
+
+  // Label
+  ctx.fillStyle = '#667eea'; ctx.font = 'bold 13px Nunito,sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('y = x + 1', ox + 1*scale + 10, oy - 2*scale - 14);
+})();
+
+// ---- GRÁFICO 2: y = 2x + 1 ----
+(function() {
+  const canvas = document.getElementById('grafico2');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const ox = W / 2, oy = H / 2;
+  const scale = 40;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid
+  ctx.strokeStyle = '#e8e8e8'; ctx.lineWidth = 1;
+  for (let i = -5; i <= 5; i++) {
+    ctx.beginPath(); ctx.moveTo(ox + i*scale, 0); ctx.lineTo(ox + i*scale, H); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, oy + i*scale); ctx.lineTo(W, oy + i*scale); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = '#555'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(W, oy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ox, 0); ctx.lineTo(ox, H); ctx.stroke();
+
+  // Labels
+  ctx.fillStyle = '#888'; ctx.font = 'bold 11px Nunito,sans-serif'; ctx.textAlign = 'center';
+  for (let i = -4; i <= 4; i++) {
+    if (i !== 0) {
+      ctx.fillText(i, ox + i*scale, oy + 16);
+      ctx.fillText(-i, ox + 6, oy + i*scale + 4);
+    }
+  }
+  ctx.fillStyle = '#555'; ctx.font = 'bold 13px Nunito,sans-serif';
+  ctx.fillText('x', W - 12, oy - 8);
+  ctx.fillText('y', ox + 12, 14);
+
+  // Line y = 2x + 1
+  ctx.strokeStyle = '#9b59b6'; ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(ox + (-3)*scale, oy - (2*(-3)+1)*scale);
+  ctx.lineTo(ox + 2*scale, oy - (2*2+1)*scale);
+  ctx.stroke();
+
+  // Points
+  const pts2 = [[1,3],[-2,-3]];
+  pts2.forEach(([x,y]) => {
+    ctx.beginPath();
+    ctx.arc(ox + x*scale, oy - y*scale, 7, 0, Math.PI*2);
+    ctx.fillStyle = '#e74c3c'; ctx.fill();
+    ctx.strokeStyle = 'white'; ctx.lineWidth = 2.5; ctx.stroke();
+
+    ctx.fillStyle = '#333'; ctx.font = 'bold 12px Nunito,sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText(`(${x},${y})`, ox + x*scale + 10, oy - y*scale - 6);
+  });
+
+  ctx.fillStyle = '#9b59b6'; ctx.font = 'bold 13px Nunito,sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('y = 2x + 1', ox + 0.4*scale, oy - 2*scale - 14);
+})();
+
+// ---- CALCULADORA ----
+function calcular() {
+  const a = parseFloat(document.getElementById('val-a').value) || 0;
+  const b = parseFloat(document.getElementById('val-b').value) || 0;
+  const x = parseFloat(document.getElementById('val-x').value) || 0;
+  const y = a * x + b;
+  document.getElementById('calc-result').textContent = `y = ${y}`;
+  document.getElementById('calc-formula').textContent =
+    `Cálculo: y = ${a} × ${x} + (${b}) = ${a*x} + ${b} = ${y}`;
+}
+calcular();
+
+// ---- QUIZ ----
+function responder(btn, correto, qid) {
+  const parent = btn.parentElement;
+  const btns = parent.querySelectorAll('.option-btn');
+  const feedback = document.getElementById(qid + '-feedback');
+  if (parent.dataset.respondido) return;
+  parent.dataset.respondido = '1';
+  btns.forEach(b => b.style.pointerEvents = 'none');
+  if (correto) {
+    btn.classList.add('correct');
+    feedback.textContent = '✅ Correto! Muito bem!';
+    feedback.className = 'feedback show ok';
+  } else {
+    btn.classList.add('wrong');
+    feedback.textContent = '❌ Não é essa. Revise o conteúdo e tente entender o porquê!';
+    feedback.className = 'feedback show err';
+    // highlight correct
+    btns.forEach(b => {
+      if (b.textContent.includes('y = ax + b') ||
+          b.textContent.includes('11') ||
+          b.textContent.includes('reta') ||
+          b.textContent.includes('y = 2x + 1')) {
+        b.classList.add('correct');
+      }
+    });
+  }
+}
+</script>
+</body>
+</html>
