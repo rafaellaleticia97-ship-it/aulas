@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Números Decimais · Retomada · 6º Ano</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #f5f0e8;
+  --paper:  #fffef9;
+  --ink:    #1c1917;
+  --teal:   #0f766e;
+  --teal-l: #d0fdf4;
+  --amber:  #b45309;
+  --amber-l:#fef3c7;
+  --red:    #be123c;
+  --red-l:  #ffe4e6;
+  --rule:   #d6d3c8;
+  --muted:  #78716c;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Literata', Georgia, serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+/* HEADER */
+header {
+  background: var(--ink);
+  padding: 2.8rem 1.5rem 2.2rem;
+}
+.h-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.h-tag {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #a8a29e;
+}
+header h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 5.5vw, 3rem);
+  font-weight: 800;
+  color: #fafaf9;
+  line-height: 1.1;
+}
+header h1 em {
+  color: #5eead4;
+  font-style: normal;
+}
+.h-obj {
+  margin-top: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.h-obj span {
+  font-size: 0.9rem;
+  color: #a8a29e;
+  font-style: italic;
+}
+.h-obj strong { color: #d6d3c8; font-style: normal; }
+
+/* NAV */
+nav {
+  background: var(--paper);
+  border-bottom: 2px solid var(--rule);
+  position: sticky; top: 0; z-index: 100;
+}
+.nav-in {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-in::-webkit-scrollbar { display:none; }
+nav a {
+  padding: 0.85rem 1.1rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all .2s;
+}
+nav a:hover { color: var(--teal); border-bottom-color: var(--teal); }
+
+/* MAIN */
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2.5rem 1.2rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+/* SECTION */
+.sec { animation: up .45s ease both; }
+@keyframes up { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+.sec-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 0.3rem;
+}
+h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--teal);
+  padding-left: 0.7rem;
+}
+p { margin-bottom: 0.8rem; }
+p:last-child { margin-bottom: 0; }
+
+/* CALLOUT */
+.note {
+  border-left: 3px solid var(--amber);
+  background: var(--amber-l);
+  padding: 0.8rem 1rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1.2rem 0;
+  font-size: 0.96rem;
+  color: #78350f;
+}
+.note.green {
+  border-color: var(--teal);
+  background: var(--teal-l);
+  color: #0f4c47;
+}
+.note.red {
+  border-color: var(--red);
+  background: var(--red-l);
+  color: #881337;
+}
+
+/* ── CARTÕES DE CONTEXTO ── */
+.ctx-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.8rem;
+  margin: 1.2rem 0;
+}
+.ctx {
+  background: var(--paper);
+  border: 1.5px solid var(--rule);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.ctx-icon { font-size: 1.6rem; }
+.ctx-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--teal);
+}
+.ctx-desc { font-size: 0.85rem; color: var(--muted); font-style: italic; }
+.ctx-read { font-size: 0.88rem; font-weight: 600; color: var(--ink); }
+
+/* ── LEITURA TABLE ── */
+.read-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 0.97rem;
+}
+.read-table th {
+  background: var(--ink);
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+.read-table td {
+  padding: 0.65rem 0.8rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.read-table tr:last-child td { border-bottom: none; }
+.read-table tr:nth-child(even) td { background: #faf9f5; }
+.num-em {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--teal);
+}
+.read-em { font-weight: 600; color: var(--ink); }
+.tag-casa {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: var(--teal-l);
+  color: var(--teal);
+  border-radius: 4px;
+  padding: 0.15rem 0.5rem;
+}
+
+/* ── ERRO COMUM ── */
+.erro-pair {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+.erro-box {
+  flex: 1;
+  min-width: 200px;
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  border: 2px solid;
+}
+.erro-box.wrong { border-color: var(--red); background: var(--red-l); }
+.erro-box.right { border-color: var(--teal); background: var(--teal-l); }
+.erro-box .label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.wrong .label { color: var(--red); }
+.right .label { color: var(--teal); }
+.erro-box .math {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+.wrong .math { color: var(--red); }
+.right .math { color: var(--teal); }
+.erro-box p { font-size: 0.88rem; margin-top: 0.3rem; margin-bottom: 0; }
+
+/* ── RETA NUMÉRICA INTERATIVA ── */
+.reta-wrap {
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  border-radius: 14px;
+  padding: 1.5rem 1rem 1.2rem;
+  margin: 1.2rem 0;
+}
+.reta-wrap h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+.reta-scroll { overflow-x: auto; }
+svg.reta { display: block; min-width: 480px; }
+
+.reta-controls {
+  margin-top: 1.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.reta-controls label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-right: 0.3rem;
+}
+.reta-input {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  width: 90px;
+  padding: 0.4rem 0.6rem;
+  border: 2px solid var(--rule);
+  border-radius: 8px;
+  color: var(--ink);
+  text-align: center;
+}
+.reta-input:focus { outline: none; border-color: var(--teal); }
+.reta-btn {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.45rem 1rem;
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.reta-btn:hover { background: #0f4c47; }
+.reta-msg {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--muted);
+  margin-top: 0.6rem;
+  min-height: 1.4rem;
+}
+
+/* ── ENTRE DOIS INTEIROS ── */
+.zoom-wrap {
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  border-radius: 14px;
+  padding: 1.5rem 1rem 1.2rem;
+  margin: 1.2rem 0;
+}
+.zoom-wrap h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+.zoom-controls {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+.zoom-controls label { font-size: 0.9rem; font-weight: 600; }
+.seg-btn {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.9rem;
+  border: 2px solid var(--rule);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: all .2s;
+  color: var(--ink);
+}
+.seg-btn.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+.zoom-scroll { overflow-x: auto; }
+svg.zoom { display: block; min-width: 420px; }
+
+/* ── QUIZ ── */
+.q-item {
+  background: var(--paper);
+  border: 2px solid var(--rule);
+  border-radius: 12px;
+  padding: 1.1rem 1.2rem;
+  margin-bottom: 0.9rem;
+  transition: border-color .3s, background .3s;
+}
+.q-item.ok  { border-color: var(--teal); background: var(--teal-l); }
+.q-item.err { border-color: var(--red);  background: var(--red-l); }
+.q-text { font-weight: 600; margin-bottom: 0.7rem; }
+.q-opts { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.q-opt {
+  padding: 0.4rem 1rem;
+  border: 2px solid var(--rule);
+  border-radius: 100px;
+  background: #fff;
+  font-family: 'Literata', serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all .18s;
+  color: var(--ink);
+}
+.q-opt:hover:not(:disabled) { border-color: var(--teal); color: var(--teal); }
+.q-opt.right { background: var(--teal); border-color: var(--teal); color: #fff; }
+.q-opt.wrong { background: var(--red);  border-color: var(--red);  color: #fff; }
+.q-opt.show  { background: var(--teal-l); border-color: var(--teal); color: #0f4c47; }
+.q-fb { font-size: 0.9rem; margin-top: 0.6rem; font-style: italic; }
+.q-score {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--teal);
+  min-height: 2rem;
+  margin-top: 0.3rem;
+}
+.btn-reset {
+  display: block;
+  margin: 0.8rem auto 0;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.8rem;
+  border-radius: 100px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-reset:hover { background: var(--teal); }
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 2rem 1rem;
+  border-top: 1.5px solid var(--rule);
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-inner">
+    <div class="h-tag">Matemática · 6º Ano · Retomada</div>
+    <h1>Números<br><em>decimais</em></h1>
+    <div class="h-obj">
+      <span>Objetivos desta aula:</span>
+      <strong>① Reconhecer a linguagem dos decimais no cotidiano</strong>
+      <strong>② Localizar e ordenar decimais na reta numérica</strong>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-in">
+    <a href="#linguagem">Linguagem</a>
+    <a href="#leitura">Como ler</a>
+    <a href="#cuidado">Atenção!</a>
+    <a href="#reta">Reta numérica</a>
+    <a href="#zoom">Entre inteiros</a>
+    <a href="#atividade">Atividade</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ① LINGUAGEM NO COTIDIANO -->
+  <section class="sec" id="linguagem">
+    <div class="sec-num">① Linguagem</div>
+    <h2>Decimais que já conhecemos</h2>
+    <p>Números decimais aparecem sempre que precisamos de uma medida <strong>entre dois inteiros</strong>. Nos dados de animais isso é muito comum — veja:</p>
+
+    <div class="ctx-strip">
+      <div class="ctx">
+        <div class="ctx-icon">🐘</div>
+        <div class="ctx-val">4,2 m</div>
+        <div class="ctx-desc">altura de um elefante africano</div>
+        <div class="ctx-read">Lê-se: "quatro vírgula dois"</div>
+      </div>
+      <div class="ctx">
+        <div class="ctx-icon">🐬</div>
+        <div class="ctx-val">2,75 m</div>
+        <div class="ctx-desc">comprimento de um golfinho</div>
+        <div class="ctx-read">Lê-se: "dois vírgula setenta e cinco"</div>
+      </div>
+      <div class="ctx">
+        <div class="ctx-icon">🐆</div>
+        <div class="ctx-val">58,3 kg</div>
+        <div class="ctx-desc">peso de uma onça-pintada</div>
+        <div class="ctx-read">Lê-se: "cinquenta e oito vírgula três"</div>
+      </div>
+      <div class="ctx">
+        <div class="ctx-icon">🦜</div>
+        <div class="ctx-val">0,08 kg</div>
+        <div class="ctx-desc">peso de uma arara filhote</div>
+        <div class="ctx-read">Lê-se: "zero vírgula zero oito"</div>
+      </div>
+    </div>
+
+    <div class="note green">
+      💡 A <strong>vírgula</strong> separa a parte inteira (à esquerda) da parte decimal (à direita). No Brasil, sempre usamos vírgula — nunca ponto.
+    </div>
+  </section>
+
+  <!-- ② COMO LER -->
+  <section class="sec" id="leitura">
+    <div class="sec-num">② Linguagem</div>
+    <h2>Como ler e nomear cada algarismo</h2>
+    <p>Cada posição após a vírgula tem um nome. Vamos relembrar usando medidas reais de animais:</p>
+
+    <table class="read-table">
+      <thead>
+        <tr>
+          <th>Medida</th>
+          <th>Leitura</th>
+          <th>Última casa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="num-em">🦒 5,7 m</span></td>
+          <td><span class="read-em">cinco vírgula sete</span><br><span style="font-size:0.85rem;font-style:italic;color:var(--muted)">altura da girafa — "sete décimos"</span></td>
+          <td><span class="tag-casa">décimos</span></td>
+        </tr>
+        <tr>
+          <td><span class="num-em">🐧 1,08 m</span></td>
+          <td><span class="read-em">um vírgula zero oito</span><br><span style="font-size:0.85rem;font-style:italic;color:var(--muted)">altura do pinguim-imperador — "oito centésimos"</span></td>
+          <td><span class="tag-casa">centésimos</span></td>
+        </tr>
+        <tr>
+          <td><span class="num-em">🐝 0,015 kg</span></td>
+          <td><span class="read-em">zero vírgula zero quinze</span><br><span style="font-size:0.85rem;font-style:italic;color:var(--muted)">peso de uma abelha — "quinze milésimos"</span></td>
+          <td><span class="tag-casa">milésimos</span></td>
+        </tr>
+        <tr>
+          <td><span class="num-em">🐟 0,250 kg</span></td>
+          <td><span class="read-em">zero vírgula duzentos e cinquenta</span><br><span style="font-size:0.85rem;font-style:italic;color:var(--muted)">= 0,25 kg — o zero final não muda o valor</span></td>
+          <td><span class="tag-casa">milésimos</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      ✏️ <strong>Para nomear:</strong> leia a parte decimal como um inteiro e acrescente o nome da <em>última</em> casa. Em 0,015 → "015" = 15, última casa = milésimos → "quinze milésimos".
+    </div>
+  </section>
+
+  <!-- ③ ERROS COMUNS -->
+  <section class="sec" id="cuidado">
+    <div class="sec-num">③ Atenção!</div>
+    <h2>Dois erros muito comuns</h2>
+
+    <p><strong>Erro 1 — Zeros que importam:</strong> uma cobra-coral tem <strong>1,05 m</strong> e uma cobra-cipó tem <strong>1,5 m</strong>. São comprimentos diferentes!</p>
+
+    <div class="erro-pair">
+      <div class="erro-box wrong">
+        <div class="label">❌ Raciocínio errado</div>
+        <div class="math">1,05 = 1,5?</div>
+        <p>Não! 1,05 tem <em>zero</em> nos décimos e 5 nos centésimos.<br>1,5 tem 5 nos décimos.</p>
+      </div>
+      <div class="erro-box right">
+        <div class="label">✅ Correto</div>
+        <div class="math">1,5 &gt; 1,05</div>
+        <p>Compare casa a casa: décimos → 5 &gt; 0.<br>A cobra-cipó é maior!</p>
+      </div>
+    </div>
+
+    <p style="margin-top:1rem"><strong>Erro 2 — Mais algarismos não significa maior:</strong> um beija-flor pesa <strong>0,3 kg</strong> e um morcego pesa <strong>0,25 kg</strong>. Quem é mais pesado?</p>
+
+    <div class="erro-pair">
+      <div class="erro-box wrong">
+        <div class="label">❌ Raciocínio errado</div>
+        <div class="math">0,25 &gt; 0,3?</div>
+        <p>"25 é maior que 3" — mas compare os <em>décimos</em> primeiro, não o número inteiro.</p>
+      </div>
+      <div class="erro-box right">
+        <div class="label">✅ Correto</div>
+        <div class="math">0,3 &gt; 0,25</div>
+        <p>Décimos: 3 &gt; 2. Decidido!<br>O beija-flor (0,3) é mais pesado.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ RETA NUMÉRICA -->
+  <section class="sec" id="reta">
+    <div class="sec-num">④ Reta numérica</div>
+    <h2>Onde ficam os decimais na reta?</h2>
+    <p>Os decimais <strong>preenchem os espaços</strong> entre os inteiros. Quanto mais casas decimais, mais precisamos "ampliar" a reta para enxergar onde o número está.</p>
+
+    <div class="reta-wrap">
+      <h3>🔍 Localize um número na reta</h3>
+      <div class="reta-scroll">
+        <svg class="reta" id="reta-svg" viewBox="0 0 600 110" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="reta-controls">
+        <label for="reta-val">Digite um decimal (0 a 5):</label>
+        <input class="reta-input" type="number" id="reta-val" step="0.1" min="0" max="5" placeholder="ex: 2,7">
+        <button class="reta-btn" onclick="plotReta()">Localizar</button>
+        <button class="reta-btn" style="background:var(--muted)" onclick="clearReta()">Limpar</button>
+      </div>
+      <div class="reta-msg" id="reta-msg">Digite um número e clique em Localizar.</div>
+    </div>
+
+    <div class="note green">
+      🧭 Perceba que <strong>2,7</strong> fica bem perto do 3 (faltam apenas 3 décimos), enquanto <strong>2,1</strong> está logo após o 2. A posição na reta mostra o <em>tamanho</em> do número de forma visual.
+    </div>
+  </section>
+
+  <!-- ⑤ ZOOM ENTRE INTEIROS -->
+  <section class="sec" id="zoom">
+    <div class="sec-num">⑤ Reta numérica</div>
+    <h2>Ampliando: o que há entre dois inteiros?</h2>
+    <p>Quando "damos zoom" num segmento da reta, vemos os decimais que vivem entre dois inteiros consecutivos. Escolha um segmento e explore:</p>
+
+    <div class="zoom-wrap">
+      <h3>🔬 Zoom entre inteiros</h3>
+      <div class="zoom-controls">
+        <label>Segmento:</label>
+        <button class="seg-btn active" onclick="setZoom(0,1,this)">0 → 1</button>
+        <button class="seg-btn" onclick="setZoom(1,2,this)">1 → 2</button>
+        <button class="seg-btn" onclick="setZoom(2,3,this)">2 → 3</button>
+        <button class="seg-btn" onclick="setZoom(3,4,this)">3 → 4</button>
+      </div>
+      <div class="zoom-scroll">
+        <svg class="zoom" id="zoom-svg" viewBox="0 0 520 160" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="reta-msg" id="zoom-msg">Os traços marcam os décimos. Clique num traço para ver o valor.</div>
+    </div>
+
+    <div class="note">
+      📌 Entre qualquer dois inteiros consecutivos sempre há <strong>9 décimos</strong> intermediários (0,1 · 0,2 · … · 0,9). E entre cada décimo, há mais 9 centésimos. A reta numérica nunca acaba de se preencher!
+    </div>
+  </section>
+
+  <!-- ⑥ ATIVIDADE -->
+  <section class="sec" id="atividade">
+    <div class="sec-num">⑥ Atividade</div>
+    <h2>Vamos praticar?</h2>
+    <div id="quiz-wrap"></div>
+    <div class="q-score" id="q-score"></div>
+    <button class="btn-reset" onclick="buildQuiz()">↺ Tentar novamente</button>
+  </section>
+
+</main>
+
+<footer>Números Decimais · Retomada · 6º Ano · Matemática</footer>
+
+<script>
+/* ═══════════════════════════════════
+   RETA NUMÉRICA PRINCIPAL (0–5)
+═══════════════════════════════════ */
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const W = 600, H = 110;
+const X0 = 40, X1 = 560;
+const Y = 60;
+
+function x(val) { return X0 + (val / 5) * (X1 - X0); }
+
+function drawRetaBase(svgId) {
+  const svg = document.getElementById(svgId);
+  svg.innerHTML = '';
+
+  // linha
+  line(svg, X0, Y, X1, Y, '#1c1917', 2.5);
+  // seta
+  poly(svg, `${X1},${Y-5} ${X1+12},${Y} ${X1},${Y+5}`, '#1c1917');
+
+  // inteiros 0–5
+  for (let i = 0; i <= 5; i++) {
+    const cx = x(i);
+    line(svg, cx, Y-10, cx, Y+10, '#1c1917', 2.5);
+    text(svg, cx, Y+26, String(i), '#1c1917', 15, 700, 'Syne, sans-serif');
+  }
+
+  // décimos (traços menores)
+  for (let d = 1; d <= 49; d++) {
+    if (d % 10 === 0) continue;
+    const cx = x(d / 10);
+    const isMid = (d % 5 === 0);
+    line(svg, cx, Y - (isMid?7:5), cx, Y + (isMid?7:5), '#0f766e', 1.5);
+  }
+}
+
+let retaMark = null;
+
+function plotReta() {
+  const raw = document.getElementById('reta-val').value.replace(',', '.');
+  const val = parseFloat(raw);
+  const msg = document.getElementById('reta-msg');
+
+  if (isNaN(val) || val < 0 || val > 5) {
+    msg.textContent = '⚠️ Digite um número entre 0 e 5.';
+    return;
+  }
+
+  drawRetaBase('reta-svg');
+  const svg = document.getElementById('reta-svg');
+  const cx = x(val);
+  const inteiro = Math.floor(val);
+  const prox = Math.min(inteiro + 1, 5);
+  const dec = Math.round((val - inteiro) * 10);
+
+  // linha vertical pontilhada
+  dashLine(svg, cx, Y - 38, cx, Y - 8, '#be123c');
+
+  // ponto
+  circle(svg, cx, Y, 8, '#be123c');
+
+  // label
+  const lbl = val.toString().replace('.', ',');
+  text(svg, cx, Y - 44, lbl, '#be123c', 14, 800, 'Syne, sans-serif');
+
+  // mensagem
+  msg.textContent = `${lbl} fica entre ${inteiro} e ${prox}, tendo ${dec} décimo${dec!==1?'s':''} além de ${inteiro}.`;
+}
+
+function clearReta() {
+  drawRetaBase('reta-svg');
+  document.getElementById('reta-msg').textContent = 'Digite um número e clique em Localizar.';
+  document.getElementById('reta-val').value = '';
+}
+
+/* ═══════════════════════════════════
+   ZOOM ENTRE INTEIROS
+═══════════════════════════════════ */
+let zoomA = 0, zoomB = 1;
+const ZX0 = 30, ZX1 = 490, ZY = 80;
+const ZH = 160;
+
+function zx(val, a, b) { return ZX0 + ((val - a) / (b - a)) * (ZX1 - ZX0); }
+
+function drawZoom(a, b) {
+  const svg = document.getElementById('zoom-svg');
+  svg.innerHTML = '';
+
+  // linha
+  line(svg, ZX0, ZY, ZX1, ZY, '#1c1917', 2.5);
+  poly(svg, `${ZX1},${ZY-5} ${ZX1+10},${ZY} ${ZX1},${ZY+5}`, '#1c1917');
+
+  // extremos
+  for (const v of [a, b]) {
+    const cx = zx(v, a, b);
+    line(svg, cx, ZY-14, cx, ZY+14, '#1c1917', 3);
+    text(svg, cx, ZY+30, String(v), '#1c1917', 16, 700, 'Syne, sans-serif');
+  }
+
+  // décimos
+  for (let d = 1; d <= 9; d++) {
+    const val = a + d * 0.1;
+    const cx = zx(val, a, b);
+    const isMid = (d === 5);
+
+    // clicável
+    const g = document.createElementNS(SVG_NS, 'g');
+    g.style.cursor = 'pointer';
+    const vStr = val.toFixed(1).replace('.', ',');
+    g.onclick = () => {
+      document.getElementById('zoom-msg').textContent =
+        `${vStr} → ${d} décimo${d!==1?'s':''} além de ${a}. Fica ${isMid ? 'exatamente no meio entre' : (d < 5 ? 'mais perto de' : 'mais perto de')} ${d < 5 ? a : b}${d===5?' e '+b:'.'} `;
+      // highlight
+      drawZoom(a, b);
+      const svg2 = document.getElementById('zoom-svg');
+      const cxH = zx(val, a, b);
+      circle(svg2, cxH, ZY, 9, '#be123c');
+      dashLine(svg2, cxH, ZY - 55, cxH, ZY - 12, '#be123c');
+      text(svg2, cxH, ZY - 60, vStr, '#be123c', 13, 800, 'Syne, sans-serif');
+    };
+
+    const tk = document.createElementNS(SVG_NS, 'line');
+    tk.setAttribute('x1', cx); tk.setAttribute('y1', ZY - (isMid?12:8));
+    tk.setAttribute('x2', cx); tk.setAttribute('y2', ZY + (isMid?12:8));
+    tk.setAttribute('stroke', '#0f766e');
+    tk.setAttribute('stroke-width', isMid ? '2.5' : '1.8');
+    g.appendChild(tk);
+
+    const hitRect = document.createElementNS(SVG_NS, 'rect');
+    hitRect.setAttribute('x', cx - 14); hitRect.setAttribute('y', ZY - 20);
+    hitRect.setAttribute('width', 28); hitRect.setAttribute('height', 40);
+    hitRect.setAttribute('fill', 'transparent');
+    g.appendChild(hitRect);
+
+    if (isMid) {
+      const lbl = document.createElementNS(SVG_NS, 'text');
+      lbl.setAttribute('x', cx); lbl.setAttribute('y', ZY + 50);
+      lbl.setAttribute('text-anchor', 'middle');
+      lbl.setAttribute('font-size', '12');
+      lbl.setAttribute('font-weight', '700');
+      lbl.setAttribute('fill', '#0f766e');
+      lbl.setAttribute('font-family', 'Syne, sans-serif');
+      lbl.textContent = vStr;
+      g.appendChild(lbl);
+    }
+
+    svg.appendChild(g);
+  }
+
+  // centésimos (traços bem menores)
+  for (let d = 0; d <= 9; d++) {
+    for (let c = 1; c <= 9; c++) {
+      if (c === 5) continue; // já marcado pelo décimo midpoint? não, apenas pula o 5 que já é meio décimo
+      const val = a + d * 0.1 + c * 0.01;
+      if (val >= b) continue;
+      const cx = zx(val, a, b);
+      line(svg, cx, ZY - 4, cx, ZY + 4, '#d6d3c8', 1);
+    }
+  }
+
+  // label instrução
+  const instr = document.createElementNS(SVG_NS, 'text');
+  instr.setAttribute('x', (ZX0 + ZX1) / 2);
+  instr.setAttribute('y', ZH - 10);
+  instr.setAttribute('text-anchor', 'middle');
+  instr.setAttribute('font-size', '11');
+  instr.setAttribute('fill', '#78716c');
+  instr.setAttribute('font-style', 'italic');
+  instr.setAttribute('font-family', 'Literata, serif');
+  instr.textContent = 'Clique em qualquer traço verde para ver o valor';
+  svg.appendChild(instr);
+}
+
+function setZoom(a, b, btn) {
+  zoomA = a; zoomB = b;
+  document.querySelectorAll('.seg-btn').forEach(x => x.classList.remove('active'));
+  btn.classList.add('active');
+  drawZoom(a, b);
+  document.getElementById('zoom-msg').textContent = 'Os traços verdes marcam os décimos. Clique num traço para ver o valor.';
+}
+
+/* ═══════════════════════════════════
+   SVG HELPERS
+═══════════════════════════════════ */
+function line(svg, x1, y1, x2, y2, stroke, sw) {
+  const el = document.createElementNS(SVG_NS, 'line');
+  el.setAttribute('x1',x1);el.setAttribute('y1',y1);
+  el.setAttribute('x2',x2);el.setAttribute('y2',y2);
+  el.setAttribute('stroke',stroke);
+  el.setAttribute('stroke-width',sw);
+  el.setAttribute('stroke-linecap','round');
+  svg.appendChild(el); return el;
+}
+function dashLine(svg, x1, y1, x2, y2, stroke) {
+  const el = line(svg, x1, y1, x2, y2, stroke, 1.5);
+  el.setAttribute('stroke-dasharray','4,3');
+}
+function circle(svg, cx, cy, r, fill) {
+  const el = document.createElementNS(SVG_NS, 'circle');
+  el.setAttribute('cx',cx);el.setAttribute('cy',cy);
+  el.setAttribute('r',r);el.setAttribute('fill',fill);
+  svg.appendChild(el);
+}
+function poly(svg, points, fill) {
+  const el = document.createElementNS(SVG_NS, 'polygon');
+  el.setAttribute('points',points);el.setAttribute('fill',fill);
+  svg.appendChild(el);
+}
+function text(svg, x, y, txt, fill, size, weight, family) {
+  const el = document.createElementNS(SVG_NS, 'text');
+  el.setAttribute('x',x);el.setAttribute('y',y);
+  el.setAttribute('text-anchor','middle');
+  el.setAttribute('fill',fill);
+  el.setAttribute('font-size',size||13);
+  el.setAttribute('font-weight',weight||400);
+  el.setAttribute('font-family',family||'Literata, serif');
+  el.textContent = txt;
+  svg.appendChild(el); return el;
+}
+
+/* ═══════════════════════════════════
+   QUIZ
+═══════════════════════════════════ */
+const perguntas = [
+  {
+    q: 'Uma abelha pesa 0,08 kg. Como se lê esse número?',
+    opts: ['Oito décimos', 'Zero vírgula oitenta', 'Oito centésimos', 'Zero vírgula oito'],
+    ok: 2,
+    fb: 'Em 0,08 há zero na casa dos décimos e 8 nos centésimos → oito centésimos.'
+  },
+  {
+    q: 'Quatro filhotes de lobo foram pesados. Qual é o mais pesado?',
+    opts: ['0,5 kg', '0,48 kg', '0,501 kg', '0,49 kg'],
+    ok: 2,
+    fb: 'Compare os décimos: todos têm 4 ou 5. 0,501 = 0,501 > 0,500. O terceiro filhote é o mais pesado!'
+  },
+  {
+    q: 'Uma onça percorreu 3,7 km. Na reta numérica, entre quais inteiros fica esse valor?',
+    opts: ['Entre 2 e 3', 'Entre 3 e 4', 'Entre 4 e 5', 'Exatamente no 3'],
+    ok: 1,
+    fb: 'A parte inteira é 3 e a parte decimal é 0,7 — o número está entre 3 e 4, mais perto do 4.'
+  },
+  {
+    q: 'Um peixe mede 1,5 m e outro mede 1,50 m. São tamanhos diferentes?',
+    opts: ['Não, são iguais', 'Sim, 1,50 é maior', 'Sim, 1,5 é maior', 'Depende'],
+    ok: 0,
+    fb: 'Zeros à direita da parte decimal não mudam o valor: 1,5 = 1,50 = 1,500.'
+  },
+  {
+    q: 'Na reta, que medida fica exatamente no meio entre 2 m e 3 m?',
+    opts: ['2,3 m', '2,4 m', '2,5 m', '2,8 m'],
+    ok: 2,
+    fb: 'O ponto médio entre 2 e 3 é 2,5 — cinco décimos além do 2.'
+  },
+  {
+    q: 'A ficha do zoológico diz que a girafa mede "5,7 m". Qual a leitura correta?',
+    opts: [
+      'Cinco vírgula sete metros',
+      'Cinquenta e sete metros',
+      'Cinco e sete milésimos',
+      'Um vírgula cinco sete'
+    ],
+    ok: 0,
+    fb: '5,7 → parte inteira 5, um décimo após a vírgula → "cinco vírgula sete".'
+  }
+];
+
+let feito = [];
+let acertos = 0;
+
+function buildQuiz() {
+  feito = new Array(perguntas.length).fill(false);
+  acertos = 0;
+  document.getElementById('q-score').textContent = '';
+  const wrap = document.getElementById('quiz-wrap');
+  wrap.innerHTML = '';
+  perguntas.forEach((p, pi) => {
+    const item = document.createElement('div');
+    item.className = 'q-item';
+    item.id = 'qi' + pi;
+    const qt = document.createElement('div');
+    qt.className = 'q-text';
+    qt.textContent = `${pi+1}. ${p.q}`;
+    item.appendChild(qt);
+    const opts = document.createElement('div');
+    opts.className = 'q-opts';
+    p.opts.forEach((o, oi) => {
+      const b = document.createElement('button');
+      b.className = 'q-opt';
+      b.textContent = o;
+      b.onclick = () => responder(pi, oi);
+      opts.appendChild(b);
+    });
+    item.appendChild(opts);
+    const fb = document.createElement('div');
+    fb.className = 'q-fb';
+    fb.id = 'qfb' + pi;
+    item.appendChild(fb);
+    wrap.appendChild(item);
+  });
+}
+
+function responder(pi, sel) {
+  if (feito[pi]) return;
+  feito[pi] = true;
+  const p = perguntas[pi];
+  const item = document.getElementById('qi' + pi);
+  const btns = item.querySelectorAll('.q-opt');
+  const fb   = document.getElementById('qfb' + pi);
+  btns.forEach(b => b.disabled = true);
+  btns[p.ok].classList.add('show');
+  if (sel === p.ok) {
+    btns[sel].classList.add('right');
+    item.classList.add('ok');
+    fb.style.color = '#0f4c47';
+    fb.textContent = '✅ ' + p.fb;
+    acertos++;
+  } else {
+    btns[sel].classList.add('wrong');
+    item.classList.add('err');
+    fb.style.color = '#881337';
+    fb.textContent = '💡 Quase! ' + p.fb;
+  }
+  if (feito.every(Boolean)) {
+    const e = acertos >= 5 ? '🏆' : acertos >= 3 ? '👍' : '📚';
+    document.getElementById('q-score').textContent =
+      `${e} Você acertou ${acertos} de ${perguntas.length}!`;
+  }
+}
+
+/* INIT */
+drawRetaBase('reta-svg');
+drawZoom(0, 1);
+buildQuiz();
+</script>
+</body>
+</html>
