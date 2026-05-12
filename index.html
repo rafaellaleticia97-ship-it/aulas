@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisão Matemática – 6º Ano 🚀</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0c29;--card:#1a1740;--card2:#201d50;--a1:#f9ca24;--a2:#6c5ce7;--a3:#00cec9;--a4:#fd79a8;--a5:#55efc4;--text:#f0f0f0;--soft:#b0aed0;--r:18px;--sh:0 8px 32px rgba(0,0,0,.4)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;background-image:radial-gradient(ellipse at 20% 20%,#2d1b69 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,#0d3b56 0%,transparent 50%)}
+.stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.star{position:absolute;background:white;border-radius:50%;animation:twinkle 3s infinite alternate}
+@keyframes twinkle{0%{opacity:.2}100%{opacity:1}}
+header{text-align:center;padding:36px 20px 18px;position:relative;z-index:1}
+header .emoji-row{font-size:2.4rem;margin-bottom:6px}
+header h1{font-family:'Fredoka One',cursive;font-size:clamp(1.9rem,5vw,3.2rem);background:linear-gradient(135deg,var(--a1),var(--a4),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1}
+header p{color:var(--soft);font-size:1rem;margin-top:6px}
+.tabs{display:flex;justify-content:center;gap:10px;margin:0 auto 26px;max-width:700px;padding:0 20px;position:relative;z-index:1;flex-wrap:wrap}
+.tab-btn{font-family:'Fredoka One',cursive;font-size:1rem;padding:10px 26px;border:2px solid rgba(255,255,255,.12);border-radius:50px;cursor:pointer;background:var(--card2);color:var(--soft);transition:all .2s}
+.tab-btn.active{background:linear-gradient(135deg,var(--a2),var(--a4));color:#fff;border-color:transparent;box-shadow:0 4px 18px rgba(108,92,231,.45)}
+.tab-btn:hover:not(.active){border-color:var(--a2);color:#fff}
+.page{max-width:700px;margin:0 auto;padding:0 20px 70px;position:relative;z-index:1}
+.section{display:none}.section.active{display:block}
+@keyframes slideIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── REVIEW ── */
+.topic-block{background:var(--card);border-radius:var(--r);padding:24px 26px;margin-bottom:22px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.06);animation:slideIn .4s ease;position:relative;overflow:hidden}
+.topic-block::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--a2),var(--a3))}
+.topic-tag{display:inline-flex;align-items:center;gap:8px;font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--a3);margin-bottom:14px}
+.topic-tag .ico{font-size:1.5rem}
+.info-box{background:rgba(255,255,255,.04);border-radius:12px;padding:14px 16px;margin:10px 0;border-left:4px solid var(--a2);font-size:.98rem;line-height:1.75}
+.info-box strong{color:var(--a1)}
+.concept-row{display:flex;align-items:flex-start;gap:12px;margin:8px 0;padding:10px 14px;background:rgba(108,92,231,.1);border-radius:10px;font-size:.95rem;line-height:1.6}
+.concept-row .badge{min-width:36px;height:36px;border-radius:50%;background:var(--a2);color:#fff;font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.example-box{background:linear-gradient(135deg,rgba(0,206,201,.1),rgba(108,92,231,.08));border:1px solid var(--a3);border-radius:12px;padding:14px 16px;margin:12px 0;font-size:.95rem;line-height:1.85}
+.example-box .ex-title{font-family:'Fredoka One',cursive;color:var(--a3);font-size:1rem;margin-bottom:6px}
+.example-box code{background:rgba(255,255,255,.08);padding:2px 8px;border-radius:6px;font-family:monospace;color:var(--a1);font-size:1rem}
+.tip-box{background:rgba(249,202,36,.08);border:1px solid var(--a1);border-radius:12px;padding:12px 16px;margin:10px 0;font-size:.92rem;display:flex;gap:10px;align-items:flex-start}
+.tip-box .tip-ico{font-size:1.4rem;flex-shrink:0}
+.canvas-wrap{display:flex;justify-content:center;margin:14px 0;background:#fff;border-radius:12px;overflow:hidden}
+canvas{display:block}
+.start-quiz-btn{display:block;width:100%;margin-top:28px;background:linear-gradient(135deg,var(--a1),#e17055);color:#000;border:none;border-radius:14px;padding:18px;font-family:'Fredoka One',cursive;font-size:1.3rem;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(249,202,36,.35)}
+.start-quiz-btn:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(249,202,36,.55)}
+
+/* ── QUIZ ── */
+.score-badge{position:fixed;top:16px;right:16px;z-index:100;background:var(--card);border:2px solid var(--a1);border-radius:50px;padding:6px 18px;font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--a1);box-shadow:0 4px 20px rgba(249,202,36,.3)}
+.progress-wrap{max-width:700px;margin:0 auto 24px;padding:0 20px;position:relative;z-index:1}
+.prog-label{display:flex;justify-content:space-between;font-size:.88rem;color:var(--soft);margin-bottom:5px}
+.prog-bar{height:13px;background:var(--card2);border-radius:99px;overflow:hidden;border:1px solid rgba(255,255,255,.1)}
+.prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--a2),var(--a3));transition:width .6s cubic-bezier(.4,0,.2,1)}
+.topic-header{display:flex;align-items:center;gap:12px;background:var(--card2);border-radius:var(--r);padding:13px 18px;margin-bottom:18px;border-left:5px solid var(--a2);animation:slideIn .5s ease}
+.th-icon{font-size:2rem}.th-title{font-family:'Fredoka One',cursive;font-size:1.25rem;color:var(--a3)}.th-sub{font-size:.82rem;color:var(--soft)}
+.question-card{background:var(--card);border-radius:var(--r);padding:26px 26px 22px;margin-bottom:16px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.06);animation:slideIn .4s ease;position:relative;overflow:hidden}
+.question-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--a2),var(--a4))}
+.q-num{font-size:.78rem;font-weight:700;text-transform:uppercase;color:var(--a4);letter-spacing:2px;margin-bottom:8px}
+.q-text{font-size:1.1rem;font-weight:700;line-height:1.55;margin-bottom:18px}
+.options{display:grid;gap:10px}
+.opt-btn{display:flex;align-items:center;gap:14px;background:var(--card2);border:2px solid rgba(255,255,255,.08);color:var(--text);border-radius:13px;padding:13px 17px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.98rem;font-weight:600;text-align:left;transition:all .2s;width:100%}
+.opt-btn:hover:not(:disabled){border-color:var(--a2);background:rgba(108,92,231,.18);transform:translateX(4px)}
+.opt-letter{min-width:33px;height:33px;background:rgba(255,255,255,.08);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0}
+.opt-btn.correct{border-color:var(--a5);background:rgba(85,239,196,.14)}.opt-btn.correct .opt-letter{background:var(--a5);color:#000}
+.opt-btn.wrong{border-color:var(--a4);background:rgba(253,121,168,.14);animation:shake .4s ease}.opt-btn.wrong .opt-letter{background:var(--a4);color:#fff}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.opt-btn:disabled{cursor:not-allowed}.opt-btn:disabled:not(.correct):not(.wrong){opacity:.4}
+.tf-row{background:var(--card2);border-radius:12px;padding:12px 14px;font-size:.93rem;line-height:1.5;margin-bottom:8px}
+.tf-stmt{margin-bottom:8px;color:var(--text)}.tf-btns{display:flex;gap:8px}
+.tf-btn{flex:1;padding:8px;border-radius:10px;border:2px solid rgba(255,255,255,.1);font-family:'Nunito',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;background:rgba(255,255,255,.05);color:var(--text);transition:all .2s}
+.tf-btn:hover:not(:disabled){border-color:var(--a2);background:rgba(108,92,231,.2)}
+.tf-btn.correct{border-color:var(--a5)!important;background:rgba(85,239,196,.2)!important;color:var(--a5)}
+.tf-btn.wrong{border-color:var(--a4)!important;background:rgba(253,121,168,.2)!important;color:var(--a4)}
+.tf-btn:disabled{cursor:not-allowed}
+.fill-wrap{display:flex;flex-direction:column;gap:10px}
+.fill-row{display:flex;align-items:center;gap:10px;background:var(--card2);border-radius:12px;padding:12px 16px;font-size:1rem;font-weight:600;flex-wrap:wrap}
+.fill-row select{background:var(--bg);color:var(--text);border:2px solid var(--a2);border-radius:8px;padding:4px 8px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;cursor:pointer}
+.fill-row select.correct{border-color:var(--a5);color:var(--a5)}.fill-row select.wrong{border-color:var(--a4);color:var(--a4)}
+.input-wrap{display:flex;flex-direction:column;gap:10px}
+.input-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card2);border-radius:12px;padding:12px 16px;font-size:1rem;font-weight:600}
+.input-row input{background:var(--bg);color:var(--text);border:2px solid var(--a2);border-radius:8px;padding:4px 10px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;width:90px;text-align:center}
+.input-row input.correct{border-color:var(--a5);color:var(--a5)}.input-row input.wrong{border-color:var(--a4);color:var(--a4)}
+.check-btn{display:block;width:100%;margin-top:12px;padding:13px;background:linear-gradient(135deg,var(--a2),var(--a3));color:#fff;border:none;border-radius:12px;font-family:'Fredoka One',cursive;font-size:1.1rem;cursor:pointer;transition:all .2s}
+.check-btn:hover{transform:translateY(-1px)}.check-btn:disabled{opacity:.5;cursor:not-allowed}
+.explanation{margin-top:18px;background:linear-gradient(135deg,rgba(0,206,201,.08),rgba(108,92,231,.08));border:1px solid var(--a3);border-radius:14px;padding:18px;display:none;animation:slideIn .5s ease}
+.explanation.show{display:block}
+.exp-title{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--a3);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.exp-body{font-size:.95rem;line-height:1.7;color:var(--text)}.exp-body strong{color:var(--a1)}
+.step{display:flex;align-items:flex-start;gap:10px;margin:7px 0;padding:9px 12px;background:rgba(255,255,255,.04);border-radius:9px}
+.step-n{min-width:25px;height:25px;border-radius:50%;background:var(--a2);color:#fff;font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.next-btn{display:none;width:100%;margin-top:14px;background:linear-gradient(135deg,var(--a2),var(--a4));color:#fff;border:none;border-radius:13px;padding:15px;font-family:'Fredoka One',cursive;font-size:1.1rem;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(108,92,231,.35)}
+.next-btn:hover{transform:translateY(-2px)}.next-btn.show{display:block}
+#result-screen{display:none;text-align:center;animation:slideIn .5s ease;padding:0 20px 60px;max-width:700px;margin:0 auto;position:relative;z-index:1}
+.result-card{background:var(--card);border-radius:22px;padding:38px 28px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.08)}
+.res-emoji{font-size:5rem;margin-bottom:14px}.res-title{font-family:'Fredoka One',cursive;font-size:2.3rem;margin-bottom:6px}
+.res-score{font-size:3.8rem;font-family:'Fredoka One',cursive;background:linear-gradient(135deg,var(--a1),var(--a5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:10px 0}
+.res-msg{color:var(--soft);font-size:1.05rem;margin-bottom:24px;line-height:1.6}
+.restart-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.restart-btn{background:linear-gradient(135deg,var(--a1),#e17055);color:#000;border:none;border-radius:13px;padding:14px 34px;font-family:'Fredoka One',cursive;font-size:1.2rem;cursor:pointer;transition:all .2s}
+.restart-btn:hover{transform:scale(1.04)}
+.review-again-btn{background:var(--card2);color:var(--text);border:2px solid var(--a2);border-radius:13px;padding:14px 28px;font-family:'Fredoka One',cursive;font-size:1.1rem;cursor:pointer;transition:all .2s}
+.review-again-btn:hover{background:rgba(108,92,231,.25)}
+.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%);padding:11px 26px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1.15rem;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.ct{background:var(--a5);color:#000}.toast.wt{background:var(--a4);color:#fff}.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="score-badge" id="score-badge" style="display:none">⭐ <span id="score">0</span> pts</div>
+<div class="toast" id="toast"></div>
+
+<header>
+  <div class="emoji-row">🚀 📐 🔢</div>
+  <h1>Revisão de Matemática</h1>
+  <p>6º Ano · Estude as explicações, depois teste no Quiz!</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('review')">📖 Explicações</button>
+  <button class="tab-btn" onclick="switchTab('quiz')">🎯 Quiz</button>
+</div>
+
+<div class="page">
+<!-- ══════════════════════════ EXPLICAÇÕES ══════════════════════════ -->
+<div class="section active" id="sec-review">
+
+  <!-- 1. PLANO CARTESIANO -->
+  <div class="topic-block">
+    <div class="topic-tag"><span class="ico">📍</span> Plano Cartesiano</div>
+    <div class="info-box">
+      O plano cartesiano é como um mapa com dois eixos:<br>
+      • <strong>Eixo X</strong> → horizontal (vai para os lados) ↔<br>
+      • <strong>Eixo Y</strong> → vertical (sobe e desce) ↕<br><br>
+      Um ponto é escrito sempre como <strong>(x, y)</strong> — primeiro o horizontal, depois o vertical!
+    </div>
+    <div class="canvas-wrap"><canvas id="cartesian" width="320" height="260"></canvas></div>
+    <div class="example-box">
+      <div class="ex-title">✏️ Como marcar o ponto A(2, 4):</div>
+      <strong>Passo 1:</strong> Ande <code>2</code> casas para a <strong>direita</strong> (eixo X)<br>
+      <strong>Passo 2:</strong> Suba <code>4</code> casas para <strong>cima</strong> (eixo Y)<br>
+      <strong>Passo 3:</strong> Marque o ponto! ✅<br><br>
+      O plano acima mostra os pontos A(2,4), B(1,1), C(3,0) e D(5,5).
+    </div>
+  </div>
+
+  <!-- 2. RETAS -->
+  <div class="topic-block">
+    <div class="topic-tag"><span class="ico">📏</span> Tipos de Retas</div>
+    <div class="concept-row"><div class="badge">∥</div>
+      <div><strong>Retas Paralelas</strong> — nunca se encontram e ficam sempre à mesma distância uma da outra.<br>
+      🚂 Ex: os trilhos do trem, as linhas do caderno.</div>
+    </div>
+    <div class="concept-row"><div class="badge">⊥</div>
+      <div><strong>Retas Perpendiculares</strong> — se encontram em um ponto e formam exatamente <strong>90°</strong> (ângulo reto).<br>
+      🏠 Ex: a esquina de uma sala, o sinal de "+", a letra "T".</div>
+    </div>
+    <div class="concept-row"><div class="badge">✕</div>
+      <div><strong>Retas Oblíquas</strong> — se encontram em um ponto, mas NÃO formam 90°. Formam qualquer outro ângulo.<br>
+      ✂️ Ex: as lâminas de uma tesoura abertas, as agulhas do relógio.</div>
+    </div>
+    <div class="canvas-wrap"><canvas id="retas-canvas" width="320" height="140"></canvas></div>
+    <div class="tip-box"><span class="tip-ico">🎯</span><div><strong>Resumão:</strong> Paralelas = nunca se encontram | Perpendiculares = se encontram em 90° | Oblíquas = se encontram em outro ângulo qualquer</div></div>
+  </div>
+
+  <!-- 3. ÂNGULOS -->
+  <div class="topic-block">
+    <div class="topic-tag"><span class="ico">📐</span> Classificação dos Ângulos</div>
+    <div class="concept-row"><div class="badge" style="background:var(--a3);font-size:.7rem">0-89</div>
+      <div><strong>Ângulo Agudo</strong> — entre 0° e 89° (menor que 90°)<br>
+      Ex: 30°, 45°, 60°... Ponta bem fechadinha!</div>
+    </div>
+    <div class="concept-row"><div class="badge" style="background:var(--a5);color:#000;font-size:.7rem">90°</div>
+      <div><strong>Ângulo Reto</strong> — exatamente 90°<br>
+      Ex: o cantinho do caderno, a esquina da parede. Tem aquele símbolo de quadradinho! □</div>
+    </div>
+    <div class="concept-row"><div class="badge" style="background:var(--a4);font-size:.65rem">91-179</div>
+      <div><strong>Ângulo Obtuso</strong> — entre 91° e 179°<br>
+      Ex: 120°, 135°... Mais aberto que o reto, mas ainda não é uma linha reta.</div>
+    </div>
+    <div class="concept-row"><div class="badge" style="background:var(--a1);color:#000;font-size:.65rem">180°</div>
+      <div><strong>Ângulo Raso</strong> — exatamente 180°<br>
+      Ex: uma linha reta perfeita. É como uma estrada completamente reta!</div>
+    </div>
+    <div class="canvas-wrap"><canvas id="angulos-canvas" width="320" height="130"></canvas></div>
+  </div>
+
+  <!-- 4. DECIMAIS - VALOR POSICIONAL -->
+  <div class="topic-block">
+    <div class="topic-tag"><span class="ico">🔢</span> Números Decimais – Valor de cada algarismo</div>
+    <div class="info-box">
+      Nos decimais, cada posição após a vírgula tem um nome especial:<br><br>
+      <span style="display:inline-block;font-family:monospace;font-size:1.4rem;letter-spacing:4px;background:rgba(255,255,255,.06);padding:8px 14px;border-radius:8px">
+        <span style="color:var(--a3)">5</span><span style="color:var(--a3)">1</span><span style="color:var(--text)">,</span><span style="color:var(--a1)">7</span><span style="color:var(--a4)">3</span><span style="color:var(--a5)">2</span>
+      </span><br><br>
+      <span style="color:var(--a3)">■</span> <strong>51</strong> = parte inteira &nbsp;&nbsp;
+      <span style="color:var(--a1)">■</span> <strong>7</strong> = décimos (1ª casa) &nbsp;&nbsp;
+      <span style="color:var(--a4)">■</span> <strong>3</strong> = centésimos (2ª casa) &nbsp;&nbsp;
+      <span style="color:var(--a5)">■</span> <strong>2</strong> = milésimos (3ª casa)
+    </div>
+    <div class="example-box">
+      <div class="ex-title">📌 Exemplos:</div>
+      51,<strong>7</strong> = 7 décimos (exemplo dado) ✅<br>
+      0,0<strong>3</strong> = 3 centésimos (2ª casa após vírgula)<br>
+      0,<strong>5</strong>4 = 5 décimos (1ª casa após vírgula)<br>
+      <strong>1</strong>,5 = 1 inteiro (antes da vírgula)<br>
+      2,00<strong>2</strong> = 2 milésimos (3ª casa após vírgula)
+    </div>
+    <div class="tip-box"><span class="tip-ico">💰</span><div>Pense no dinheiro! R$2,35 → 2 reais (inteiros), 3 décimos de real, 5 centésimos = 5 centavos. Fica fácil!</div></div>
+  </div>
+
+  <!-- 5. COMPARAR DECIMAIS -->
+  <div class="topic-block">
+    <div class="topic-tag"><span class="ico">⚖️</span> Comparando Decimais – &lt;, &gt; ou =</div>
+    <div class="info-box">
+      Para comparar, complete com zeros e compare coluna a coluna (da esquerda para a direita)!
+    </div>
+    <div class="example-box">
+      <div class="ex-title">📌 Exemplos:</div>
+      <strong>5,1 ___ 5,3</strong> → parte inteira igual (5=5); décimos: 1 &lt; 3 → <strong>5,1 &lt; 5,3</strong> ✅<br>
+      <strong>2,0 ___ 2</strong> → 2,0 = 2,00 = 2. Zero à direita não muda o valor! → <strong>2,0 = 2</strong> ✅<br>
+      <strong>0,3 ___ 0,8</strong> → inteiros iguais; décimos: 3 &lt; 8 → <strong>0,3 &lt; 0,8</strong> ✅<br>
+      <strong>3,5 ___ 3,05</strong> → compare: 3,<u>50</u> vs 3,<u>05</u>; décimos: 5 &gt; 0 → <strong>3,5 &gt; 3,05</strong> ✅
+    </div>
+    <div class="tip-box"><span class="tip-ico">🐊</span><div>Pense no símbolo <strong>&lt;</strong> como a boca de um jacaré muito guloso — ele come sempre o <strong>maior número</strong>. A boca fica sempre virada para o maior! Por exemplo: <strong>4,5 &gt; 4,4</strong> → o jacaré come o 4,5!</div></div>
+  </div>
+
+  <!-- 6. OPERAÇÕES -->
+  <div class="topic-block">
+    <div class="topic-tag"><span class="ico">➕</span> Operações com Decimais</div>
+    <div class="info-box"><strong>Regra de ouro:</strong> Vírgula embaixo de vírgula! Complete com zeros quando necessário.</div>
+    <div class="example-box">
+      <div class="ex-title">➕ Exemplo de adição</div>
+      <span style="font-family:monospace;font-size:1.1rem">&nbsp;&nbsp;2,5<br>+ 3,2<br>————<br>&nbsp;&nbsp;<strong>5,7</strong></span>
+    </div>
+    <div class="example-box">
+      <div class="ex-title">➕ Adição com casas diferentes</div>
+      <span style="font-family:monospace;font-size:1.1rem">&nbsp;&nbsp;1,20<br>+ 3,40 ← (complete com zero)<br>————<br>&nbsp;&nbsp;<strong>4,60</strong></span>
+    </div>
+    <div class="example-box">
+      <div class="ex-title">➖ Exemplo de subtração</div>
+      <span style="font-family:monospace;font-size:1.1rem">&nbsp;&nbsp;4,224<br>− 0,010<br>————<br>&nbsp;&nbsp;<strong>4,214</strong></span>
+    </div>
+    <div class="example-box">
+      <div class="ex-title">➖ Subtração simples</div>
+      <span style="font-family:monospace;font-size:1.1rem">&nbsp;&nbsp;6,3<br>− 3,1<br>————<br>&nbsp;&nbsp;<strong>3,2</strong></span>
+    </div>
+    <div class="tip-box"><span class="tip-ico">📏</span><div>Sempre: <strong>vírgula embaixo de vírgula</strong>, e zeros à direita da vírgula não mudam o valor!</div></div>
+  </div>
+
+  <button class="start-quiz-btn" onclick="switchTab('quiz')">🎯 Estudei! Vamos ao Quiz!</button>
+</div><!-- /sec-review -->
+
+<!-- ══════════════════════════ QUIZ ══════════════════════════ -->
+<div class="section" id="sec-quiz">
+  <div class="progress-wrap" id="prog-wrap">
+    <div class="prog-label"><span>Progresso</span><span id="prog-text">0 / 8</span></div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+  <div id="quiz-container"></div>
+</div>
+</div><!-- /page -->
+
+<!-- RESULTADO -->
+<div id="result-screen">
+  <div class="result-card">
+    <div class="res-emoji" id="res-emoji">🏆</div>
+    <div class="res-title" id="res-title">Arrasou!</div>
+    <div class="res-score" id="res-score">0/8</div>
+    <div class="res-msg" id="res-msg"></div>
+    <div class="restart-row">
+      <button class="restart-btn" onclick="restart()">🔄 Tentar de novo</button>
+      <button class="review-again-btn" onclick="goReview()">📖 Ver Explicações</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* STARS */
+(()=>{const c=document.getElementById('stars');for(let i=0;i<60;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*3+1;s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*3}s;animation-duration:${2+Math.random()*3}s`;c.appendChild(s)}})();
+
+/* DRAW CARTESIAN */
+function drawCartesian(){
+  const cv=document.getElementById('cartesian');if(!cv)return;
+  const ctx=cv.getContext('2d'),W=320,H=260,ox=40,oy=220,step=26;
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#e5e5e5';ctx.lineWidth=1;
+  for(let i=0;i<=10;i++){ctx.beginPath();ctx.moveTo(ox+i*step,20);ctx.lineTo(ox+i*step,oy);ctx.stroke()}
+  for(let j=0;j<=7;j++){ctx.beginPath();ctx.moveTo(ox,oy-j*step);ctx.lineTo(ox+10*step,oy-j*step);ctx.stroke()}
+  ctx.strokeStyle='#333';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(ox,18);ctx.lineTo(ox,oy+8);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(ox-8,oy);ctx.lineTo(ox+10*step+8,oy);ctx.stroke();
+  ctx.fillStyle='#444';ctx.font='bold 11px Nunito,sans-serif';ctx.textAlign='center';
+  for(let i=1;i<=10;i++)ctx.fillText(i,ox+i*step,oy+15);
+  ctx.textAlign='right';
+  for(let j=1;j<=7;j++)ctx.fillText(j,ox-5,oy-j*step+4);
+  ctx.font='bold 13px Nunito,sans-serif';ctx.textAlign='center';ctx.fillText('x',ox+10*step+18,oy+5);
+  ctx.textAlign='left';ctx.fillText('y',ox+4,13);
+  const pts=[{x:2,y:4,l:'A',c:'#e74c3c'},{x:1,y:1,l:'B',c:'#3498db'},{x:3,y:0,l:'C',c:'#27ae60'},{x:5,y:5,l:'D',c:'#8e44ad'}];
+  pts.forEach(p=>{
+    const px=ox+p.x*step,py=oy-p.y*step;
+    ctx.beginPath();ctx.arc(px,py,7,0,Math.PI*2);ctx.fillStyle=p.c;ctx.fill();
+    ctx.fillStyle=p.c;ctx.font='bold 11px Nunito,sans-serif';ctx.textAlign='left';
+    ctx.fillText(`${p.l}(${p.x},${p.y})`,px+10,py-5);
+  });
+}
+
+function drawRetas(){
+  const cv=document.getElementById('retas-canvas');if(!cv)return;
+  const ctx=cv.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,320,140);
+  ctx.lineWidth=2.5;ctx.font='bold 11px Nunito,sans-serif';
+  // Paralelas
+  ctx.strokeStyle='#6c5ce7';
+  ctx.beginPath();ctx.moveTo(8,45);ctx.lineTo(88,45);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(8,75);ctx.lineTo(88,75);ctx.stroke();
+  ctx.fillStyle='#6c5ce7';ctx.textAlign='center';ctx.fillText('Paralelas',48,105);
+  // Perpendiculares
+  ctx.strokeStyle='#00cec9';
+  ctx.beginPath();ctx.moveTo(130,18);ctx.lineTo(130,105);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(100,60);ctx.lineTo(165,60);ctx.stroke();
+  ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(130,49);ctx.lineTo(141,49);ctx.lineTo(141,60);ctx.stroke();ctx.lineWidth=2.5;
+  ctx.fillStyle='#00cec9';ctx.textAlign='center';ctx.fillText('Perpendiculares',132,122);
+  // Oblíquas
+  ctx.strokeStyle='#fd79a8';
+  ctx.beginPath();ctx.moveTo(196,18);ctx.lineTo(290,108);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(290,18);ctx.lineTo(196,108);ctx.stroke();
+  ctx.fillStyle='#fd79a8';ctx.textAlign='center';ctx.fillText('Oblíquas',243,128);
+}
+
+function drawAngulos(){
+  const cv=document.getElementById('angulos-canvas');if(!cv)return;
+  const ctx=cv.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,320,130);
+  ctx.font='bold 10px Nunito,sans-serif';ctx.lineWidth=2.5;
+  function ang(cx,cy,deg,color,label){
+    const r=42,r2=15,rad=deg*Math.PI/180;
+    ctx.strokeStyle=color;ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r,cy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r*Math.cos(-rad),cy+r*Math.sin(-rad));ctx.stroke();
+    ctx.lineWidth=1.5;ctx.strokeStyle=color;
+    ctx.beginPath();ctx.arc(cx,cy,r2,0,-rad,true);ctx.stroke();
+    ctx.fillStyle=color;ctx.textAlign='center';ctx.font='bold 10px Nunito,sans-serif';
+    ctx.fillText(label,cx,cy+24);
+  }
+  ang(38,82,30,'#00cec9','Agudo 30°');
+  ang(110,82,90,'#55efc4','Reto 90°');
+  ang(195,82,120,'#fd79a8','Obtuso 120°');
+  ctx.strokeStyle='#f9ca24';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(248,82);ctx.lineTo(310,82);ctx.stroke();
+  ctx.fillStyle='#f9ca24';ctx.textAlign='center';ctx.font='bold 10px Nunito,sans-serif';
+  ctx.fillText('Raso 180°',279,100);
+}
+
+window.addEventListener('load',()=>{drawCartesian();drawRetas();drawAngulos()});
+
+/* TAB SWITCH */
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&tab==='review')||(i===1&&tab==='quiz')));
+  document.getElementById('sec-review').classList.toggle('active',tab==='review');
+  document.getElementById('sec-quiz').classList.toggle('active',tab==='quiz');
+  document.getElementById('result-screen').style.display='none';
+  document.getElementById('score-badge').style.display=(tab==='quiz')?'block':'none';
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(tab==='quiz'&&currentQ===0)showQuestion();
+}
+
+/* ═══════════ QUIZ DATA ═══════════ */
+const questions=[
+  // Q1 – PLANO CARTESIANO
+  {
+    topic:'📍 Plano Cartesiano',sub:'Identificar coordenadas de um ponto',type:'choice',
+    q:'Um ponto está localizado em 4 casas à direita e 2 casas acima da origem no plano cartesiano. Qual é a coordenada desse ponto?',
+    options:['(2, 4)','(4, 4)','(4, 2)','(2, 2)'],correct:2,
+    exp:`<div class="step"><div class="step-n">1</div><div>O ponto cartesiano é escrito como <strong>(x, y)</strong>: primeiro o eixo horizontal, depois o vertical.</div></div>
+    <div class="step"><div class="step-n">2</div><div>4 casas à direita → <strong>x = 4</strong></div></div>
+    <div class="step"><div class="step-n">3</div><div>2 casas para cima → <strong>y = 2</strong></div></div>
+    <div class="step"><div class="step-n">✅</div><div>O ponto é <strong>(4, 2)</strong>. Lembre: horizontal primeiro (x), vertical depois (y)!</div></div>`
+  },
+  // Q2 – VERDADEIRO OU FALSO (idêntico ao formato da prova)
+  {
+    topic:'📏 Tipos de Retas',sub:'Verdadeiro ou Falso',type:'truefalse',
+    q:'Marque Verdadeiro (V) ou Falso (F) para cada afirmação sobre retas:',
+    statements:[
+      {txt:'Retas paralelas são retas que têm a mesma distância entre si.',correct:true},
+      {txt:'Retas que se encontram em um ponto e formam ângulo de 90° são perpendiculares.',correct:true},
+      {txt:'Retas oblíquas se encontram em um ponto, mas não formam ângulo de 90°.',correct:true},
+      {txt:'Retas paralelas se cruzam em algum ponto.',correct:false},
+    ],
+    exp:`<div class="step"><div class="step-n">1</div><div><strong>V</strong> — Paralelas mantêm sempre a mesma distância e nunca se cruzam. ✅</div></div>
+    <div class="step"><div class="step-n">2</div><div><strong>V</strong> — Essa é a definição de retas perpendiculares: se encontram em 90°. ✅</div></div>
+    <div class="step"><div class="step-n">3</div><div><strong>V</strong> — Oblíquas se encontram, mas em ângulo diferente de 90°. ✅</div></div>
+    <div class="step"><div class="step-n">4</div><div><strong>F</strong> — Paralelas NUNCA se encontram, muito menos formam 90°! Quem forma 90° são as perpendiculares. ❌</div></div>`
+  },
+  // Q3 – CLASSIFICAR ÂNGULOS (igual à Q5 da prova)
+  {
+    topic:'📐 Ângulos',sub:'Classificar ângulos',type:'classify',
+    q:'Classifique cada ângulo em: Ângulo agudo, Ângulo reto, Ângulo obtuso ou Ângulo raso.',
+    items:[
+      {label:'45°',correct:'Ângulo agudo'},
+      {label:'180°',correct:'Ângulo raso'},
+      {label:'135°',correct:'Ângulo obtuso'},
+      {label:'90°',correct:'Ângulo reto'},
+    ],
+    choices:['Ângulo agudo','Ângulo reto','Ângulo obtuso','Ângulo raso'],
+    exp:`<div class="step"><div class="step-n">1</div><div><strong>45°</strong> → menor que 90° → <strong>Ângulo agudo</strong> ✅</div></div>
+    <div class="step"><div class="step-n">2</div><div><strong>180°</strong> → linha reta → <strong>Ângulo raso</strong> ✅</div></div>
+    <div class="step"><div class="step-n">3</div><div><strong>135°</strong> → entre 90° e 180° → <strong>Ângulo obtuso</strong> ✅</div></div>
+    <div class="step"><div class="step-n">4</div><div><strong>90°</strong> → cantinho exato → <strong>Ângulo reto</strong> ✅</div></div>
+    <div class="step"><div class="step-n">💡</div><div>Tabela: <strong>0°–89° = agudo | 90° = reto | 91°–179° = obtuso | 180° = raso</strong></div></div>`
+  },
+  // Q4 – VALOR DO ALGARISMO (igual à Q6 da prova)
+  {
+    topic:'🔢 Números Decimais',sub:'Valor posicional dos algarismos',type:'classify',
+    q:'O que representa o algarismo destacado em cada número?',
+    items:[
+      {label:'0,0<u>8</u>',correct:'8 centésimos'},
+      {label:'0,<u>3</u>7',correct:'3 décimos'},
+      {label:'<u>4</u>,2',correct:'4 inteiros'},
+      {label:'5,00<u>6</u>',correct:'6 milésimos'},
+    ],
+    choices:['4 inteiros','3 décimos','8 centésimos','6 milésimos'],
+    exp:`<div class="step"><div class="step-n">1</div><div>0,0<u>8</u> → o 8 está na <strong>2ª casa</strong> após a vírgula = <strong>8 centésimos</strong> ✅</div></div>
+    <div class="step"><div class="step-n">2</div><div>0,<u>3</u>7 → o 3 está na <strong>1ª casa</strong> após a vírgula = <strong>3 décimos</strong> ✅</div></div>
+    <div class="step"><div class="step-n">3</div><div><u>4</u>,2 → o 4 está <strong>antes da vírgula</strong> = <strong>4 inteiros</strong> ✅</div></div>
+    <div class="step"><div class="step-n">4</div><div>5,00<u>6</u> → o 6 está na <strong>3ª casa</strong> após a vírgula = <strong>6 milésimos</strong> ✅</div></div>
+    <div class="step"><div class="step-n">💡</div><div>Mapa: vírgula → 1ª casa = <strong>décimos</strong> | 2ª casa = <strong>centésimos</strong> | 3ª casa = <strong>milésimos</strong></div></div>`
+  },
+  // Q5 – COMPARAR (igual à Q7 da prova)
+  {
+    topic:'🔢 Números Decimais',sub:'Comparar decimais com &lt;, &gt; ou =',type:'fill',
+    q:'Complete cada espaço com &lt;, &gt; ou =:',
+    items:[
+      {left:'5,1',right:'5,3',correct:'<'},
+      {left:'2,0',right:'2',correct:'='},
+      {left:'0,3',right:'0,8',correct:'<'},
+      {left:'3,5',right:'3,05',correct:'>'},
+    ],
+    choices:['<','>','='],
+    exp:`<div class="step"><div class="step-n">1</div><div><strong>5,1 &lt; 5,3</strong> → inteiros iguais; décimos: 1 &lt; 3 ✅</div></div>
+    <div class="step"><div class="step-n">2</div><div><strong>2,0 = 2</strong> → 2,0 = 2,00 = 2. Zero à direita após vírgula não muda o valor! ✅</div></div>
+    <div class="step"><div class="step-n">3</div><div><strong>0,3 &lt; 0,8</strong> → inteiros iguais; décimos: 3 &lt; 8 ✅</div></div>
+    <div class="step"><div class="step-n">4</div><div><strong>3,5 &gt; 3,05</strong> → compare 3,<u>50</u> com 3,<u>05</u>; décimos: 5 &gt; 0 ✅</div></div>
+    <div class="step"><div class="step-n">🐊</div><div>Lembre do jacaré guloso! A boca do &lt; aponta sempre para o <strong>maior número</strong>!</div></div>`
+  },
+  // Q6
+  {
+    topic:'➕ Operações com Decimais',sub:'Adição de decimais',type:'choice',
+    q:'Efetue a operação: 3,4 + 2,5 = ?',
+    options:['5,9','6,9','5,0','4,9'],correct:0,
+    exp:`<div class="step"><div class="step-n">1</div><div>Alinhe as vírgulas:</div></div>
+    <div class="step"><div class="step-n">2</div><div style="font-family:monospace;font-size:1.05rem">&nbsp;&nbsp;3,4<br>+&nbsp;2,5<br>————<br>&nbsp;&nbsp;<strong>5,9</strong></div></div>
+    <div class="step"><div class="step-n">✅</div><div>4 + 5 = 9 (décimos) | 3 + 2 = 5 (inteiros) → <strong>5,9</strong></div></div>`
+  },
+  // Q7
+  {
+    topic:'➕ Operações com Decimais',sub:'Adição com casas decimais diferentes',type:'choice',
+    q:'Efetue a operação: 2,30 + 4,6 = ?',
+    options:['6,36','6,90','6,93','7,60'],correct:1,
+    exp:`<div class="step"><div class="step-n">1</div><div>Complete 4,6 com zero: 4,6 → <strong>4,60</strong></div></div>
+    <div class="step"><div class="step-n">2</div><div style="font-family:monospace;font-size:1.05rem">&nbsp;&nbsp;2,30<br>+&nbsp;4,60<br>————<br>&nbsp;&nbsp;<strong>6,90</strong></div></div>
+    <div class="step"><div class="step-n">✅</div><div>0+0=0 | 3+6=9 | 2+4=6 → <strong>6,90</strong> (ou simplesmente 6,9)</div></div>`
+  },
+  // Q8
+  {
+    topic:'➕ Operações com Decimais',sub:'Subtração de decimais',type:'input',
+    q:'Efetue as subtrações abaixo:',
+    items:[
+      {display:'5,335 − 0,02 =',correct:'5,315',accepted:['5,315','5.315']},
+      {display:'8,7 − 4,5 =',correct:'4,2',accepted:['4,2','4.2','4,20','4.20']},
+    ],
+    exp:`<div class="step"><div class="step-n">1</div><div><strong>5,335 − 0,020:</strong><br><span style="font-family:monospace">&nbsp;&nbsp;5,335<br>−&nbsp;0,020<br>————<br>&nbsp;&nbsp;<strong>5,315</strong></span></div></div>
+    <div class="step"><div class="step-n">2</div><div><strong>8,7 − 4,5:</strong><br><span style="font-family:monospace">&nbsp;&nbsp;8,7<br>−&nbsp;4,5<br>————<br>&nbsp;&nbsp;<strong>4,2</strong></span></div></div>
+    <div class="step"><div class="step-n">✅</div><div>Sempre alinhe a vírgula e complete com zeros se necessário!</div></div>`
+  },
+];
+
+let currentQ=0,score=0,answered=false;
+const TOTAL=questions.length;
+const tfSelected={};
+
+function updateProg(){
+  document.getElementById('prog-fill').style.width=(currentQ/TOTAL*100)+'%';
+  document.getElementById('prog-text').textContent=`${currentQ} / ${TOTAL}`;
+}
+
+function showQuestion(){
+  if(currentQ>=TOTAL){showResult();return}
+  answered=false;Object.keys(tfSelected).forEach(k=>delete tfSelected[k]);
+  updateProg();
+  const qd=questions[currentQ],letters=['A','B','C','D'];
+  let inner='';
+
+  if(qd.type==='choice'){
+    inner=`<div class="options">${qd.options.map((o,i)=>`<button class="opt-btn" onclick="pickChoice(${i})" id="opt-${i}"><span class="opt-letter">${letters[i]}</span><span>${o}</span></button>`).join('')}</div>`;
+  } else if(qd.type==='truefalse'){
+    inner=`<div>${qd.statements.map((s,i)=>`<div class="tf-row" id="tfrow-${i}"><div class="tf-stmt">${i+1}. ${s.txt}</div><div class="tf-btns"><button class="tf-btn" id="tfv-${i}" onclick="pickTF(${i},true)">✅ Verdadeiro</button><button class="tf-btn" id="tff-${i}" onclick="pickTF(${i},false)">❌ Falso</button></div></div>`).join('')}</div><button class="check-btn" id="check-btn" onclick="checkTF()" disabled>Verificar Respostas</button>`;
+  } else if(qd.type==='classify'){
+    inner=`<div class="fill-wrap">${qd.items.map((item,i)=>`<div class="fill-row"><span style="min-width:120px">${item.label}</span><span>→</span><select id="sel-${i}"><option value="">escolha...</option>${qd.choices.map(c=>`<option value="${c}">${c}</option>`).join('')}</select></div>`).join('')}</div><button class="check-btn" id="check-btn" onclick="checkClassify()">Verificar Respostas</button>`;
+  } else if(qd.type==='fill'){
+    inner=`<div class="fill-wrap">${qd.items.map((item,i)=>`<div class="fill-row"><span>${item.left}</span><select id="sel-${i}"><option value="">?</option>${qd.choices.map(c=>`<option value="${c}">${c}</option>`).join('')}</select><span>${item.right}</span></div>`).join('')}</div><button class="check-btn" id="check-btn" onclick="checkFill()">Verificar Respostas</button>`;
+  } else if(qd.type==='input'){
+    inner=`<div class="input-wrap">${qd.items.map((item,i)=>`<div class="input-row"><span>${item.display}</span><input type="text" id="inp-${i}" placeholder="?"></div>`).join('')}</div><button class="check-btn" id="check-btn" onclick="checkInput()">Verificar Respostas</button>`;
+  }
+
+  const icon=qd.topic.split(' ')[0];
+  const topicName=qd.topic.slice(2);
+  document.getElementById('quiz-container').innerHTML=`
+    <div class="topic-header"><div class="th-icon">${icon}</div><div><div class="th-title">${topicName}</div><div class="th-sub">${qd.sub}</div></div></div>
+    <div class="question-card">
+      <div class="q-num">Questão ${currentQ+1} de ${TOTAL}</div>
+      <div class="q-text">${qd.q}</div>
+      ${inner}
+      <div class="explanation" id="explanation"><div class="exp-title">💡 Passo a passo da solução:</div><div class="exp-body">${qd.exp}</div></div>
+      <button class="next-btn" id="next-btn" onclick="nextQ()">${currentQ<TOTAL-1?'Próxima Questão ➡️':'Ver Resultado 🏆'}</button>
+    </div>`;
+}
+
+function pickChoice(chosen){
+  if(answered)return;answered=true;
+  const qd=questions[currentQ];
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  document.getElementById(`opt-${chosen}`).classList.add(chosen===qd.correct?'correct':'wrong');
+  if(chosen!==qd.correct)document.getElementById(`opt-${qd.correct}`).classList.add('correct');
+  finishQ(chosen===qd.correct);
+}
+
+function pickTF(idx,val){
+  tfSelected[idx]=val;
+  const vb=document.getElementById(`tfv-${idx}`),fb=document.getElementById(`tff-${idx}`);
+  vb.style.cssText=val?'background:rgba(108,92,231,.35);border-color:var(--a2)':'';
+  fb.style.cssText=!val?'background:rgba(108,92,231,.35);border-color:var(--a2)':'';
+  const btn=document.getElementById('check-btn');
+  if(btn)btn.disabled=Object.keys(tfSelected).length<questions[currentQ].statements.length;
+}
+function checkTF(){
+  if(answered)return;answered=true;
+  const qd=questions[currentQ];let ok=true;
+  qd.statements.forEach((s,i)=>{
+    const got=tfSelected[i],right=s.correct;
+    if(got!==right)ok=false;
+    const vb=document.getElementById(`tfv-${i}`),fb=document.getElementById(`tff-${i}`);
+    [vb,fb].forEach(b=>b.disabled=true);
+    if(right){vb.classList.add('correct');if(!got)fb.classList.add('wrong')}
+    else{fb.classList.add('correct');if(got)vb.classList.add('wrong')}
+  });
+  document.getElementById('check-btn').disabled=true;
+  finishQ(ok);
+}
+
+function checkClassify(){
+  if(answered)return;answered=true;
+  let ok=true;
+  questions[currentQ].items.forEach((item,i)=>{
+    const sel=document.getElementById(`sel-${i}`);sel.disabled=true;
+    if(sel.value===item.correct)sel.classList.add('correct');else{sel.classList.add('wrong');ok=false}
+  });
+  document.getElementById('check-btn').disabled=true;finishQ(ok);
+}
+function checkFill(){
+  if(answered)return;answered=true;
+  let ok=true;
+  questions[currentQ].items.forEach((item,i)=>{
+    const sel=document.getElementById(`sel-${i}`);sel.disabled=true;
+    if(sel.value===item.correct)sel.classList.add('correct');else{sel.classList.add('wrong');ok=false}
+  });
+  document.getElementById('check-btn').disabled=true;finishQ(ok);
+}
+function checkInput(){
+  if(answered)return;answered=true;
+  let ok=true;
+  questions[currentQ].items.forEach((item,i)=>{
+    const inp=document.getElementById(`inp-${i}`);
+    const got=inp.value.trim();inp.disabled=true;
+    const match=item.accepted?item.accepted.some(a=>got===a):parseFloat(got.replace(',','.'))==parseFloat(item.correct.replace(',','.'));
+    inp.classList.add(match?'correct':'wrong');if(!match)ok=false;
+  });
+  document.getElementById('check-btn').disabled=true;finishQ(ok);
+}
+
+function finishQ(correct){
+  if(correct){score+=10;document.getElementById('score').textContent=score;showToast('🎉 Correto! Muito bem!',true)}
+  else showToast('❌ Quase! Veja o passo a passo 👇',false);
+  document.getElementById('explanation').classList.add('show');
+  document.getElementById('next-btn').classList.add('show');
+}
+
+function nextQ(){currentQ++;showQuestion()}
+
+function showToast(msg,ok){
+  const t=document.getElementById('toast');t.textContent=msg;
+  t.className='toast '+(ok?'ct':'wt')+' show';
+  setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+function showResult(){
+  document.getElementById('sec-quiz').style.display='none';
+  document.querySelectorAll('.tabs')[0].style.display='none';
+  document.getElementById('result-screen').style.display='block';
+  document.getElementById('score-badge').style.display='none';
+  const correct=score/10,pct=correct/TOTAL;
+  let emoji,title,msg;
+  if(pct===1){emoji='🏆';title='INCRÍVEL!';msg='Você acertou TUDO! Tá mais que preparado(a) para a prova! Arrasou de verdade! 🌟'}
+  else if(pct>=.75){emoji='🎉';title='Muito bem!';msg='Quase perfeito! Revise rapidinho as questões erradas e a prova vai ser moleza! 💪'}
+  else if(pct>=.5){emoji='📚';title='Bom progresso!';msg='Você está no caminho! Releia as explicações e tente de novo. Você consegue! 😊'}
+  else{emoji='💡';title='Vamos treinar!';msg='Não desanime! Volte às explicações, estude com calma e tente de novo. Cada erro ensina! 🌱'}
+  document.getElementById('res-emoji').textContent=emoji;
+  document.getElementById('res-title').textContent=title;
+  document.getElementById('res-score').textContent=`${correct} / ${TOTAL}`;
+  document.getElementById('res-msg').textContent=msg;
+}
+function restart(){
+  currentQ=0;score=0;document.getElementById('score').textContent=0;
+  document.getElementById('sec-quiz').style.display='block';
+  document.querySelectorAll('.tabs')[0].style.display='flex';
+  document.getElementById('result-screen').style.display='none';
+  document.getElementById('score-badge').style.display='block';
+  showQuestion();
+}
+function goReview(){
+  currentQ=0;score=0;document.getElementById('score').textContent=0;
+  document.getElementById('sec-quiz').style.display='block';
+  document.querySelectorAll('.tabs')[0].style.display='flex';
+  document.getElementById('result-screen').style.display='none';
+  switchTab('review');
+}
+</script>
+</body>
+</html>
