@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ângulos e Retas – Aula Interativa</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #1a3a6b;
+    --azul-claro: #2563eb;
+    --amarelo: #f59e0b;
+    --verde: #10b981;
+    --vermelho: #ef4444;
+    --roxo: #7c3aed;
+    --bg: #f0f4ff;
+    --branco: #ffffff;
+    --cinza: #64748b;
+    --sombra: 0 8px 32px rgba(26,58,107,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: #1e293b;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, var(--azul) 0%, #0f2d5e 60%, #1a4080 100%);
+    color: white;
+    padding: 40px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(245,158,11,0.15);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(37,99,235,0.2);
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--amarelo);
+    color: var(--azul);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 6vw, 52px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+  }
+  header p {
+    font-size: 15px;
+    opacity: 0.8;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* PROGRESS */
+  .progress-bar {
+    background: rgba(255,255,255,0.15);
+    height: 6px;
+    border-radius: 3px;
+    margin-top: 28px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--amarelo);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+  .progress-label {
+    color: rgba(255,255,255,0.7);
+    font-size: 12px;
+    margin-top: 6px;
+    text-align: center;
+  }
+
+  /* NAV */
+  nav {
+    background: white;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 0 16px;
+    display: flex;
+    overflow-x: auto;
+    gap: 4px;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    flex-shrink: 0;
+    padding: 14px 16px;
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--cinza);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { color: var(--azul-claro); }
+  .nav-btn.active {
+    color: var(--azul);
+    border-bottom-color: var(--amarelo);
+    font-weight: 700;
+  }
+
+  /* MAIN */
+  main { max-width: 760px; margin: 0 auto; padding: 32px 16px 80px; }
+
+  /* SECTIONS */
+  .section { display: none; animation: fadeIn 0.4s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+
+  /* CARD */
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: var(--sombra);
+    border: 1px solid #e8eef8;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--azul);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-title .icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-azul { background: #dbeafe; }
+  .icon-amarelo { background: #fef3c7; }
+  .icon-verde { background: #d1fae5; }
+  .icon-roxo { background: #ede9fe; }
+
+  p.texto { line-height: 1.75; color: #374151; margin-bottom: 12px; font-size: 15px; }
+  p.texto:last-child { margin-bottom: 0; }
+
+  /* HIGHLIGHT BOX */
+  .highlight {
+    border-left: 4px solid var(--amarelo);
+    background: #fffbeb;
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #78350f;
+  }
+  .highlight strong { color: #92400e; }
+
+  .destaque-verde {
+    border-left: 4px solid var(--verde);
+    background: #f0fdf4;
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #065f46;
+  }
+
+  .destaque-azul {
+    border-left: 4px solid var(--azul-claro);
+    background: #eff6ff;
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #1e40af;
+  }
+
+  /* FORMULA BOX */
+  .formula-box {
+    background: linear-gradient(135deg, var(--azul) 0%, #1e40af 100%);
+    color: white;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    text-align: center;
+    font-family: 'Syne', sans-serif;
+  }
+  .formula-box .formula-label { font-size: 11px; letter-spacing: 2px; opacity: 0.7; text-transform: uppercase; margin-bottom: 8px; }
+  .formula-box .formula-text { font-size: 22px; font-weight: 700; }
+
+  /* SVG DIAGRAMS */
+  .diagram-container {
+    background: #f8faff;
+    border: 2px solid #e0e8f8;
+    border-radius: 16px;
+    padding: 16px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  svg text { font-family: 'DM Sans', sans-serif; }
+
+  /* INTERACTIVE ANGLE */
+  .angle-control {
+    background: #f8faff;
+    border: 2px solid #e0e8f8;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .angle-control label {
+    font-weight: 600;
+    color: var(--azul);
+    font-size: 14px;
+    display: block;
+    margin-bottom: 8px;
+  }
+  input[type=range] {
+    width: 100%;
+    accent-color: var(--azul-claro);
+    height: 6px;
+    cursor: pointer;
+  }
+  .angle-display {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .angle-chip {
+    background: white;
+    border: 2px solid #e0e8f8;
+    border-radius: 12px;
+    padding: 10px 16px;
+    text-align: center;
+    min-width: 120px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .angle-chip .chip-label { font-size: 11px; color: var(--cinza); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+  .angle-chip .chip-value { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; margin-top: 2px; }
+  .chip-a .chip-value { color: var(--azul-claro); }
+  .chip-b .chip-value { color: var(--verde); }
+  .chip-c .chip-value { color: var(--vermelho); }
+  .chip-d .chip-value { color: var(--roxo); }
+
+  /* QUIZ */
+  .quiz-card {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--sombra);
+    border: 1px solid #e8eef8;
+  }
+  .quiz-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--amarelo);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .quiz-question {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--azul);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: 10px; }
+  .quiz-option {
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 13px 18px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.2s;
+    background: white;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    color: #374151;
+  }
+  .quiz-option:hover { border-color: var(--azul-claro); background: #eff6ff; color: var(--azul); }
+  .quiz-option.certa { border-color: var(--verde); background: #d1fae5; color: #065f46; }
+  .quiz-option.errada { border-color: var(--vermelho); background: #fee2e2; color: #991b1b; }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-feedback {
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: #d1fae5; color: #065f46; }
+  .quiz-feedback.nok { background: #fee2e2; color: #991b1b; }
+
+  /* INPUT QUIZ */
+  .input-group { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .input-grupo-input {
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 18px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    width: 100px;
+    color: var(--azul);
+    outline: none;
+    transition: border 0.2s;
+  }
+  .input-grupo-input:focus { border-color: var(--azul-claro); }
+  .btn-verificar {
+    background: var(--azul);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-verificar:hover { background: var(--azul-claro); }
+
+  /* STEP BUTTONS */
+  .nav-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 32px;
+    gap: 12px;
+  }
+  .btn-nav {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 14px;
+    border: none;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-prev {
+    background: white;
+    color: var(--azul);
+    border: 2px solid #d0daf0;
+  }
+  .btn-prev:hover { background: #eff6ff; }
+  .btn-next {
+    background: linear-gradient(135deg, var(--azul), var(--azul-claro));
+    color: white;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.3);
+  }
+  .btn-next:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+
+  /* SCORE */
+  .score-display {
+    text-align: center;
+    padding: 32px;
+    background: linear-gradient(135deg, var(--azul) 0%, #1e40af 100%);
+    border-radius: 20px;
+    color: white;
+    margin-bottom: 24px;
+  }
+  .score-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--amarelo);
+  }
+  .score-label { font-size: 16px; opacity: 0.8; margin-top: 8px; }
+
+  /* CONCEPT CARDS */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .concept-item {
+    background: white;
+    border: 2px solid #e0e8f8;
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .concept-item:hover { border-color: var(--azul-claro); transform: translateY(-3px); box-shadow: var(--sombra); }
+  .concept-item .ci-icon { font-size: 28px; margin-bottom: 8px; }
+  .concept-item .ci-name { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--azul); margin-bottom: 4px; }
+  .concept-item .ci-desc { font-size: 12px; color: var(--cinza); line-height: 1.5; }
+
+  /* ANIMATIONS */
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+  .pulsar { animation: pulse 2s infinite; }
+
+  /* BADGES */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .badge-azul { background: #dbeafe; color: #1e40af; }
+  .badge-verde { background: #d1fae5; color: #065f46; }
+  .badge-amarelo { background: #fef3c7; color: #92400e; }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .card { padding: 20px 16px; }
+    .formula-box .formula-text { font-size: 18px; }
+    .angle-chip { min-width: 90px; }
+    .chip-value { font-size: 20px !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">9º Ano · Matemática</div>
+  <h1>📐 Ângulos e Retas</h1>
+  <p>Aula interativa completa sobre ângulos opostos pelo vértice, correspondentes e paralelas cortadas por transversal</p>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">Seção 1 de 5</div>
+</header>
+
+<nav id="mainNav">
+  <button class="nav-btn active" onclick="goTo(0)">🏠 Intro</button>
+  <button class="nav-btn" onclick="goTo(1)">📍 Vértice</button>
+  <button class="nav-btn" onclick="goTo(2)">📏 Suplementares</button>
+  <button class="nav-btn" onclick="goTo(3)">🔀 Paralelas</button>
+  <button class="nav-btn" onclick="goTo(4)">✏️ Exercícios</button>
+</nav>
+
+<main>
+
+<!-- ===== SEÇÃO 0: INTRO ===== -->
+<div class="section active" id="sec0">
+  <div class="card">
+    <div class="card-title"><div class="icon icon-azul">🎯</div>O que vamos aprender?</div>
+    <p class="texto">Nesta aula vamos explorar o fascinante mundo dos <strong>ângulos formados por retas</strong>. Prepare-se para entender por que certos ângulos são sempre iguais — e provar isso com lógica!</p>
+    <div class="concept-grid">
+      <div class="concept-item"><div class="ci-icon">✖️</div><div class="ci-name">Opostos pelo Vértice</div><div class="ci-desc">Ângulos formados no cruzamento de duas retas</div></div>
+      <div class="concept-item"><div class="ci-icon">➕</div><div class="ci-name">Ângulos Suplementares</div><div class="ci-desc">Dois ângulos que somam 180°</div></div>
+      <div class="concept-item"><div class="ci-icon">🔀</div><div class="ci-name">Ângulos Correspondentes</div><div class="ci-desc">Formados por uma transversal cortando retas</div></div>
+      <div class="concept-item"><div class="ci-icon">⬌</div><div class="ci-name">Retas Paralelas</div><div class="ci-desc">Retas que nunca se encontram</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="icon icon-amarelo">💡</div>Por que isso importa?</div>
+    <p class="texto">Ângulos e retas estão em toda parte: na arquitetura, na engenharia, no design e até nos jogos de bilhar! Entender essas relações permite resolver problemas complexos com raciocínio simples e elegante.</p>
+    <div class="highlight">
+      <strong>Habilidade BNCC:</strong> EF09MA10 — Demonstrar relações métricas do triângulo retângulo e os conceitos de ângulos opostos pelo vértice e paralelas cortadas por transversal.
+    </div>
+  </div>
+
+  <div class="nav-footer">
+    <button class="btn-nav btn-next" onclick="goTo(1)">Começar: Ângulos Opostos →</button>
+  </div>
+</div>
+
+<!-- ===== SEÇÃO 1: OPOSTOS PELO VÉRTICE ===== -->
+<div class="section" id="sec1">
+  <div class="card">
+    <div class="card-title"><div class="icon icon-azul">📍</div>O que é o Vértice?</div>
+    <p class="texto">Quando duas retas <strong>r</strong> e <strong>s</strong> se cruzam, o ponto de encontro é chamado de <strong>vértice</strong>. Esse cruzamento forma exatamente <strong>4 ângulos</strong>.</p>
+
+    <div class="diagram-container">
+      <svg width="280" height="220" viewBox="0 0 280 220">
+        <!-- Reta r -->
+        <line x1="30" y1="170" x2="250" y2="50" stroke="#1a3a6b" stroke-width="2.5"/>
+        <!-- Reta s -->
+        <line x1="30" y1="50" x2="250" y2="170" stroke="#2563eb" stroke-width="2.5"/>
+
+        <!-- Arcos dos ângulos -->
+        <path d="M 155,105 A 20,20 0 0,1 168,88" stroke="#ef4444" stroke-width="2" fill="none"/>
+        <path d="M 112,95 A 20,20 0 0,1 125,112" stroke="#10b981" stroke-width="2" fill="none"/>
+        <path d="M 128,85 A 18,18 0 0,0 150,90" stroke="#f59e0b" stroke-width="2" fill="none"/>
+        <path d="M 130,115 A 18,18 0 0,0 152,110" stroke="#7c3aed" stroke-width="2" fill="none"/>
+
+        <!-- Labels -->
+        <text x="168" y="84" fill="#ef4444" font-size="16" font-weight="bold">â</text>
+        <text x="100" y="114" fill="#10b981" font-size="16" font-weight="bold">b̂</text>
+        <text x="138" y="78" fill="#f59e0b" font-size="16" font-weight="bold">ĉ</text>
+        <text x="138" y="128" fill="#7c3aed" font-size="16" font-weight="bold">d̂</text>
+
+        <!-- Vértice -->
+        <circle cx="140" cy="110" r="5" fill="#1a3a6b"/>
+        <text x="148" y="115" fill="#1a3a6b" font-size="12">vértice</text>
+
+        <!-- Labels das retas -->
+        <text x="240" y="46" fill="#1a3a6b" font-size="14" font-weight="bold">r</text>
+        <text x="240" y="178" fill="#2563eb" font-size="14" font-weight="bold">s</text>
+      </svg>
+    </div>
+
+    <div class="highlight">
+      <strong>Ângulos opostos pelo vértice</strong> são aqueles que ficam "do lado oposto" ao vértice. No diagrama:<br>
+      • <span style="color:#ef4444;font-weight:700">â</span> e <span style="color:#10b981;font-weight:700">b̂</span> são opostos pelo vértice<br>
+      • <span style="color:#f59e0b;font-weight:700">ĉ</span> e <span style="color:#7c3aed;font-weight:700">d̂</span> são opostos pelo vértice
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="icon icon-verde">🤔</div>A Grande Pergunta</div>
+    <p class="texto">Será que existe alguma relação entre as medidas dos ângulos opostos pelo vértice? Vamos usar o controle abaixo para descobrir!</p>
+
+    <div class="angle-control">
+      <label>🎛️ Mova o controle para mudar o ângulo â:</label>
+      <input type="range" min="10" max="170" value="60" id="angleSlider" oninput="updateAngles()">
+      <div class="angle-display">
+        <div class="angle-chip chip-a">
+          <div class="chip-label">â (azul)</div>
+          <div class="chip-value" id="chipA">60°</div>
+        </div>
+        <div class="angle-chip chip-c">
+          <div class="chip-label">ĉ (laranja)</div>
+          <div class="chip-value" id="chipC">120°</div>
+        </div>
+        <div class="angle-chip chip-b">
+          <div class="chip-label">b̂ (verde)</div>
+          <div class="chip-value" id="chipB">60°</div>
+        </div>
+        <div class="angle-chip chip-d">
+          <div class="chip-label">d̂ (roxo)</div>
+          <div class="chip-value" id="chipD">120°</div>
+        </div>
+      </div>
+      <div id="obs-angulos" style="margin-top:14px; padding:12px 16px; background:#f0fdf4; border-radius:10px; font-size:14px; color:#065f46; font-weight:500; display:none;">
+        ✅ <span id="obs-text"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="icon icon-roxo">🧠</div>Conclusão</div>
+    <div class="destaque-verde">
+      <strong>Teorema dos Ângulos Opostos pelo Vértice:</strong><br>
+      Quando duas retas se cruzam, os ângulos opostos pelo vértice são <strong>sempre iguais</strong>.<br><br>
+      Ou seja: <strong>â = b̂</strong> &nbsp;&nbsp;e&nbsp;&nbsp; <strong>ĉ = d̂</strong>
+    </div>
+    <p class="texto">Não importa como você mova as retas — os ângulos opostos sempre terão a mesma medida. Isso não é coincidência: é uma propriedade matemática que podemos provar!</p>
+  </div>
+
+  <div class="nav-footer">
+    <button class="btn-nav btn-prev" onclick="goTo(0)">← Voltar</button>
+    <button class="btn-nav btn-next" onclick="goTo(2)">Ângulos Suplementares →</button>
+  </div>
+</div>
+
+<!-- ===== SEÇÃO 2: SUPLEMENTARES E PROVA ===== -->
+<div class="section" id="sec2">
+  <div class="card">
+    <div class="card-title"><div class="icon icon-amarelo">📏</div>Ângulos Suplementares</div>
+    <p class="texto">Dois ângulos são <strong>suplementares</strong> quando juntos formam uma linha reta, ou seja, somam <strong>180°</strong>.</p>
+
+    <div class="diagram-container">
+      <svg width="280" height="140" viewBox="0 0 280 140">
+        <!-- Linha reta -->
+        <line x1="20" y1="80" x2="260" y2="80" stroke="#94a3b8" stroke-width="2"/>
+        <!-- Reta r oblíqua -->
+        <line x1="140" y1="80" x2="200" y2="20" stroke="#1a3a6b" stroke-width="2.5"/>
+        <!-- Arco ângulo A -->
+        <path d="M 160,80 A 20,20 0 0,0 171,62" stroke="#2563eb" stroke-width="2" fill="rgba(37,99,235,0.1)"/>
+        <!-- Arco ângulo C -->
+        <path d="M 120,80 A 20,20 0 0,1 133,65" stroke="#ef4444" stroke-width="2" fill="rgba(239,68,68,0.1)"/>
+        <!-- Labels -->
+        <text x="165" y="75" fill="#2563eb" font-size="15" font-weight="bold">â</text>
+        <text x="113" y="73" fill="#ef4444" font-size="15" font-weight="bold">ĉ</text>
+        <text x="130" y="100" fill="#64748b" font-size="12">â + ĉ = 180°</text>
+        <!-- Ponto central -->
+        <circle cx="140" cy="80" r="3" fill="#1a3a6b"/>
+      </svg>
+    </div>
+
+    <div class="highlight">
+      <strong>Observação:</strong> No diagrama acima, â e ĉ ficam de lados opostos da mesma reta — juntos formam uma linha reta (180°).
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="icon icon-azul">🔬</div>Prova: Por que â = b̂?</div>
+    <p class="texto">Vamos usar os ângulos suplementares para provar que os ângulos opostos pelo vértice são iguais. Siga cada passo:</p>
+
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px;">
+      <div style="background:#f8faff;border:1px solid #e0e8f8;border-radius:12px;padding:16px;">
+        <div style="font-size:12px;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Passo 1</div>
+        <p style="font-size:14px;line-height:1.6;">Como <strong style="color:#10b981">b̂</strong> e <strong style="color:#ef4444">ĉ</strong> são suplementares:</p>
+        <div class="formula-box" style="margin-top:8px;padding:12px;">
+          <div class="formula-text" style="font-size:18px;">b̂ + ĉ = 180°</div>
+        </div>
+        <p style="font-size:14px;line-height:1.6;margin-top:6px;">Portanto: <strong>b̂ = 180° − ĉ</strong></p>
+      </div>
+
+      <div style="background:#f8faff;border:1px solid #e0e8f8;border-radius:12px;padding:16px;">
+        <div style="font-size:12px;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Passo 2</div>
+        <p style="font-size:14px;line-height:1.6;">Como <strong style="color:#2563eb">â</strong> e <strong style="color:#ef4444">ĉ</strong> também são suplementares:</p>
+        <div class="formula-box" style="margin-top:8px;padding:12px;">
+          <div class="formula-text" style="font-size:18px;">â + ĉ = 180°</div>
+        </div>
+        <p style="font-size:14px;line-height:1.6;margin-top:6px;">Portanto: <strong>â = 180° − ĉ</strong></p>
+      </div>
+
+      <div style="background:#fef3c7;border:2px solid var(--amarelo);border-radius:12px;padding:16px;">
+        <div style="font-size:12px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Conclusão ✨</div>
+        <p style="font-size:14px;line-height:1.6;color:#78350f;">Como <strong>â = 180° − ĉ</strong> e <strong>b̂ = 180° − ĉ</strong>, ambos são iguais ao mesmo valor, logo:</p>
+        <div class="formula-box" style="margin-top:8px;background:linear-gradient(135deg,#92400e,#b45309);">
+          <div class="formula-text">â = b̂ ✓</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-footer">
+    <button class="btn-nav btn-prev" onclick="goTo(1)">← Vértice</button>
+    <button class="btn-nav btn-next" onclick="goTo(3)">Ângulos Correspondentes →</button>
+  </div>
+</div>
+
+<!-- ===== SEÇÃO 3: PARALELAS ===== -->
+<div class="section" id="sec3">
+  <div class="card">
+    <div class="card-title"><div class="icon icon-azul">🔀</div>A Reta Transversal</div>
+    <p class="texto">Quando uma terceira reta <strong>t</strong> (chamada de <strong>transversal</strong>) corta duas retas <strong>r</strong> e <strong>s</strong>, ela forma vários ângulos em cada cruzamento.</p>
+
+    <div class="diagram-container">
+      <svg width="280" height="200" viewBox="0 0 280 200">
+        <!-- Reta r -->
+        <line x1="20" y1="60" x2="260" y2="60" stroke="#1a3a6b" stroke-width="2.5"/>
+        <!-- Reta s -->
+        <line x1="20" y1="140" x2="260" y2="140" stroke="#1a3a6b" stroke-width="2.5"/>
+        <!-- Transversal t -->
+        <line x1="80" y1="10" x2="200" y2="190" stroke="#ef4444" stroke-width="2.5"/>
+
+        <!-- Ponto A (em r) -->
+        <circle cx="116" cy="60" r="4" fill="#2563eb"/>
+        <!-- Ponto B (em s) -->
+        <circle cx="152" cy="140" r="4" fill="#2563eb"/>
+
+        <!-- Ângulo b (em r) -->
+        <path d="M 128,60 A 14,14 0 0,0 116,46" stroke="#10b981" stroke-width="2" fill="rgba(16,185,129,0.15)"/>
+        <text x="124" y="52" fill="#10b981" font-size="15" font-weight="bold">b̂</text>
+
+        <!-- Ângulo f (em s) -->
+        <path d="M 164,140 A 14,14 0 0,0 152,126" stroke="#7c3aed" stroke-width="2" fill="rgba(124,58,237,0.15)"/>
+        <text x="160" y="132" fill="#7c3aed" font-size="15" font-weight="bold">f̂</text>
+
+        <!-- Labels -->
+        <text x="248" y="56" fill="#1a3a6b" font-size="14" font-weight="bold">r</text>
+        <text x="248" y="136" fill="#1a3a6b" font-size="14" font-weight="bold">s</text>
+        <text x="196" y="188" fill="#ef4444" font-size="14" font-weight="bold">t</text>
+      </svg>
+    </div>
+
+    <div class="destaque-azul">
+      <strong>Ângulos Correspondentes:</strong> são ângulos que ficam na <strong>mesma posição</strong> em relação à transversal, um em cada cruzamento. No diagrama, <strong style="color:#10b981">b̂</strong> e <strong style="color:#7c3aed">f̂</strong> são correspondentes.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="icon icon-verde">⬌</div>Quando r e s são Paralelas</div>
+    <p class="texto">Aqui está a propriedade mais importante desta aula! Quando as retas <strong>r</strong> e <strong>s</strong> são paralelas e cortadas por uma transversal:</p>
+
+    <div class="formula-box">
+      <div class="formula-label">Propriedade Fundamental</div>
+      <div class="formula-text">Ângulos correspondentes são IGUAIS</div>
+    </div>
+
+    <p class="texto">A prova usa uma ideia criativa: imagine uma <strong>formiga</strong> caminhando da reta s até a reta r, percorrendo a transversal.</p>
+
+    <div style="background:#f8faff;border:2px solid #e0e8f8;border-radius:16px;padding:20px;margin:16px 0;">
+      <p style="font-size:14px;font-weight:600;color:var(--azul);margin-bottom:12px;">🐜 A Prova da Formiga:</p>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.7;">
+        <div style="background:white;border-radius:8px;padding:10px 14px;border-left:3px solid #ef4444;">
+          <strong>1.</strong> A formiga sai de M e, ao chegar em N (reta s), gira <strong>180° − f̂</strong>
+        </div>
+        <div style="background:white;border-radius:8px;padding:10px 14px;border-left:3px solid #f59e0b;">
+          <strong>2.</strong> Ao chegar em O (reta r), gira mais <strong>b̂</strong>
+        </div>
+        <div style="background:white;border-radius:8px;padding:10px 14px;border-left:3px solid #10b981;">
+          <strong>3.</strong> No total, a formiga virou <strong>180°</strong> (meia-volta), pois chegou em P (sentido oposto a M)
+        </div>
+        <div style="background:#fef3c7;border-radius:8px;padding:10px 14px;border-left:3px solid #f59e0b;font-weight:600;color:#92400e;">
+          Logo: (180° − f̂) + b̂ = 180° → b̂ = f̂ ✓
+        </div>
+      </div>
+    </div>
+
+    <div class="destaque-verde">
+      <strong>Resumo das relações em paralelas cortadas por transversal:</strong><br><br>
+      ✅ <strong>Ângulos correspondentes</strong> → iguais<br>
+      ✅ <strong>Ângulos alternos internos</strong> → iguais<br>
+      ✅ <strong>Ângulos co-internos (colaterais)</strong> → somam 180°
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="icon icon-amarelo">📌</div>Exemplos Rápidos</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div style="background:#f8faff;border:2px solid #e0e8f8;border-radius:14px;padding:16px;text-align:center;">
+        <svg width="120" height="100" viewBox="0 0 120 100">
+          <line x1="10" y1="40" x2="110" y2="40" stroke="#1a3a6b" stroke-width="2"/>
+          <line x1="10" y1="70" x2="110" y2="70" stroke="#1a3a6b" stroke-width="2"/>
+          <line x1="40" y1="10" x2="80" y2="100" stroke="#ef4444" stroke-width="2"/>
+          <path d="M 56,40 A 12,12 0 0,0 46,28" stroke="#10b981" stroke-width="1.5" fill="rgba(16,185,129,0.15)"/>
+          <text x="48" y="33" fill="#10b981" font-size="11" font-weight="bold">130°</text>
+          <path d="M 64,70 A 12,12 0 0,0 54,58" stroke="#2563eb" stroke-width="1.5" fill="rgba(37,99,235,0.15)"/>
+          <text x="56" y="63" fill="#2563eb" font-size="11" font-weight="bold">?</text>
+        </svg>
+        <div style="font-size:13px;font-weight:600;color:var(--azul);">Correspondentes</div>
+        <div style="font-size:18px;font-weight:800;color:#10b981;margin-top:4px;">? = 130°</div>
+      </div>
+
+      <div style="background:#f8faff;border:2px solid #e0e8f8;border-radius:14px;padding:16px;text-align:center;">
+        <svg width="120" height="100" viewBox="0 0 120 100">
+          <line x1="10" y1="40" x2="110" y2="40" stroke="#1a3a6b" stroke-width="2"/>
+          <line x1="10" y1="70" x2="110" y2="70" stroke="#1a3a6b" stroke-width="2"/>
+          <line x1="40" y1="10" x2="80" y2="100" stroke="#ef4444" stroke-width="2"/>
+          <path d="M 56,40 A 12,12 0 0,1 68,52" stroke="#10b981" stroke-width="1.5" fill="rgba(16,185,129,0.15)"/>
+          <text x="62" y="51" fill="#10b981" font-size="11" font-weight="bold">70°</text>
+          <path d="M 60,70 A 12,12 0 0,0 48,58" stroke="#7c3aed" stroke-width="1.5" fill="rgba(124,58,237,0.15)"/>
+          <text x="42" y="62" fill="#7c3aed" font-size="11" font-weight="bold">?</text>
+        </svg>
+        <div style="font-size:13px;font-weight:600;color:var(--azul);">Alternos internos</div>
+        <div style="font-size:18px;font-weight:800;color:#7c3aed;margin-top:4px;">? = 70°</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-footer">
+    <button class="btn-nav btn-prev" onclick="goTo(2)">← Suplementares</button>
+    <button class="btn-nav btn-next" onclick="goTo(4)">Exercícios →</button>
+  </div>
+</div>
+
+<!-- ===== SEÇÃO 4: EXERCÍCIOS ===== -->
+<div class="section" id="sec4">
+  <div style="text-align:center;margin-bottom:24px;">
+    <div class="score-display">
+      <div class="score-num" id="scoreFinal">0/<span id="totalQ">4</span></div>
+      <div class="score-label">acertos até agora</div>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="quiz-card" id="q1-card">
+    <div class="quiz-num">Questão 1 · Opostos pelo Vértice</div>
+    <div class="quiz-question">
+      Duas retas se cruzam e formam um ângulo de <strong>130°</strong>. Qual é a medida do ângulo oposto pelo vértice?
+    </div>
+    <div class="quiz-options">
+      <button class="quiz-option" onclick="checkQ('q1','50°',this)" data-correct="130°">50°</button>
+      <button class="quiz-option" onclick="checkQ('q1','130°',this)" data-correct="130°">130°</button>
+      <button class="quiz-option" onclick="checkQ('q1','90°',this)" data-correct="130°">90°</button>
+      <button class="quiz-option" onclick="checkQ('q1','180°',this)" data-correct="130°">180°</button>
+    </div>
+    <div class="quiz-feedback" id="q1-fb"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="quiz-card" id="q2-card">
+    <div class="quiz-num">Questão 2 · Ângulos Suplementares</div>
+    <div class="quiz-question">
+      Se â = 65°, qual é o valor de ĉ, sendo â e ĉ ângulos suplementares?
+    </div>
+    <div class="input-group">
+      <input type="number" class="input-grupo-input" id="q2-input" placeholder="°" min="0" max="360">
+      <button class="btn-verificar" onclick="checkInput('q2', 115)">Verificar</button>
+    </div>
+    <div class="quiz-feedback" id="q2-fb"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="quiz-card" id="q3-card">
+    <div class="quiz-num">Questão 3 · Ângulos Correspondentes</div>
+    <div class="quiz-question">
+      A reta <em>t</em> corta duas retas paralelas <em>r</em> e <em>s</em>, formando um ângulo de 47° em <em>r</em>. Qual é o ângulo correspondente em <em>s</em>?
+    </div>
+    <div class="quiz-options">
+      <button class="quiz-option" onclick="checkQ('q3','133°',this)" data-correct="47°">133°</button>
+      <button class="quiz-option" onclick="checkQ('q3','47°',this)" data-correct="47°">47°</button>
+      <button class="quiz-option" onclick="checkQ('q3','94°',this)" data-correct="47°">94°</button>
+      <button class="quiz-option" onclick="checkQ('q3','90°',this)" data-correct="47°">90°</button>
+    </div>
+    <div class="quiz-feedback" id="q3-fb"></div>
+  </div>
+
+  <!-- Q4 (baseado no livro - c) -->
+  <div class="quiz-card" id="q4-card">
+    <div class="quiz-num">Questão 4 · Desafio (baseado no livro)</div>
+    <div class="quiz-question">
+      Na figura, três retas se cruzam em um ponto. Os ângulos marcados são 25° e 103°. Qual é o valor de â? (Dica: â + 25° + 103° = 180°)
+    </div>
+    <div class="input-group">
+      <input type="number" class="input-grupo-input" id="q4-input" placeholder="°" min="0" max="360">
+      <button class="btn-verificar" onclick="checkInput('q4', 52)">Verificar</button>
+    </div>
+    <div class="quiz-feedback" id="q4-fb"></div>
+  </div>
+
+  <div class="card" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #86efac;">
+    <div class="card-title" style="color:#065f46;"><div class="icon" style="background:#bbf7d0;">📚</div>Resumão Final</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+      <div style="background:white;border-radius:10px;padding:12px 16px;font-size:14px;border-left:4px solid #2563eb;">
+        <strong>Opostos pelo Vértice:</strong> Quando duas retas se cruzam, os ângulos opostos são sempre <strong>iguais</strong>.
+      </div>
+      <div style="background:white;border-radius:10px;padding:12px 16px;font-size:14px;border-left:4px solid #f59e0b;">
+        <strong>Suplementares:</strong> Dois ângulos que somam <strong>180°</strong> (formam uma linha reta).
+      </div>
+      <div style="background:white;border-radius:10px;padding:12px 16px;font-size:14px;border-left:4px solid #10b981;">
+        <strong>Correspondentes em Paralelas:</strong> Quando r ∥ s, ângulos correspondentes são <strong>iguais</strong>.
+      </div>
+      <div style="background:white;border-radius:10px;padding:12px 16px;font-size:14px;border-left:4px solid #7c3aed;">
+        <strong>Alternos Internos em Paralelas:</strong> Ângulos alternos internos também são <strong>iguais</strong>.
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-footer">
+    <button class="btn-nav btn-prev" onclick="goTo(3)">← Paralelas</button>
+    <button class="btn-nav btn-next" onclick="goTo(0)" style="background:linear-gradient(135deg,#065f46,#10b981);">🏠 Recomeçar</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ===== NAVIGATION =====
+let currentSection = 0;
+const totalSections = 5;
+let scores = {};
+let totalCorrect = 0;
+
+function goTo(n) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec' + n).classList.add('active');
+  document.querySelectorAll('.nav-btn')[n].classList.add('active');
+  currentSection = n;
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  const pct = ((currentSection) / (totalSections - 1)) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = 'Seção ' + (currentSection + 1) + ' de ' + totalSections;
+}
+
+// ===== ANGLE SLIDER =====
+function updateAngles() {
+  const a = parseInt(document.getElementById('angleSlider').value);
+  const c = 180 - a;
+  document.getElementById('chipA').textContent = a + '°';
+  document.getElementById('chipB').textContent = a + '°';
+  document.getElementById('chipC').textContent = c + '°';
+  document.getElementById('chipD').textContent = c + '°';
+
+  const obs = document.getElementById('obs-angulos');
+  const obsText = document.getElementById('obs-text');
+  obs.style.display = 'block';
+  obsText.textContent = `Percebeu? â = b̂ = ${a}° e ĉ = d̂ = ${c}°. Os opostos são SEMPRE iguais, qualquer que seja o ângulo!`;
+}
+
+// ===== QUIZ: Multiple Choice =====
+function checkQ(qId, chosen, btn) {
+  if (scores[qId] !== undefined) return;
+  const correct = btn.getAttribute('data-correct');
+  const fb = document.getElementById(qId + '-fb');
+  const allBtns = btn.closest('.quiz-options').querySelectorAll('.quiz-option');
+  allBtns.forEach(b => b.disabled = true);
+
+  if (chosen === correct) {
+    btn.classList.add('certa');
+    fb.className = 'quiz-feedback show ok';
+    fb.textContent = '✅ Correto! ' + getFeedbackText(qId, true);
+    scores[qId] = 1;
+    totalCorrect++;
+  } else {
+    btn.classList.add('errada');
+    allBtns.forEach(b => { if (b.getAttribute('data-correct') === correct) b.classList.add('certa'); });
+    fb.className = 'quiz-feedback show nok';
+    fb.textContent = '❌ Não era essa. ' + getFeedbackText(qId, false);
+    scores[qId] = 0;
+  }
+  updateScore();
+}
+
+// ===== QUIZ: Input =====
+function checkInput(qId, correctVal) {
+  if (scores[qId] !== undefined) return;
+  const input = document.getElementById(qId + '-input');
+  const val = parseInt(input.value);
+  const fb = document.getElementById(qId + '-fb');
+  input.disabled = true;
+
+  if (val === correctVal) {
+    fb.className = 'quiz-feedback show ok';
+    fb.textContent = '✅ Correto! ' + getFeedbackText(qId, true);
+    scores[qId] = 1;
+    totalCorrect++;
+  } else {
+    fb.className = 'quiz-feedback show nok';
+    fb.textContent = `❌ A resposta correta é ${correctVal}°. ` + getFeedbackText(qId, false);
+    scores[qId] = 0;
+  }
+  updateScore();
+}
+
+function getFeedbackText(qId, correct) {
+  const texts = {
+    'q1': {
+      ok: 'Ângulos opostos pelo vértice são sempre iguais!',
+      nok: 'Lembre-se: ângulos opostos pelo vértice têm a mesma medida.'
+    },
+    'q2': {
+      ok: 'â + ĉ = 180°, então ĉ = 180° − 65° = 115°.',
+      nok: 'Use a fórmula: ĉ = 180° − â = 180° − 65° = 115°.'
+    },
+    'q3': {
+      ok: 'Em retas paralelas, ângulos correspondentes são iguais!',
+      nok: 'Em retas paralelas cortadas por transversal, ângulos correspondentes são iguais.'
+    },
+    'q4': {
+      ok: 'â + 25° + 103° = 180° → â = 180° − 128° = 52°.',
+      nok: 'Soma dos ângulos em linha reta = 180°. Logo: â = 180° − 25° − 103° = 52°.'
+    }
+  };
+  return correct ? texts[qId].ok : texts[qId].nok;
+}
+
+function updateScore() {
+  const total = Object.keys(scores).length;
+  document.getElementById('scoreFinal').innerHTML = totalCorrect + '/<span id="totalQ">4</span>';
+}
+
+// Init
+updateProgress();
+updateAngles();
+</script>
+</body>
+</html>
