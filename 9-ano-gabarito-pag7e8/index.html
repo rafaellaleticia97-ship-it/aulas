@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -20,191 +19,192 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-font-family: ‘Nunito’, sans-serif;
-background: var(–bg);
-color: var(–texto);
-padding: 20px 14px 60px;
-max-width: 720px;
-margin: 0 auto;
-}
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--texto);
+    padding: 20px 14px 60px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
 
-/* ── CABEÇALHO ── */
-header {
-background: linear-gradient(135deg, #2980b9, #8e44ad);
-border-radius: 22px;
-padding: 26px 20px;
-text-align: center;
-margin-bottom: 24px;
-box-shadow: 0 6px 20px rgba(41,128,185,.35);
-}
-header h1 { font-family:‘Baloo 2’,cursive; font-size:1.9rem; color:#fff; line-height:1.2; }
-header p  { color:rgba(255,255,255,.9); font-size:1rem; margin-top:6px; font-weight:700; }
+  /* ── CABEÇALHO ── */
+  header {
+    background: linear-gradient(135deg, #2980b9, #8e44ad);
+    border-radius: 22px;
+    padding: 26px 20px;
+    text-align: center;
+    margin-bottom: 24px;
+    box-shadow: 0 6px 20px rgba(41,128,185,.35);
+  }
+  header h1 { font-family:'Baloo 2',cursive; font-size:1.9rem; color:#fff; line-height:1.2; }
+  header p  { color:rgba(255,255,255,.9); font-size:1rem; margin-top:6px; font-weight:700; }
 
-/* ── FÓRMULA ── */
-.formula-box {
-background: linear-gradient(135deg,#fff3cd,#ffe08a);
-border: 4px solid var(–amarelo);
-border-radius: 18px;
-padding: 18px 20px;
-margin-bottom: 30px;
-text-align: center;
-}
-.formula-box h2 { font-family:‘Baloo 2’,cursive; font-size:1.25rem; color:#7d5800; margin-bottom:8px; }
-.formula { font-size:1.55rem; font-weight:900; color:#7d5800; background:#fff;
-display:inline-block; padding:10px 26px; border-radius:12px;
-border:3px solid var(–amarelo); margin:6px 0; }
-.formula-exp { font-size:.95rem; color:#7d5800; margin-top:8px; font-weight:700; line-height:1.6; }
+  /* ── FÓRMULA ── */
+  .formula-box {
+    background: linear-gradient(135deg,#fff3cd,#ffe08a);
+    border: 4px solid var(--amarelo);
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  .formula-box h2 { font-family:'Baloo 2',cursive; font-size:1.25rem; color:#7d5800; margin-bottom:8px; }
+  .formula { font-size:1.55rem; font-weight:900; color:#7d5800; background:#fff;
+    display:inline-block; padding:10px 26px; border-radius:12px;
+    border:3px solid var(--amarelo); margin:6px 0; }
+  .formula-exp { font-size:.95rem; color:#7d5800; margin-top:8px; font-weight:700; line-height:1.6; }
 
-/* ── RÓTULO DE PÁGINA ── */
-.page-label {
-font-family:‘Baloo 2’,cursive; font-size:1.4rem; color:#fff;
-background: var(–azul); display:inline-block;
-padding:5px 20px; border-radius:50px; margin-bottom:18px;
-}
+  /* ── RÓTULO DE PÁGINA ── */
+  .page-label {
+    font-family:'Baloo 2',cursive; font-size:1.4rem; color:#fff;
+    background: var(--azul); display:inline-block;
+    padding:5px 20px; border-radius:50px; margin-bottom:18px;
+  }
 
-/* ── CARD DE QUESTÃO ── */
-.questao {
-background:#fff; border-radius:20px;
-padding:20px 18px 18px; margin-bottom:26px;
-box-shadow:0 4px 14px rgba(0,0,0,.08);
-border-left:8px solid var(–azul);
-}
-.questao.verde  { border-left-color: var(–verde);   }
-.questao.roxo   { border-left-color: var(–roxo);    }
-.questao.laranja{ border-left-color: var(–laranja); }
-.questao.rosa   { border-left-color: var(–rosa);    }
+  /* ── CARD DE QUESTÃO ── */
+  .questao {
+    background:#fff; border-radius:20px;
+    padding:20px 18px 18px; margin-bottom:26px;
+    box-shadow:0 4px 14px rgba(0,0,0,.08);
+    border-left:8px solid var(--azul);
+  }
+  .questao.verde  { border-left-color: var(--verde);   }
+  .questao.roxo   { border-left-color: var(--roxo);    }
+  .questao.laranja{ border-left-color: var(--laranja); }
+  .questao.rosa   { border-left-color: var(--rosa);    }
 
-.q-numero {
-font-family:‘Baloo 2’,cursive; font-size:1rem; font-weight:800;
-color:#fff; background:var(–azul);
-display:inline-block; padding:2px 14px; border-radius:50px; margin-bottom:8px;
-}
-.questao.verde   .q-numero { background:var(–verde);   }
-.questao.roxo    .q-numero { background:var(–roxo);    }
-.questao.laranja .q-numero { background:var(–laranja); }
-.questao.rosa    .q-numero { background:var(–rosa);    }
+  .q-numero {
+    font-family:'Baloo 2',cursive; font-size:1rem; font-weight:800;
+    color:#fff; background:var(--azul);
+    display:inline-block; padding:2px 14px; border-radius:50px; margin-bottom:8px;
+  }
+  .questao.verde   .q-numero { background:var(--verde);   }
+  .questao.roxo    .q-numero { background:var(--roxo);    }
+  .questao.laranja .q-numero { background:var(--laranja); }
+  .questao.rosa    .q-numero { background:var(--rosa);    }
 
-.q-titulo { font-size:1rem; font-weight:800; margin-bottom:14px; line-height:1.45; }
+  .q-titulo { font-size:1rem; font-weight:800; margin-bottom:14px; line-height:1.45; }
 
-/* ── SUBITEM ── */
-.sub-card {
-background:var(–cinza); border-radius:14px;
-padding:14px; margin-bottom:12px;
-border-top:4px solid var(–azul);
-}
-.sub-card.verde  { border-top-color:var(–verde);   }
-.sub-card.roxo   { border-top-color:var(–roxo);    }
-.sub-card.laranja{ border-top-color:var(–laranja); }
-.sub-card.rosa   { border-top-color:var(–rosa);    }
+  /* ── SUBITEM ── */
+  .sub-card {
+    background:var(--cinza); border-radius:14px;
+    padding:14px; margin-bottom:12px;
+    border-top:4px solid var(--azul);
+  }
+  .sub-card.verde  { border-top-color:var(--verde);   }
+  .sub-card.roxo   { border-top-color:var(--roxo);    }
+  .sub-card.laranja{ border-top-color:var(--laranja); }
+  .sub-card.rosa   { border-top-color:var(--rosa);    }
 
-.sub-label {
-font-size:.8rem; font-weight:800; text-transform:uppercase;
-letter-spacing:1px; color:#555; margin-bottom:8px;
-}
+  .sub-label {
+    font-size:.8rem; font-weight:800; text-transform:uppercase;
+    letter-spacing:1px; color:#555; margin-bottom:8px;
+  }
 
-/* ── PASSO ── */
-.passo {
-display:flex; align-items:flex-start; gap:10px;
-background:#fff; border-radius:12px;
-padding:10px 12px; margin-bottom:8px;
-border:1.5px solid #e0e0e0;
-}
-.passo-icon { font-size:1.3rem; flex-shrink:0; margin-top:1px; }
-.passo-texto { font-size:.93rem; font-weight:700; line-height:1.55; color:var(–texto); }
-.passo-texto b { color:var(–azul); }
-.sub-card.verde  .passo-texto b { color:#1a6e3a; }
-.sub-card.roxo   .passo-texto b { color:var(–roxo); }
-.sub-card.laranja .passo-texto b { color:#a05000; }
-.sub-card.rosa   .passo-texto b { color:var(–rosa); }
+  /* ── PASSO ── */
+  .passo {
+    display:flex; align-items:flex-start; gap:10px;
+    background:#fff; border-radius:12px;
+    padding:10px 12px; margin-bottom:8px;
+    border:1.5px solid #e0e0e0;
+  }
+  .passo-icon { font-size:1.3rem; flex-shrink:0; margin-top:1px; }
+  .passo-texto { font-size:.93rem; font-weight:700; line-height:1.55; color:var(--texto); }
+  .passo-texto b { color:var(--azul); }
+  .sub-card.verde  .passo-texto b { color:#1a6e3a; }
+  .sub-card.roxo   .passo-texto b { color:var(--roxo); }
+  .sub-card.laranja .passo-texto b { color:#a05000; }
+  .sub-card.rosa   .passo-texto b { color:var(--rosa); }
 
-/* ── RESPOSTA FINAL ── */
-.resp {
-display:flex; align-items:center; gap:10px;
-background:linear-gradient(90deg,#d4edda,#c3e6cb);
-border:3px solid var(–verde); border-radius:13px;
-padding:12px 16px; margin-top:10px;
-}
-.resp .ri { font-size:1.8rem; flex-shrink:0; }
-.resp .rt { font-size:1.1rem; font-weight:900; color:#155724; }
+  /* ── RESPOSTA FINAL ── */
+  .resp {
+    display:flex; align-items:center; gap:10px;
+    background:linear-gradient(90deg,#d4edda,#c3e6cb);
+    border:3px solid var(--verde); border-radius:13px;
+    padding:12px 16px; margin-top:10px;
+  }
+  .resp .ri { font-size:1.8rem; flex-shrink:0; }
+  .resp .rt { font-size:1.1rem; font-weight:900; color:#155724; }
 
-/* ── GRID 2 colunas ── */
-.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
-@media(max-width:480px){ .grid2{ grid-template-columns:1fr; } }
+  /* ── GRID 2 colunas ── */
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+  @media(max-width:480px){ .grid2{ grid-template-columns:1fr; } }
 
-.mini-card {
-background:var(–cinza); border-radius:13px; padding:12px;
-border-top:4px solid var(–azul); text-align:center;
-}
-.mini-card.verde  { border-top-color:var(–verde); }
-.mini-card.roxo   { border-top-color:var(–roxo); }
-.mini-card.laranja{ border-top-color:var(–laranja); }
-.mini-card.rosa   { border-top-color:var(–rosa); }
-.mini-label { font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.8px; color:#666; margin-bottom:5px; }
-.mini-calc  { font-size:.9rem; font-weight:700; color:var(–texto); line-height:1.5; }
-.mini-resp  { font-size:1rem; font-weight:900; color:#155724; background:#d4edda;
-border-radius:7px; padding:3px 10px; display:inline-block; margin-top:5px; }
+  .mini-card {
+    background:var(--cinza); border-radius:13px; padding:12px;
+    border-top:4px solid var(--azul); text-align:center;
+  }
+  .mini-card.verde  { border-top-color:var(--verde); }
+  .mini-card.roxo   { border-top-color:var(--roxo); }
+  .mini-card.laranja{ border-top-color:var(--laranja); }
+  .mini-card.rosa   { border-top-color:var(--rosa); }
+  .mini-label { font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.8px; color:#666; margin-bottom:5px; }
+  .mini-calc  { font-size:.9rem; font-weight:700; color:var(--texto); line-height:1.5; }
+  .mini-resp  { font-size:1rem; font-weight:900; color:#155724; background:#d4edda;
+    border-radius:7px; padding:3px 10px; display:inline-block; margin-top:5px; }
 
-/* ── DICA ── */
-.dica {
-background:linear-gradient(135deg,#e8f4f8,#d6eaf8);
-border:2px solid var(–azul); border-radius:11px;
-padding:10px 13px; margin-bottom:10px;
-font-size:.88rem; font-weight:700; color:#1a5276;
-}
-.dica span { display:block; font-size:.75rem; text-transform:uppercase; letter-spacing:.8px; color:var(–azul); margin-bottom:3px; }
+  /* ── DICA ── */
+  .dica {
+    background:linear-gradient(135deg,#e8f4f8,#d6eaf8);
+    border:2px solid var(--azul); border-radius:11px;
+    padding:10px 13px; margin-bottom:10px;
+    font-size:.88rem; font-weight:700; color:#1a5276;
+  }
+  .dica span { display:block; font-size:.75rem; text-transform:uppercase; letter-spacing:.8px; color:var(--azul); margin-bottom:3px; }
 
-/* ── DIVISOR ── */
-.divisor { height:3px; background:linear-gradient(90deg,var(–azul),var(–roxo));
-border-radius:10px; margin:30px 0 22px; }
+  /* ── DIVISOR ── */
+  .divisor { height:3px; background:linear-gradient(90deg,var(--azul),var(--roxo));
+    border-radius:10px; margin:30px 0 22px; }
 
-/* ── SVG wrapper ── */
-.svg-wrap { text-align:center; margin:10px 0; }
+  /* ── SVG wrapper ── */
+  .svg-wrap { text-align:center; margin:10px 0; }
 
-/* ── RODAPÉ ── */
-.rodape {
-text-align:center; margin-top:36px; padding:18px;
-background:linear-gradient(135deg,#e8f8f5,#d1f2eb);
-border-radius:18px; border:3px solid var(–verde);
-}
-.rodape .emoji { font-size:2rem; margin-bottom:6px; }
-.rodape h3 { font-family:‘Baloo 2’,cursive; font-size:1.3rem; color:#1a6e3a; }
-.rodape p  { font-size:.95rem; color:#27ae60; font-weight:700; margin-top:4px; }
+  /* ── RODAPÉ ── */
+  .rodape {
+    text-align:center; margin-top:36px; padding:18px;
+    background:linear-gradient(135deg,#e8f8f5,#d1f2eb);
+    border-radius:18px; border:3px solid var(--verde);
+  }
+  .rodape .emoji { font-size:2rem; margin-bottom:6px; }
+  .rodape h3 { font-family:'Baloo 2',cursive; font-size:1.3rem; color:#1a6e3a; }
+  .rodape p  { font-size:.95rem; color:#27ae60; font-weight:700; margin-top:4px; }
 </style>
-
 </head>
 <body>
 
 <!-- CABEÇALHO -->
-
 <header>
   <h1>📐 Gabarito Visual</h1>
   <p>Ângulos Internos dos Polígonos · Páginas 7 e 8</p>
 </header>
 
-<!-- FÓRMULA -->
-
+<!-- FÓRMULAS -->
 <div class="formula-box">
-  <h2>🌟 Fórmula que usamos em TODAS as questões:</h2>
+  <h2>🌟 Propriedades que usamos nas questões:</h2>
+
+  <div style="margin-bottom:6px; font-size:.9rem; font-weight:800; color:#7d5800;">📐 Ângulos INTERNOS</div>
   <div class="formula">S = (n – 2) × 180°</div>
   <div class="formula-exp">
-    <b>S</b> = soma de todos os ângulos internos &nbsp;|&nbsp;
-    <b>n</b> = número de lados do polígono
+    <b>S</b> = soma dos ângulos internos &nbsp;|&nbsp; <b>n</b> = número de lados
+  </div>
+
+  <div style="margin:14px 0 6px; font-size:.9rem; font-weight:800; color:#7d5800;">🔺 Ângulos EXTERNOS</div>
+  <div class="formula">Soma dos ângulos externos = 360°</div>
+  <div class="formula-exp">
+    Vale para <b>qualquer polígono convexo</b>, independente do número de lados!
   </div>
 </div>
 
 <!-- ══════════════ PÁGINA 7 ══════════════ -->
-
 <div class="page-label">📄 Página 7</div>
 
 <!-- Q10 -->
-
 <div class="questao azul">
   <div class="q-numero">Questão 10</div>
   <div class="q-titulo">Determine a medida de â em cada polígono.</div>
 
   <!-- 10a – trapézio (4 lados) -->
-
   <div class="sub-card azul">
     <div class="sub-label">a) Trapézio – 4 lados</div>
     <div class="svg-wrap">
@@ -232,7 +232,6 @@ border-radius:18px; border:3px solid var(–verde);
   </div>
 
   <!-- 10b – hexágono (6 lados) -->
-
   <div class="sub-card roxo">
     <div class="sub-label">b) Hexágono – 6 lados</div>
     <div class="svg-wrap">
@@ -262,7 +261,6 @@ border-radius:18px; border:3px solid var(–verde);
   </div>
 
   <!-- 10c – paralelogramo com ângulos iguais aos pares -->
-
   <div class="sub-card laranja">
     <div class="sub-label">c) Paralelogramo – 4 lados (ângulos iguais aos pares)</div>
     <div class="svg-wrap">
@@ -306,7 +304,6 @@ border-radius:18px; border:3px solid var(–verde);
 </div>
 
 <!-- Q11 -->
-
 <div class="questao verde">
   <div class="q-numero">Questão 11</div>
   <div class="q-titulo">Calcule a soma dos ângulos internos dos polígonos convexos.</div>
@@ -335,7 +332,6 @@ border-radius:18px; border:3px solid var(–verde);
 </div>
 
 <!-- Q12 -->
-
 <div class="questao roxo">
   <div class="q-numero">Questão 12</div>
   <div class="q-titulo">Calcule x̂ do polígono abaixo. (Dica: conte o número de ângulos e use a fórmula.)</div>
@@ -364,7 +360,6 @@ border-radius:18px; border:3px solid var(–verde);
 </div>
 
 <!-- Q13 -->
-
 <div class="questao laranja">
   <div class="q-numero">Questão 13</div>
   <div class="q-titulo">Cada ângulo interno mede 175°. Quantos lados o polígono tem?</div>
@@ -392,11 +387,9 @@ border-radius:18px; border:3px solid var(–verde);
 <div class="divisor"></div>
 
 <!-- ══════════════ PÁGINA 8 ══════════════ -->
-
 <div class="page-label" style="background:var(--roxo);">📄 Página 8</div>
 
 <!-- Q14 -->
-
 <div class="questao roxo">
   <div class="q-numero">Questão 14</div>
   <div class="q-titulo">Um polígono convexo tem 12 ângulos internos iguais. Quantos graus mede cada um?</div>
@@ -416,7 +409,6 @@ border-radius:18px; border:3px solid var(–verde);
 </div>
 
 <!-- Q15 -->
-
 <div class="questao verde">
   <div class="q-numero">Questão 15</div>
   <div class="q-titulo">Polígono não-convexo em forma de "seta" com vértices P, R, Q, S.</div>
@@ -461,8 +453,98 @@ border-radius:18px; border:3px solid var(–verde);
   </div>
 </div>
 
-<!-- Q17 -->
 
+
+<!-- Q16 -->
+<div class="questao azul">
+  <div class="q-numero">Questão 16</div>
+  <div class="q-titulo">Observe a figura e calcule x̂ e ŷ.</div>
+
+  <div class="svg-wrap">
+    <!--
+      Vértices do polígono azul (6 lados, como no livro):
+      A = topo-esq  (85, 60)
+      B = topo-dir  (165, 45)
+      C = dir-sup   (210, 100)
+      D = dir-inf   (195, 165)
+      E = inf-esq   (65, 170)   ← vértice com ŷ interno e (x̂+55°) externo
+      F = esq-meio  (50, 105)   ← vértice com x̂ externo
+
+      Ângulos externos (prolongamentos das arestas):
+      A: 65° — linha saindo para cima-esquerda
+      B: 50° — linha saindo para cima
+      C: 40° — linha saindo para direita (vertical)
+      D: 80° — linha saindo para direita (horizontal)
+      E: (x̂+55°) — linha saindo para baixo (vertical)
+      F: x̂ — linha saindo para esquerda-cima
+    -->
+    <svg width="280" height="230" viewBox="0 0 280 230">
+
+      <!-- Polígono azul -->
+      <polygon points="85,60 165,45 210,100 195,165 65,170 50,105"
+               fill="#5dade2" stroke="#2980b9" stroke-width="3"/>
+
+      <!-- Vértice A (85,60): prolongamento para cima-esq, ângulo externo 65° -->
+      <line x1="85" y1="60" x2="45" y2="28" stroke="#333" stroke-width="2"/>
+      <text x="42" y="52" font-size="12" font-weight="bold" fill="#1a5276">65°</text>
+
+      <!-- Vértice B (165,45): prolongamento para cima, ângulo externo 50° -->
+      <line x1="165" y1="45" x2="175" y2="8" stroke="#333" stroke-width="2"/>
+      <text x="148" y="22" font-size="12" font-weight="bold" fill="#1a5276">50°</text>
+
+      <!-- Vértice C (210,100): prolongamento vertical para cima, ângulo externo 40° -->
+      <line x1="210" y1="100" x2="210" y2="55" stroke="#333" stroke-width="2"/>
+      <text x="214" y="80" font-size="12" font-weight="bold" fill="#1a5276">40°</text>
+
+      <!-- Vértice D (195,165): prolongamento horizontal para direita, ângulo externo 80° -->
+      <line x1="195" y1="165" x2="245" y2="165" stroke="#333" stroke-width="2"/>
+      <text x="218" y="158" font-size="12" font-weight="bold" fill="#1a5276">80°</text>
+
+      <!-- Vértice E (65,170): ŷ interno + (x̂+55°) externo (linha vertical para baixo) -->
+      <line x1="65" y1="170" x2="65" y2="215" stroke="#333" stroke-width="2"/>
+      <!-- ŷ: ângulo interno (dentro do polígono, acima da linha horizontal) -->
+      <text x="70" y="165" font-size="13" font-weight="bold" fill="#fff">ŷ</text>
+      <!-- (x̂+55°): ângulo externo abaixo da base -->
+      <text x="68" y="210" font-size="11" font-weight="bold" fill="#8e44ad">x̂+55°</text>
+      <!-- linha base horizontal passando por E e D -->
+      <line x1="20" y1="170" x2="245" y2="170" stroke="#333" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+      <!-- Vértice F (50,105): x̂ externo, linha saindo para esquerda -->
+      <line x1="50" y1="105" x2="10" y2="80" stroke="#333" stroke-width="2"/>
+      <text x="8" y="100" font-size="13" font-weight="bold" fill="#27ae60">x̂</text>
+
+    </svg>
+  </div>
+
+  <div class="dica">
+    <span>💡 Propriedade usada aqui</span>
+    A soma de todos os <b>ângulos externos</b> de qualquer polígono convexo = <b>360°</b>
+  </div>
+
+  <div class="passo">
+    <div class="passo-icon">1️⃣</div>
+    <div class="passo-texto">Os 6 ângulos externos são:<br>
+    <b>65° + 50° + 40° + 80° + x̂ + (x̂ + 55°)</b></div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">2️⃣</div>
+    <div class="passo-texto">Soma dos ângulos externos = <b>360°</b><br>
+    65 + 50 + 40 + 80 + x̂ + (x̂ + 55) = 360<br>
+    290 + 2x̂ = 360<br>
+    2x̂ = 70<br>
+    <b>x̂ = 35°</b></div>
+  </div>
+  <div class="passo">
+    <div class="passo-icon">3️⃣</div>
+    <div class="passo-texto">ŷ é <b>suplementar</b> ao ângulo externo (x̂ + 55°):<br>
+    ŷ + (35° + 55°) = 180°<br>
+    ŷ + 90° = 180°<br>
+    <b>ŷ = 90°</b></div>
+  </div>
+  <div class="resp"><div class="ri">✅</div><div class="rt">x̂ = 35° &nbsp;|&nbsp; ŷ = 90°</div></div>
+</div>
+
+<!-- Q17 -->
 <div class="questao verde">
   <div class="q-numero">Questão 17</div>
   <div class="q-titulo">Dois lados de um octógono regular foram prolongados. Encontre x̂.</div>
@@ -506,7 +588,6 @@ border-radius:18px; border:3px solid var(–verde);
 </div>
 
 <!-- Q18 -->
-
 <div class="questao rosa">
   <div class="q-numero">Questão 18</div>
   <div class="q-titulo">No triângulo ABC, AD bisecta  e BD bisecta B̂. Qual é a relação entre Ĉ e D̂?</div>
@@ -559,7 +640,6 @@ border-radius:18px; border:3px solid var(–verde);
 </div>
 
 <!-- Q19 -->
-
 <div class="questao laranja">
   <div class="q-numero">Questão 19</div>
   <div class="q-titulo">Hexágono regular com diagonais internas. Quanto medem x̂ e ŷ?</div>
@@ -608,7 +688,6 @@ border-radius:18px; border:3px solid var(–verde);
 </div>
 
 <!-- RODAPÉ -->
-
 <div class="rodape">
   <div class="emoji">🌟🎉🌟</div>
   <h3>Parabéns! Você revisou todas as questões!</h3>
