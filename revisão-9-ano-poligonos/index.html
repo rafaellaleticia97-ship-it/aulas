@@ -152,8 +152,8 @@ footer{text-align:center;padding:2rem 0;font-family:var(--mono);font-size:11px;c
 <section class="hero">
   <p class="hero-tag">9.º Ano · Matemática · Geometria</p>
   <h1 class="hero-h1">Ângulos<br><em>&amp; Polígonos</em></h1>
-  <p class="hero-desc">Aula visual com diagramas fiéis à prova, resolução passo a passo e quiz comentado.</p>
-  <div class="hero-pills"><span class="pill">5 tópicos</span><span class="pill">Diagramas da prova</span><span class="pill">Calculadora</span><span class="pill">Quiz · 8 questões</span></div>
+  <p class="hero-desc">Revisão completa com resolução passo a passo e quiz comentado.</p>
+  <div class="hero-pills"><span class="pill">5 tópicos</span><span class="pill">Diagramas</span><span class="pill">Calculadora</span><span class="pill">Quiz · 8 questões</span></div>
   <div class="hero-line"></div>
 </section>
 
@@ -282,11 +282,11 @@ footer{text-align:center;padding:2rem 0;font-family:var(--mono);font-size:11px;c
           <polygon points="250,75 242,71 242,79" fill="#1a1e3a"/>
           <circle cx="130" cy="75" r="3" fill="#1a1e3a"/>
           <line x1="130" y1="75" x2="167" y2="28" stroke="#1a1e3a" stroke-width="2"/>
-          <!-- Arco 128° (esq, azul): sweep=1 (horário no SVG = preenche o ângulo obtuso à esq) -->
-          <path d="M80,75 A50,50 0 0,1 161,36" fill="#BFDBFE" stroke="none" fill-opacity="0.75"/>
-          <text x="70" y="64" font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="#2563EB">128°</text>
-          <!-- Arco x (dir, verde): de (161,36) até (180,75), sweep=1 -->
-          <path d="M161,36 A50,50 0 0,1 180,75" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/>
+          <!-- Arco 128° (esq, azul): apenas traço do arco, sem preenchimento -->
+          <path d="M80,75 A50,50 0 0,1 161,36" fill="none" stroke="#2563EB" stroke-width="2.5"/>
+          <text x="64" y="60" font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="#2563EB">128°</text>
+          <!-- Arco x (dir, verde): apenas traço do arco, sem preenchimento -->
+          <path d="M161,36 A50,50 0 0,1 180,75" fill="none" stroke="#059669" stroke-width="2.5"/>
           <text x="172" y="52" font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="#059669">x</text>
           <line x1="10" y1="90" x2="10" y2="97" stroke="#777" stroke-width="1"/>
           <line x1="10" y1="97" x2="250" y2="97" stroke="#777" stroke-width="1"/>
@@ -355,45 +355,10 @@ footer{text-align:center;padding:2rem 0;font-family:var(--mono);font-size:11px;c
 <!-- S3 -->
 <section class="sec" id="s3">
   <div class="sec-hdr"><span class="sec-num">03</span><h2 class="sec-h2">Retas paralelas e transversal</h2></div>
-  <div class="two-col">
-    <div>
-      <div class="concept"><div class="c-tag">Conceito</div><p>Quando uma reta <strong>transversal</strong> corta duas retas <strong>paralelas</strong>, formam-se 8 ângulos com relações especiais.</p></div>
-      <div class="formula"><small>Correspondentes</small>Mesmo lado → iguais</div>
-      <div class="formula"><small>Alternos internos</small>Lados opostos → iguais</div>
-      <div class="formula"><small>Co-internos</small>Mesmo lado → soma = 180°</div>
-    </div>
-    <!-- Transversal: de (165,5) a (90,195). Cruza r(y=65) em x=141, cruza s(y=145) em x=110.
-         Dir transversal (descendo): vetor(-75,190), ângulo=atan2(190,-75)≈111.5°
-         115° é o ângulo OBTUSO entre a direita de r (0°) e a transversal descendo (111.5°): 111.5° ≈ 115° ✓
-         Arco 115° em P_r(141,65): de dir direita (r=30, ponto (171,65)) até dir transversal descendo (r=30):
-           end: (141+30*cos111.5°,65+30*sin111.5°)=(141-11,65+27.9)=(130,92.9)≈(130,93)
-           sweep=1 (preenche o ângulo entre a direita e a transversal descendo, sentido horário no SVG)
-         Arco correspondente x em P_s(110,145): mesma geometria.
-           start dir direita (r=30): (110+30,145)=(140,145)
-           end dir transversal descendo (r=30): (110+30*cos111.5°,145+30*sin111.5°)=(110-11,145+28)=(99,173)
-    -->
-    <div class="vis-box">
-      <svg viewBox="0 0 240 200" width="230" height="190">
-        <line x1="10" y1="65" x2="225" y2="65" stroke="#1a1e3a" stroke-width="2"/>
-        <polygon points="10,65 18,61 18,69" fill="#1a1e3a"/>
-        <polygon points="225,65 217,61 217,69" fill="#1a1e3a"/>
-        <text x="6" y="57" font-family="Nunito,sans-serif" font-size="13" font-weight="800" font-style="italic" fill="#1a1e3a">r</text>
-        <line x1="10" y1="145" x2="225" y2="145" stroke="#1a1e3a" stroke-width="2"/>
-        <polygon points="10,145 18,141 18,149" fill="#1a1e3a"/>
-        <polygon points="225,145 217,141 217,149" fill="#1a1e3a"/>
-        <text x="6" y="137" font-family="Nunito,sans-serif" font-size="13" font-weight="800" font-style="italic" fill="#1a1e3a">s</text>
-        <line x1="165" y1="5" x2="90" y2="195" stroke="#1a1e3a" stroke-width="2"/>
-        <text x="167" y="13" font-family="Nunito,sans-serif" font-size="13" font-weight="800" font-style="italic" fill="#1a1e3a">t</text>
-        <!-- 115° em r: de dir direita até transversal descendo (obtuso) -->
-        <path d="M171,65 A30,30 0 1,0 130,93" fill="#BFDBFE" stroke="none" fill-opacity="0.8"/>
-        <text x="153" y="53" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#2563EB">115°</text>
-        <!-- x em s: arco correspondente (mesma posição) -->
-        <path d="M140,145 A30,30 0 1,0 99,173" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/>
-        <text x="122" y="178" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#059669">x</text>
-        <line x1="141" y1="65" x2="110" y2="145" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
-      </svg>
-    </div>
-  </div>
+  <div class="concept"><div class="c-tag">Conceito</div><p>Quando uma reta <strong>transversal</strong> corta duas retas <strong>paralelas</strong>, formam-se 8 ângulos com relações especiais.</p></div>
+  <div class="formula"><small>Correspondentes</small>Mesmo lado → iguais</div>
+  <div class="formula"><small>Alternos internos</small>Lados opostos → iguais</div>
+  <div class="formula"><small>Co-internos</small>Mesmo lado → soma = 180°</div>
   <table class="ptable">
     <thead><tr><th>Par de ângulos</th><th>Posição</th><th>Relação</th></tr></thead>
     <tbody>
@@ -535,8 +500,8 @@ calcPoly();
 
 function mkSvgTri1(){return`<svg viewBox="0 0 180 165" width="160" height="148"><polygon points="30,18 30,148 158,148" fill="#EEF2FF" stroke="#1a1e3a" stroke-width="1.6"/><rect x="30" y="132" width="14" height="14" fill="none" stroke="#1a1e3a" stroke-width="1.4"/><text x="18" y="14" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#1a1e3a">A</text><path d="M30,38 A20,20 0 0,1 44,32" fill="#BFDBFE" stroke="none" fill-opacity="0.8"/><text x="46" y="44" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#2563EB">37°</text><text x="10" y="162" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#1a1e3a">B</text><text x="2" y="132" font-family="Nunito,sans-serif" font-size="9" font-weight="700" fill="#059669">90°</text><text x="160" y="162" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#1a1e3a">C</text><path d="M138,148 A20,20 0 0,0 144,132" fill="#FEE2E2" stroke="none" fill-opacity="0.8"/><text x="120" y="138" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#DC2626">x</text></svg>`}
 function mkSvgTri2(){return`<svg viewBox="0 0 180 165" width="160" height="148"><polygon points="90,15 18,152 162,152" fill="#FFF7ED" stroke="#1a1e3a" stroke-width="1.6"/><text x="83" y="11" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#1a1e3a">A</text><path d="M100,33 A20,20 0 0,1 80,33" fill="#BFDBFE" stroke="none" fill-opacity="0.8"/><text x="79" y="50" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#2563EB">2x</text><text x="2" y="165" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#1a1e3a">B</text><path d="M42,152 A24,24 0 0,0 30,131" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/><text x="42" y="144" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#059669">3x</text><text x="164" y="165" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#1a1e3a">C</text><path d="M138,152 A24,24 0 0,1 150,131" fill="#FEE2E2" stroke="none" fill-opacity="0.8"/><text x="128" y="144" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#DC2626">4x</text></svg>`}
-function mkSvgSup(){return`<svg viewBox="0 0 230 110" width="210" height="100"><line x1="10" y1="68" x2="220" y2="68" stroke="#1a1e3a" stroke-width="1.8"/><polygon points="10,68 18,64 18,72" fill="#1a1e3a"/><polygon points="220,68 212,64 212,72" fill="#1a1e3a"/><circle cx="115" cy="68" r="3" fill="#1a1e3a"/><line x1="115" y1="68" x2="150" y2="24" stroke="#1a1e3a" stroke-width="1.8"/><path d="M69,68 A46,46 0 0,1 147,33" fill="#BFDBFE" stroke="none" fill-opacity="0.75"/><text x="62" y="58" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#2563EB">128°</text><path d="M147,33 A46,46 0 0,1 161,68" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/><text x="155" y="48" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#059669">x</text></svg>`}
-function mkSvgPar(){return`<svg viewBox="0 0 210 175" width="190" height="160"><line x1="8" y1="55" x2="198" y2="55" stroke="#1a1e3a" stroke-width="1.8"/><polygon points="8,55 16,51 16,59" fill="#1a1e3a"/><polygon points="198,55 190,51 190,59" fill="#1a1e3a"/><text x="4" y="47" font-family="Nunito,sans-serif" font-size="12" font-weight="800" font-style="italic" fill="#1a1e3a">r</text><line x1="8" y1="125" x2="198" y2="125" stroke="#1a1e3a" stroke-width="1.8"/><polygon points="8,125 16,121 16,129" fill="#1a1e3a"/><polygon points="198,125 190,121 190,129" fill="#1a1e3a"/><text x="4" y="117" font-family="Nunito,sans-serif" font-size="12" font-weight="800" font-style="italic" fill="#1a1e3a">s</text><line x1="148" y1="5" x2="80" y2="170" stroke="#1a1e3a" stroke-width="1.8"/><text x="150" y="13" font-family="Nunito,sans-serif" font-size="12" font-weight="800" font-style="italic" fill="#1a1e3a">t</text><path d="M152,55 A27,27 0 1,0 113,82" fill="#BFDBFE" stroke="none" fill-opacity="0.8"/><text x="138" y="43" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#2563EB">115°</text><path d="M122,125 A27,27 0 1,0 83,152" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/><text x="106" y="158" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#059669">x</text></svg>`}
+function mkSvgSup(){return`<svg viewBox="0 0 230 110" width="210" height="100"><line x1="10" y1="68" x2="220" y2="68" stroke="#1a1e3a" stroke-width="1.8"/><polygon points="10,68 18,64 18,72" fill="#1a1e3a"/><polygon points="220,68 212,64 212,72" fill="#1a1e3a"/><circle cx="115" cy="68" r="3" fill="#1a1e3a"/><line x1="115" y1="68" x2="150" y2="24" stroke="#1a1e3a" stroke-width="1.8"/><path d="M69,68 A46,46 0 0,1 147,33" fill="none" stroke="#2563EB" stroke-width="2.2"/><text x="60" y="56" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#2563EB">128°</text><path d="M147,33 A46,46 0 0,1 161,68" fill="none" stroke="#059669" stroke-width="2.2"/><text x="154" y="47" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#059669">x</text></svg>`}
+function mkSvgPar(){return``}
 function mkSvgComp(){return`<svg viewBox="0 0 180 165" width="165" height="150"><line x1="40" y1="140" x2="165" y2="140" stroke="#1a1e3a" stroke-width="1.8"/><polygon points="165,140 157,136 157,144" fill="#1a1e3a"/><line x1="40" y1="140" x2="40" y2="18" stroke="#2563EB" stroke-width="1.8"/><polygon points="40,18 36,26 44,26" fill="#2563EB"/><rect x="40" y="124" width="14" height="14" fill="none" stroke="#1a1e3a" stroke-width="1.4"/><line x1="40" y1="140" x2="90" y2="58" stroke="#1a1e3a" stroke-width="1.8"/><path d="M40,102 A38,38 0 0,1 61,109" fill="#BFDBFE" stroke="none" fill-opacity="0.8"/><text x="2" y="103" font-family="Nunito,sans-serif" font-size="10" font-weight="700" fill="#2563EB">34°</text><path d="M61,109 A38,38 0 0,1 78,140" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/><text x="80" y="128" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#059669">x°</text></svg>`}
 
 const qs=[
@@ -544,10 +509,10 @@ const qs=[
   {q:"2. Ângulos internos do triângulo: 2x (em A), 3x (em B), 4x (em C). Qual é x?",opts:["x = 15°","x = 18°","x = 20°","x = 25°"],c:2,exp:"<b>Resolução:</b> 2x+3x+4x=180° → 9x=180° → <b>x=20°</b>",svgFn:mkSvgTri2},
   {q:"3. Ângulos suplementares: um mede 128°. Qual é o outro?",opts:["38°","42°","52°","62°"],c:2,exp:"<b>Resolução:</b> 128° + x = 180° → <b>x = 52°</b>",svgFn:mkSvgSup},
   {q:"4. Retas paralelas r e s, transversal forma 115° em r. Qual é o ângulo correspondente x em s?",opts:["65°","75°","115°","180°"],c:2,exp:"<b>Resolução:</b> Correspondentes = iguais → <b>x = 115°</b>",svgFn:mkSvgPar},
-  {q:"5. Qual é a soma dos ângulos internos de um heptágono (7 lados)?",opts:["720°","840°","900°","1080°"],c:2,exp:"<b>Resolução:</b> S=(7−2)×180°=5×180°=<b>900°</b>",svgFn:()=>`<svg viewBox="0 0 110 105" width="100" height="95"><polygon points="${polyPoints(7,55,52,46)}" fill="rgba(59,91,219,.1)" stroke="#3b5bdb" stroke-width="1.8"/><text x="55" y="56" text-anchor="middle" font-family="Nunito,sans-serif" font-size="13" fill="#3b5bdb" font-weight="800">900°</text><text x="55" y="98" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#5a6490">7 lados</text></svg>`},
+  {q:"5. Qual é a soma dos ângulos internos de um heptágono (7 lados)?",opts:["720°","840°","900°","1080°"],c:2,exp:"<b>Resolução:</b> S=(7−2)×180°=5×180°=<b>900°</b>",svgFn:()=>`<svg viewBox="0 0 110 95" width="100" height="85"><polygon points="${polyPoints(7,55,48,44)}" fill="rgba(59,91,219,.1)" stroke="#3b5bdb" stroke-width="1.8"/><text x="55" y="52" text-anchor="middle" font-family="Nunito,sans-serif" font-size="13" fill="#3b5bdb" font-weight="800">900°</text></svg>`},
   {q:"6. Ângulos complementares: um mede 34°. Qual é o outro (x)?",opts:["46°","56°","66°","146°"],c:1,exp:"<b>Resolução:</b> 34° + x = 90° → <b>x = 56°</b>",svgFn:mkSvgComp},
-  {q:"7. Qual é a soma dos ângulos internos de um decágono (10 lados)?",opts:["1260°","1440°","1620°","1800°"],c:1,exp:"<b>Resolução:</b> S=(10−2)×180°=8×180°=<b>1440°</b>",svgFn:()=>`<svg viewBox="0 0 110 105" width="100" height="95"><polygon points="${polyPoints(10,55,52,46)}" fill="rgba(12,166,120,.1)" stroke="#0ca678" stroke-width="1.8"/><text x="55" y="56" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" fill="#0ca678" font-weight="800">1440°</text><text x="55" y="98" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#5a6490">10 lados</text></svg>`},
-  {q:"8. Um polígono convexo tem soma dos ângulos internos de 1260°. Quantos lados possui?",opts:["7 lados","8 lados","9 lados","10 lados"],c:2,exp:"<b>Resolução:</b> (n−2)×180°=1260° → n−2=7 → <b>n=9 (nonágono)</b>",svgFn:()=>`<svg viewBox="0 0 110 105" width="100" height="95"><polygon points="${polyPoints(9,55,52,46)}" fill="rgba(232,144,10,.1)" stroke="#e8900a" stroke-width="1.8"/><text x="55" y="56" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" fill="#e8900a" font-weight="800">1260°</text><text x="55" y="98" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#5a6490">9 lados</text></svg>`},
+  {q:"7. Qual é a soma dos ângulos internos de um decágono (10 lados)?",opts:["1260°","1440°","1620°","1800°"],c:1,exp:"<b>Resolução:</b> S=(10−2)×180°=8×180°=<b>1440°</b>",svgFn:()=>`<svg viewBox="0 0 110 95" width="100" height="85"><polygon points="${polyPoints(10,55,48,44)}" fill="rgba(12,166,120,.1)" stroke="#0ca678" stroke-width="1.8"/><text x="55" y="52" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" fill="#0ca678" font-weight="800">1440°</text></svg>`},
+  {q:"8. Um polígono convexo tem soma dos ângulos internos de 1260°. Quantos lados possui?",opts:["7 lados","8 lados","9 lados","10 lados"],c:2,exp:"<b>Resolução:</b> (n−2)×180°=1260° → n−2=7 → <b>n=9 (nonágono)</b>",svgFn:()=>`<svg viewBox="0 0 110 95" width="100" height="85"><polygon points="${polyPoints(9,55,48,44)}" fill="rgba(232,144,10,.1)" stroke="#e8900a" stroke-width="1.8"/><text x="55" y="52" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" fill="#e8900a" font-weight="800">1260°</text></svg>`},
 ];
 let cor=0,don=0;
 function buildQ(){
