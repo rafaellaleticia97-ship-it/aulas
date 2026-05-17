@@ -853,12 +853,28 @@ tbody tr:last-child td { border-bottom: none; }
       <div class="q-meta"><span class="q-num">Questão 01 · Tabela</span><span class="q-pts">+1 pt</span></div>
       <div class="q-text">Na função <code>y = 4x</code>, qual é o valor de y quando <code>x = 6</code>?</div>
       <div class="opts">
-        <button class="opt" onclick="respMC(this,'qc1',false,'q1fb','y = 4·6 = 24, não 10.')">10</button>
-        <button class="opt" onclick="respMC(this,'qc1',false,'q1fb','y = 4·6 = 24, não 18.')">18</button>
-        <button class="opt" onclick="respMC(this,'qc1',true, 'q1fb','✅ Correto! y = 4·6 = 24.')">24</button>
-        <button class="opt" onclick="respMC(this,'qc1',false,'q1fb','y = 4·6 = 24, não 30.')">30</button>
+        <button class="opt" onclick="respMC(this,'qc1',false,'q1fb')">10</button>
+        <button class="opt" onclick="respMC(this,'qc1',false,'q1fb')">18</button>
+        <button class="opt" onclick="respMC(this,'qc1',true, 'q1fb')">24</button>
+        <button class="opt" onclick="respMC(this,'qc1',false,'q1fb')">30</button>
       </div>
       <div class="q-feedback" id="q1fb"></div>
+      <template id="q1ok">
+        <div class="fb-steps">
+          <div class="fb-title ok">✅ Correto! Veja o passo a passo:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Escreva a função: <b>y = 4x</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Substitua x = 6: <b>y = 4 · 6</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Calcule: <b>y = 24</b> ✓</span></div>
+        </div>
+      </template>
+      <template id="q1err">
+        <div class="fb-steps">
+          <div class="fb-title err">❌ Não é essa. Veja como resolver:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Escreva a função: <b>y = 4x</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Substitua x = 6: <b>y = 4 · 6</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Calcule: <b>y = 24</b> ← resposta correta</span></div>
+        </div>
+      </template>
     </div>
 
     <!-- Q2 -->
@@ -866,12 +882,31 @@ tbody tr:last-child td { border-bottom: none; }
       <div class="q-meta"><span class="q-num">Questão 02 · Tabela</span><span class="q-pts">+1 pt</span></div>
       <div class="q-text">Na função <code>y = 3x − 1</code>, qual é o valor de y quando <code>x = 5</code>?</div>
       <div class="opts">
-        <button class="opt" onclick="respMC(this,'qc2',false,'q2fb','3·5−1 = 15−1 = 14, não 13.')">13</button>
-        <button class="opt" onclick="respMC(this,'qc2',true, 'q2fb','✅ Perfeito! 3·5−1 = 15−1 = 14.')">14</button>
-        <button class="opt" onclick="respMC(this,'qc2',false,'q2fb','3·5−1 = 14, não 16.')">16</button>
-        <button class="opt" onclick="respMC(this,'qc2',false,'q2fb','3·5−1 = 14, não 20.')">20</button>
+        <button class="opt" onclick="respMC(this,'qc2',false,'q2fb')">13</button>
+        <button class="opt" onclick="respMC(this,'qc2',true, 'q2fb')">14</button>
+        <button class="opt" onclick="respMC(this,'qc2',false,'q2fb')">16</button>
+        <button class="opt" onclick="respMC(this,'qc2',false,'q2fb')">20</button>
       </div>
       <div class="q-feedback" id="q2fb"></div>
+      <template id="q2ok">
+        <div class="fb-steps">
+          <div class="fb-title ok">✅ Correto! Veja o passo a passo:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Escreva a função: <b>y = 3x − 1</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Substitua x = 5: <b>y = 3 · 5 − 1</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Multiplique primeiro: <b>y = 15 − 1</b></span></div>
+          <div class="fb-step"><span class="fb-n">4</span><span>Subtraia: <b>y = 14</b> ✓</span></div>
+        </div>
+      </template>
+      <template id="q2err">
+        <div class="fb-steps">
+          <div class="fb-title err">❌ Não é essa. Veja como resolver:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Escreva a função: <b>y = 3x − 1</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Substitua x = 5: <b>y = 3 · 5 − 1</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Multiplique primeiro: <b>y = 15 − 1</b></span></div>
+          <div class="fb-step"><span class="fb-n">4</span><span>Subtraia: <b>y = 14</b> ← resposta correta</span></div>
+          <div class="fb-alert">⚠️ Lembre: multiplique antes de subtrair!</div>
+        </div>
+      </template>
     </div>
 
     <!-- Q3 -->
@@ -879,12 +914,31 @@ tbody tr:last-child td { border-bottom: none; }
       <div class="q-meta"><span class="q-num">Questão 03 · Tabela</span><span class="q-pts">+1 pt</span></div>
       <div class="q-text">Na função <code>y = (x+1)·5</code>, qual é o valor de y quando <code>x = 4</code>?</div>
       <div class="opts">
-        <button class="opt" onclick="respMC(this,'qc3',false,'q3fb','(4+1)·5 = 5·5 = 25, não 21.')">21</button>
-        <button class="opt" onclick="respMC(this,'qc3',false,'q3fb','(4+1)·5 = 25, não 20. Cuidado: soma 1 primeiro!')">20</button>
-        <button class="opt" onclick="respMC(this,'qc3',true, 'q3fb','✅ Exato! (4+1)·5 = 5·5 = 25.')">25</button>
-        <button class="opt" onclick="respMC(this,'qc3',false,'q3fb','(4+1)·5 = 25, não 30.')">30</button>
+        <button class="opt" onclick="respMC(this,'qc3',false,'q3fb')">21</button>
+        <button class="opt" onclick="respMC(this,'qc3',false,'q3fb')">20</button>
+        <button class="opt" onclick="respMC(this,'qc3',true, 'q3fb')">25</button>
+        <button class="opt" onclick="respMC(this,'qc3',false,'q3fb')">30</button>
       </div>
       <div class="q-feedback" id="q3fb"></div>
+      <template id="q3ok">
+        <div class="fb-steps">
+          <div class="fb-title ok">✅ Correto! Veja o passo a passo:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Escreva a função: <b>y = (x + 1) · 5</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Substitua x = 4: <b>y = (4 + 1) · 5</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Resolva o parêntese primeiro: <b>y = 5 · 5</b></span></div>
+          <div class="fb-step"><span class="fb-n">4</span><span>Multiplique: <b>y = 25</b> ✓</span></div>
+        </div>
+      </template>
+      <template id="q3err">
+        <div class="fb-steps">
+          <div class="fb-title err">❌ Não é essa. Veja como resolver:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Escreva a função: <b>y = (x + 1) · 5</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Substitua x = 4: <b>y = (4 + 1) · 5</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Resolva o parêntese primeiro: <b>y = 5 · 5</b></span></div>
+          <div class="fb-step"><span class="fb-n">4</span><span>Multiplique: <b>y = 25</b> ← resposta correta</span></div>
+          <div class="fb-alert">⚠️ Sempre resolva o que está dentro do parêntese primeiro!</div>
+        </div>
+      </template>
     </div>
 
     <!-- Q4 (input) -->
@@ -893,9 +947,29 @@ tbody tr:last-child td { border-bottom: none; }
       <div class="q-text">Resolva a equação: <code>3x + 5 = 20</code>. Qual é o valor de x?</div>
       <div class="q-input-row">
         <input class="q-input" id="qi4" type="number" placeholder="Digite x aqui…">
-        <button class="q-submit" onclick="respInput('qc4','qi4',5,'q4fb','✅ Correto! 3x = 20−5 = 15, x = 15÷3 = 5.','q4sub')">Verificar</button>
+        <button class="q-submit" id="q4sub" onclick="respInput('qc4','qi4',5,'q4fb','q4sub')">Verificar</button>
       </div>
       <div class="q-feedback" id="q4fb"></div>
+      <template id="q4ok">
+        <div class="fb-steps">
+          <div class="fb-title ok">✅ Correto! Veja o passo a passo:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Equação: <b>3x + 5 = 20</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Subtraia 5 dos dois lados: <b>3x = 20 − 5</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Calcule: <b>3x = 15</b></span></div>
+          <div class="fb-step"><span class="fb-n">4</span><span>Divida os dois lados por 3: <b>x = 15 ÷ 3</b></span></div>
+          <div class="fb-step"><span class="fb-n">5</span><span>Resultado: <b>x = 5</b> ✓</span></div>
+        </div>
+      </template>
+      <template id="q4err">
+        <div class="fb-steps">
+          <div class="fb-title err">❌ Não é essa. Veja como resolver:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Equação: <b>3x + 5 = 20</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Subtraia 5 dos dois lados: <b>3x = 20 − 5</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Calcule: <b>3x = 15</b></span></div>
+          <div class="fb-step"><span class="fb-n">4</span><span>Divida os dois lados por 3: <b>x = 15 ÷ 3</b></span></div>
+          <div class="fb-step"><span class="fb-n">5</span><span>Resultado: <b>x = 5</b> ← resposta correta</span></div>
+        </div>
+      </template>
     </div>
 
     <!-- Q5 (input) -->
@@ -904,9 +978,30 @@ tbody tr:last-child td { border-bottom: none; }
       <div class="q-text">Resolva: <code>4x − 6 = 18</code>. Qual é o valor de x?</div>
       <div class="q-input-row">
         <input class="q-input" id="qi5" type="number" placeholder="Digite x aqui…">
-        <button class="q-submit" onclick="respInput('qc5','qi5',6,'q5fb','✅ Exato! 4x = 18+6 = 24, x = 24÷4 = 6.','q5sub')">Verificar</button>
+        <button class="q-submit" id="q5sub" onclick="respInput('qc5','qi5',6,'q5fb','q5sub')">Verificar</button>
       </div>
       <div class="q-feedback" id="q5fb"></div>
+      <template id="q5ok">
+        <div class="fb-steps">
+          <div class="fb-title ok">✅ Correto! Veja o passo a passo:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Equação: <b>4x − 6 = 18</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Some 6 nos dois lados: <b>4x = 18 + 6</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Calcule: <b>4x = 24</b></span></div>
+          <div class="fb-step"><span class="fb-n">4</span><span>Divida os dois lados por 4: <b>x = 24 ÷ 4</b></span></div>
+          <div class="fb-step"><span class="fb-n">5</span><span>Resultado: <b>x = 6</b> ✓</span></div>
+        </div>
+      </template>
+      <template id="q5err">
+        <div class="fb-steps">
+          <div class="fb-title err">❌ Não é essa. Veja como resolver:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Equação: <b>4x − 6 = 18</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Some 6 nos dois lados: <b>4x = 18 + 6</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Calcule: <b>4x = 24</b></span></div>
+          <div class="fb-step"><span class="fb-n">4</span><span>Divida os dois lados por 4: <b>x = 24 ÷ 4</b></span></div>
+          <div class="fb-step"><span class="fb-n">5</span><span>Resultado: <b>x = 6</b> ← resposta correta</span></div>
+          <div class="fb-alert">⚠️ Cuidado: o sinal era −6, então some 6 para eliminar!</div>
+        </div>
+      </template>
     </div>
 
     <!-- Q6 -->
@@ -914,12 +1009,29 @@ tbody tr:last-child td { border-bottom: none; }
       <div class="q-meta"><span class="q-num">Questão 06 · Expressão</span><span class="q-pts">+1 pt</span></div>
       <div class="q-text">Qual é a expressão da função para: <em>"Multiplica x por 3 e soma 8"</em>?</div>
       <div class="opts">
-        <button class="opt" onclick="respMC(this,'qc6',false,'q6fb','Cuidado com a ordem: primeiro multiplica, depois soma.')">y = 8x + 3</button>
-        <button class="opt" onclick="respMC(this,'qc6',true, 'q6fb','✅ Certo! Multiplica por 3 (3x) e soma 8.')">y = 3x + 8</button>
-        <button class="opt" onclick="respMC(this,'qc6',false,'q6fb','Não é y = x + 11. Multiplica x por 3 primeiro.')">y = x + 11</button>
-        <button class="opt" onclick="respMC(this,'qc6',false,'q6fb','Não é y = 3(x+8). Soma 8 depois de multiplicar.')">y = 3(x + 8)</button>
+        <button class="opt" onclick="respMC(this,'qc6',false,'q6fb')">y = 8x + 3</button>
+        <button class="opt" onclick="respMC(this,'qc6',true, 'q6fb')">y = 3x + 8</button>
+        <button class="opt" onclick="respMC(this,'qc6',false,'q6fb')">y = x + 11</button>
+        <button class="opt" onclick="respMC(this,'qc6',false,'q6fb')">y = 3(x + 8)</button>
       </div>
       <div class="q-feedback" id="q6fb"></div>
+      <template id="q6ok">
+        <div class="fb-steps">
+          <div class="fb-title ok">✅ Correto! Veja o passo a passo:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Operação 1 — "multiplica x por 3": <b>3x</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Operação 2 — "soma 8": <b>3x + 8</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Expressão final: <b>y = 3x + 8</b> ✓</span></div>
+        </div>
+      </template>
+      <template id="q6err">
+        <div class="fb-steps">
+          <div class="fb-title err">❌ Não é essa. Veja como traduzir:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Operação 1 — "multiplica x por 3": <b>3x</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Operação 2 — "soma 8": <b>3x + 8</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Expressão final: <b>y = 3x + 8</b> ← resposta correta</span></div>
+          <div class="fb-alert">⚠️ Siga a ordem do enunciado: primeiro o que multiplica x, depois o que soma.</div>
+        </div>
+      </template>
     </div>
 
     <!-- Q7 -->
@@ -927,12 +1039,31 @@ tbody tr:last-child td { border-bottom: none; }
       <div class="q-meta"><span class="q-num">Questão 07 · Coeficientes</span><span class="q-pts">+1 pt</span></div>
       <div class="q-text">Na função <code>y = 5x + 9</code>, quais são o coeficiente angular e o coeficiente linear, respectivamente?</div>
       <div class="opts">
-        <button class="opt" onclick="respMC(this,'qc7',false,'q7fb','Invertido! Na forma ax+b, a é o angular e b é o linear.')">9 e 5</button>
-        <button class="opt" onclick="respMC(this,'qc7',true, 'q7fb','✅ Perfeito! a = 5 (angular) e b = 9 (linear).')">5 e 9</button>
-        <button class="opt" onclick="respMC(this,'qc7',false,'q7fb','Não. O coeficiente angular é o número que multiplica x.')">5 e 5</button>
-        <button class="opt" onclick="respMC(this,'qc7',false,'q7fb','Não. Releia a forma y = ax + b.')">9 e 9</button>
+        <button class="opt" onclick="respMC(this,'qc7',false,'q7fb')">9 e 5</button>
+        <button class="opt" onclick="respMC(this,'qc7',true, 'q7fb')">5 e 9</button>
+        <button class="opt" onclick="respMC(this,'qc7',false,'q7fb')">5 e 5</button>
+        <button class="opt" onclick="respMC(this,'qc7',false,'q7fb')">9 e 9</button>
       </div>
       <div class="q-feedback" id="q7fb"></div>
+      <template id="q7ok">
+        <div class="fb-steps">
+          <div class="fb-title ok">✅ Correto! Veja o passo a passo:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>A forma geral é: <b>y = ax + b</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Compare com <b>y = 5x + 9</b>: o número que multiplica x é o <b>a = 5</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>O número independente é o <b>b = 9</b></span></div>
+          <div class="fb-step"><span class="fb-n">4</span><span>Coeficiente angular = <b>5</b> / Coeficiente linear = <b>9</b> ✓</span></div>
+        </div>
+      </template>
+      <template id="q7err">
+        <div class="fb-steps">
+          <div class="fb-title err">❌ Não é essa. Veja como identificar:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>A forma geral é: <b>y = ax + b</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Compare com <b>y = 5x + 9</b>: o número que multiplica x é o <b>a = 5</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>O número independente é o <b>b = 9</b></span></div>
+          <div class="fb-step"><span class="fb-n">4</span><span>Coeficiente angular = <b>5</b> / Coeficiente linear = <b>9</b> ← resposta correta</span></div>
+          <div class="fb-alert">⚠️ O coeficiente angular é sempre o que multiplica o x!</div>
+        </div>
+      </template>
     </div>
 
     <!-- Q8 (problema) -->
@@ -940,12 +1071,33 @@ tbody tr:last-child td { border-bottom: none; }
       <div class="q-meta"><span class="q-num">Questão 08 · Problema Extra</span><span class="q-pts">+1 pt</span></div>
       <div class="q-text">Um serviço de streaming cobra <strong>R$ 10,00 de taxa mensal</strong> mais <strong>R$ 3,00 por filme</strong> alugado. Quanto paga quem alugar <strong>7 filmes</strong> no mês?</div>
       <div class="opts">
-        <button class="opt" onclick="respMC(this,'qc8',false,'q8fb','y = 3·7 + 10 = 21 + 10 = 31, não R$ 21,00.')">R$ 21,00</button>
-        <button class="opt" onclick="respMC(this,'qc8',false,'q8fb','y = 3·7 + 10 = 31, não R$ 28,00.')">R$ 28,00</button>
-        <button class="opt" onclick="respMC(this,'qc8',true, 'q8fb','✅ Correto! y = 3·7 + 10 = 21 + 10 = R$ 31,00.')">R$ 31,00</button>
-        <button class="opt" onclick="respMC(this,'qc8',false,'q8fb','y = 3·7 + 10 = 31, não R$ 37,00.')">R$ 37,00</button>
+        <button class="opt" onclick="respMC(this,'qc8',false,'q8fb')">R$ 21,00</button>
+        <button class="opt" onclick="respMC(this,'qc8',false,'q8fb')">R$ 28,00</button>
+        <button class="opt" onclick="respMC(this,'qc8',true, 'q8fb')">R$ 31,00</button>
+        <button class="opt" onclick="respMC(this,'qc8',false,'q8fb')">R$ 37,00</button>
       </div>
       <div class="q-feedback" id="q8fb"></div>
+      <template id="q8ok">
+        <div class="fb-steps">
+          <div class="fb-title ok">✅ Correto! Veja o passo a passo:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Taxa fixa = R$ 10,00 → esse é o <b>b</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Valor por filme = R$ 3,00 → esse é o <b>a</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Função: <b>y = 3x + 10</b></span></div>
+          <div class="fb-step"><span class="fb-n">4</span><span>Substitua x = 7: <b>y = 3 · 7 + 10</b></span></div>
+          <div class="fb-step"><span class="fb-n">5</span><span>Calcule: <b>y = 21 + 10 = R$ 31,00</b> ✓</span></div>
+        </div>
+      </template>
+      <template id="q8err">
+        <div class="fb-steps">
+          <div class="fb-title err">❌ Não é essa. Veja como montar e resolver:</div>
+          <div class="fb-step"><span class="fb-n">1</span><span>Taxa fixa = R$ 10,00 → esse é o <b>b</b></span></div>
+          <div class="fb-step"><span class="fb-n">2</span><span>Valor por filme = R$ 3,00 → esse é o <b>a</b></span></div>
+          <div class="fb-step"><span class="fb-n">3</span><span>Função: <b>y = 3x + 10</b></span></div>
+          <div class="fb-step"><span class="fb-n">4</span><span>Substitua x = 7: <b>y = 3 · 7 + 10</b></span></div>
+          <div class="fb-step"><span class="fb-n">5</span><span>Calcule: <b>y = 21 + 10 = R$ 31,00</b> ← resposta correta</span></div>
+          <div class="fb-alert">⚠️ Não esqueça de somar a taxa fixa ao final!</div>
+        </div>
+      </template>
     </div>
 
     <!-- SCORE FINAL -->
@@ -958,6 +1110,58 @@ tbody tr:last-child td { border-bottom: none; }
 
   <div class="footer">BNCC · EF08MA07 · Retas e Equações Lineares · 8º Ano</div>
 </div>
+
+<style>
+.fb-steps {
+  margin-top: 14px;
+  background: rgba(255,255,255,.06);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.fb-title {
+  font-size: .9rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.fb-title.ok  { color: var(--lime); }
+.fb-title.err { color: var(--coral); }
+.fb-step {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: rgba(255,255,255,.8);
+  font-size: .88rem;
+  line-height: 1.5;
+}
+.fb-n {
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  border-radius: 50%;
+  min-width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.fb-step b { color: #fff; font-weight: 700; }
+.fb-alert {
+  margin-top: 6px;
+  background: rgba(255,184,0,.1);
+  border-left: 3px solid var(--amber);
+  border-radius: 0 8px 8px 0;
+  padding: 8px 12px;
+  font-size: .83rem;
+  color: var(--amber);
+  font-weight: 600;
+}
+</style>
 
 <script>
 let acertos = 0;
@@ -986,7 +1190,17 @@ function checkFinish() {
   }
 }
 
-function respMC(btn, cardId, correct, fbId, msg) {
+function showTemplate(fbId, templateId) {
+  const fb = document.getElementById(fbId);
+  const tpl = document.getElementById(templateId);
+  if (tpl) {
+    fb.innerHTML = '';
+    fb.appendChild(tpl.content.cloneNode(true));
+  }
+  fb.className = 'q-feedback show';
+}
+
+function respMC(btn, cardId, correct, fbId) {
   const card = document.getElementById(cardId);
   if (card.dataset.done) return;
   card.dataset.done = '1';
@@ -996,33 +1210,31 @@ function respMC(btn, cardId, correct, fbId, msg) {
   const allBtns = card.querySelectorAll('.opt');
   allBtns.forEach(b => { b.disabled = true; });
 
-  const fb = document.getElementById(fbId);
+  const qNum = fbId.replace('fb','');
   if (correct) {
     btn.classList.add('correct');
-    fb.className = 'q-feedback show ok';
+    showTemplate(fbId, qNum + 'ok');
     acertos++;
   } else {
     btn.classList.add('wrong');
-    fb.className = 'q-feedback show err';
-    // Highlight correct btn
+    showTemplate(fbId, qNum + 'err');
     allBtns.forEach(b => {
       if (b.onclick && b.onclick.toString().includes('true')) b.classList.add('correct');
     });
   }
-  fb.textContent = msg;
   updateBar();
   checkFinish();
 }
 
-function respInput(cardId, inputId, answer, fbId, okMsg, btnId) {
+function respInput(cardId, inputId, answer, fbId, btnId) {
   const card = document.getElementById(cardId);
   if (card.dataset.done) return;
 
   const val = parseFloat(document.getElementById(inputId).value);
-  if (isNaN(val)) { 
+  if (isNaN(val)) {
     const fb = document.getElementById(fbId);
-    fb.className = 'q-feedback show err';
-    fb.textContent = '⚠️ Digite um número!';
+    fb.className = 'q-feedback show';
+    fb.innerHTML = '<span style="color:var(--amber);font-weight:700;">⚠️ Digite um número!</span>';
     return;
   }
 
@@ -1032,22 +1244,19 @@ function respInput(cardId, inputId, answer, fbId, okMsg, btnId) {
 
   const input = document.getElementById(inputId);
   input.disabled = true;
-  // find submit btn
-  const btn = input.parentElement.querySelector('.q-submit');
+  const btn = document.getElementById(btnId);
   if (btn) btn.disabled = true;
 
-  const fb = document.getElementById(fbId);
+  const qNum = fbId.replace('fb','');
   if (val === answer) {
     input.style.borderColor = 'var(--lime)';
     input.style.color = 'var(--lime)';
-    fb.className = 'q-feedback show ok';
-    fb.textContent = okMsg;
+    showTemplate(fbId, qNum + 'ok');
     acertos++;
   } else {
     input.style.borderColor = 'var(--coral)';
     input.style.color = 'var(--coral)';
-    fb.className = 'q-feedback show err';
-    fb.textContent = `❌ Resposta errada. O correto é x = ${answer}. ${okMsg.replace('✅ ','').replace('Correto! ','').replace('Exato! ','')}`;
+    showTemplate(fbId, qNum + 'err');
   }
   updateBar();
   checkFinish();
