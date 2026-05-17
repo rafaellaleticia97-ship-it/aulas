@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Potências de 10 – Aula Interativa</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #1a73e8;
+    --verde: #34a853;
+    --amarelo: #fbbc04;
+    --vermelho: #ea4335;
+    --roxo: #9c27b0;
+    --laranja: #ff6d00;
+    --fundo: #f0f8ff;
+    --card: #ffffff;
+    --texto: #1a1a2e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+    min-height: 100vh;
+  }
+
+  /* STARS BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 10% 20%, rgba(26,115,232,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(52,168,83,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(251,188,4,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 32px 20px 24px;
+    position: relative;
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--azul);
+    color: #fff;
+    font-family: 'Fredoka One', cursive;
+    font-size: 13px;
+    letter-spacing: 1px;
+    padding: 4px 14px;
+    border-radius: 99px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(28px, 6vw, 48px);
+    line-height: 1.15;
+    color: var(--texto);
+    margin-bottom: 8px;
+  }
+
+  h1 span { color: var(--azul); }
+
+  .subtitle {
+    font-size: 15px;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: #dde8f8;
+    border-radius: 99px;
+    height: 12px;
+    overflow: hidden;
+    margin: 0 auto 8px;
+    max-width: 420px;
+  }
+  .progress-bar {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--azul), var(--verde));
+    transition: width 0.6s ease;
+    width: 0%;
+  }
+  .progress-label {
+    font-size: 12px;
+    color: #777;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  /* SECTION */
+  .section {
+    display: none;
+    animation: fadeSlide 0.5s ease;
+  }
+  .section.active { display: block; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 28px 24px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    border: 2px solid transparent;
+  }
+
+  .card.azul  { border-color: var(--azul);  }
+  .card.verde { border-color: var(--verde); }
+  .card.amarelo { border-color: var(--amarelo); }
+  .card.roxo  { border-color: var(--roxo);  }
+  .card.laranja { border-color: var(--laranja); }
+
+  /* SECTION TITLE */
+  .sec-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .emoji { font-size: 26px; }
+
+  /* EXPLANATION TEXT */
+  .explain {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #333;
+    margin-bottom: 14px;
+  }
+
+  .highlight {
+    display: inline-block;
+    background: var(--amarelo);
+    border-radius: 6px;
+    padding: 1px 6px;
+    font-weight: 800;
+    color: #000;
+  }
+
+  .blue-box {
+    background: #e8f0fe;
+    border-left: 4px solid var(--azul);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--azul);
+  }
+
+  .green-box {
+    background: #e6f4ea;
+    border-left: 4px solid var(--verde);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-weight: 700;
+    font-size: 15px;
+    color: #1e6e3a;
+  }
+
+  .red-box {
+    background: #fce8e6;
+    border-left: 4px solid var(--vermelho);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-weight: 700;
+    font-size: 15px;
+    color: #b71c1c;
+  }
+
+  /* DECIMAL MOVER */
+  .decimal-demo {
+    background: #f8f9ff;
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .decimal-demo label {
+    display: block;
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+
+  .num-display {
+    font-family: 'Fredoka One', cursive;
+    font-size: 48px;
+    letter-spacing: 8px;
+    color: var(--texto);
+    position: relative;
+    display: inline-block;
+    min-width: 200px;
+    text-align: center;
+  }
+
+  .comma {
+    color: var(--vermelho);
+    transition: margin 0.4s ease;
+    font-size: 52px;
+  }
+
+  .arrows-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* BUTTONS */
+  .btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-azul   { background: var(--azul);   color: #fff; }
+  .btn-verde  { background: var(--verde);  color: #fff; }
+  .btn-amarelo{ background: var(--amarelo);color: #000; }
+  .btn-vermelho{ background: var(--vermelho); color: #fff; }
+  .btn-roxo   { background: var(--roxo);   color: #fff; }
+  .btn-laranja{ background: var(--laranja);color: #fff; }
+  .btn-cinza  { background: #e0e0e0;       color: #555; }
+  .btn-lg { font-size: 18px; padding: 14px 32px; border-radius: 16px; }
+
+  .btn-nav {
+    background: var(--azul);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    border: none;
+    border-radius: 14px;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    margin-top: 20px;
+  }
+  .btn-nav:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,115,232,0.35); }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 14px 0;
+  }
+
+  th {
+    background: var(--azul);
+    color: #fff;
+    font-family: 'Fredoka One', cursive;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 15px;
+  }
+
+  th:first-child { border-radius: 10px 0 0 0; }
+  th:last-child  { border-radius: 0 10px 0 0; }
+
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+  }
+
+  tr:nth-child(even) td { background: #f5f9ff; }
+
+  /* QUIZ */
+  .quiz-q {
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--texto);
+  }
+
+  .opts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .opt-btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    padding: 16px;
+    border: 3px solid #ddd;
+    border-radius: 14px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--texto);
+  }
+
+  .opt-btn:hover { border-color: var(--azul); background: #e8f0fe; transform: scale(1.03); }
+  .opt-btn.correct { border-color: var(--verde); background: #e6f4ea; color: #1e6e3a; }
+  .opt-btn.wrong   { border-color: var(--vermelho); background: #fce8e6; color: #b71c1c; }
+
+  .feedback {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 800;
+    padding: 12px;
+    border-radius: 12px;
+    display: none;
+    margin-bottom: 12px;
+  }
+
+  .feedback.show { display: block; animation: pop 0.3s ease; }
+  .feedback.ok  { background: #e6f4ea; color: #1e6e3a; }
+  .feedback.err { background: #fce8e6; color: #b71c1c; }
+
+  @keyframes pop {
+    0%   { transform: scale(0.8); opacity: 0; }
+    60%  { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .quiz-score {
+    text-align: center;
+    font-family: 'Fredoka One', cursive;
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 8px;
+  }
+
+  /* CHALLENGE */
+  .challenge-input-wrap {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+
+  .challenge-q {
+    font-family: 'Fredoka One', cursive;
+    font-size: 24px;
+    color: var(--texto);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  input[type="text"], input[type="number"] {
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    width: 130px;
+    padding: 8px 12px;
+    border: 3px solid #ddd;
+    border-radius: 12px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+    color: var(--texto);
+  }
+
+  input:focus { border-color: var(--azul); }
+  input.correct-input { border-color: var(--verde); background: #e6f4ea; }
+  input.wrong-input   { border-color: var(--vermelho); background: #fce8e6; }
+
+  /* STAR BADGE */
+  .stars-display {
+    text-align: center;
+    font-size: 32px;
+    margin: 12px 0;
+  }
+
+  /* FINAL SCREEN */
+  .final-screen {
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .trophy {
+    font-size: 80px;
+    display: block;
+    margin-bottom: 16px;
+    animation: bounce 1s infinite alternate;
+  }
+
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-12px); }
+  }
+
+  .final-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 36px;
+    color: var(--azul);
+    margin-bottom: 8px;
+  }
+
+  .final-msg {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  .score-big {
+    font-family: 'Fredoka One', cursive;
+    font-size: 56px;
+    color: var(--verde);
+  }
+
+  /* NAV ROW */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  /* RESPONSIVE */
+  @media(max-width: 520px) {
+    .opts { grid-template-columns: 1fr; }
+    .num-display { font-size: 36px; letter-spacing: 4px; }
+    h1 { font-size: 26px; }
+  }
+
+  /* CONFETTI */
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    top: -20px;
+    border-radius: 2px;
+    animation: fall linear forwards;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* DRAG DEMO */
+  .drag-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 16px 0;
+  }
+
+  .drag-tile {
+    background: var(--azul);
+    color: #fff;
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.15s;
+  }
+
+  .drag-tile:hover { transform: scale(1.1); }
+  .drag-tile.comma-tile { background: var(--vermelho); }
+  .drag-tile.selected  { outline: 3px solid var(--amarelo); }
+
+  /* SLIDER DEMO */
+  .slider-wrap {
+    margin: 18px 0;
+  }
+
+  input[type=range] {
+    width: 100%;
+    accent-color: var(--azul);
+    height: 6px;
+  }
+
+  .slider-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #888;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+
+  .result-display {
+    font-family: 'Fredoka One', cursive;
+    font-size: 36px;
+    text-align: center;
+    color: var(--azul);
+    margin: 10px 0;
+    min-height: 50px;
+    transition: all 0.3s;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 99px;
+    border: 2px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #555;
+  }
+
+  .tab-btn.active {
+    background: var(--azul);
+    border-color: var(--azul);
+    color: #fff;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeSlide 0.3s ease; }
+
+  /* STEP DIAGRAM */
+  .step-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 18px 0;
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+  }
+
+  .step-num {
+    background: var(--azul);
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 18px;
+    position: relative;
+  }
+
+  .step-arrow {
+    font-size: 28px;
+    color: var(--vermelho);
+    animation: pulse 1.2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.3); }
+  }
+
+  .step-result {
+    background: var(--verde);
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 18px;
+    animation: glow 1.5s infinite alternate;
+  }
+
+  @keyframes glow {
+    from { box-shadow: 0 0 0 rgba(52,168,83,0); }
+    to   { box-shadow: 0 0 18px rgba(52,168,83,0.5); }
+  }
+
+  .op-badge {
+    background: var(--amarelo);
+    color: #000;
+    border-radius: 8px;
+    font-size: 14px;
+    padding: 4px 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+  }
+
+  /* MOBILE COLS */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  @media(max-width: 500px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="badge">📐 Matemática · 6º Ano</div>
+    <h1>Multiplicação e Divisão<br>por <span>Potências de 10</span> 🚀</h1>
+    <p class="subtitle">Uma aventura com números decimais!</p>
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">Seção 1 de 5</div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- SEÇÃO 1 – O QUE SÃO POTÊNCIAS DE 10? -->
+  <!-- ============================================================ -->
+  <div class="section active" id="sec1">
+    <div class="card azul">
+      <div class="sec-title"><span class="emoji">🔭</span> O que são Potências de 10?</div>
+
+      <p class="explain">
+        Você já percebeu que <span class="highlight">10, 100, 1 000</span> são todos multiplicações do número 10?
+        Isso mesmo! Eles se chamam <strong>Potências de 10</strong>.
+      </p>
+
+      <div class="blue-box">
+        10¹ = 10 &nbsp;&nbsp;|&nbsp;&nbsp; 10² = 100 &nbsp;&nbsp;|&nbsp;&nbsp; 10³ = 1 000 &nbsp;&nbsp;|&nbsp;&nbsp; 10⁴ = 10 000
+      </div>
+
+      <p class="explain">
+        O <strong>expoente</strong> (o número pequeno em cima) diz <em>quantas vezes</em> multiplicamos 10 por ele mesmo.
+        Veja abaixo — clique numa potência para ver como ela é formada! ⬇️
+      </p>
+
+      <!-- TABS INTERATIVAS -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('t10')">10¹</button>
+        <button class="tab-btn" onclick="showTab('t100')">10²</button>
+        <button class="tab-btn" onclick="showTab('t1000')">10³</button>
+        <button class="tab-btn" onclick="showTab('t10000')">10⁴</button>
+      </div>
+
+      <div class="tab-content active" id="t10">
+        <div class="step-diagram">
+          <div class="step-num">10</div>
+          <span class="op-badge">= 10 × 1 vez</span>
+          <span class="step-arrow">→</span>
+          <div class="step-result">10</div>
+        </div>
+        <p class="explain" style="text-align:center;">Apenas 1 zero depois do 1. Simples!</p>
+      </div>
+
+      <div class="tab-content" id="t100">
+        <div class="step-diagram">
+          <div class="step-num">10 × 10</div>
+          <span class="op-badge">= 10 × 2 vezes</span>
+          <span class="step-arrow">→</span>
+          <div class="step-result">100</div>
+        </div>
+        <p class="explain" style="text-align:center;">2 zeros depois do 1.</p>
+      </div>
+
+      <div class="tab-content" id="t1000">
+        <div class="step-diagram">
+          <div class="step-num">10×10×10</div>
+          <span class="op-badge">= 10 × 3 vezes</span>
+          <span class="step-arrow">→</span>
+          <div class="step-result">1 000</div>
+        </div>
+        <p class="explain" style="text-align:center;">3 zeros depois do 1.</p>
+      </div>
+
+      <div class="tab-content" id="t10000">
+        <div class="step-diagram">
+          <div class="step-num">10⁴</div>
+          <span class="op-badge">= 10 × 4 vezes</span>
+          <span class="step-arrow">→</span>
+          <div class="step-result">10 000</div>
+        </div>
+        <p class="explain" style="text-align:center;">4 zeros depois do 1!</p>
+      </div>
+
+      <div class="green-box">
+        💡 <strong>Dica de ouro:</strong> O expoente sempre diz quantos <strong>zeros</strong> o número tem. 10³ → 3 zeros → 1 000 ✔️
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <span></span>
+      <button class="btn-nav" onclick="goTo(2)">Próximo: A vírgula mágica ➡️</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SEÇÃO 2 – A VÍRGULA SE MOVE! -->
+  <!-- ============================================================ -->
+  <div class="section" id="sec2">
+    <div class="card verde">
+      <div class="sec-title"><span class="emoji">✨</span> A Vírgula Mágica</div>
+
+      <p class="explain">
+        Quando multiplicamos ou dividimos por uma potência de 10,
+        a <span class="highlight">vírgula</span> se move!<br>
+        É como se ela andasse pelo número. Veja ao vivo abaixo:
+      </p>
+
+      <!-- DEMO INTERATIVA DA VÍRGULA -->
+      <div class="decimal-demo">
+        <label>🎮 Arraste o controle para multiplicar ou dividir por 10</label>
+        <div class="result-display" id="demoResult">3,47</div>
+        <div class="slider-wrap">
+          <input type="range" min="-3" max="3" value="0" id="powerSlider" oninput="updateDemo(this.value)">
+          <div class="slider-label">
+            <span>÷ 10³</span><span>÷ 10²</span><span>÷ 10</span>
+            <span style="color:var(--azul);font-size:14px;">Base</span>
+            <span>× 10</span><span>× 10²</span><span>× 10³</span>
+          </div>
+        </div>
+        <div id="demoExplain" style="font-size:14px;color:#555;font-weight:700;margin-top:8px;"></div>
+      </div>
+
+      <div class="blue-box">
+        ➡️ Multiplica por 10 → vírgula anda <strong>1 casa para a direita</strong><br>
+        ⬅️ Divide por 10 → vírgula anda <strong>1 casa para a esquerda</strong>
+      </div>
+
+      <p class="explain">
+        Cada potência de 10 move a vírgula mais casas.<br>
+        ✖️ 10² (100) → vírgula anda <strong>2 casas</strong> para a direita.<br>
+        ✖️ 10³ (1000) → vírgula anda <strong>3 casas</strong> para a direita.
+      </p>
+
+      <!-- EXEMPLOS VISUAIS -->
+      <div class="two-col" style="margin-top:12px;">
+        <div style="background:#e8f0fe;border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-weight:800;color:#1a73e8;margin-bottom:6px;">× 10</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:20px;">3,<span style="color:red;">8</span> → 38</div>
+          <div style="font-size:12px;color:#555;font-weight:700;margin-top:4px;">vírgula: 1 casa →</div>
+        </div>
+        <div style="background:#e6f4ea;border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-weight:800;color:#34a853;margin-bottom:6px;">× 10²</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:20px;">1,<span style="color:red;">37</span> → 137</div>
+          <div style="font-size:12px;color:#555;font-weight:700;margin-top:4px;">vírgula: 2 casas →</div>
+        </div>
+        <div style="background:#fff3e0;border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-weight:800;color:#ff6d00;margin-bottom:6px;">÷ 10</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:20px;">57 → 5,<span style="color:red;">7</span></div>
+          <div style="font-size:12px;color:#555;font-weight:700;margin-top:4px;">vírgula: 1 casa ←</div>
+        </div>
+        <div style="background:#fce8e6;border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-weight:800;color:#ea4335;margin-bottom:6px;">÷ 10²</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:20px;">47,3 → 0,<span style="color:red;">473</span></div>
+          <div style="font-size:12px;color:#555;font-weight:700;margin-top:4px;">vírgula: 2 casas ←</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-cinza" onclick="goTo(1)">⬅️ Voltar</button>
+      <button class="btn-nav" onclick="goTo(3)">Próximo: Exemplos da vida real ➡️</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SEÇÃO 3 – EXEMPLOS DA VIDA REAL -->
+  <!-- ============================================================ -->
+  <div class="section" id="sec3">
+    <div class="card amarelo" style="border-color:#fbbc04;">
+      <div class="sec-title"><span class="emoji">🎂</span> Na Festa da Sílvia</div>
+
+      <p class="explain">
+        A Sílvia está organizando uma festa de aniversário para <strong>10 pessoas</strong>!
+        Ela precisa comprar vários itens. Quanto vai custar cada coisa para 10 pessoas?
+      </p>
+
+      <div class="explain">Veja a tabela — é só <strong>multiplicar por 10</strong> (mover a vírgula 1 casa para a direita):</div>
+
+      <table>
+        <thead>
+          <tr><th>Item</th><th>Preço de 1</th><th>× 10 → Preço de 10</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>🎈 Balões</td><td>R$ 0,15</td><td>R$ 1,50</td></tr>
+          <tr><td>🍬 Línguas de sogra</td><td>R$ 0,65</td><td>R$ 6,50</td></tr>
+          <tr><td>🎩 Chapéus</td><td>R$ 0,70</td><td>R$ 7,00</td></tr>
+        </tbody>
+      </table>
+
+      <div class="green-box">
+        🍭 Percebeu? R$ 0,15 → R$ 1,<strong>50</strong>. A vírgula andou uma casa para a direita!
+      </div>
+    </div>
+
+    <div class="card" style="border-color:#9c27b0;">
+      <div class="sec-title"><span class="emoji">🍫</span> Dividindo os Custos</div>
+
+      <p class="explain">
+        Depois da festa, os 10 amigos vão <strong>dividir</strong> os custos da comida. É só dividir por 10
+        — a vírgula anda uma casa para a <strong>esquerda</strong>!
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Item</th><th>Custo Total</th><th>÷ 10 → Por Pessoa</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>🍫 Brigadeiros</td><td>R$ 44,50</td><td>R$ 4,45</td></tr>
+          <tr><td>🍦 Sorvetes</td><td>R$ 35,20</td><td>R$ 3,52</td></tr>
+          <tr><td>🥟 Salgados</td><td>R$ 68,70</td><td>R$ 6,87</td></tr>
+        </tbody>
+      </table>
+
+      <div class="red-box">
+        💡 R$ 44,50 ÷ 10 = R$ 4,45 — a vírgula voltou uma casa para a esquerda. Simples demais!
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-cinza" onclick="goTo(2)">⬅️ Voltar</button>
+      <button class="btn-nav" onclick="goTo(4)">Próximo: Quiz! 🎯 ➡️</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SEÇÃO 4 – QUIZ -->
+  <!-- ============================================================ -->
+  <div class="section" id="sec4">
+    <div class="card roxo">
+      <div class="sec-title"><span class="emoji">🎯</span> Quiz Rápido!</div>
+      <p class="explain">Hora de testar o que você aprendeu! Responda as 5 perguntas abaixo:</p>
+
+      <div class="quiz-score" id="quizScore">Pergunta 1 de 5 · ⭐ 0 pontos</div>
+
+      <div id="quizArea">
+        <!-- Pergunta injetada via JS -->
+      </div>
+
+      <div class="feedback" id="quizFeedback"></div>
+      <button class="btn btn-azul" id="nextQBtn" style="display:none;width:100%;margin-top:8px;" onclick="nextQuestion()">Próxima pergunta ➡️</button>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-cinza" onclick="goTo(3)">⬅️ Voltar</button>
+      <button class="btn-nav" id="goToChallenge" style="display:none;" onclick="goTo(5)">Próximo: Desafio Final 🏆 ➡️</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SEÇÃO 5 – DESAFIO FINAL -->
+  <!-- ============================================================ -->
+  <div class="section" id="sec5">
+    <div class="card laranja">
+      <div class="sec-title"><span class="emoji">🏆</span> Desafio Final!</div>
+      <p class="explain">Calcule o resultado de cada operação e escreva no campo. Boa sorte! 🍀</p>
+
+      <div id="challengeArea"></div>
+
+      <button class="btn btn-verde btn-lg" style="width:100%;margin-top:16px;" onclick="checkChallenge()">✅ Verificar Respostas</button>
+      <div class="feedback" id="challengeFeedback"></div>
+    </div>
+
+    <div id="finalScreen" style="display:none;">
+      <div class="card" style="border-color:#fbbc04;">
+        <div class="final-screen">
+          <span class="trophy">🏆</span>
+          <div class="final-title">Parabéns, Campeão(ã)!</div>
+          <p class="final-msg">Você concluiu a aula sobre Potências de 10!<br>Agora você sabe mover a vírgula como um(a) verdadeiro(a) matemático(a)! 🎉</p>
+          <div class="stars-display" id="finalStars"></div>
+          <div class="score-big" id="finalScore"></div>
+          <p style="color:#888;font-weight:700;font-size:14px;margin-top:8px;">acertos no desafio</p>
+          <button class="btn btn-azul btn-lg" style="margin-top:20px;" onclick="restartAll()">🔄 Recomeçar a Aula</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-cinza" onclick="goTo(4)">⬅️ Voltar</button>
+    </div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<script>
+/* ======================================================
+   STATE
+====================================================== */
+let currentSection = 1;
+const TOTAL = 5;
+
+let quizIndex = 0;
+let quizPoints = 0;
+let quizAnswered = false;
+
+/* ======================================================
+   NAVIGATION
+====================================================== */
+function goTo(n) {
+  document.getElementById('sec' + currentSection).classList.remove('active');
+  currentSection = n;
+  document.getElementById('sec' + currentSection).classList.add('active');
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (n === 4 && quizIndex === 0) renderQuestion();
+  if (n === 5) renderChallenge();
+}
+
+function updateProgress() {
+  const pct = ((currentSection - 1) / (TOTAL - 1)) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Seção ${currentSection} de ${TOTAL}`;
+}
+
+/* ======================================================
+   TABS
+====================================================== */
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+/* ======================================================
+   DEMO SLIDER
+====================================================== */
+const baseNum = 3.47;
+
+function updateDemo(val) {
+  val = parseInt(val);
+  let result = baseNum * Math.pow(10, val);
+  // Format nicely
+  let formatted;
+  if (Math.abs(val) === 0) formatted = '3,47';
+  else if (val > 0) formatted = result.toFixed(Math.max(0, 2 - val)).replace('.', ',');
+  else formatted = result.toFixed(2 - val).replace('.', ',');
+
+  // Fix edge cases
+  if (val === 1)  formatted = '34,7';
+  if (val === 2)  formatted = '347';
+  if (val === 3)  formatted = '3 470';
+  if (val === -1) formatted = '0,347';
+  if (val === -2) formatted = '0,0347';
+  if (val === -3) formatted = '0,00347';
+
+  document.getElementById('demoResult').textContent = formatted;
+
+  const explain = document.getElementById('demoExplain');
+  if (val === 0) explain.textContent = '↔️ Número original: 3,47';
+  else if (val > 0) explain.textContent = `✖️ 3,47 × 10${sup(val)} = ${formatted} (vírgula ${val} casa${val>1?'s':''} →)`;
+  else explain.textContent = `➗ 3,47 ÷ 10${sup(-val)} = ${formatted} (vírgula ${-val} casa${-val>1?'s':''} ←)`;
+}
+
+function sup(n) {
+  const s = ['⁰','¹','²','³','⁴'];
+  return s[n] || n;
+}
+
+/* ======================================================
+   QUIZ
+====================================================== */
+const questions = [
+  {
+    q: '10 × 3,8 = ?',
+    opts: ['3,08', '38', '380', '0,38'],
+    correct: 1,
+    explain: '🎉 Perfeito! A vírgula andou 1 casa para a direita: 3,8 → 38'
+  },
+  {
+    q: '10² × 1,37 = ?',
+    opts: ['13,7', '1370', '137', '0,137'],
+    correct: 2,
+    explain: '✅ Isso! 10² = 100. Vírgula anda 2 casas → 1,37 → 137'
+  },
+  {
+    q: '57 ÷ 10 = ?',
+    opts: ['570', '5,7', '0,57', '507'],
+    correct: 1,
+    explain: '🎊 Exato! Dividindo por 10, vírgula anda 1 casa para a esquerda: 57 → 5,7'
+  },
+  {
+    q: '47,3 ÷ 10² = ?',
+    opts: ['4,73', '473', '0,473', '4730'],
+    correct: 2,
+    explain: '🌟 Muito bem! 10² = 100. Vírgula anda 2 casas ←: 47,3 → 0,473'
+  },
+  {
+    q: '10³ × 12,7681 = ?',
+    opts: ['12768,1', '1276,81', '127,681', '12,7681'],
+    correct: 0,
+    explain: '🏆 Incrível! 10³ move a vírgula 3 casas →: 12,7681 → 12768,1'
+  }
+];
+
+function renderQuestion() {
+  if (quizIndex >= questions.length) {
+    endQuiz();
+    return;
+  }
+  const q = questions[quizIndex];
+  quizAnswered = false;
+
+  document.getElementById('quizFeedback').className = 'feedback';
+  document.getElementById('quizFeedback').style.display = 'none';
+  document.getElementById('nextQBtn').style.display = 'none';
+  document.getElementById('quizScore').textContent =
+    `Pergunta ${quizIndex + 1} de ${questions.length} · ⭐ ${quizPoints} pontos`;
+
+  let html = `<div class="quiz-q">${q.q}</div><div class="opts">`;
+  q.opts.forEach((opt, i) => {
+    html += `<button class="opt-btn" onclick="answerQuiz(${i})">${opt}</button>`;
+  });
+  html += '</div>';
+  document.getElementById('quizArea').innerHTML = html;
+}
+
+function answerQuiz(chosen) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+
+  const q = questions[quizIndex];
+  const btns = document.querySelectorAll('.opt-btn');
+  btns[q.correct].classList.add('correct');
+  if (chosen !== q.correct) btns[chosen].classList.add('wrong');
+
+  const fb = document.getElementById('quizFeedback');
+  if (chosen === q.correct) {
+    quizPoints++;
+    fb.textContent = q.explain;
+    fb.className = 'feedback ok show';
+    confetti();
+  } else {
+    fb.textContent = `❌ Quase! ${q.explain}`;
+    fb.className = 'feedback err show';
+  }
+  fb.style.display = 'block';
+
+  document.getElementById('quizScore').textContent =
+    `Pergunta ${quizIndex + 1} de ${questions.length} · ⭐ ${quizPoints} pontos`;
+
+  if (quizIndex < questions.length - 1) {
+    document.getElementById('nextQBtn').style.display = 'block';
+  } else {
+    setTimeout(() => {
+      document.getElementById('nextQBtn').style.display = 'block';
+      document.getElementById('nextQBtn').textContent = '🏁 Ver Resultado do Quiz!';
+      document.getElementById('nextQBtn').onclick = endQuiz;
+    }, 600);
+  }
+}
+
+function nextQuestion() {
+  quizIndex++;
+  renderQuestion();
+}
+
+function endQuiz() {
+  const stars = '⭐'.repeat(quizPoints) + '☆'.repeat(questions.length - quizPoints);
+  document.getElementById('quizArea').innerHTML = `
+    <div style="text-align:center;padding:20px 0;">
+      <div style="font-size:60px;margin-bottom:12px;">🎊</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:28px;color:var(--roxo);">
+        Quiz Concluído!
+      </div>
+      <div class="stars-display">${stars}</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:40px;color:var(--verde);">
+        ${quizPoints}/${questions.length}
+      </div>
+      <div style="font-size:15px;font-weight:700;color:#555;margin-top:8px;">
+        ${quizPoints >= 4 ? 'Você é fera em potências de 10! 🚀' :
+          quizPoints >= 3 ? 'Boa! Revise um pouco e vai arrasar! 💪' :
+          'Não desanime! Releia a aula e tente de novo! 📖'}
+      </div>
+    </div>
+  `;
+  document.getElementById('nextQBtn').style.display = 'none';
+  document.getElementById('quizFeedback').style.display = 'none';
+  document.getElementById('goToChallenge').style.display = 'block';
+  if (quizPoints >= 4) confetti();
+}
+
+/* ======================================================
+   CHALLENGE
+====================================================== */
+const challenges = [
+  { q: '10¹ × 58,4 = ?',   answer: '584',    hint: 'vírgula 1 casa →' },
+  { q: '47,8 × 10² = ?',   answer: '4780',   hint: 'vírgula 2 casas →' },
+  { q: '10⁴ × 0,001 = ?',  answer: '10',     hint: 'vírgula 4 casas →' },
+  { q: '390,04 ÷ 10² = ?', answer: '3,9004', hint: 'vírgula 2 casas ←' },
+  { q: '458,37 ÷ 10³ = ?', answer: '0,45837',hint: 'vírgula 3 casas ←' },
+];
+
+function renderChallenge() {
+  let html = '';
+  challenges.forEach((c, i) => {
+    html += `
+      <div style="background:#f8f9ff;border-radius:14px;padding:16px;margin-bottom:12px;">
+        <div class="challenge-q">${c.q}</div>
+        <div style="font-size:12px;color:#aaa;text-align:center;font-weight:700;margin-bottom:8px;">Dica: ${c.hint}</div>
+        <div class="challenge-input-wrap">
+          <span style="font-family:'Fredoka One',cursive;font-size:22px;color:#888;">R =</span>
+          <input type="text" id="ch${i}" placeholder="?">
+        </div>
+      </div>
+    `;
+  });
+  document.getElementById('challengeArea').innerHTML = html;
+  document.getElementById('challengeFeedback').style.display = 'none';
+  document.getElementById('finalScreen').style.display = 'none';
+}
+
+function checkChallenge() {
+  let correct = 0;
+  challenges.forEach((c, i) => {
+    const inp = document.getElementById('ch' + i);
+    const val = inp.value.trim().replace(',', '.').replace(/\s/g, '');
+    const ans = c.answer.replace(',', '.').replace(/\s/g, '');
+    const isOk = parseFloat(val) === parseFloat(ans);
+    inp.className = isOk ? 'correct-input' : 'wrong-input';
+    if (isOk) correct++;
+  });
+
+  const fb = document.getElementById('challengeFeedback');
+  if (correct === challenges.length) {
+    fb.textContent = `🏆 Perfeito! Você acertou TUDO! Incrível!`;
+    fb.className = 'feedback ok show';
+    fb.style.display = 'block';
+    confetti();
+    setTimeout(showFinal, 1200);
+  } else {
+    fb.textContent = `Você acertou ${correct} de ${challenges.length}. Veja os campos em vermelho e tente de novo!`;
+    fb.className = 'feedback err show';
+    fb.style.display = 'block';
+    if (correct >= 3) setTimeout(showFinal, 1200);
+  }
+}
+
+function showFinal() {
+  const stars = challenges.length;
+  let sc = 0;
+  challenges.forEach((c, i) => {
+    const inp = document.getElementById('ch' + i);
+    if (inp.classList.contains('correct-input')) sc++;
+  });
+
+  document.getElementById('finalStars').textContent = '⭐'.repeat(sc) + '☆'.repeat(stars - sc);
+  document.getElementById('finalScore').textContent = `${sc}/${stars}`;
+  document.getElementById('finalScreen').style.display = 'block';
+  document.getElementById('finalScreen').scrollIntoView({ behavior: 'smooth' });
+  confetti();
+}
+
+/* ======================================================
+   CONFETTI
+====================================================== */
+function confetti() {
+  const colors = ['#1a73e8','#34a853','#fbbc04','#ea4335','#9c27b0','#ff6d00'];
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+    el.style.width = (8 + Math.random() * 8) + 'px';
+    el.style.height = (8 + Math.random() * 8) + 'px';
+    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    el.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+    el.style.animationDelay = (Math.random() * 0.5) + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+
+/* ======================================================
+   RESTART
+====================================================== */
+function restartAll() {
+  quizIndex = 0;
+  quizPoints = 0;
+  quizAnswered = false;
+  document.getElementById('goToChallenge').style.display = 'none';
+  goTo(1);
+}
+
+/* Init */
+updateProgress();
+</script>
+</body>
+</html>
