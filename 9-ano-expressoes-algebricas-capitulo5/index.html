@@ -1,0 +1,905 @@
+import { useState } from "react";
+
+/* ─── PALETTE ─────────────────────────────────────────── */
+const C = {
+  bg:      "#07090f",
+  panel:   "#0d1117",
+  card:    "#111827",
+  border:  "#1f2937",
+  soma:    "#34d399",
+  somaD:  "#059669",
+  dif:    "#fb7185",
+  difD:   "#e11d48",
+  prod:   "#818cf8",
+  prodD:  "#4f46e5",
+  poly:   "#fbbf24",
+  polyD:  "#d97706",
+  text:   "#f1f5f9",
+  muted:  "#94a3b8",
+  dim:    "#475569",
+};
+
+/* ─── GOOGLE FONTS ────────────────────────────────────── */
+const FontLink = () => (
+  <style>{`
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Fira+Code:wght@400;600&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: ${C.bg}; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: ${C.panel}; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    .math { font-family: 'Fira Code', monospace; }
+    .pulse-dot { animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .fade-in { animation: fadeIn 0.35s ease; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    .tab-btn:hover { filter: brightness(1.2); }
+    .step-card { transition: all 0.25s; }
+    .step-card:hover { transform: translateY(-1px); }
+    .opt-btn:hover { filter: brightness(1.12); }
+  `}</style>
+);
+
+/* ─── LESSONS CONFIG ──────────────────────────────────── */
+const lessons = [
+  { id:0, tag:"poly",  emoji:"🔤", title:"Relembrando: Polinômios",        formula:null,                        color:C.poly  },
+  { id:1, tag:"intro", emoji:"⭐", title:"O que são Produtos Notáveis?",    formula:null,                        color:C.prod  },
+  { id:2, tag:"soma",  emoji:"➕", title:"Quadrado da Soma",                formula:"(a + b)² = a² + 2ab + b²",  color:C.soma  },
+  { id:3, tag:"dif",   emoji:"➖", title:"Quadrado da Diferença",           formula:"(a − b)² = a² − 2ab + b²",  color:C.dif   },
+  { id:4, tag:"sd",    emoji:"✖️", title:"Produto da Soma pela Diferença",  formula:"(a + b)·(a − b) = a² − b²", color:C.prod  },
+  { id:5, tag:"quiz",  emoji:"🏋️", title:"Pratique!",                      formula:null,                        color:C.poly  },
+];
+
+/* ─── SHARED COMPONENTS ───────────────────────────────── */
+function Badge({ text, color }) {
+  return (
+    <span style={{
+      display:"inline-block", background:`${color}20`, border:`1px solid ${color}55`,
+      color, borderRadius:6, padding:"2px 10px", fontSize:11, fontWeight:700,
+      fontFamily:"Outfit,sans-serif", letterSpacing:.6, textTransform:"uppercase"
+    }}>{text}</span>
+  );
+}
+
+function FormulaBox({ children, color, size=19 }) {
+  return (
+    <div style={{
+      background:`${color}10`, border:`2px solid ${color}50`, borderRadius:14,
+      padding:"14px 24px", textAlign:"center",
+      fontFamily:"'Fira Code',monospace", fontSize:size, color, fontWeight:600,
+      letterSpacing:.5, marginTop:10
+    }}>{children}</div>
+  );
+}
+
+function StepByStep({ steps, color }) {
+  const [revealed, setRevealed] = useState(0);
+  return (
+    <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+      {steps.map((step, i) => (
+        <div key={i} className="step-card"
+          onClick={() => i === revealed && setRevealed(i+1)}
+          style={{
+            background: i < revealed ? `${color}12` : C.card,
+            border:`1.5px solid ${i < revealed ? color+"60" : C.border}`,
+            borderRadius:12, padding:"10px 16px",
+            cursor: i === revealed ? "pointer" : "default",
+            opacity: i > revealed ? 0.35 : 1,
+          }}
+        >
+          <div style={{ fontSize:10, color:C.dim, marginBottom:4, letterSpacing:1, fontFamily:"Outfit,sans-serif" }}>
+            PASSO {i+1}
+          </div>
+          {i < revealed ? (
+            <div style={{ display:"flex", flexWrap:"wrap", alignItems:"center", gap:10 }}>
+              <span className="math" style={{ color, fontSize:14 }}>{step.eq}</span>
+              <span style={{ color:C.muted, fontSize:12, fontFamily:"Outfit,sans-serif" }}>{step.note}</span>
+            </div>
+          ) : i === revealed ? (
+            <div style={{ color:C.dim, fontSize:13, fontFamily:"Outfit,sans-serif" }}>👆 Clique para revelar</div>
+          ) : (
+            <div style={{ color:"#252d3d", fontSize:18 }}>🔒</div>
+          )}
+        </div>
+      ))}
+      {revealed === steps.length && (
+        <button onClick={() => setRevealed(0)}
+          style={{ background:"transparent", border:`1px solid ${color}`, color,
+            borderRadius:8, padding:"6px 16px", cursor:"pointer", fontSize:13,
+            marginTop:4, fontFamily:"Outfit,sans-serif" }}>
+          ↺ Recomeçar
+        </button>
+      )}
+    </div>
+  );
+}
+
+/* ─── GEOMETRIC SOMA — fully symbolic ────────────────── */
+function GeometricSomaSymbolic() {
+  const [hov, setHov] = useState(null);
+  const W = 200, aPx = 130, bPx = 70;
+
+  const regions = [
+    { id:"a2",  x:0,   y:0,   w:aPx, h:aPx, fill:"#059669", label:"a²",  desc:"Quadrado de lado a  →  área = a · a = a²" },
+    { id:"ab1", x:aPx, y:0,   w:bPx, h:aPx, fill:"#34d399", label:"ab",  desc:"Retângulo a × b  →  área = a · b = ab" },
+    { id:"ab2", x:0,   y:aPx, w:aPx, h:bPx, fill:"#34d399", label:"ab",  desc:"Retângulo b × a  →  área = b · a = ab" },
+    { id:"b2",  x:aPx, y:aPx, w:bPx, h:bPx, fill:"#6ee7b7", label:"b²",  desc:"Quadrado de lado b  →  área = b · b = b²" },
+  ];
+
+  return (
+    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:14 }}>
+      <svg width={W+60} height={W+50} style={{ overflow:"visible" }}>
+        {/* Top brackets */}
+        <text x={aPx/2} y={-20} textAnchor="middle" fontSize={16} fill={C.soma}
+          fontFamily="'Fira Code',monospace" fontStyle="italic" fontWeight={600}>a</text>
+        <text x={aPx+bPx/2} y={-20} textAnchor="middle" fontSize={16} fill="#86efac"
+          fontFamily="'Fira Code',monospace" fontStyle="italic" fontWeight={600}>b</text>
+        <line x1={0} y1={-10} x2={aPx-2} y2={-10} stroke={C.soma} strokeWidth={1.5} strokeDasharray="none" opacity={.5}/>
+        <line x1={aPx+2} y1={-10} x2={W} y2={-10} stroke="#86efac" strokeWidth={1.5} opacity={.5}/>
+        {/* Left brackets */}
+        <text x={-20} y={aPx/2} textAnchor="middle" dominantBaseline="middle"
+          fontSize={16} fill={C.soma} fontFamily="'Fira Code',monospace" fontStyle="italic" fontWeight={600}>a</text>
+        <text x={-20} y={aPx+bPx/2} textAnchor="middle" dominantBaseline="middle"
+          fontSize={16} fill="#86efac" fontFamily="'Fira Code',monospace" fontStyle="italic" fontWeight={600}>b</text>
+        <line x1={-10} y1={0} x2={-10} y2={aPx-2} stroke={C.soma} strokeWidth={1.5} opacity={.5}/>
+        <line x1={-10} y1={aPx+2} x2={-10} y2={W} stroke="#86efac" strokeWidth={1.5} opacity={.5}/>
+        {/* Total label */}
+        <text x={W/2} y={W+32} textAnchor="middle" fontSize={12} fill={C.muted}
+          fontFamily="Outfit,sans-serif">lado total = a + b</text>
+
+        {regions.map(r => (
+          <g key={r.id}
+            onMouseEnter={() => setHov(r.id)}
+            onMouseLeave={() => setHov(null)}
+            style={{ cursor:"pointer" }}>
+            <rect x={r.x} y={r.y} width={r.w} height={r.h}
+              fill={r.fill} opacity={hov===r.id ? 1 : 0.75}
+              stroke={hov===r.id ? "#fff" : "#07090f"} strokeWidth={hov===r.id ? 2.5 : 1.5}
+              rx={2} style={{ transition:"all .2s" }}/>
+            <text x={r.x+r.w/2} y={r.y+r.h/2} textAnchor="middle" dominantBaseline="middle"
+              fontSize={r.label.length===2 ? 18 : 14} fontWeight={700} fill="#fff"
+              fontFamily="'Fira Code',monospace" style={{ pointerEvents:"none" }}>
+              {r.label}
+            </text>
+          </g>
+        ))}
+      </svg>
+
+      {/* tooltip */}
+      <div style={{ minHeight:36, display:"flex", alignItems:"center", justifyContent:"center" }}>
+        {hov
+          ? <div className="fade-in" style={{ background:`${C.soma}20`, border:`1px solid ${C.soma}50`,
+              borderRadius:8, padding:"6px 18px", color:C.soma, fontSize:13,
+              fontFamily:"Outfit,sans-serif", textAlign:"center" }}>
+              {regions.find(r=>r.id===hov)?.desc}
+            </div>
+          : <div style={{ color:C.dim, fontSize:12, fontFamily:"Outfit,sans-serif" }}>
+              ☝️ Passe o mouse sobre cada região para ver sua área
+            </div>
+        }
+      </div>
+
+      {/* legend */}
+      <div style={{ display:"flex", gap:12, flexWrap:"wrap", justifyContent:"center" }}>
+        {[
+          { c:"#059669", l:"a²" },
+          { c:"#34d399", l:"ab (×2 = 2ab)" },
+          { c:"#6ee7b7", l:"b²" },
+        ].map((l,i) => (
+          <div key={i} style={{ display:"flex", alignItems:"center", gap:6,
+            fontSize:12, fontFamily:"'Fira Code',monospace", color:C.muted }}>
+            <div style={{ width:12, height:12, borderRadius:3, background:l.c, flexShrink:0 }}/>
+            {l.l}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   LESSON: POLINÔMIOS
+══════════════════════════════════════════════════════════ */
+function PolyLesson() {
+  const [active, setActive] = useState(null);
+  const examples = [
+    { expr:"5x²",              degree:2, terms:1, label:"Monômio",  info:"Um único termo." },
+    { expr:"3x + 7",           degree:1, terms:2, label:"Binômio",  info:"Dois termos não semelhantes." },
+    { expr:"x² − 4x + 1",     degree:2, terms:3, label:"Trinômio", info:"Três termos. Muito comum nos produtos notáveis!" },
+    { expr:"2x³ + x² − x + 6",degree:3, terms:4, label:"Polinômio",info:"Quatro ou mais termos." },
+  ];
+  return (
+    <div className="fade-in" style={{ display:"flex", flexDirection:"column", gap:22 }}>
+
+      {/* Definição */}
+      <div style={{ background:`${C.poly}0c`, border:`1.5px solid ${C.poly}44`, borderRadius:16, padding:20 }}>
+        <Badge text="Definição" color={C.poly}/>
+        <p style={{ color:C.text, fontSize:15, lineHeight:1.9, marginTop:12, fontFamily:"Outfit,sans-serif" }}>
+          Um <strong style={{ color:C.poly }}>polinômio</strong> é uma expressão algébrica formada pela soma de
+          <strong style={{ color:"#fde68a" }}> monômios</strong>, chamados de <em>termos</em>. Cada termo possui um
+          <strong style={{ color:C.poly }}> coeficiente</strong> (número) e uma
+          <strong style={{ color:"#fde68a" }}> parte literal</strong> (variável com expoente inteiro não-negativo).
+        </p>
+      </div>
+
+      {/* Anatomia */}
+      <div style={{ background:C.card, border:`1px solid ${C.border}`, borderRadius:16, padding:20 }}>
+        <div style={{ color:C.muted, fontSize:11, letterSpacing:1.2, fontFamily:"Outfit,sans-serif", marginBottom:16 }}>
+          🔬 ANATOMIA DE UM POLINÔMIO
+        </div>
+        {/* expressão */}
+        <div style={{ display:"flex", justifyContent:"center", alignItems:"center",
+          gap:2, flexWrap:"wrap", marginBottom:20 }}>
+          {[
+            { part:"4x³", color:"#f472b6", tip:"Coef.: 4 | Grau: 3" },
+            { part:" − ", color:C.muted },
+            { part:"7x²", color:C.soma,   tip:"Coef.: 7 | Grau: 2" },
+            { part:" + ", color:C.muted },
+            { part:"2x",  color:C.prod,   tip:"Coef.: 2 | Grau: 1" },
+            { part:" − ", color:C.muted },
+            { part:"9",   color:C.poly,   tip:"Termo independente | Grau: 0" },
+          ].map((p,i) => (
+            <span key={i} className="math" style={{ fontSize:28, color:p.color, fontWeight:600,
+              cursor:p.tip?"help":"default" }} title={p.tip||""}>
+              {p.part}
+            </span>
+          ))}
+        </div>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:10 }}>
+          {[
+            { icon:"🎯", label:"Grau do polinômio", val:"3  (maior expoente)", color:"#f472b6" },
+            { icon:"🔢", label:"Número de termos",  val:"4  (sem semelhantes)", color:C.soma },
+            { icon:"📌", label:"Coeficiente líder", val:"4  (coef. do maior grau)", color:C.prod },
+            { icon:"🔟", label:"Termo independente",val:"−9  (sem variável)", color:C.poly },
+          ].map((r,i) => (
+            <div key={i} style={{ background:`${r.color}0d`, border:`1px solid ${r.color}30`,
+              borderRadius:10, padding:"10px 14px" }}>
+              <div style={{ fontSize:11, color:C.dim, fontFamily:"Outfit,sans-serif", marginBottom:4 }}>
+                {r.icon} {r.label}
+              </div>
+              <div className="math" style={{ color:r.color, fontSize:13 }}>{r.val}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{ marginTop:12, color:C.dim, fontSize:12, fontFamily:"Outfit,sans-serif", textAlign:"center" }}>
+          💡 Passe o mouse sobre os termos coloridos para ver o coeficiente e o grau
+        </div>
+      </div>
+
+      {/* Tipos interativos */}
+      <div style={{ background:C.card, border:`1px solid ${C.border}`, borderRadius:16, padding:20 }}>
+        <div style={{ color:C.muted, fontSize:11, letterSpacing:1.2, fontFamily:"Outfit,sans-serif", marginBottom:14 }}>
+          🗂️ CLIQUE PARA EXPLORAR OS TIPOS
+        </div>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:10, marginBottom:12 }}>
+          {examples.map((ex,i) => (
+            <button key={i} className="opt-btn"
+              onClick={() => setActive(active===i ? null : i)}
+              style={{ background:active===i?`${C.poly}1a`:"#0d1117",
+                border:`1.5px solid ${active===i?C.poly:C.border}`,
+                borderRadius:12, padding:"14px 16px", cursor:"pointer",
+                textAlign:"left", transition:"all .2s" }}>
+              <div className="math" style={{ color:active===i?C.poly:C.text, fontSize:16, marginBottom:6 }}>{ex.expr}</div>
+              <div style={{ color:C.dim, fontSize:12, fontFamily:"Outfit,sans-serif" }}>{ex.label}</div>
+            </button>
+          ))}
+        </div>
+        {active !== null && (
+          <div className="fade-in" style={{ background:`${C.poly}12`, border:`1px solid ${C.poly}40`,
+            borderRadius:12, padding:14, fontFamily:"Outfit,sans-serif" }}>
+            <div style={{ display:"flex", gap:16, flexWrap:"wrap", marginBottom:8 }}>
+              <span style={{ color:C.poly }}>📐 Grau: <strong>{examples[active].degree}</strong></span>
+              <span style={{ color:"#fde68a" }}>📦 Termos: <strong>{examples[active].terms}</strong></span>
+              <span style={{ color:"#86efac" }}>🏷️ Tipo: <strong>{examples[active].label}</strong></span>
+            </div>
+            <div style={{ color:C.muted, fontSize:13 }}>💬 {examples[active].info}</div>
+          </div>
+        )}
+      </div>
+
+      {/* Não é polinômio */}
+      <div style={{ background:"#1a0a0a", border:"1px dashed #ef444466", borderRadius:14, padding:16 }}>
+        <div style={{ color:"#f87171", fontSize:13, fontWeight:700, fontFamily:"Outfit,sans-serif", marginBottom:12 }}>
+          ⛔ Isso NÃO é polinômio
+        </div>
+        <div style={{ display:"flex", gap:10, flexWrap:"wrap" }}>
+          {[
+            { ex:"x⁻¹ + 3",  motivo:"expoente negativo" },
+            { ex:"√x − 2",   motivo:"expoente fracionário (½)" },
+            { ex:"3/x + 5",  motivo:"variável no denominador" },
+          ].map((n,i) => (
+            <div key={i} style={{ background:"#2a0a0a", border:"1px solid #7f1d1d",
+              borderRadius:10, padding:"8px 14px" }}>
+              <div className="math" style={{ color:"#fca5a5", fontSize:15 }}>{n.ex}</div>
+              <div style={{ color:C.dim, fontSize:11, marginTop:4, fontFamily:"Outfit,sans-serif" }}>⚠️ {n.motivo}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   LESSON: INTRO
+══════════════════════════════════════════════════════════ */
+function IntroLesson() {
+  return (
+    <div className="fade-in" style={{ display:"flex", flexDirection:"column", gap:22 }}>
+      <div style={{ background:`${C.prod}0c`, border:`1.5px solid ${C.prod}44`, borderRadius:16, padding:20 }}>
+        <Badge text="Definição" color={C.prod}/>
+        <p style={{ color:C.text, fontSize:15, lineHeight:1.9, marginTop:12, fontFamily:"Outfit,sans-serif" }}>
+          Um <strong style={{ color:C.prod }}>produto notável</strong> é o resultado da multiplicação de polinômios
+          que segue um <strong style={{ color:"#c7d2fe" }}>padrão fixo</strong> — uma identidade algébrica memorável
+          que pode ser aplicada diretamente, sem refazer toda a conta.
+          São chamados de "notáveis" porque <em>aparecem em todo lugar</em> na matemática.
+        </p>
+      </div>
+
+      {/* Com vs sem */}
+      <div style={{ background:C.card, border:`1px solid ${C.border}`, borderRadius:16, padding:20 }}>
+        <div style={{ color:C.muted, fontSize:11, letterSpacing:1.2, fontFamily:"Outfit,sans-serif", marginBottom:14 }}>
+          💡 POR QUE USAR?
+        </div>
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+          <div style={{ background:"#0a0f1e", borderRadius:12, padding:14 }}>
+            <div style={{ color:C.dif, fontSize:11, fontWeight:700, fontFamily:"Outfit,sans-serif", marginBottom:10, letterSpacing:1 }}>
+              😓 SEM produto notável
+            </div>
+            <div className="math" style={{ color:C.muted, fontSize:13, lineHeight:2.1 }}>
+              (x+3)²<br/>
+              = (x+3)·(x+3)<br/>
+              = x·x+x·3+3·x+3·3<br/>
+              = x²+3x+3x+9<br/>
+              = x²+6x+9
+            </div>
+          </div>
+          <div style={{ background:"#071d10", borderRadius:12, padding:14 }}>
+            <div style={{ color:C.soma, fontSize:11, fontWeight:700, fontFamily:"Outfit,sans-serif", marginBottom:10, letterSpacing:1 }}>
+              ✅ COM produto notável
+            </div>
+            <div className="math" style={{ color:C.soma, fontSize:13, lineHeight:2.1 }}>
+              (x+3)²<br/>
+              a=x, b=3<br/>
+              = x²+2·x·3+3²<br/>
+              = x²+6x+9 ✨
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Os 3 casos */}
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12 }}>
+        {[
+          { n:"1", label:"Quadrado da Soma",      formula:"(a+b)²\n= a²+2ab+b²",   color:C.soma },
+          { n:"2", label:"Quadrado da Diferença", formula:"(a−b)²\n= a²−2ab+b²",   color:C.dif  },
+          { n:"3", label:"Soma × Diferença",      formula:"(a+b)(a−b)\n= a²−b²",   color:C.prod },
+        ].map((p,i) => (
+          <div key={i} style={{ background:`${p.color}0d`, border:`1.5px solid ${p.color}40`,
+            borderRadius:14, padding:16, textAlign:"center" }}>
+            <div style={{ width:28, height:28, borderRadius:"50%", background:`${p.color}20`,
+              border:`1.5px solid ${p.color}`, color:p.color, fontSize:13, fontWeight:800,
+              display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 10px",
+              fontFamily:"Outfit,sans-serif" }}>{p.n}</div>
+            <div style={{ color:p.color, fontSize:12, fontWeight:700, marginBottom:8,
+              fontFamily:"Outfit,sans-serif" }}>{p.label}</div>
+            <div className="math" style={{ color:C.muted, fontSize:11, lineHeight:1.8,
+              whiteSpace:"pre-line" }}>{p.formula}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   LESSON: QUADRADO DA SOMA
+══════════════════════════════════════════════════════════ */
+function SomaLesson() {
+  const steps = [
+    { eq:"(a + b)²",                         note:"queremos expandir" },
+    { eq:"= (a + b) · (a + b)",              note:"quadrado = multiplicar por si mesmo" },
+    { eq:"= a·a + a·b + b·a + b·b",          note:"distributiva: cada termo multiplica todos" },
+    { eq:"= a² + ab + ba + b²",              note:"simplificando cada produto" },
+    { eq:"= a² + 2ab + b²",                  note:"ab = ba → ab + ab = 2ab" },
+  ];
+  return (
+    <div className="fade-in" style={{ display:"flex", flexDirection:"column", gap:22 }}>
+      <div style={{ background:`${C.soma}0c`, border:`1.5px solid ${C.soma}44`, borderRadius:16, padding:20 }}>
+        <Badge text="Identidade" color={C.soma}/>
+        <p style={{ color:C.text, fontSize:15, lineHeight:1.9, marginTop:12, fontFamily:"Outfit,sans-serif" }}>
+          O quadrado de uma soma <strong style={{ color:C.soma }}>não é só a² + b²</strong>! Aparece um
+          <strong style={{ color:"#86efac" }}> termo extra no meio</strong>: o dobro do produto dos dois termos.
+          Esse é o erro mais comum — não esqueça o 2ab!
+        </p>
+        <FormulaBox color={C.soma}>(a + b)² = a² + 2ab + b²</FormulaBox>
+        <div style={{ display:"flex", justifyContent:"center", gap:20, marginTop:14, flexWrap:"wrap",
+          fontFamily:"Outfit,sans-serif", fontSize:12 }}>
+          <span style={{ color:"#6ee7b7" }}>■ a² = quadrado do 1º termo</span>
+          <span style={{ color:"#34d399" }}>■ 2ab = dobro do produto</span>
+          <span style={{ color:"#a7f3d0" }}>■ b² = quadrado do 2º termo</span>
+        </div>
+      </div>
+
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:18 }}>
+        {/* Geometria */}
+        <div>
+          <div style={{ color:C.muted, fontSize:11, letterSpacing:1.2, fontFamily:"Outfit,sans-serif", marginBottom:12 }}>
+            🔲 VISUALIZAÇÃO GEOMÉTRICA
+          </div>
+          <div style={{ background:"#071d10", border:`1px solid ${C.soma}30`, borderRadius:14,
+            padding:20, display:"flex", justifyContent:"center" }}>
+            <GeometricSomaSymbolic/>
+          </div>
+          <div style={{ marginTop:10, background:`${C.soma}10`, borderRadius:10, padding:"10px 14px",
+            fontFamily:"'Fira Code',monospace", fontSize:12, color:"#86efac", textAlign:"center" }}>
+            Área = a² + ab + ab + b² = <strong style={{ color:C.soma }}>a² + 2ab + b²</strong>
+          </div>
+        </div>
+
+        {/* Step by step */}
+        <div>
+          <div style={{ color:C.muted, fontSize:11, letterSpacing:1.2, fontFamily:"Outfit,sans-serif", marginBottom:12 }}>
+            👣 PASSO A PASSO — clique para revelar
+          </div>
+          <StepByStep steps={steps} color={C.soma}/>
+        </div>
+      </div>
+
+      {/* Exemplos */}
+      <div style={{ background:"#071d10", border:`1px dashed ${C.soma}`, borderRadius:14, padding:18 }}>
+        <div style={{ color:C.soma, fontSize:13, fontWeight:700, fontFamily:"Outfit,sans-serif", marginBottom:14 }}>
+          📝 Exemplos resolvidos
+        </div>
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+          {[
+            { ex:"(x + 5)²",  a:"x",  b:"5", r1:"x²", r2:"2·x·5 = 10x", r3:"25", res:"x² + 10x + 25" },
+            { ex:"(3x + 1)²", a:"3x", b:"1", r1:"(3x)² = 9x²", r2:"2·3x·1 = 6x", r3:"1²= 1", res:"9x² + 6x + 1" },
+          ].map((e,i) => (
+            <div key={i} style={{ background:"#0a150d", borderRadius:12, padding:14 }}>
+              <div className="math" style={{ color:C.soma, fontSize:16, fontWeight:600, marginBottom:8 }}>{e.ex}</div>
+              <div style={{ color:C.muted, fontSize:12, fontFamily:"Outfit,sans-serif", marginBottom:8 }}>
+                a = {e.a} &nbsp;|&nbsp; b = {e.b}
+              </div>
+              <div className="math" style={{ color:"#86efac", fontSize:12, lineHeight:2 }}>
+                a² = {e.r1}<br/>2ab = {e.r2}<br/>b² = {e.r3}
+              </div>
+              <div style={{ marginTop:10, background:`${C.soma}20`, borderRadius:8,
+                padding:"8px 12px", fontFamily:"'Fira Code',monospace",
+                color:C.soma, fontSize:13, fontWeight:600 }}>
+                = {e.res}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   LESSON: QUADRADO DA DIFERENÇA
+══════════════════════════════════════════════════════════ */
+function DiferencaLesson() {
+  const steps = [
+    { eq:"(a − b)²",                              note:"queremos expandir" },
+    { eq:"= (a − b) · (a − b)",                   note:"quadrado = multiplicar por si mesmo" },
+    { eq:"= a·a + a·(−b) + (−b)·a + (−b)·(−b)", note:"distributiva completa" },
+    { eq:"= a² − ab − ab + b²",                   note:"(−b)·(−b) = +b² ! negativo × negativo = positivo" },
+    { eq:"= a² − 2ab + b²",                       note:"−ab + (−ab) = −2ab" },
+  ];
+  return (
+    <div className="fade-in" style={{ display:"flex", flexDirection:"column", gap:22 }}>
+      <div style={{ background:`${C.dif}0c`, border:`1.5px solid ${C.dif}44`, borderRadius:16, padding:20 }}>
+        <Badge text="Identidade" color={C.dif}/>
+        <p style={{ color:C.text, fontSize:15, lineHeight:1.9, marginTop:12, fontFamily:"Outfit,sans-serif" }}>
+          Quase igual ao quadrado da soma — a única diferença está no sinal do meio:
+          ele fica <strong style={{ color:C.dif }}>negativo (−2ab)</strong>.
+          Isso acontece porque o produto cruzado aparece duas vezes com sinal negativo.
+        </p>
+        <FormulaBox color={C.dif}>(a − b)² = a² − 2ab + b²</FormulaBox>
+      </div>
+
+      {/* Comparação soma vs diferença */}
+      <div style={{ background:C.card, border:`1px solid ${C.border}`, borderRadius:14, padding:18 }}>
+        <div style={{ color:C.muted, fontSize:11, letterSpacing:1.2, fontFamily:"Outfit,sans-serif", marginBottom:14 }}>
+          🔄 ÚNICA DIFERENÇA: O SINAL DO MEIO
+        </div>
+        <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+          <div style={{ background:"#071d10", borderRadius:12, padding:"12px 18px",
+            display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:8 }}>
+            <span className="math" style={{ color:C.soma, fontSize:15 }}>(a + b)²</span>
+            <span className="math" style={{ color:C.muted, fontSize:15 }}>
+              = a² <span style={{ color:C.soma, fontSize:20, fontWeight:700 }}>+</span> 2ab + b²
+            </span>
+          </div>
+          <div style={{ textAlign:"center", color:C.dim, fontSize:22 }}>↕</div>
+          <div style={{ background:"#1f0a0a", borderRadius:12, padding:"12px 18px",
+            display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:8 }}>
+            <span className="math" style={{ color:C.dif, fontSize:15 }}>(a − b)²</span>
+            <span className="math" style={{ color:C.muted, fontSize:15 }}>
+              = a² <span style={{ color:C.dif, fontSize:20, fontWeight:700 }}>−</span> 2ab + b²
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 }}>
+        <div>
+          <div style={{ color:C.muted, fontSize:11, letterSpacing:1.2, fontFamily:"Outfit,sans-serif", marginBottom:12 }}>
+            👣 PASSO A PASSO
+          </div>
+          <StepByStep steps={steps} color={C.dif}/>
+        </div>
+        <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+          <div style={{ background:`${C.dif}0c`, border:`1px solid ${C.dif}30`, borderRadius:12, padding:14 }}>
+            <div style={{ color:C.dif, fontSize:12, fontWeight:700, fontFamily:"Outfit,sans-serif", marginBottom:8 }}>
+              ⚠️ Erro clássico
+            </div>
+            <div className="math" style={{ color:"#fca5a5", fontSize:14, textDecoration:"line-through" }}>
+              (a − b)² ≠ a² − b²
+            </div>
+            <div style={{ color:C.muted, fontSize:12, fontFamily:"Outfit,sans-serif", marginTop:6 }}>
+              O termo 2ab nunca some!
+            </div>
+          </div>
+          <div style={{ background:"#1a0808", borderRadius:12, padding:14 }}>
+            <div style={{ color:C.dif, fontSize:12, fontWeight:700, fontFamily:"Outfit,sans-serif", marginBottom:8 }}>
+              📝 Exemplo: (2a − 5b)²
+            </div>
+            <div className="math" style={{ color:"#fecdd3", fontSize:13, lineHeight:2.2 }}>
+              a = 2a, b = 5b<br/>
+              a² = <span style={{ color:C.dif }}>4a²</span><br/>
+              2ab = <span style={{ color:"#fca5a5" }}>20ab</span><br/>
+              b² = <span style={{ color:"#fde68a" }}>25b²</span><br/>
+              <strong style={{ color:C.dif }}>= 4a² − 20ab + 25b²</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   LESSON: SOMA × DIFERENÇA
+══════════════════════════════════════════════════════════ */
+function SomaDifLesson() {
+  const steps = [
+    { eq:"(a + b) · (a − b)",                    note:"produto da soma pela diferença" },
+    { eq:"= a·a + a·(−b) + b·a + b·(−b)",       note:"distributiva" },
+    { eq:"= a² − ab + ab − b²",                  note:"observe os termos do meio..." },
+    { eq:"= a² + 0 − b²",                        note:"−ab + ab = 0 → se cancelam!" },
+    { eq:"= a² − b²",                            note:"sobra apenas a diferença dos quadrados" },
+  ];
+  return (
+    <div className="fade-in" style={{ display:"flex", flexDirection:"column", gap:22 }}>
+      <div style={{ background:`${C.prod}0c`, border:`1.5px solid ${C.prod}44`, borderRadius:16, padding:20 }}>
+        <Badge text="Identidade" color={C.prod}/>
+        <p style={{ color:C.text, fontSize:15, lineHeight:1.9, marginTop:12, fontFamily:"Outfit,sans-serif" }}>
+          Quando você multiplica a <strong style={{ color:C.soma }}>soma</strong> de dois termos pela sua
+          <strong style={{ color:C.dif }}> diferença</strong>, os termos cruzados se
+          <strong style={{ color:"#fbbf24" }}> cancelam magicamente</strong> e sobra apenas a diferença dos quadrados.
+          É o produto notável mais elegante!
+        </p>
+        <FormulaBox color={C.prod}>(a + b) · (a − b) = a² − b²</FormulaBox>
+      </div>
+
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 }}>
+        <div>
+          <div style={{ color:C.muted, fontSize:11, letterSpacing:1.2, fontFamily:"Outfit,sans-serif", marginBottom:12 }}>
+            👣 PASSO A PASSO
+          </div>
+          <StepByStep steps={steps} color={C.prod}/>
+        </div>
+        <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+          <div style={{ background:"#1a1a2e", border:`1px solid ${C.prod}40`, borderRadius:12, padding:16 }}>
+            <div style={{ color:C.prod, fontSize:12, fontWeight:700, fontFamily:"Outfit,sans-serif", marginBottom:10 }}>
+              🧮 Truque de cálculo mental
+            </div>
+            <div style={{ fontFamily:"Outfit,sans-serif", color:C.muted, fontSize:13, lineHeight:1.9 }}>
+              Quer calcular <span className="math" style={{ color:"#c7d2fe" }}>25² − 15²</span>?<br/>
+              Use: (25+15)·(25−15) = 40·10 = <strong style={{ color:C.prod }}>400</strong>
+            </div>
+          </div>
+          <div style={{ background:"#0d0f1e", borderRadius:12, padding:14 }}>
+            <div style={{ color:C.prod, fontSize:12, fontWeight:700, fontFamily:"Outfit,sans-serif", marginBottom:10 }}>
+              📝 Exemplos
+            </div>
+            {[
+              { ex:"(3x + 2y)(3x − 2y)", a:"3x", b:"2y", res:"9x² − 4y²" },
+              { ex:"(5 + x)(5 − x)",     a:"5",  b:"x",  res:"25 − x²"   },
+            ].map((e,i) => (
+              <div key={i} style={{ marginBottom:i===0?12:0 }}>
+                <div className="math" style={{ color:"#c7d2fe", fontSize:13, lineHeight:2 }}>
+                  {e.ex}<br/>
+                  <span style={{ color:C.muted, fontSize:11 }}>a={e.a}, b={e.b}</span><br/>
+                  <span style={{ color:C.prod, fontWeight:600 }}>= {e.res}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   QUIZ
+══════════════════════════════════════════════════════════ */
+const quizQuestions = [
+  { q:"(x + 3)²",     opts:["x² + 6x + 9","x² + 3x + 9","x² + 9","x² + 6x + 6"],  ans:0, tipo:"Quadrado da Soma",           hint:"a=x, b=3  →  x² + 2·x·3 + 9 = x² + 6x + 9" },
+  { q:"(2x − 5)²",    opts:["4x²−10x+25","4x²−20x+25","4x²+20x+25","2x²−20x+25"],  ans:1, tipo:"Quadrado da Diferença",      hint:"a=2x, b=5  →  (2x)²−2·2x·5+25 = 4x²−20x+25" },
+  { q:"(x+7)(x−7)",   opts:["x²−49","x²+49","x²−14x+49","x²−7"],                    ans:0, tipo:"Soma × Diferença",          hint:"(a+b)(a−b)=a²−b²  →  x²−49" },
+  { q:"(3a + 2b)²",   opts:["9a²+4b²","9a²+6ab+4b²","9a²+12ab+4b²","3a²+12ab+4b²"],ans:2, tipo:"Quadrado da Soma",           hint:"2·3a·2b=12ab. (3a)²=9a², (2b)²=4b²" },
+  { q:"(4x − 1)²",    opts:["16x²−1","16x²−4x+1","16x²−8x+1","4x²−8x+1"],           ans:2, tipo:"Quadrado da Diferença",     hint:"a=4x, b=1  →  16x²−2·4x·1+1 = 16x²−8x+1" },
+];
+
+function Quiz() {
+  const [cur,   setCur]   = useState(0);
+  const [sel,   setSel]   = useState(null);
+  const [hint,  setHint]  = useState(false);
+  const [score, setScore] = useState(0);
+  const [done,  setDone]  = useState(false);
+
+  const q = quizQuestions[cur];
+  const correct = sel === q.ans;
+
+  function pick(i) { if (sel!==null) return; setSel(i); if(i===q.ans) setScore(s=>s+1); }
+  function next()  { if(cur<quizQuestions.length-1){setCur(c=>c+1);setSel(null);setHint(false);}else setDone(true); }
+  function reset() { setCur(0);setSel(null);setHint(false);setScore(0);setDone(false); }
+
+  if (done) {
+    const pct = Math.round(score/quizQuestions.length*100);
+    return (
+      <div className="fade-in" style={{ textAlign:"center", padding:"32px 0" }}>
+        <div style={{ fontSize:72, marginBottom:16 }}>
+          {pct===100?"🏆":pct>=80?"🥇":pct>=60?"🥈":"📚"}
+        </div>
+        <div style={{ fontFamily:"Outfit,sans-serif" }}>
+          <div style={{ fontSize:36, color:C.text, fontWeight:800, marginBottom:8 }}>
+            {score}/{quizQuestions.length}
+          </div>
+          <div style={{ color:pct>=60?C.soma:C.dif, fontSize:16, marginBottom:6 }}>
+            {pct===100?"Perfeito! Domínio total! 🎉":pct>=80?"Muito bem! Quase lá!":pct>=60?"Bom trabalho! Revise os que errou.":"Continue praticando!"}
+          </div>
+          <div style={{ color:C.dim, fontSize:14, marginBottom:32 }}>{pct}% de aproveitamento</div>
+          <button onClick={reset} style={{ background:`linear-gradient(135deg,${C.prod},${C.prodD})`,
+            color:"#fff", border:"none", borderRadius:12, padding:"14px 32px",
+            fontSize:15, cursor:"pointer", fontFamily:"Outfit,sans-serif", fontWeight:700 }}>
+            🔄 Tentar novamente
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="fade-in" style={{ display:"flex", flexDirection:"column", gap:18 }}>
+      {/* Progress bar */}
+      <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+        <div style={{ flex:1, height:6, background:"#1e293b", borderRadius:3, overflow:"hidden" }}>
+          <div style={{ width:`${(cur/quizQuestions.length)*100}%`, height:"100%",
+            background:`linear-gradient(90deg,${C.prod},${C.soma})`, borderRadius:3,
+            transition:"width .4s" }}/>
+        </div>
+        <span style={{ color:C.muted, fontSize:13, fontFamily:"Outfit,sans-serif", whiteSpace:"nowrap" }}>
+          {cur+1} / {quizQuestions.length}
+        </span>
+      </div>
+
+      <div><Badge text={q.tipo} color={C.prod}/></div>
+
+      {/* Question */}
+      <div style={{ background:C.card, border:`1px solid ${C.border}`, borderRadius:16, padding:28, textAlign:"center" }}>
+        <div style={{ color:C.dim, fontSize:11, fontFamily:"Outfit,sans-serif", letterSpacing:1, marginBottom:12 }}>CALCULE</div>
+        <div className="math" style={{ fontSize:34, color:C.text, fontWeight:600 }}>{q.q}</div>
+      </div>
+
+      {/* Options */}
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
+        {q.opts.map((opt,i) => {
+          let bg=C.card, border=C.border, color=C.muted;
+          if(sel!==null){
+            if(i===q.ans)    {bg="#071d10";border=C.soma;color=C.soma;}
+            else if(i===sel) {bg="#1f0a0a";border=C.dif; color=C.dif; }
+          }
+          return (
+            <button key={i} className="opt-btn"
+              onClick={() => pick(i)}
+              style={{ background:bg, border:`1.5px solid ${border}`, color,
+                borderRadius:12, padding:"14px 16px", fontSize:14, cursor:sel===null?"pointer":"default",
+                transition:"all .2s", fontFamily:"'Fira Code',monospace", textAlign:"center" }}>
+              {sel!==null && i===q.ans && "✅ "}{opt}{sel!==null && i===sel && i!==q.ans && " ❌"}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Feedback */}
+      {sel!==null && (
+        <div className="fade-in" style={{ background:correct?"#071d10":"#1f0a0a",
+          border:`1px solid ${correct?C.soma:C.dif}`, borderRadius:12, padding:14 }}>
+          <div style={{ color:correct?C.soma:C.dif, fontWeight:700, fontFamily:"Outfit,sans-serif", marginBottom:6 }}>
+            {correct?"🎉 Correto!":"😅 Não dessa vez..."}
+          </div>
+          <div className="math" style={{ color:C.muted, fontSize:13 }}>{q.hint}</div>
+        </div>
+      )}
+
+      <div style={{ display:"flex", gap:10 }}>
+        {sel===null && (
+          <button onClick={() => setHint(h=>!h)}
+            style={{ flex:1, background:"transparent", border:`1px solid ${C.border}`,
+              color:C.muted, borderRadius:10, padding:"10px 16px", fontSize:13,
+              cursor:"pointer", fontFamily:"Outfit,sans-serif" }}>
+            💡 {hint?"Esconder dica":"Ver dica"}
+          </button>
+        )}
+        {sel!==null && (
+          <button onClick={next}
+            style={{ flex:1, background:`linear-gradient(135deg,${C.prod},${C.prodD})`,
+              color:"#fff", border:"none", borderRadius:12, padding:"12px 20px", fontSize:14,
+              cursor:"pointer", fontFamily:"Outfit,sans-serif", fontWeight:700 }}>
+            {cur<quizQuestions.length-1?"Próxima →":"Ver resultado 🏁"}
+          </button>
+        )}
+      </div>
+      {hint && sel===null && (
+        <div className="fade-in" style={{ background:"#1a1500", border:"1px dashed #fbbf24",
+          borderRadius:10, padding:14, color:"#fcd34d",
+          fontFamily:"'Fira Code',monospace", fontSize:13 }}>
+          💡 {q.hint}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   APP SHELL
+══════════════════════════════════════════════════════════ */
+export default function App() {
+  const [active, setActive] = useState(0);
+  const [visited, setVisited] = useState(new Set([0]));
+
+  function goTo(i) { setActive(i); setVisited(v => new Set([...v, i])); }
+
+  const lesson = lessons[active];
+
+  const renderLesson = () => {
+    switch (lesson.tag) {
+      case "poly":  return <PolyLesson/>;
+      case "intro": return <IntroLesson/>;
+      case "soma":  return <SomaLesson/>;
+      case "dif":   return <DiferencaLesson/>;
+      case "sd":    return <SomaDifLesson/>;
+      case "quiz":  return <Quiz/>;
+    }
+  };
+
+  return (
+    <div style={{ fontFamily:"Outfit,sans-serif", background:C.bg, minHeight:"100vh", color:C.text }}>
+      <FontLink/>
+
+      {/* HEADER */}
+      <div style={{
+        background:"linear-gradient(135deg,#0c1a4a 0%,#0d1117 70%)",
+        borderBottom:"1px solid #1a2d5a",
+        padding:"18px 24px", position:"sticky", top:0, zIndex:50,
+      }}>
+        <div style={{ maxWidth:920, margin:"0 auto",
+          display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:10 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:14 }}>
+            <div style={{ width:46, height:46, borderRadius:13, flexShrink:0,
+              background:"linear-gradient(135deg,#3b82f6,#818cf8)",
+              display:"flex", alignItems:"center", justifyContent:"center", fontSize:24,
+              boxShadow:"0 4px 16px #3b82f644" }}>📐</div>
+            <div>
+              <h1 style={{ fontSize:20, fontWeight:800, color:C.text, margin:0, letterSpacing:-.3 }}>
+                Produtos Notáveis
+              </h1>
+              <div style={{ color:"#93c5fd", fontSize:10.5, marginTop:2, letterSpacing:.8 }}>
+                MATEMÁTICA · 9º ANO · EXPRESSÕES ALGÉBRICAS
+              </div>
+            </div>
+          </div>
+          <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+            <div style={{ width:8, height:8, borderRadius:"50%", background:C.soma }} className="pulse-dot"/>
+            <span style={{ color:C.muted, fontSize:12 }}>
+              {visited.size}/{lessons.length} seções visitadas
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ maxWidth:920, margin:"0 auto", padding:"22px 16px", display:"flex", flexDirection:"column", gap:18 }}>
+
+        {/* TABS */}
+        <div style={{ display:"flex", gap:6, overflowX:"auto", paddingBottom:4 }}>
+          {lessons.map((l,i) => {
+            const isActive = active===i;
+            const isVisited = visited.has(i);
+            return (
+              <button key={i} className="tab-btn"
+                onClick={() => goTo(i)}
+                style={{
+                  background: isActive?`${l.color}1a`: isVisited?"#0d1117":C.panel,
+                  border:`1.5px solid ${isActive?l.color:isVisited?l.color+"44":C.border}`,
+                  color: isActive?l.color:isVisited?l.color+"aa":C.dim,
+                  borderRadius:10, padding:"8px 14px", fontSize:12.5,
+                  cursor:"pointer", whiteSpace:"nowrap", transition:"all .2s",
+                  fontFamily:"Outfit,sans-serif", fontWeight:isActive?700:500,
+                }}>
+                {l.emoji} {l.title}
+                {isVisited && !isActive && <span style={{ marginLeft:5, opacity:.5, fontSize:11 }}>✓</span>}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* LESSON CARD */}
+        <div style={{
+          background:C.panel, borderRadius:20, padding:"26px 26px",
+          border:`1px solid ${lesson.color}30`,
+          boxShadow:`0 0 40px ${lesson.color}12, 0 16px 60px #00000055`
+        }}>
+          {/* Lesson header */}
+          <div style={{ display:"flex", alignItems:"flex-start", gap:16, marginBottom:26,
+            paddingBottom:18, borderBottom:`1px solid ${C.border}` }}>
+            <div style={{ width:52, height:52, borderRadius:14, flexShrink:0,
+              background:`${lesson.color}18`, border:`1.5px solid ${lesson.color}44`,
+              display:"flex", alignItems:"center", justifyContent:"center", fontSize:26 }}>
+              {lesson.emoji}
+            </div>
+            <div style={{ flex:1 }}>
+              <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:6, flexWrap:"wrap" }}>
+                <h2 style={{ fontSize:20, fontWeight:800, color:C.text, margin:0 }}>{lesson.title}</h2>
+                <Badge text={`Seção ${active+1}`} color={lesson.color}/>
+              </div>
+              {lesson.formula && (
+                <div className="math" style={{ fontSize:14.5, color:lesson.color, marginTop:4 }}>
+                  {lesson.formula}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {renderLesson()}
+        </div>
+
+        {/* NAV */}
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+          <button disabled={active===0} onClick={() => goTo(active-1)}
+            style={{ background:"transparent",
+              border:`1.5px solid ${active===0?"#1a1f2e":C.border}`,
+              color:active===0?"#252d3d":C.muted, borderRadius:12,
+              padding:"11px 22px", fontSize:14, cursor:active===0?"default":"pointer",
+              fontFamily:"Outfit,sans-serif", transition:"all .2s" }}>
+            ← Anterior
+          </button>
+          <div style={{ display:"flex", gap:6 }}>
+            {lessons.map((_,i) => (
+              <button key={i} onClick={() => goTo(i)}
+                style={{ width:10, height:10, borderRadius:"50%", border:"none",
+                  background:i===active?lesson.color:visited.has(i)?"#334155":"#1e293b",
+                  cursor:"pointer", padding:0, transition:"all .3s",
+                  transform:i===active?"scale(1.3)":"scale(1)" }}/>
+            ))}
+          </div>
+          <button disabled={active===lessons.length-1} onClick={() => goTo(active+1)}
+            style={{
+              background:active===lessons.length-1?"transparent":`linear-gradient(135deg,${lesson.color},${lesson.color}bb)`,
+              border:`1.5px solid ${active===lessons.length-1?"#1a1f2e":lesson.color}`,
+              color:active===lessons.length-1?"#252d3d":"#fff",
+              borderRadius:12, padding:"11px 22px", fontSize:14,
+              cursor:active===lessons.length-1?"default":"pointer",
+              fontFamily:"Outfit,sans-serif", fontWeight:700, transition:"all .2s" }}>
+            Próximo →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
