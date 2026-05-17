@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geometria — Ângulos e Polígonos · 9º Ano</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f4ff;--paper:#ffffff;--surface:#f7f9ff;--surface2:#eef2ff;--border:#dde3f5;--border2:#b8c4e8;--ink:#1a1e3a;--muted:#5a6490;--accent:#3b5bdb;--accent2:#0ca678;--gold:#e8900a;--red:#d63939;--green:#099268;--heading:'Nunito',sans-serif;--body:'Crimson Pro',serif;--mono:'JetBrains Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.75;min-height:100vh;overflow-x:hidden;position:relative}
+#geo-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}#geo-bg svg{width:100%;height:100%}
+.ffml{position:fixed;font-family:var(--mono);font-size:13px;color:#3b5bdb;opacity:.11;pointer-events:none;z-index:1;white-space:nowrap;animation:drift linear infinite}
+@keyframes drift{0%{transform:translateY(0) rotate(var(--r))}100%{transform:translateY(-120vh) rotate(var(--r))}}
+#prog{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:300;transition:width .15s;border-radius:0 2px 2px 0}
+#sidebar{position:fixed;left:0;top:0;width:230px;height:100vh;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-right:1px solid var(--border);padding:2rem 1.25rem;z-index:200;transform:translateX(-230px);transition:transform .3s cubic-bezier(.4,0,.2,1);overflow-y:auto;box-shadow:4px 0 20px rgba(59,91,219,.07)}
+#sidebar.open{transform:translateX(0)}
+#toggle{position:fixed;left:1rem;top:1rem;z-index:210;background:var(--accent);border:none;color:#fff;width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(59,91,219,.35)}
+.sb-title{font-family:var(--heading);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+.sb-nav{list-style:none}.sb-nav li{margin-bottom:2px}
+.sb-nav a{display:flex;align-items:center;gap:8px;font-family:var(--heading);font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:7px 10px;border-radius:8px;transition:all .12s}
+.sb-nav a:hover,.sb-nav a.act{background:var(--surface2);color:var(--accent)}
+.sb-nav .n{font-family:var(--mono);font-size:10px;color:var(--accent);min-width:22px}
+main{max-width:820px;margin:0 auto;padding:0 2rem 8rem;position:relative;z-index:10}
+.hero{padding:6.5rem 0 3rem}
+.hero-tag{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;opacity:0;animation:up .6s .1s forwards}
+.hero-h1{font-family:var(--heading);font-size:clamp(3rem,8vw,5.5rem);font-weight:900;line-height:.95;letter-spacing:-.03em;color:var(--ink);opacity:0;animation:up .7s .2s forwards}
+.hero-h1 em{font-style:normal;color:var(--accent)}
+.hero-desc{margin-top:1.5rem;font-size:17px;color:var(--muted);max-width:520px;opacity:0;animation:up .7s .35s forwards}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:2rem;opacity:0;animation:up .7s .45s forwards}
+.pill{font-family:var(--mono);font-size:11px;padding:5px 14px;border:1.5px solid var(--border2);border-radius:20px;color:var(--accent);background:rgba(59,91,219,.06)}
+.hero-line{height:2px;background:linear-gradient(to right,var(--accent),#6ea8fe,transparent);margin-top:2.5rem;border-radius:2px;opacity:0;animation:fadein 1s .6s forwards}
+.sec{margin-top:5rem;opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+.sec.vis{opacity:1;transform:none}
+.sec-hdr{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;padding-bottom:1rem;border-bottom:2px solid var(--border)}
+.sec-num{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.12em;background:var(--surface2);padding:3px 10px;border-radius:20px;border:1px solid var(--border2)}
+.sec-h2{font-family:var(--heading);font-size:1.8rem;font-weight:800;color:var(--ink);line-height:1.15}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem;align-items:start}
+@media(max-width:600px){.two-col{grid-template-columns:1fr}}
+.concept{background:var(--paper);border:1.5px solid var(--border);border-radius:14px;padding:1.5rem;box-shadow:0 2px 12px rgba(59,91,219,.06)}
+.c-tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem}
+.concept p{font-size:15px;color:var(--muted);line-height:1.8}
+.formula{background:linear-gradient(135deg,#eef2ff 0%,#e0e7ff 100%);border:1.5px solid var(--border2);border-radius:12px;padding:1.25rem 1.5rem;margin:1.25rem 0;font-family:var(--mono);font-size:1.15rem;color:var(--accent);box-shadow:0 2px 8px rgba(59,91,219,.1);position:relative;overflow:hidden}
+.formula::before{content:'';position:absolute;right:-20px;top:-20px;width:80px;height:80px;border-radius:50%;background:rgba(59,91,219,.08)}
+.formula small{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+.vis-box{background:var(--paper);border:1.5px solid var(--border);border-radius:14px;padding:1.5rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(59,91,219,.06)}
+.tip{display:flex;gap:12px;border-radius:10px;padding:1rem 1.25rem;margin:1.25rem 0;font-size:15px;line-height:1.7}
+.tip.info{background:#e6faf3;border:1.5px solid #8dd6b5;color:#0a5c3a}
+.tip.warn{background:#fff8e0;border:1.5px solid #f0c050;color:#7a5000}
+.example{border:1.5px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1.25rem;background:var(--paper);box-shadow:0 2px 10px rgba(59,91,219,.05)}
+.ex-head{background:var(--surface);padding:1rem 1.5rem;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .12s}
+.ex-head:hover{background:var(--surface2)}
+.example.open .ex-head{border-bottom:1.5px solid var(--border)}
+.ex-badge{font-family:var(--mono);font-size:10px;background:var(--accent);color:#fff;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.ex-badge.b2{background:var(--accent2)}.ex-badge.bg{background:var(--gold)}
+.ex-head h4{font-family:var(--heading);font-size:14px;font-weight:600;color:var(--ink);flex:1;line-height:1.5}
+.ex-arr{font-size:14px;color:var(--muted);transition:transform .22s}
+.example.open .ex-arr{transform:rotate(180deg)}
+.ex-body{display:none;padding:1.5rem;background:#fafbff}
+.example.open .ex-body{display:block}
+.ex-inner{display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap}
+.ex-steps{flex:1;min-width:200px}
+.steps{list-style:none}
+.step{display:flex;gap:10px;margin-bottom:.75rem;font-size:15px;color:var(--ink);line-height:1.7}
+.sc{min-width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--mono);font-size:10px;font-weight:500;display:flex;align-items:center;justify-content:center;margin-top:3px;flex-shrink:0}
+.ans{margin-top:1rem;padding:.75rem 1rem;background:#e6faf3;border-left:3px solid var(--green);border-radius:0 8px 8px 0;font-family:var(--mono);font-size:14px;color:#0a5c3a}
+.ptable{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:15px;background:var(--paper);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(59,91,219,.05)}
+.ptable th{font-family:var(--heading);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:.7rem 1rem;background:var(--surface2);border-bottom:2px solid var(--border2);text-align:left}
+.ptable td{padding:.75rem 1rem;border-bottom:1px solid var(--border);color:var(--ink)}
+.ptable tr:last-child td{border-bottom:none}
+.ptable tr:hover td{background:var(--surface2)}
+.ptable .res{font-family:var(--mono);color:var(--accent);font-weight:500}
+.calc{background:linear-gradient(135deg,#f0f4ff 0%,#e8edff 100%);border:1.5px solid var(--border2);border-radius:16px;padding:2rem;margin:2rem 0;box-shadow:0 4px 20px rgba(59,91,219,.1)}
+.calc-title{font-family:var(--heading);font-size:1.2rem;font-weight:800;color:var(--ink);margin-bottom:1.5rem}
+.calc-row{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.calc-lbl{font-family:var(--heading);font-size:13px;font-weight:600;color:var(--muted);min-width:160px}
+.calc-in{background:white;border:1.5px solid var(--border2);border-radius:8px;padding:8px 14px;color:var(--ink);font-family:var(--mono);font-size:15px;width:90px;outline:none}
+.calc-in:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,91,219,.15)}
+.calc-fml{font-family:var(--mono);font-size:13px;color:var(--muted);margin-top:.25rem}
+.calc-out{font-family:var(--heading);font-size:2.5rem;font-weight:900;color:var(--accent);margin-top:.5rem}
+.calc-visual{display:flex;justify-content:center;margin-top:1.5rem}
+.tf-grid{display:grid;gap:10px;margin:1.5rem 0}
+.tf-item{display:flex;gap:12px;align-items:flex-start;padding:1rem 1.25rem;border-radius:10px;font-size:15px;line-height:1.6;border:1.5px solid var(--border);cursor:pointer;transition:all .15s;background:var(--paper);color:var(--muted);box-shadow:0 1px 6px rgba(59,91,219,.05)}
+.tf-item:hover{border-color:var(--border2);background:var(--surface2)}
+.tf-item.revealed[data-a="V"]{background:#e6faf3;border-color:#5aab72;color:#0a5c3a}
+.tf-item.revealed[data-a="F"]{background:#fff0f0;border-color:#e87a7a;color:#7a0000}
+.tf-num{font-family:var(--mono);font-size:11px;color:var(--accent);min-width:20px;margin-top:3px}
+.tf-badge{font-family:var(--heading);font-weight:700;font-size:12px;padding:3px 10px;border-radius:20px;margin-left:auto;align-self:center;white-space:nowrap;display:none}
+.tf-item.revealed .tf-badge{display:block}
+.tf-item.revealed[data-a="V"] .tf-badge{background:#c3f0d8;color:#0a5c3a}
+.tf-item.revealed[data-a="F"] .tf-badge{background:#ffd0d0;color:#7a0000}
+.tf-exp{display:none;font-size:13px;color:var(--muted);margin-top:5px;font-style:italic}
+.tf-item.revealed .tf-exp{display:block}
+.quiz-hdr{text-align:center;padding:3rem 0 2rem;border-top:2px solid var(--border)}
+.score-row{display:flex;justify-content:center;gap:1rem;margin:1.5rem 0;flex-wrap:wrap}
+.sc-card{text-align:center;background:var(--paper);border:1.5px solid var(--border);border-radius:12px;padding:1rem 1.5rem;min-width:100px;box-shadow:0 2px 10px rgba(59,91,219,.06)}
+.sc-num{font-family:var(--heading);font-size:2.2rem;font-weight:900;color:var(--accent);line-height:1}
+.sc-lbl{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:4px}
+.q-card{background:var(--paper);border:1.5px solid var(--border);border-radius:14px;padding:1.75rem;margin-bottom:1.25rem;box-shadow:0 2px 10px rgba(59,91,219,.05)}
+.q-num{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.1em;margin-bottom:.75rem}
+.q-txt{font-size:16px;color:var(--ink);line-height:1.6;margin-bottom:1.25rem;font-family:var(--heading);font-weight:600}
+.q-inner{display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap}
+.q-opts-col{flex:1;min-width:200px}
+.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:500px){.q-opts{grid-template-columns:1fr}}
+.opt{padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px;cursor:pointer;text-align:left;transition:all .12s;font-family:var(--heading);font-weight:600}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--surface2);color:var(--accent)}
+.opt.correct{background:#e6faf3;border-color:#5aab72;color:#0a5c3a}
+.opt.wrong{background:#fff0f0;border-color:#e87a7a;color:#7a0000}
+.opt:disabled{cursor:default}
+.q-exp{display:none;margin-top:1.25rem;padding:1.25rem;background:#eef2ff;border-radius:10px;font-size:15px;line-height:1.8;border-left:3px solid var(--accent);color:var(--ink)}
+.q-exp.open{display:block}
+footer{text-align:center;padding:2rem 0;font-family:var(--mono);font-size:11px;color:var(--muted);border-top:1px solid var(--border);margin-top:3rem;position:relative;z-index:10}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body>
+<div id="geo-bg"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+<defs><pattern id="gp" x="0" y="0" width="220" height="220" patternUnits="userSpaceOnUse">
+  <polygon points="22,12 54,62 -10,62" fill="none" stroke="#3b5bdb" stroke-width=".8" opacity=".12"/>
+  <polygon points="130,8 168,72 92,72" fill="none" stroke="#3b5bdb" stroke-width=".8" opacity=".08"/>
+  <rect x="62" y="108" width="38" height="38" fill="none" stroke="#0ca678" stroke-width=".8" opacity=".1" transform="rotate(18,81,127)"/>
+  <circle cx="180" cy="42" r="24" fill="none" stroke="#e8900a" stroke-width=".8" opacity=".1"/>
+  <polygon points="32,142 55,128 78,142 78,165 55,179 32,165" fill="none" stroke="#3b5bdb" stroke-width=".8" opacity=".09"/>
+  <path d="M148,162 l22,0 a22,22 0 0,1 -16,16" fill="none" stroke="#d63939" stroke-width=".8" opacity=".1"/>
+  <line x1="98" y1="98" x2="218" y2="98" stroke="#3b5bdb" stroke-width=".6" opacity=".08"/>
+  <line x1="98" y1="112" x2="218" y2="112" stroke="#3b5bdb" stroke-width=".6" opacity=".08"/>
+</pattern></defs>
+<rect width="100%" height="100%" fill="url(#gp)"/>
+</svg></div>
+<div class="ffml" style="left:4%;top:100%;--r:-7deg;animation-duration:26s;animation-delay:0s">∠A + ∠B + ∠C = 180°</div>
+<div class="ffml" style="left:22%;top:110%;--r:5deg;animation-duration:33s;animation-delay:5s">S = (n − 2) × 180°</div>
+<div class="ffml" style="left:42%;top:105%;--r:-3deg;animation-duration:29s;animation-delay:9s">α + β = 90°</div>
+<div class="ffml" style="left:62%;top:115%;--r:7deg;animation-duration:35s;animation-delay:3s">α + β = 180°</div>
+<div class="ffml" style="left:78%;top:108%;--r:-5deg;animation-duration:31s;animation-delay:7s">9x = 180°</div>
+<div class="ffml" style="left:14%;top:120%;--r:6deg;animation-duration:37s;animation-delay:15s">a² + b² = c²</div>
+<div id="prog"></div>
+<button id="toggle" onclick="toggleSB()" aria-label="Menu">☰</button>
+<nav id="sidebar">
+  <div class="sb-title">Conteúdos da Aula</div>
+  <ul class="sb-nav">
+    <li><a href="#s1"><span class="n">01</span>Triângulos</a></li>
+    <li><a href="#s2"><span class="n">02</span>Suplementares / Compl.</a></li>
+    <li><a href="#s3"><span class="n">03</span>Retas paralelas</a></li>
+    <li><a href="#s4"><span class="n">04</span>Polígonos</a></li>
+    <li><a href="#s5"><span class="n">05</span>Verdadeiro ou Falso</a></li>
+    <li><a href="#quiz"><span class="n">✎</span>Quiz</a></li>
+  </ul>
+</nav>
+<main>
+<section class="hero">
+  <p class="hero-tag">9.º Ano · Matemática · Geometria</p>
+  <h1 class="hero-h1">Ângulos<br><em>&amp; Polígonos</em></h1>
+  <p class="hero-desc">Aula visual com diagramas fiéis à prova, resolução passo a passo e quiz comentado.</p>
+  <div class="hero-pills"><span class="pill">5 tópicos</span><span class="pill">Diagramas da prova</span><span class="pill">Calculadora</span><span class="pill">Quiz · 8 questões</span></div>
+  <div class="hero-line"></div>
+</section>
+
+<!-- S1 -->
+<section class="sec" id="s1">
+  <div class="sec-hdr"><span class="sec-num">01</span><h2 class="sec-h2">Soma dos ângulos internos do triângulo</h2></div>
+  <div class="concept"><div class="c-tag">Propriedade fundamental</div><p>A soma dos três ângulos internos de <strong>qualquer triângulo</strong> é sempre <strong>180°</strong>.</p></div>
+  <div class="formula"><small>Propriedade</small>∠A + ∠B + ∠C = 180°</div>
+  <div class="tip info"><span>💡</span><div>No triângulo retângulo, ∠B = 90°, então os outros dois somam 90° (são complementares).</div></div>
+
+  <div class="example" id="ex1">
+    <div class="ex-head" onclick="tog('ex1')"><span class="ex-badge">Q1</span><h4>Triângulo com ângulo reto e 37°. Qual é o terceiro ângulo?</h4><span class="ex-arr">▼</span></div>
+    <div class="ex-body">
+      <div class="ex-inner">
+        <div class="ex-steps">
+          <ul class="steps">
+            <li class="step"><span class="sc">1</span><span>Triângulo retângulo: <strong>∠B = 90°</strong></span></li>
+            <li class="step"><span class="sc">2</span><span>90° + 37° + x = 180°</span></li>
+            <li class="step"><span class="sc">3</span><span>127° + x = 180°</span></li>
+            <li class="step"><span class="sc">4</span><span>x = 53°</span></li>
+          </ul>
+          <div class="ans">Resposta: x = <strong>53°</strong></div>
+        </div>
+        <!-- A=topo-esq(30,20), B=base-esq(30,160), C=base-dir(170,160). Ângulo reto em B. 37° em A entre AB e AC. x em C. -->
+        <svg viewBox="0 0 210 185" width="200" height="175" style="flex-shrink:0">
+          <polygon points="30,20 30,160 170,160" fill="#EEF2FF" stroke="#1a1e3a" stroke-width="1.8"/>
+          <rect x="30" y="144" width="16" height="16" fill="none" stroke="#1a1e3a" stroke-width="1.5"/>
+          <text x="18" y="16" font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="#1a1e3a">A</text>
+          <!-- 37° em A: arco entre dir AB (↓) e dir AC (→↓ 45°). r=22.
+               start(dir AB, r=22): (30, 20+22)=(30,42)
+               end(dir AC=45°, r=22): (30+22*cos45°,20+22*sin45°)=(30+15.6,20+15.6)=(45.6,35.6) -->
+          <path d="M30,42 A22,22 0 0,1 46,36" fill="#BFDBFE" stroke="none" fill-opacity="0.8"/>
+          <text x="49" y="48" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#2563EB">37°</text>
+          <text x="10" y="176" font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="#1a1e3a">B</text>
+          <text x="2" y="144" font-family="Nunito,sans-serif" font-size="10" font-weight="700" fill="#059669">reto</text>
+          <text x="4" y="156" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#059669">90°</text>
+          <text x="172" y="176" font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="#1a1e3a">C</text>
+          <!-- x em C: arco entre dir CB (←, 180°) e dir CA (↑←, 225°). r=22.
+               start(dir CB, r=22): (170-22,160)=(148,160)
+               end(dir CA=225°, r=22): (170+22*cos225°,160+22*sin225°)=(170-15.6,160-15.6)=(154.4,144.4) -->
+          <path d="M148,160 A22,22 0 0,0 154,144" fill="#FEE2E2" stroke="none" fill-opacity="0.8"/>
+          <text x="132" y="150" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#DC2626">x</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="example" id="ex2">
+    <div class="ex-head" onclick="tog('ex2')"><span class="ex-badge">Q2</span><h4>Os ângulos internos medem 2x, 3x e 4x. Qual é o valor de x?</h4><span class="ex-arr">▼</span></div>
+    <div class="ex-body">
+      <div class="ex-inner">
+        <div class="ex-steps">
+          <ul class="steps">
+            <li class="step"><span class="sc">1</span><span>2x + 3x + 4x = 180°</span></li>
+            <li class="step"><span class="sc">2</span><span>9x = 180°</span></li>
+            <li class="step"><span class="sc">3</span><span>x = 20°</span></li>
+            <li class="step"><span class="sc">4</span><span>Ângulos: 40°, 60° e 80°</span></li>
+          </ul>
+          <div class="ans">Resposta: x = <strong>20°</strong></div>
+        </div>
+        <!-- A=topo(100,18), B=base-esq(20,165), C=base-dir(180,165) -->
+        <svg viewBox="0 0 210 185" width="200" height="175" style="flex-shrink:0">
+          <polygon points="100,18 20,165 180,165" fill="#FFF7ED" stroke="#1a1e3a" stroke-width="1.8"/>
+          <text x="93" y="13" font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="#1a1e3a">A</text>
+          <!-- 2x em A: dir AB=atan2(147,-80)≈118.6°, dir AC=atan2(147,80)≈61.4°. Arco entre 61.4° e 118.6°, r=22.
+               start(61.4°): (100+22*cos61.4°,18+22*sin61.4°)=(100+10.6,18+19.3)=(110.6,37.3)
+               end(118.6°):  (100+22*cos118.6°,18+22*sin118.6°)=(100-10.6,18+19.3)=(89.4,37.3) -->
+          <path d="M111,37 A22,22 0 0,1 89,37" fill="#BFDBFE" stroke="none" fill-opacity="0.8"/>
+          <text x="88" y="54" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#2563EB">2x</text>
+          <text x="4" y="180" font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="#1a1e3a">B</text>
+          <!-- 3x em B(20,165): dir BC=(160,0)→0°, dir BA=(-80,-147)→atan2(-147,80 invertido)→ acima direita em SVG
+               No SVG (y pra baixo): dir BA vetor(80,-147) → atan2(-147,80)≈-61.4°=298.6°
+               arco de 0° até 298.6° (sweep=0 = anti-horário no SVG, menor arco de 0° para 298.6°)
+               r=26:
+               start(dir BC→0°, r=26): (20+26,165)=(46,165)
+               end(dir BA→-61.4°, r=26): (20+26*cos(-61.4°),165+26*sin(-61.4°))
+                   =(20+26*0.479,165+26*(-0.878))=(20+12.5,165-22.8)=(32.5,142.2) -->
+          <path d="M46,165 A26,26 0 0,0 33,143" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/>
+          <text x="46" y="158" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#059669">3x</text>
+          <text x="183" y="180" font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="#1a1e3a">C</text>
+          <!-- 4x em C(180,165): dir CB=(-160,0)→180°, dir CA=(-80,-147)→ acima esquerda em SVG
+               dir CA vetor(-80,-147) em SVG: atan2(-147,-80)≈-118.6°=241.4°
+               arco de 180° até 241.4°, r=26:
+               start(dir CB→180°, r=26): (180-26,165)=(154,165)
+               end(dir CA→-118.6°, r=26): (180+26*cos(-118.6°),165+26*sin(-118.6°))
+                   =(180-26*0.479,165-26*0.878)=(180-12.5,165-22.8)=(167.5,142.2) -->
+          <path d="M154,165 A26,26 0 0,1 168,143" fill="#FEE2E2" stroke="none" fill-opacity="0.8"/>
+          <text x="144" y="157" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#DC2626">4x</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S2 -->
+<section class="sec" id="s2">
+  <div class="sec-hdr"><span class="sec-num">02</span><h2 class="sec-h2">Ângulos suplementares e complementares</h2></div>
+  <div class="two-col">
+    <div><div class="concept"><div class="c-tag">Suplementares</div><p>Dois ângulos somam <strong>180°</strong> — completam uma linha reta.</p></div><div class="formula"><small>Suplementares</small>α + β = 180°</div></div>
+    <div><div class="concept"><div class="c-tag">Complementares</div><p>Dois ângulos somam <strong>90°</strong> — completam um ângulo reto.</p></div><div class="formula"><small>Complementares</small>α + β = 90°</div></div>
+  </div>
+  <div class="tip warn"><span>⚠️</span><div><strong>Não confunda!</strong> Suplementar → 180°. Complementar → 90°.</div></div>
+
+  <div class="example" id="ex3">
+    <div class="ex-head" onclick="tog('ex3')"><span class="ex-badge">Q3</span><h4>Suplementar de 128° — qual é o outro ângulo?</h4><span class="ex-arr">▼</span></div>
+    <div class="ex-body">
+      <div class="ex-inner">
+        <div class="ex-steps">
+          <ul class="steps">
+            <li class="step"><span class="sc">1</span><span>Suplementares somam 180°</span></li>
+            <li class="step"><span class="sc">2</span><span>128° + x = 180°</span></li>
+            <li class="step"><span class="sc">3</span><span>x = 52°</span></li>
+          </ul>
+          <div class="ans">Resposta: x = <strong>52°</strong></div>
+        </div>
+        <!-- Linha reta, ponto central em (130,75). Raio a 52° acima da horizontal (= 128° do lado esq).
+             128° do lado esq significa que o raio está a 180°-128°=52° da direita.
+             Raio endpoint (comprimento 60): (130+60*cos52°,75-60*sin52°)=(130+36.9,75-47.3)=(166.9,27.7)≈(167,28)
+             Arco 128° (lado esq, azul): de dir esq (r=50, ponto (80,75)) até dir raio (r=50):
+               (130+50*cos52°,75-50*sin52°)=(130+30.8,75-39.4)=(160.8,35.6)≈(161,36)
+             Arco x (lado dir, verde): de dir raio (r=50, ponto (161,36)) até dir dir (r=50, ponto (180,75)):
+        -->
+        <svg viewBox="0 0 260 125" width="250" height="120" style="flex-shrink:0">
+          <line x1="10" y1="75" x2="250" y2="75" stroke="#1a1e3a" stroke-width="2"/>
+          <polygon points="10,75 18,71 18,79" fill="#1a1e3a"/>
+          <polygon points="250,75 242,71 242,79" fill="#1a1e3a"/>
+          <circle cx="130" cy="75" r="3" fill="#1a1e3a"/>
+          <line x1="130" y1="75" x2="167" y2="28" stroke="#1a1e3a" stroke-width="2"/>
+          <!-- Arco 128° (esq, azul): sweep=1 (horário no SVG = preenche o ângulo obtuso à esq) -->
+          <path d="M80,75 A50,50 0 0,1 161,36" fill="#BFDBFE" stroke="none" fill-opacity="0.75"/>
+          <text x="70" y="64" font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="#2563EB">128°</text>
+          <!-- Arco x (dir, verde): de (161,36) até (180,75), sweep=1 -->
+          <path d="M161,36 A50,50 0 0,1 180,75" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/>
+          <text x="172" y="52" font-family="Nunito,sans-serif" font-size="13" font-weight="700" fill="#059669">x</text>
+          <line x1="10" y1="90" x2="10" y2="97" stroke="#777" stroke-width="1"/>
+          <line x1="10" y1="97" x2="250" y2="97" stroke="#777" stroke-width="1"/>
+          <line x1="250" y1="90" x2="250" y2="97" stroke="#777" stroke-width="1"/>
+          <line x1="130" y1="97" x2="130" y2="104" stroke="#777" stroke-width="1"/>
+          <text x="130" y="118" text-anchor="middle" font-family="Nunito,sans-serif" font-size="13" font-weight="800" fill="#1a1e3a">180°</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="example" id="ex6">
+    <div class="ex-head" onclick="tog('ex6')"><span class="ex-badge b2">Q6</span><h4>Complementar de 34° — qual é o outro ângulo?</h4><span class="ex-arr">▼</span></div>
+    <div class="ex-body">
+      <div class="ex-inner">
+        <div class="ex-steps">
+          <ul class="steps">
+            <li class="step"><span class="sc">1</span><span>Complementares somam 90°</span></li>
+            <li class="step"><span class="sc">2</span><span>34° + x = 90°</span></li>
+            <li class="step"><span class="sc">3</span><span>x = 56°</span></li>
+          </ul>
+          <div class="ans">Resposta: x = <strong>56°</strong></div>
+        </div>
+        <!-- Origem O=(50,155). Eixo vertical para cima, horizontal para direita.
+             Raio oblíquo: 34° da vertical = 56° da horizontal.
+             cos56°≈0.559, sin56°≈0.829. Len=100.
+             Endpoint: (50+100*0.559, 155-100*0.829)=(105.9,72.1)≈(106,72)
+             
+             Ângulo 34° (azul): entre eixo vertical e raio.
+               dir vertical (cima, SVG): ângulo=-90° (ou 270°)
+               dir raio: ângulo=-56° (acima da horizontal)
+               r=38: 
+               start(dir vertical, r=38): (50,155-38)=(50,117)
+               end(dir raio a -56°, r=38): (50+38*cos(-56°),155+38*sin(-56°))
+                   =(50+38*0.559,155-38*0.829)=(50+21.2,155-31.5)=(71.2,123.5)≈(71,124)
+               sweep=1 (horário no SVG, de cima para o raio) ✓
+               
+             Ângulo x=56° (verde): entre raio e eixo horizontal.
+               dir raio: -56°, dir horizontal: 0°
+               r=38:
+               start(dir raio, r=38): (71,124) como acima
+               end(dir horizontal, r=38): (50+38,155)=(88,155)
+               sweep=1 (horário no SVG, do raio para horizontal) ✓
+        -->
+        <svg viewBox="0 0 210 185" width="200" height="175" style="flex-shrink:0">
+          <line x1="50" y1="155" x2="190" y2="155" stroke="#1a1e3a" stroke-width="2"/>
+          <polygon points="190,155 182,151 182,159" fill="#1a1e3a"/>
+          <line x1="50" y1="155" x2="50" y2="18" stroke="#2563EB" stroke-width="2"/>
+          <polygon points="50,18 46,26 54,26" fill="#2563EB"/>
+          <rect x="50" y="139" width="14" height="14" fill="none" stroke="#1a1e3a" stroke-width="1.5"/>
+          <line x1="50" y1="155" x2="106" y2="72" stroke="#1a1e3a" stroke-width="2"/>
+          <!-- Arco 34° (azul, entre vertical e raio) -->
+          <path d="M50,117 A38,38 0 0,1 71,124" fill="#BFDBFE" stroke="none" fill-opacity="0.8"/>
+          <text x="2" y="118" font-family="Nunito,sans-serif" font-size="10" font-weight="700" fill="#2563EB">Ângulo 1</text>
+          <text x="4" y="130" font-family="Nunito,sans-serif" font-size="12" font-weight="800" fill="#2563EB">34°</text>
+          <!-- Arco x=56° (verde, entre raio e horizontal) -->
+          <path d="M71,124 A38,38 0 0,1 88,155" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/>
+          <text x="90" y="143" font-family="Nunito,sans-serif" font-size="10" font-weight="700" fill="#059669">Ângulo 2</text>
+          <text x="96" y="157" font-family="Nunito,sans-serif" font-size="12" font-weight="800" fill="#059669">x°</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S3 -->
+<section class="sec" id="s3">
+  <div class="sec-hdr"><span class="sec-num">03</span><h2 class="sec-h2">Retas paralelas e transversal</h2></div>
+  <div class="two-col">
+    <div>
+      <div class="concept"><div class="c-tag">Conceito</div><p>Quando uma reta <strong>transversal</strong> corta duas retas <strong>paralelas</strong>, formam-se 8 ângulos com relações especiais.</p></div>
+      <div class="formula"><small>Correspondentes</small>Mesmo lado → iguais</div>
+      <div class="formula"><small>Alternos internos</small>Lados opostos → iguais</div>
+      <div class="formula"><small>Co-internos</small>Mesmo lado → soma = 180°</div>
+    </div>
+    <!-- Transversal: de (165,5) a (90,195). Cruza r(y=65) em x=141, cruza s(y=145) em x=110.
+         Dir transversal (descendo): vetor(-75,190), ângulo=atan2(190,-75)≈111.5°
+         115° é o ângulo OBTUSO entre a direita de r (0°) e a transversal descendo (111.5°): 111.5° ≈ 115° ✓
+         Arco 115° em P_r(141,65): de dir direita (r=30, ponto (171,65)) até dir transversal descendo (r=30):
+           end: (141+30*cos111.5°,65+30*sin111.5°)=(141-11,65+27.9)=(130,92.9)≈(130,93)
+           sweep=1 (preenche o ângulo entre a direita e a transversal descendo, sentido horário no SVG)
+         Arco correspondente x em P_s(110,145): mesma geometria.
+           start dir direita (r=30): (110+30,145)=(140,145)
+           end dir transversal descendo (r=30): (110+30*cos111.5°,145+30*sin111.5°)=(110-11,145+28)=(99,173)
+    -->
+    <div class="vis-box">
+      <svg viewBox="0 0 240 200" width="230" height="190">
+        <line x1="10" y1="65" x2="225" y2="65" stroke="#1a1e3a" stroke-width="2"/>
+        <polygon points="10,65 18,61 18,69" fill="#1a1e3a"/>
+        <polygon points="225,65 217,61 217,69" fill="#1a1e3a"/>
+        <text x="6" y="57" font-family="Nunito,sans-serif" font-size="13" font-weight="800" font-style="italic" fill="#1a1e3a">r</text>
+        <line x1="10" y1="145" x2="225" y2="145" stroke="#1a1e3a" stroke-width="2"/>
+        <polygon points="10,145 18,141 18,149" fill="#1a1e3a"/>
+        <polygon points="225,145 217,141 217,149" fill="#1a1e3a"/>
+        <text x="6" y="137" font-family="Nunito,sans-serif" font-size="13" font-weight="800" font-style="italic" fill="#1a1e3a">s</text>
+        <line x1="165" y1="5" x2="90" y2="195" stroke="#1a1e3a" stroke-width="2"/>
+        <text x="167" y="13" font-family="Nunito,sans-serif" font-size="13" font-weight="800" font-style="italic" fill="#1a1e3a">t</text>
+        <!-- 115° em r: de dir direita até transversal descendo (obtuso) -->
+        <path d="M171,65 A30,30 0 1,0 130,93" fill="#BFDBFE" stroke="none" fill-opacity="0.8"/>
+        <text x="153" y="53" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#2563EB">115°</text>
+        <!-- x em s: arco correspondente (mesma posição) -->
+        <path d="M140,145 A30,30 0 1,0 99,173" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/>
+        <text x="122" y="178" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#059669">x</text>
+        <line x1="141" y1="65" x2="110" y2="145" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
+      </svg>
+    </div>
+  </div>
+  <table class="ptable">
+    <thead><tr><th>Par de ângulos</th><th>Posição</th><th>Relação</th></tr></thead>
+    <tbody>
+      <tr><td>Correspondentes</td><td>Mesmo lado, posição igual</td><td class="res">Iguais</td></tr>
+      <tr><td>Alternos internos</td><td>Lados opostos, entre as paralelas</td><td class="res">Iguais</td></tr>
+      <tr><td>Alternos externos</td><td>Lados opostos, fora das paralelas</td><td class="res">Iguais</td></tr>
+      <tr><td>Co-internos</td><td>Mesmo lado, entre as paralelas</td><td class="res">Soma = 180°</td></tr>
+    </tbody>
+  </table>
+  <div class="example" id="ex4">
+    <div class="ex-head" onclick="tog('ex4')"><span class="ex-badge">Q4</span><h4>Transversal forma 115° com r. Qual é o ângulo correspondente x em s?</h4><span class="ex-arr">▼</span></div>
+    <div class="ex-body">
+      <ul class="steps">
+        <li class="step"><span class="sc">1</span><span>Ângulos correspondentes ficam na <strong>mesma posição</strong> nas duas paralelas.</span></li>
+        <li class="step"><span class="sc">2</span><span>Entre retas paralelas, correspondentes são <strong>iguais</strong>.</span></li>
+        <li class="step"><span class="sc">3</span><span>x = 115°</span></li>
+      </ul>
+      <div class="ans">Resposta: x = <strong>115°</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- S4 -->
+<section class="sec" id="s4">
+  <div class="sec-hdr"><span class="sec-num">04</span><h2 class="sec-h2">Soma dos ângulos internos de polígonos</h2></div>
+  <div class="two-col">
+    <div>
+      <div class="concept"><div class="c-tag">Fórmula geral</div><p>Qualquer polígono convexo com <em>n</em> lados pode ser dividido em <strong>(n − 2) triângulos</strong>. Cada triângulo soma 180°.</p></div>
+      <div class="formula"><small>Fórmula — polígono convexo</small>S = (n − 2) × 180°</div>
+    </div>
+    <div class="vis-box">
+      <svg viewBox="0 0 230 195" width="220" height="185">
+        <polygon points="115,15 200,58 200,138 115,182 30,138 30,58" fill="rgba(59,91,219,.08)" stroke="#1a1e3a" stroke-width="1.8"/>
+        <line x1="115" y1="15" x2="200" y2="138" stroke="#e8900a" stroke-width="1.5" stroke-dasharray="5"/>
+        <line x1="115" y1="15" x2="115" y2="182" stroke="#e8900a" stroke-width="1.5" stroke-dasharray="5"/>
+        <line x1="115" y1="15" x2="30" y2="138" stroke="#e8900a" stroke-width="1.5" stroke-dasharray="5"/>
+        <text x="150" y="76" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#e8900a" font-weight="700">▲1</text>
+        <text x="158" y="134" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#e8900a" font-weight="700">▲2</text>
+        <text x="115" y="158" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#e8900a" font-weight="700">▲3</text>
+        <text x="72" y="134" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#e8900a" font-weight="700">▲4</text>
+        <text x="80" y="76" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" fill="#e8900a" font-weight="700">▲5</text>
+        <text x="115" y="193" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#5a6490">hexágono → 4 triângulos → 720°</text>
+      </svg>
+    </div>
+  </div>
+  <div style="margin:1.5rem 0">
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem">Galeria — clique para carregar na calculadora</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center" id="poly-gallery"></div>
+  </div>
+  <div class="calc">
+    <div class="calc-title">⬡ Calculadora de polígonos</div>
+    <div class="calc-row"><span class="calc-lbl">Número de lados (n):</span><input class="calc-in" type="number" id="cn" min="3" max="20" value="5" oninput="calcPoly()"></div>
+    <div class="calc-fml" id="cfml">S = (5 − 2) × 180°</div>
+    <div class="calc-out" id="cout">= 540°</div>
+    <div class="calc-visual"><svg viewBox="0 0 200 180" width="200" height="180" id="calc-poly-svg"></svg></div>
+  </div>
+  <div class="example" id="ex5e">
+    <div class="ex-head" onclick="tog('ex5e')"><span class="ex-badge bg">EXTRA</span><h4>Polígono com soma = 1260°. Quantos lados possui?</h4><span class="ex-arr">▼</span></div>
+    <div class="ex-body">
+      <ul class="steps">
+        <li class="step"><span class="sc">1</span><span>(n − 2) × 180° = 1260°</span></li>
+        <li class="step"><span class="sc">2</span><span>n − 2 = 1260 ÷ 180 = 7</span></li>
+        <li class="step"><span class="sc">3</span><span>n = 9</span></li>
+      </ul>
+      <div class="ans">Resposta: <strong>9 lados</strong> — nonágono</div>
+    </div>
+  </div>
+  <table class="ptable">
+    <thead><tr><th>Polígono</th><th>Lados (n)</th><th>Triângulos</th><th>Cálculo</th><th>Soma</th></tr></thead>
+    <tbody>
+      <tr><td>Triângulo</td><td>3</td><td>1</td><td>(3−2)×180°</td><td class="res">180°</td></tr>
+      <tr><td>Quadrilátero</td><td>4</td><td>2</td><td>(4−2)×180°</td><td class="res">360°</td></tr>
+      <tr><td><strong>Pentágono ★</strong></td><td>5</td><td>3</td><td>(5−2)×180°</td><td class="res">540°</td></tr>
+      <tr><td><strong>Heptágono ★</strong></td><td>7</td><td>5</td><td>(7−2)×180°</td><td class="res">900°</td></tr>
+      <tr><td><strong>Octógono ★</strong></td><td>8</td><td>6</td><td>(8−2)×180°</td><td class="res">1080°</td></tr>
+      <tr><td><strong>Decágono ★</strong></td><td>10</td><td>8</td><td>(10−2)×180°</td><td class="res">1440°</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- S5 -->
+<section class="sec" id="s5">
+  <div class="sec-hdr"><span class="sec-num">05</span><h2 class="sec-h2">Verdadeiro ou falso — clique para revelar</h2></div>
+  <div class="tip warn"><span>👆</span><div>Tente responder mentalmente antes de clicar!</div></div>
+  <div class="tf-grid">
+    <div class="tf-item" data-a="V" onclick="revTF(this)"><span class="tf-num">a)</span><div><div>A soma dos ângulos internos de qualquer triângulo é 180°.</div><div class="tf-exp">Sempre verdadeira — propriedade fundamental.</div></div><span class="tf-badge">✓ VERDADEIRO</span></div>
+    <div class="tf-item" data-a="F" onclick="revTF(this)"><span class="tf-num">b)</span><div><div>Um triângulo pode ter dois ângulos retos.</div><div class="tf-exp">Impossível: 90°+90°=180°, não sobra ângulo para o terceiro vértice.</div></div><span class="tf-badge">✗ FALSO</span></div>
+    <div class="tf-item" data-a="V" onclick="revTF(this)"><span class="tf-num">c)</span><div><div>A soma dos ângulos internos de um quadrilátero é 360°.</div><div class="tf-exp">S=(4−2)×180°=360°. Correto!</div></div><span class="tf-badge">✓ VERDADEIRO</span></div>
+    <div class="tf-item" data-a="F" onclick="revTF(this)"><span class="tf-num">d)</span><div><div>A soma dos ângulos internos de um pentágono é 520°.</div><div class="tf-exp">Errado! S=(5−2)×180°=540°, não 520°.</div></div><span class="tf-badge">✗ FALSO</span></div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="sec" id="quiz">
+  <div class="quiz-hdr"><span class="sec-num" style="display:inline-block;margin-bottom:.5rem">QUIZ</span><h2 class="sec-h2" style="font-size:2rem">Teste seus conhecimentos</h2></div>
+  <div class="score-row">
+    <div class="sc-card"><div class="sc-num" id="sq-c">0</div><div class="sc-lbl">Acertos</div></div>
+    <div class="sc-card"><div class="sc-num" id="sq-d">0</div><div class="sc-lbl">Respondidas</div></div>
+    <div class="sc-card"><div class="sc-num" id="sq-p">—</div><div class="sc-lbl">Aproveitamento</div></div>
+  </div>
+  <div id="qc"></div>
+</section>
+</main>
+<footer>Geometria · 9.º Ano · Colégio Adventista · Ângulos e Polígonos</footer>
+
+<script>
+window.addEventListener('scroll',()=>{const d=document.documentElement,p=d.scrollHeight-d.clientHeight;document.getElementById('prog').style.width=(p>0?d.scrollTop/p*100:0)+'%'});
+function toggleSB(){document.getElementById('sidebar').classList.toggle('open')}
+document.addEventListener('click',e=>{const sb=document.getElementById('sidebar'),btn=document.getElementById('toggle');if(sb.classList.contains('open')&&!sb.contains(e.target)&&e.target!==btn)sb.classList.remove('open')});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.1});
+document.querySelectorAll('.sec').forEach(s=>io.observe(s));
+const nls=document.querySelectorAll('.sb-nav a');
+const io2=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const id=e.target.id;nls.forEach(a=>a.classList.toggle('act',a.getAttribute('href')==='#'+id))}}),{threshold:.3});
+document.querySelectorAll('.sec').forEach(s=>io2.observe(s));
+function tog(id){document.getElementById(id).classList.toggle('open')}
+function revTF(el){el.classList.add('revealed');el.onclick=null}
+function polyPoints(n,cx,cy,r){return Array.from({length:n},(_,i)=>{const a=(i*2*Math.PI/n)-Math.PI/2;return`${(cx+r*Math.cos(a)).toFixed(1)},${(cy+r*Math.sin(a)).toFixed(1)}`}).join(' ')}
+const polys=[{n:3,sum:180,c:'#d63939'},{n:4,sum:360,c:'#e8900a'},{n:5,sum:540,c:'#3b5bdb',s:true},{n:6,sum:720,c:'#0ca678'},{n:7,sum:900,c:'#3b5bdb',s:true},{n:8,sum:1080,c:'#e8900a',s:true},{n:9,sum:1260,c:'#d63939'},{n:10,sum:1440,c:'#0ca678',s:true}];
+const names=['Triângulo','Quadrilátero','Pentágono','Hexágono','Heptágono','Octógono','Nonágono','Decágono'];
+const gal=document.getElementById('poly-gallery');
+polys.forEach((p,i)=>{
+  const div=document.createElement('div');
+  div.style.cssText=`cursor:pointer;text-align:center;padding:10px 8px;border:${p.s?'2px':'1.5px'} solid ${p.s?p.c:'#dde3f5'};border-radius:10px;background:${p.s?'rgba(59,91,219,.04)':'white'};transition:all .15s;min-width:82px;box-shadow:0 1px 6px rgba(59,91,219,.07)`;
+  div.innerHTML=`<svg viewBox="0 0 70 70" width="54" height="54"><polygon points="${polyPoints(p.n,35,35,28)}" fill="${p.c}" fill-opacity=".12" stroke="${p.c}" stroke-width="${p.s?2:1.5}"/></svg><div style="font-family:JetBrains Mono,monospace;font-size:9px;color:#5a6490;margin-top:2px">${p.n} lados${p.s?' ★':''}</div><div style="font-family:Nunito,sans-serif;font-size:11px;font-weight:700;color:${p.c}">${p.sum}°</div>`;
+  div.addEventListener('mouseenter',()=>{div.style.borderColor=p.c;div.style.transform='translateY(-2px)'});
+  div.addEventListener('mouseleave',()=>{div.style.borderColor=p.s?p.c:'#dde3f5';div.style.transform='none'});
+  div.addEventListener('click',()=>{document.getElementById('cn').value=p.n;calcPoly()});
+  gal.appendChild(div);
+});
+function calcPoly(){
+  const n=parseInt(document.getElementById('cn').value)||3;
+  const safe=Math.max(3,Math.min(20,n)),s=(safe-2)*180;
+  document.getElementById('cfml').textContent=`S = (${safe} − 2) × 180°`;
+  document.getElementById('cout').textContent=`= ${s}°`;
+  const svg=document.getElementById('calc-poly-svg');
+  svg.innerHTML=`<polygon points="${polyPoints(safe,100,88,76)}" fill="#3b5bdb" fill-opacity=".1" stroke="#3b5bdb" stroke-width="2"/><text x="100" y="93" text-anchor="middle" font-family="Nunito,sans-serif" font-size="15" fill="#3b5bdb" font-weight="800">${s}°</text><text x="100" y="110" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#5a6490">${safe} lados</text>`;
+}
+calcPoly();
+
+function mkSvgTri1(){return`<svg viewBox="0 0 180 165" width="160" height="148"><polygon points="30,18 30,148 158,148" fill="#EEF2FF" stroke="#1a1e3a" stroke-width="1.6"/><rect x="30" y="132" width="14" height="14" fill="none" stroke="#1a1e3a" stroke-width="1.4"/><text x="18" y="14" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#1a1e3a">A</text><path d="M30,38 A20,20 0 0,1 44,32" fill="#BFDBFE" stroke="none" fill-opacity="0.8"/><text x="46" y="44" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#2563EB">37°</text><text x="10" y="162" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#1a1e3a">B</text><text x="2" y="132" font-family="Nunito,sans-serif" font-size="9" font-weight="700" fill="#059669">90°</text><text x="160" y="162" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#1a1e3a">C</text><path d="M138,148 A20,20 0 0,0 144,132" fill="#FEE2E2" stroke="none" fill-opacity="0.8"/><text x="120" y="138" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#DC2626">x</text></svg>`}
+function mkSvgTri2(){return`<svg viewBox="0 0 180 165" width="160" height="148"><polygon points="90,15 18,152 162,152" fill="#FFF7ED" stroke="#1a1e3a" stroke-width="1.6"/><text x="83" y="11" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#1a1e3a">A</text><path d="M100,33 A20,20 0 0,1 80,33" fill="#BFDBFE" stroke="none" fill-opacity="0.8"/><text x="79" y="50" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#2563EB">2x</text><text x="2" y="165" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#1a1e3a">B</text><path d="M42,152 A24,24 0 0,0 30,131" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/><text x="42" y="144" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#059669">3x</text><text x="164" y="165" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#1a1e3a">C</text><path d="M138,152 A24,24 0 0,1 150,131" fill="#FEE2E2" stroke="none" fill-opacity="0.8"/><text x="128" y="144" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#DC2626">4x</text></svg>`}
+function mkSvgSup(){return`<svg viewBox="0 0 230 110" width="210" height="100"><line x1="10" y1="68" x2="220" y2="68" stroke="#1a1e3a" stroke-width="1.8"/><polygon points="10,68 18,64 18,72" fill="#1a1e3a"/><polygon points="220,68 212,64 212,72" fill="#1a1e3a"/><circle cx="115" cy="68" r="3" fill="#1a1e3a"/><line x1="115" y1="68" x2="150" y2="24" stroke="#1a1e3a" stroke-width="1.8"/><path d="M69,68 A46,46 0 0,1 147,33" fill="#BFDBFE" stroke="none" fill-opacity="0.75"/><text x="62" y="58" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#2563EB">128°</text><path d="M147,33 A46,46 0 0,1 161,68" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/><text x="155" y="48" font-family="Nunito,sans-serif" font-size="12" font-weight="700" fill="#059669">x</text></svg>`}
+function mkSvgPar(){return`<svg viewBox="0 0 210 175" width="190" height="160"><line x1="8" y1="55" x2="198" y2="55" stroke="#1a1e3a" stroke-width="1.8"/><polygon points="8,55 16,51 16,59" fill="#1a1e3a"/><polygon points="198,55 190,51 190,59" fill="#1a1e3a"/><text x="4" y="47" font-family="Nunito,sans-serif" font-size="12" font-weight="800" font-style="italic" fill="#1a1e3a">r</text><line x1="8" y1="125" x2="198" y2="125" stroke="#1a1e3a" stroke-width="1.8"/><polygon points="8,125 16,121 16,129" fill="#1a1e3a"/><polygon points="198,125 190,121 190,129" fill="#1a1e3a"/><text x="4" y="117" font-family="Nunito,sans-serif" font-size="12" font-weight="800" font-style="italic" fill="#1a1e3a">s</text><line x1="148" y1="5" x2="80" y2="170" stroke="#1a1e3a" stroke-width="1.8"/><text x="150" y="13" font-family="Nunito,sans-serif" font-size="12" font-weight="800" font-style="italic" fill="#1a1e3a">t</text><path d="M152,55 A27,27 0 1,0 113,82" fill="#BFDBFE" stroke="none" fill-opacity="0.8"/><text x="138" y="43" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#2563EB">115°</text><path d="M122,125 A27,27 0 1,0 83,152" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/><text x="106" y="158" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#059669">x</text></svg>`}
+function mkSvgComp(){return`<svg viewBox="0 0 180 165" width="165" height="150"><line x1="40" y1="140" x2="165" y2="140" stroke="#1a1e3a" stroke-width="1.8"/><polygon points="165,140 157,136 157,144" fill="#1a1e3a"/><line x1="40" y1="140" x2="40" y2="18" stroke="#2563EB" stroke-width="1.8"/><polygon points="40,18 36,26 44,26" fill="#2563EB"/><rect x="40" y="124" width="14" height="14" fill="none" stroke="#1a1e3a" stroke-width="1.4"/><line x1="40" y1="140" x2="90" y2="58" stroke="#1a1e3a" stroke-width="1.8"/><path d="M40,102 A38,38 0 0,1 61,109" fill="#BFDBFE" stroke="none" fill-opacity="0.8"/><text x="2" y="103" font-family="Nunito,sans-serif" font-size="10" font-weight="700" fill="#2563EB">34°</text><path d="M61,109 A38,38 0 0,1 78,140" fill="#D1FAE5" stroke="none" fill-opacity="0.8"/><text x="80" y="128" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="#059669">x°</text></svg>`}
+
+const qs=[
+  {q:"1. Triângulo retângulo (∠B=90°) com ∠A=37°. Qual é ∠C = x?",opts:["43°","53°","63°","127°"],c:1,exp:"<b>Resolução:</b> 90° + 37° + x = 180° → <b>x = 53°</b>",svgFn:mkSvgTri1},
+  {q:"2. Ângulos internos do triângulo: 2x (em A), 3x (em B), 4x (em C). Qual é x?",opts:["x = 15°","x = 18°","x = 20°","x = 25°"],c:2,exp:"<b>Resolução:</b> 2x+3x+4x=180° → 9x=180° → <b>x=20°</b>",svgFn:mkSvgTri2},
+  {q:"3. Ângulos suplementares: um mede 128°. Qual é o outro?",opts:["38°","42°","52°","62°"],c:2,exp:"<b>Resolução:</b> 128° + x = 180° → <b>x = 52°</b>",svgFn:mkSvgSup},
+  {q:"4. Retas paralelas r e s, transversal forma 115° em r. Qual é o ângulo correspondente x em s?",opts:["65°","75°","115°","180°"],c:2,exp:"<b>Resolução:</b> Correspondentes = iguais → <b>x = 115°</b>",svgFn:mkSvgPar},
+  {q:"5. Qual é a soma dos ângulos internos de um heptágono (7 lados)?",opts:["720°","840°","900°","1080°"],c:2,exp:"<b>Resolução:</b> S=(7−2)×180°=5×180°=<b>900°</b>",svgFn:()=>`<svg viewBox="0 0 110 105" width="100" height="95"><polygon points="${polyPoints(7,55,52,46)}" fill="rgba(59,91,219,.1)" stroke="#3b5bdb" stroke-width="1.8"/><text x="55" y="56" text-anchor="middle" font-family="Nunito,sans-serif" font-size="13" fill="#3b5bdb" font-weight="800">900°</text><text x="55" y="98" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#5a6490">7 lados</text></svg>`},
+  {q:"6. Ângulos complementares: um mede 34°. Qual é o outro (x)?",opts:["46°","56°","66°","146°"],c:1,exp:"<b>Resolução:</b> 34° + x = 90° → <b>x = 56°</b>",svgFn:mkSvgComp},
+  {q:"7. Qual é a soma dos ângulos internos de um decágono (10 lados)?",opts:["1260°","1440°","1620°","1800°"],c:1,exp:"<b>Resolução:</b> S=(10−2)×180°=8×180°=<b>1440°</b>",svgFn:()=>`<svg viewBox="0 0 110 105" width="100" height="95"><polygon points="${polyPoints(10,55,52,46)}" fill="rgba(12,166,120,.1)" stroke="#0ca678" stroke-width="1.8"/><text x="55" y="56" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" fill="#0ca678" font-weight="800">1440°</text><text x="55" y="98" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#5a6490">10 lados</text></svg>`},
+  {q:"8. Um polígono convexo tem soma dos ângulos internos de 1260°. Quantos lados possui?",opts:["7 lados","8 lados","9 lados","10 lados"],c:2,exp:"<b>Resolução:</b> (n−2)×180°=1260° → n−2=7 → <b>n=9 (nonágono)</b>",svgFn:()=>`<svg viewBox="0 0 110 105" width="100" height="95"><polygon points="${polyPoints(9,55,52,46)}" fill="rgba(232,144,10,.1)" stroke="#e8900a" stroke-width="1.8"/><text x="55" y="56" text-anchor="middle" font-family="Nunito,sans-serif" font-size="12" fill="#e8900a" font-weight="800">1260°</text><text x="55" y="98" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#5a6490">9 lados</text></svg>`},
+];
+let cor=0,don=0;
+function buildQ(){
+  const c=document.getElementById('qc');
+  qs.forEach((q,i)=>{
+    const d=document.createElement('div');d.className='q-card';d.id='qc'+i;
+    const oH=q.opts.map((o,j)=>`<button class="opt" id="o${i}${j}" onclick="ans(${i},${j})">${o}</button>`).join('');
+    d.innerHTML=`<div class="q-num">QUESTÃO ${i+1} DE ${qs.length}</div><div class="q-inner"><div class="q-opts-col"><div class="q-txt">${q.q}</div><div class="q-opts">${oH}</div></div><div style="flex-shrink:0">${q.svgFn()}</div></div><div class="q-exp" id="qe${i}">${q.exp}</div>`;
+    c.appendChild(d);
+  });
+}
+function ans(qi,ch){
+  const q=qs[qi];
+  document.querySelectorAll(`[id^="o${qi}"]`).forEach(b=>b.disabled=true);
+  document.getElementById(`o${qi}${ch}`).classList.add(ch===q.c?'correct':'wrong');
+  if(ch!==q.c)document.getElementById(`o${qi}${q.c}`).classList.add('correct');
+  document.getElementById('qe'+qi).classList.add('open');
+  if(ch===q.c)cor++;don++;
+  document.getElementById('sq-c').textContent=cor;
+  document.getElementById('sq-d').textContent=don;
+  document.getElementById('sq-p').textContent=Math.round(cor/don*100)+'%';
+}
+buildQ();
+</script>
+</body>
+</html>
