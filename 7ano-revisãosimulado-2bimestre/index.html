@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemática 7º Ano – Frações e Razão</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFDF7;
+    --card: #FFFFFF;
+    --orange: #E8640A;
+    --orange-light: #FFF0E6;
+    --orange-mid: #FFD4B0;
+    --teal: #0D7E72;
+    --teal-light: #E3F5F3;
+    --rose: #C0364A;
+    --rose-light: #FDEEF1;
+    --amber: #D4860A;
+    --amber-light: #FFF4DC;
+    --indigo: #3B4FA8;
+    --indigo-light: #EEF0FC;
+    --text: #1C1A17;
+    --text-soft: #5A5550;
+    --border: #E8E0D8;
+    --radius: 20px;
+    --shadow: 0 4px 24px rgba(232,100,10,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lexend', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 19px;
+    line-height: 1.65;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* warm paper texture */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(ellipse at 8% 12%, rgba(232,100,10,.07) 0%, transparent 45%),
+      radial-gradient(ellipse at 92% 88%, rgba(13,126,114,.07) 0%, transparent 45%),
+      radial-gradient(ellipse at 50% 50%, rgba(212,134,10,.04) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* floating math symbols */
+  .math-bg { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+  .math-bg span {
+    position:absolute; font-family:'Fredoka One',cursive;
+    opacity:.055; user-select:none;
+    animation: floatUp 22s ease-in-out infinite;
+  }
+  @keyframes floatUp {
+    0%,100%{transform:translateY(0) rotate(-3deg);}
+    50%{transform:translateY(-28px) rotate(3deg);}
+  }
+
+  .wrapper {
+    position:relative; z-index:1;
+    max-width: 1000px; margin: 0 auto;
+    padding: 40px 20px 90px;
+  }
+
+  /* ── HEADER ── */
+  .header { text-align:center; margin-bottom:48px; }
+  .header-badge {
+    display:inline-block;
+    background: var(--orange); color:white;
+    font-size:.95rem; font-weight:700;
+    padding:6px 22px; border-radius:50px;
+    margin-bottom:16px; letter-spacing:1.5px;
+    text-transform:uppercase;
+    box-shadow: 0 4px 14px rgba(232,100,10,.35);
+  }
+  .header h1 {
+    font-family:'Fredoka One',cursive;
+    font-size:3.6rem; line-height:1.05;
+    color: var(--orange); margin-bottom:10px;
+  }
+  .header h1 span { color: var(--teal); }
+  .header p { font-size:1.2rem; color:var(--text-soft); font-weight:600; }
+
+  /* ── NAV ── */
+  .nav-tabs {
+    display:flex; gap:10px; margin-bottom:40px;
+    flex-wrap:wrap; justify-content:center;
+  }
+  .nav-tab {
+    background:white; border:2px solid var(--border);
+    border-radius:50px; padding:10px 22px;
+    font-size:.95rem; font-weight:700;
+    font-family:'Lexend',sans-serif;
+    cursor:pointer; transition:all .2s; color:var(--text-soft);
+  }
+  .nav-tab:hover, .nav-tab.active {
+    background:var(--orange); color:white;
+    border-color:var(--orange);
+    transform:translateY(-2px);
+    box-shadow:0 4px 16px rgba(232,100,10,.35);
+  }
+  .section { display:none; }
+  .section.active { display:block; animation:fadeIn .3s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-family:'Fredoka One',cursive;
+    font-size:2.1rem; font-weight:400;
+    margin-bottom:22px;
+    display:flex; align-items:center; gap:12px;
+    color: var(--text);
+  }
+  .s-icon {
+    width:50px; height:50px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.5rem; flex-shrink:0;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background:var(--card); border-radius:var(--radius);
+    padding:30px 32px; box-shadow:var(--shadow);
+    margin-bottom:22px; border:2px solid transparent;
+    transition:border-color .2s;
+  }
+  .card:hover { border-color:var(--orange-mid); }
+
+  /* ── TOPIC GRID ── */
+  .topic-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:22px; }
+  @media(max-width:680px){ .topic-grid{grid-template-columns:1fr;} }
+
+  .topic-card { border-radius:var(--radius); padding:22px 24px; border:2px solid transparent; }
+  .tc-orange { background:var(--orange-light); border-color:var(--orange-mid); }
+  .tc-teal   { background:var(--teal-light);   border-color:#80CCC6; }
+  .tc-amber  { background:var(--amber-light);  border-color:#F5CC78; }
+  .tc-indigo { background:var(--indigo-light); border-color:#AABAD8; }
+
+  .topic-card h3 {
+    font-family:'Fredoka One',cursive; font-size:1.45rem;
+    margin-bottom:12px; display:flex; align-items:center; gap:8px;
+  }
+  .topic-card ul { list-style:none; padding:0; }
+  .topic-card ul li {
+    padding:5px 0 5px 28px; position:relative;
+    font-size:.98rem; font-weight:600; line-height:1.5;
+  }
+  .topic-card ul li::before { content:'✅'; position:absolute; left:0; font-size:.85rem; }
+
+  /* ── DICAS ── */
+  .dica {
+    background:var(--amber-light); border:2px solid var(--amber);
+    border-radius:var(--radius); padding:18px 22px;
+    margin-bottom:14px; display:flex; gap:14px; align-items:flex-start;
+  }
+  .dica-icon { font-size:1.7rem; flex-shrink:0; }
+  .dica-text { font-size:1rem; font-weight:600; line-height:1.55; }
+
+  /* ── FORMULA ── */
+  .formula {
+    background:linear-gradient(135deg,var(--orange) 0%,var(--amber) 100%);
+    color:white; border-radius:16px; padding:18px 26px;
+    text-align:center; font-family:'Fredoka One',cursive;
+    font-size:1.7rem; margin:16px 0;
+    box-shadow:0 6px 20px rgba(232,100,10,.3);
+  }
+  .formula small { font-size:1rem; font-family:'Lexend',sans-serif; opacity:.9; display:block; margin-top:4px; }
+
+  /* ── EXAMPLE ── */
+  .example-block {
+    background:linear-gradient(135deg,#FFF8F2,var(--orange-light));
+    border:2px solid var(--orange-mid); border-radius:16px;
+    padding:20px 24px; margin:14px 0;
+  }
+  .ex-title {
+    font-family:'Fredoka One',cursive; font-size:1.05rem;
+    color:var(--orange); margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;
+  }
+  .ex-body { font-size:1rem; font-weight:600; line-height:1.8; }
+
+  /* ── FRAÇÃO VISUAL ── */
+  .fraction {
+    display:inline-flex; flex-direction:column;
+    align-items:center; line-height:1.1;
+    font-family:'Fredoka One',cursive; font-size:1.5rem;
+    vertical-align:middle; margin:0 6px;
+  }
+  .fraction .num { border-bottom:3px solid currentColor; padding-bottom:2px; min-width:28px; text-align:center; }
+  .fraction .den { padding-top:2px; min-width:28px; text-align:center; }
+
+  .frac-big { font-size:2.2rem; }
+
+  /* ── PIZZA VISUAL ── */
+  .pizza-row { display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start; margin:18px 0; }
+  .pizza-item { text-align:center; }
+  .pizza-label { font-size:.9rem; font-weight:700; margin-top:8px; color:var(--text-soft); }
+
+  /* ── COMPARAÇÃO VISUAL ── */
+  .compare-bar { margin:8px 0; }
+  .compare-bar-label { font-size:.95rem; font-weight:700; margin-bottom:4px; display:flex; justify-content:space-between; }
+  .bar-track { background:#EEE; border-radius:50px; height:28px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:50px; display:flex; align-items:center; padding-left:10px;
+    font-size:.85rem; font-weight:800; color:white; transition:width .6s ease; }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x:auto; border-radius:14px; border:2px solid var(--border); margin:14px 0; }
+  table { width:100%; border-collapse:collapse; font-size:.97rem; }
+  th { background:var(--orange); color:white; padding:13px 18px; font-weight:700; text-align:left; }
+  td { padding:11px 18px; border-bottom:1px solid var(--border); font-weight:600; }
+  tr:last-child td { border-bottom:none; }
+  tr:nth-child(even) td { background:var(--orange-light); }
+
+  /* highlight */
+  .hl { font-weight:900; color:var(--orange); }
+  .hl-teal { font-weight:900; color:var(--teal); }
+  .hl-indigo { font-weight:900; color:var(--indigo); }
+
+  /* ── QUIZ ── */
+  .quiz-section { margin-top:50px; }
+  .progress-bar-wrap { background:#E8E0D8; border-radius:50px; height:16px; margin-bottom:8px; overflow:hidden; }
+  .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--orange),var(--amber)); border-radius:50px; transition:width .5s ease; }
+  .progress-label { text-align:right; font-weight:700; font-size:.95rem; color:var(--text-soft); margin-bottom:22px; }
+
+  .question-card {
+    background:var(--card); border-radius:var(--radius);
+    padding:34px; box-shadow:var(--shadow);
+    border:2px solid var(--border); margin-bottom:22px;
+  }
+  .q-header { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  .q-num {
+    background:var(--orange); color:white;
+    font-family:'Fredoka One',cursive; font-size:1.35rem;
+    width:50px; height:50px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .q-level { font-size:.82rem; font-weight:700; padding:4px 13px; border-radius:50px; text-transform:uppercase; letter-spacing:1px; }
+  .q-level.facil  { background:var(--teal-light);   color:var(--teal); }
+  .q-level.medio  { background:var(--amber-light);  color:var(--amber); }
+  .q-topic { font-size:.88rem; font-weight:700; color:var(--text-soft); }
+
+  .q-context {
+    background:var(--indigo-light); border-left:4px solid var(--indigo);
+    border-radius:10px; padding:13px 17px;
+    font-size:.97rem; font-weight:600; margin-bottom:16px; color:#2A3070;
+  }
+  .q-text { font-size:1.15rem; font-weight:700; line-height:1.7; margin-bottom:22px; }
+
+  .options { display:flex; flex-direction:column; gap:11px; }
+  .option-btn {
+    background:#FAFAF5; border:2px solid var(--border);
+    border-radius:14px; padding:15px 20px;
+    font-size:1.05rem; font-weight:700;
+    font-family:'Lexend',sans-serif; cursor:pointer;
+    text-align:left; transition:all .2s;
+    display:flex; align-items:center; gap:12px; color:var(--text);
+  }
+  .option-btn:hover:not(:disabled) { border-color:var(--orange); background:var(--orange-light); transform:translateX(5px); }
+  .option-btn:disabled { cursor:default; }
+  .option-btn.correct { background:var(--teal-light); border-color:var(--teal); color:var(--teal); }
+  .option-btn.wrong   { background:var(--rose-light);  border-color:var(--rose);  color:var(--rose); }
+
+  .opt-letter {
+    width:34px; height:34px; border-radius:10px;
+    background:var(--orange); color:white;
+    font-family:'Fredoka One',cursive; font-size:1.05rem;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    transition:background .2s;
+  }
+  .option-btn.correct .opt-letter { background:var(--teal); }
+  .option-btn.wrong   .opt-letter { background:var(--rose); }
+
+  /* ── FEEDBACK ── */
+  .feedback { margin-top:18px; border-radius:var(--radius); padding:26px; display:none; }
+  .feedback.show { display:block; animation:fadeIn .3s ease; }
+  .feedback.correct-fb { background:var(--teal-light); border:2px solid var(--teal); }
+  .feedback.wrong-fb   { background:var(--rose-light);  border:2px solid var(--rose); }
+
+  .feedback-title { font-family:'Fredoka One',cursive; font-size:1.5rem; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .feedback-title.correct-fb { color:var(--teal); }
+  .feedback-title.wrong-fb   { color:var(--rose); }
+
+  .step-box {
+    background:white; border-radius:14px;
+    padding:14px 18px; margin-bottom:10px;
+    border:2px solid rgba(0,0,0,.07);
+    font-size:.97rem; font-weight:600; line-height:1.6;
+  }
+  .step-box strong { color:var(--orange); }
+  .step-num {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:7px;
+    background:var(--orange); color:white;
+    font-size:.8rem; font-weight:700; margin-right:7px; vertical-align:middle;
+  }
+
+  /* ── NEXT BTN ── */
+  .next-btn {
+    display:none;
+    background:linear-gradient(135deg,var(--orange),var(--amber));
+    color:white; border:none; border-radius:14px;
+    padding:15px 34px; font-size:1.1rem; font-weight:700;
+    font-family:'Lexend',sans-serif; cursor:pointer; margin-top:18px;
+    transition:transform .2s,box-shadow .2s;
+    box-shadow:0 6px 20px rgba(232,100,10,.3);
+  }
+  .next-btn:hover { transform:translateY(-3px); box-shadow:0 10px 28px rgba(232,100,10,.4); }
+  .next-btn.show { display:inline-flex; align-items:center; gap:8px; }
+
+  /* ── RESULT ── */
+  .result-card { display:none; text-align:center; padding:58px 36px; background:white; border-radius:var(--radius); box-shadow:var(--shadow); margin-top:22px; }
+  .result-card.show { display:block; animation:fadeIn .5s ease; }
+  .result-emoji { font-size:4.5rem; margin-bottom:18px; }
+  .result-title { font-family:'Fredoka One',cursive; font-size:2.4rem; color:var(--orange); margin-bottom:8px; }
+  .result-score { font-size:1.3rem; font-weight:700; color:var(--text-soft); margin-bottom:26px; }
+  .result-msg   { font-size:1.15rem; font-weight:600; line-height:1.7; max-width:480px; margin:0 auto 28px; }
+  .restart-btn {
+    background:linear-gradient(135deg,var(--teal),var(--indigo));
+    color:white; border:none; border-radius:14px;
+    padding:16px 38px; font-size:1.1rem; font-weight:700;
+    font-family:'Lexend',sans-serif; cursor:pointer;
+    box-shadow:0 6px 20px rgba(13,126,114,.3);
+    transition:transform .2s;
+  }
+  .restart-btn:hover { transform:translateY(-3px); }
+
+  .divider { border:none; height:3px; background:linear-gradient(90deg,var(--orange),var(--amber),var(--teal)); border-radius:50px; margin:46px 0; opacity:.25; }
+
+  /* ── FRACTION STRIPS ── */
+  .strip-row { display:flex; height:36px; border-radius:8px; overflow:hidden; margin-bottom:10px; border:2px solid #ccc; }
+  .strip-seg { display:flex; align-items:center; justify-content:center; font-size:.78rem; font-weight:800; color:white; border-right:1px solid rgba(255,255,255,.4); }
+  .strip-seg:last-child { border-right:none; }
+</style>
+</head>
+<body>
+
+<!-- floating math symbols background -->
+<div class="math-bg">
+  <span style="top:4%;left:4%;font-size:3.5rem;color:var(--orange)">½</span>
+  <span style="top:12%;left:90%;font-size:2.8rem;color:var(--teal);animation-duration:28s">¾</span>
+  <span style="top:30%;left:6%;font-size:2.5rem;color:var(--amber);animation-duration:18s">÷</span>
+  <span style="top:45%;left:93%;font-size:3rem;color:var(--orange);animation-duration:32s">⅓</span>
+  <span style="top:60%;left:3%;font-size:2.2rem;color:var(--teal);animation-duration:24s">×</span>
+  <span style="top:72%;left:88%;font-size:3rem;color:var(--amber);animation-duration:20s">⅔</span>
+  <span style="top:85%;left:10%;font-size:2.4rem;color:var(--orange);animation-duration:26s">=</span>
+  <span style="top:20%;left:48%;font-size:2.8rem;color:var(--indigo);animation-duration:30s">%</span>
+  <span style="top:55%;left:50%;font-size:2.2rem;color:var(--teal);animation-duration:22s">∶</span>
+</div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-badge">📚 7º Ano · BNCC</div>
+    <h1>Frações e<br><span>Razão</span></h1>
+    <p>Números Fracionários · Comparação · Razão · Problemas</p>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav-tabs">
+    <button class="nav-tab active" onclick="showSection('resumo',this)">📖 Resumo</button>
+    <button class="nav-tab" onclick="showSection('fracoes',this)">🍕 O que é Fração?</button>
+    <button class="nav-tab" onclick="showSection('comparacao',this)">⚖️ Comparar Frações</button>
+    <button class="nav-tab" onclick="showSection('razao',this)">📊 Razão</button>
+    <button class="nav-tab" onclick="showSection('quiz',this)">✏️ Quiz</button>
+  </nav>
+
+  <!-- ═══════════════ RESUMO ═══════════════ -->
+  <section id="resumo" class="section active">
+    <div class="section-title">
+      <div class="s-icon" style="background:var(--orange-light)">📖</div>
+      O que vamos estudar?
+    </div>
+
+    <div class="topic-grid">
+      <div class="topic-card tc-orange">
+        <h3 style="color:var(--orange)">🍕 Frações</h3>
+        <ul>
+          <li>O que é numerador e denominador</li>
+          <li>Frações equivalentes</li>
+          <li>Fração como divisão</li>
+          <li>Frações próprias, impróprias e mistas</li>
+        </ul>
+      </div>
+      <div class="topic-card tc-teal">
+        <h3 style="color:var(--teal)">⚖️ Comparação e Ordem</h3>
+        <ul>
+          <li>Comparar frações com mesmo denominador</li>
+          <li>Comparar frações com denominadores diferentes</li>
+          <li>Mínimo Múltiplo Comum (MMC)</li>
+          <li>Ordenar frações do menor ao maior</li>
+        </ul>
+      </div>
+      <div class="topic-card tc-amber">
+        <h3 style="color:var(--amber)">📊 Razão</h3>
+        <ul>
+          <li>O que é razão entre duas grandezas</li>
+          <li>Razão escrita como fração</li>
+          <li>Razão no dia a dia (receitas, escalas)</li>
+          <li>Simplificar razões</li>
+        </ul>
+      </div>
+      <div class="topic-card tc-indigo">
+        <h3 style="color:var(--indigo)">🧩 Problemas</h3>
+        <ul>
+          <li>Operações com frações em contextos reais</li>
+          <li>Fração de uma quantidade</li>
+          <li>Comparar quantidades usando razão</li>
+          <li>Situações do cotidiano (receitas, turmas, mapas)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title" style="font-size:1.55rem;margin-bottom:14px">
+        <div class="s-icon" style="background:var(--amber-light)">💡</div>
+        Dicas Rápidas — Cola Mental!
+      </div>
+      <div class="dica">
+        <div class="dica-icon">🍕</div>
+        <div class="dica-text">Fração = <span class="hl">parte dividida pelo todo</span>. O de baixo (denominador) diz em quantas partes foi dividido. O de cima (numerador) diz quantas partes você tem.</div>
+      </div>
+      <div class="dica">
+        <div class="dica-icon">⚖️</div>
+        <div class="dica-text">Para comparar frações diferentes: <span class="hl">iguale os denominadores</span> usando o MMC. Aí é só comparar os numeradores.</div>
+      </div>
+      <div class="dica">
+        <div class="dica-icon">✂️</div>
+        <div class="dica-text">Frações equivalentes: multiplique ou divida <span class="hl">numerador e denominador pelo mesmo número</span>. O valor não muda! Ex: ½ = 2/4 = 4/8.</div>
+      </div>
+      <div class="dica">
+        <div class="dica-icon">📊</div>
+        <div class="dica-text">Razão é a <span class="hl">comparação entre duas quantidades</span>. Se numa sala há 12 meninas e 8 meninos, a razão meninas:meninos é 12/8 = <strong>3/2</strong>.</div>
+      </div>
+      <div class="dica">
+        <div class="dica-icon">🧮</div>
+        <div class="dica-text">Fração de uma quantidade: <span class="hl">multiplique a quantidade pelo numerador e divida pelo denominador</span>. Ex: ¾ de 20 = (20 × 3) ÷ 4 = 15.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ O QUE É FRAÇÃO ═══════════════ -->
+  <section id="fracoes" class="section">
+    <div class="section-title">
+      <div class="s-icon" style="background:var(--orange-light)">🍕</div>
+      O que é uma Fração?
+    </div>
+
+    <div class="card">
+      <p style="font-size:1.05rem;font-weight:700;margin-bottom:18px">
+        Uma fração representa uma <span class="hl">parte de um todo</span>. Quando dividimos algo em partes iguais e pegamos algumas delas, usamos fração.
+      </p>
+
+      <!-- PIZZA VISUAL -->
+      <div class="pizza-row">
+        <div class="pizza-item">
+          <svg viewBox="0 0 120 120" width="120" height="120">
+            <circle cx="60" cy="60" r="55" fill="#FFD98E" stroke="#E8640A" stroke-width="3"/>
+            <path d="M60 60 L60 5 A55 55 0 0 1 115 60 Z" fill="#E8640A" opacity=".85"/>
+            <line x1="60" y1="5" x2="60" y2="115" stroke="white" stroke-width="2.5"/>
+            <line x1="5" y1="60" x2="115" y2="60" stroke="white" stroke-width="2.5"/>
+            <text x="80" y="38" font-size="13" fill="white" font-family="Fredoka One" font-weight="800">1</text>
+            <text x="60" y="70" font-size="11" fill="#8B4000" font-family="Lexend" font-weight="700">¼ cada</text>
+          </svg>
+          <div class="pizza-label">Pizza dividida em 4<br>partes iguais</div>
+        </div>
+        <div style="display:flex;flex-direction:column;justify-content:center;gap:14px;flex:1;min-width:220px">
+          <div class="formula" style="font-size:1.3rem;padding:14px 20px">
+            <span class="fraction frac-big" style="color:white">
+              <span class="num">3</span>
+              <span class="den">4</span>
+            </span>
+            &nbsp;= 3 partes de 4
+          </div>
+          <div class="dica" style="margin-bottom:0">
+            <div class="dica-icon">👆</div>
+            <div class="dica-text">
+              <strong>Numerador (3)</strong> → quantas partes você tem<br>
+              <strong>Denominador (4)</strong> → em quantas partes foi dividido
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STRIP VISUALIZATION -->
+      <div style="margin:24px 0 8px">
+        <div class="section-title" style="font-size:1.4rem;margin-bottom:14px">
+          <div class="s-icon" style="background:var(--teal-light);width:38px;height:38px">📏</div>
+          Tiras de Fração — Compare visualmente!
+        </div>
+        <div style="margin-bottom:6px;font-weight:700;font-size:.9rem;color:var(--text-soft)">1 inteiro</div>
+        <div class="strip-row" style="background:var(--orange)">
+          <div class="strip-seg" style="width:100%;background:var(--orange)">1</div>
+        </div>
+        <div style="margin-bottom:6px;font-weight:700;font-size:.9rem;color:var(--text-soft)">Metades (½)</div>
+        <div class="strip-row">
+          <div class="strip-seg" style="width:50%;background:#E8640A">½</div>
+          <div class="strip-seg" style="width:50%;background:#C44D00">½</div>
+        </div>
+        <div style="margin-bottom:6px;font-weight:700;font-size:.9rem;color:var(--text-soft)">Terços (⅓)</div>
+        <div class="strip-row">
+          <div class="strip-seg" style="width:33.3%;background:#0D7E72">⅓</div>
+          <div class="strip-seg" style="width:33.3%;background:#0A6660">⅓</div>
+          <div class="strip-seg" style="width:33.3%;background:#084F4A">⅓</div>
+        </div>
+        <div style="margin-bottom:6px;font-weight:700;font-size:.9rem;color:var(--text-soft)">Quartos (¼)</div>
+        <div class="strip-row">
+          <div class="strip-seg" style="width:25%;background:#D4860A">¼</div>
+          <div class="strip-seg" style="width:25%;background:#B87008">¼</div>
+          <div class="strip-seg" style="width:25%;background:#9C5E06">¼</div>
+          <div class="strip-seg" style="width:25%;background:#804C04">¼</div>
+        </div>
+        <div style="margin-bottom:6px;font-weight:700;font-size:.9rem;color:var(--text-soft)">Quintos (⅕)</div>
+        <div class="strip-row">
+          <div class="strip-seg" style="width:20%;background:#3B4FA8">⅕</div>
+          <div class="strip-seg" style="width:20%;background:#33448E">⅕</div>
+          <div class="strip-seg" style="width:20%;background:#2B3974">⅕</div>
+          <div class="strip-seg" style="width:20%;background:#232E5A">⅕</div>
+          <div class="strip-seg" style="width:20%;background:#1B2340">⅕</div>
+        </div>
+        <div style="margin-bottom:6px;font-weight:700;font-size:.9rem;color:var(--text-soft)">Sextos (⅙)</div>
+        <div class="strip-row">
+          <div class="strip-seg" style="width:16.6%;background:#C0364A">⅙</div>
+          <div class="strip-seg" style="width:16.6%;background:#A82E40">⅙</div>
+          <div class="strip-seg" style="width:16.6%;background:#902636">⅙</div>
+          <div class="strip-seg" style="width:16.6%;background:#781E2C">⅙</div>
+          <div class="strip-seg" style="width:16.6%;background:#601622">⅙</div>
+          <div class="strip-seg" style="width:16.6%;background:#480E18">⅙</div>
+        </div>
+      </div>
+
+      <div class="dica" style="margin-top:20px">
+        <div class="dica-icon">👀</div>
+        <div class="dica-text">Olhe as tiras! Quanto <strong>maior o denominador</strong>, <span class="hl">menor</span> fica cada pedaço. ½ é maior que ⅙!</div>
+      </div>
+
+      <!-- TIPOS DE FRAÇÃO -->
+      <hr class="divider" style="margin:28px 0">
+      <div class="section-title" style="font-size:1.4rem;margin-bottom:14px">
+        <div class="s-icon" style="background:var(--amber-light);width:38px;height:38px">📋</div>
+        Tipos de Fração
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Tipo</th><th>Definição</th><th>Exemplo</th><th>Observação</th>
+          </tr>
+          <tr><td><strong>Própria</strong></td><td>Numerador &lt; Denominador</td><td>3/4 · 2/5 · 7/10</td><td>Representa menos de 1 inteiro</td></tr>
+          <tr><td><strong>Imprópria</strong></td><td>Numerador ≥ Denominador</td><td>5/3 · 8/4 · 11/6</td><td>Representa 1 inteiro ou mais</td></tr>
+          <tr><td><strong>Mista</strong></td><td>Inteiro + Fração</td><td>1½ · 2¾ · 3⅓</td><td>Equivale a uma fração imprópria</td></tr>
+          <tr><td><strong>Equivalentes</strong></td><td>Têm o mesmo valor</td><td>1/2 = 2/4 = 4/8</td><td>Multiplica ou divide por igual</td></tr>
+        </table>
+      </div>
+
+      <!-- EQUIVALENTES -->
+      <div class="example-block" style="margin-top:16px">
+        <div class="ex-title">✏️ Frações Equivalentes — como fazer?</div>
+        <div class="ex-body">
+          Multiplique <strong>numerador e denominador pelo mesmo número</strong>:<br><br>
+          <span class="fraction" style="color:var(--orange);font-size:1.8rem"><span class="num">1</span><span class="den">2</span></span>
+          &nbsp;=&nbsp;
+          <span class="fraction" style="color:var(--teal);font-size:1.8rem"><span class="num">2</span><span class="den">4</span></span>
+          &nbsp;=&nbsp;
+          <span class="fraction" style="color:var(--amber);font-size:1.8rem"><span class="num">3</span><span class="den">6</span></span>
+          &nbsp;=&nbsp;
+          <span class="fraction" style="color:var(--indigo);font-size:1.8rem"><span class="num">4</span><span class="den">8</span></span>
+          <br><br>
+          <span style="color:var(--text-soft)">👆 Multipliquei por 2, por 3 e por 4. O valor de cada fração é idêntico: metade!</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ COMPARAÇÃO ═══════════════ -->
+  <section id="comparacao" class="section">
+    <div class="section-title">
+      <div class="s-icon" style="background:var(--teal-light)">⚖️</div>
+      Comparar e Ordenar Frações
+    </div>
+
+    <div class="card">
+
+      <!-- CASO 1: mesmo denominador -->
+      <div class="section-title" style="font-size:1.4rem;margin-bottom:12px">
+        <div class="s-icon" style="background:var(--orange-light);width:38px;height:38px">1️⃣</div>
+        Mesmo denominador — fácil!
+      </div>
+      <div class="dica">
+        <div class="dica-icon">👌</div>
+        <div class="dica-text">Quando o denominador é igual, é só comparar os <span class="hl">numeradores</span>. O maior numerador = fração maior.</div>
+      </div>
+      <div class="example-block">
+        <div class="ex-title">✏️ Compare 3/8 e 5/8</div>
+        <div class="ex-body">
+          Denominadores iguais (8). Compare os numeradores: 3 &lt; 5<br>
+          Portanto:
+          <span class="fraction" style="color:var(--orange);font-size:1.5rem"><span class="num">3</span><span class="den">8</span></span>
+          &nbsp;<strong style="font-size:1.5rem">&lt;</strong>&nbsp;
+          <span class="fraction" style="color:var(--teal);font-size:1.5rem"><span class="num">5</span><span class="den">8</span></span>
+        </div>
+      </div>
+
+      <!-- BARRAS VISUAIS -->
+      <div style="margin:20px 0">
+        <div class="compare-bar">
+          <div class="compare-bar-label"><span>3/8</span><span style="color:var(--orange)">37,5%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:37.5%;background:var(--orange)">3/8</div></div>
+        </div>
+        <div class="compare-bar">
+          <div class="compare-bar-label"><span>5/8</span><span style="color:var(--teal)">62,5%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:62.5%;background:var(--teal)">5/8</div></div>
+        </div>
+      </div>
+
+      <hr class="divider" style="margin:24px 0">
+
+      <!-- CASO 2: denominadores diferentes -->
+      <div class="section-title" style="font-size:1.4rem;margin-bottom:12px">
+        <div class="s-icon" style="background:var(--teal-light);width:38px;height:38px">2️⃣</div>
+        Denominadores diferentes — use o MMC!
+      </div>
+      <div class="dica">
+        <div class="dica-icon">🔧</div>
+        <div class="dica-text"><strong>Passo a passo:</strong><br>
+          1. Encontre o MMC dos denominadores<br>
+          2. Transforme as frações com esse denominador<br>
+          3. Compare os numeradores</div>
+      </div>
+
+      <div class="example-block">
+        <div class="ex-title">✏️ Compare 2/3 e 3/4</div>
+        <div class="ex-body">
+          <span class="step-num">1</span> <strong>MMC de 3 e 4:</strong> 3, 6, 9, <u>12</u> | 4, 8, <u>12</u> → MMC = <strong>12</strong><br><br>
+          <span class="step-num">2</span> <strong>Transforme:</strong><br>
+          &nbsp;&nbsp;
+          <span class="fraction" style="color:var(--orange);font-size:1.4rem"><span class="num">2</span><span class="den">3</span></span>
+          &nbsp;=&nbsp;
+          <span class="fraction" style="color:var(--orange);font-size:1.4rem"><span class="num">8</span><span class="den">12</span></span>
+          &nbsp;&nbsp;&nbsp;(×4 em cima e embaixo)<br><br>
+          &nbsp;&nbsp;
+          <span class="fraction" style="color:var(--teal);font-size:1.4rem"><span class="num">3</span><span class="den">4</span></span>
+          &nbsp;=&nbsp;
+          <span class="fraction" style="color:var(--teal);font-size:1.4rem"><span class="num">9</span><span class="den">12</span></span>
+          &nbsp;&nbsp;&nbsp;(×3 em cima e embaixo)<br><br>
+          <span class="step-num">3</span> <strong>Compare:</strong> 8/12 &lt; 9/12 → portanto
+          <span class="fraction" style="color:var(--orange);font-size:1.3rem"><span class="num">2</span><span class="den">3</span></span>
+          &nbsp;<strong style="font-size:1.3rem">&lt;</strong>&nbsp;
+          <span class="fraction" style="color:var(--teal);font-size:1.3rem"><span class="num">3</span><span class="den">4</span></span>
+        </div>
+      </div>
+
+      <div style="margin:18px 0">
+        <div class="compare-bar">
+          <div class="compare-bar-label"><span>2/3 = 8/12</span><span style="color:var(--orange)">≈ 66,7%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:66.7%;background:var(--orange)">2/3</div></div>
+        </div>
+        <div class="compare-bar">
+          <div class="compare-bar-label"><span>3/4 = 9/12</span><span style="color:var(--teal)">75%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:75%;background:var(--teal)">3/4</div></div>
+        </div>
+      </div>
+
+      <div class="dica">
+        <div class="dica-icon">💡</div>
+        <div class="dica-text"><strong>Atalho — Multiplicação cruzada:</strong><br>
+          Compare 2/3 e 3/4: multiplique cruzado:<br>
+          2 × 4 = <strong>8</strong> e 3 × 3 = <strong>9</strong><br>
+          Como 8 &lt; 9 → 2/3 &lt; 3/4 ✅<br>
+          <span style="color:var(--text-soft);font-size:.9rem">(só serve para saber qual é maior, não para somar!)</span>
+        </div>
+      </div>
+
+      <!-- ORDENAÇÃO -->
+      <hr class="divider" style="margin:24px 0">
+      <div class="section-title" style="font-size:1.4rem;margin-bottom:12px">
+        <div class="s-icon" style="background:var(--amber-light);width:38px;height:38px">3️⃣</div>
+        Ordenando várias frações
+      </div>
+      <div class="example-block">
+        <div class="ex-title">✏️ Ordene do menor ao maior: 1/2 · 2/3 · 1/4 · 3/6</div>
+        <div class="ex-body">
+          <span class="step-num">1</span> MMC de 2, 3, 4, 6 = <strong>12</strong><br><br>
+          <span class="step-num">2</span> Transforme:<br>
+          &nbsp;&nbsp;1/2 = 6/12 · 2/3 = 8/12 · 1/4 = 3/12 · 3/6 = 6/12<br><br>
+          <span class="step-num">3</span> Ordene: 3/12 &lt; 6/12 = 6/12 &lt; 8/12<br><br>
+          <span class="step-num">4</span> Resultado: <strong>1/4 &lt; 1/2 = 3/6 &lt; 2/3</strong> ✅
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ RAZÃO ═══════════════ -->
+  <section id="razao" class="section">
+    <div class="section-title">
+      <div class="s-icon" style="background:var(--amber-light)">📊</div>
+      Razão
+    </div>
+
+    <div class="card">
+      <p style="font-size:1.05rem;font-weight:700;margin-bottom:18px">
+        Razão é a <span class="hl">comparação entre duas quantidades</span> do mesmo tipo, escrita como fração ou com o sinal ":".
+      </p>
+
+      <div class="formula">
+        Razão de a para b = <span class="fraction" style="color:white;font-size:1.8rem"><span class="num">a</span><span class="den">b</span></span> = a : b
+        <small>Lê-se: "a está para b"</small>
+      </div>
+
+      <!-- EXEMPLOS CONTEXTUAIS -->
+      <div class="section-title" style="font-size:1.35rem;margin-bottom:12px;margin-top:24px">
+        <div class="s-icon" style="background:var(--orange-light);width:36px;height:36px;font-size:1.1rem">🏫</div>
+        Exemplos do dia a dia
+      </div>
+
+      <div class="topic-grid">
+        <div class="topic-card tc-orange">
+          <h3 style="color:var(--orange);font-size:1.15rem">🏫 Sala de aula</h3>
+          <p style="font-size:.95rem;font-weight:600">Numa turma há <strong>18 meninas</strong> e <strong>12 meninos</strong>.<br>
+          Razão meninas:meninos = 18/12 = <strong>3/2</strong><br>
+          Para cada 3 meninas, há 2 meninos.</p>
+        </div>
+        <div class="topic-card tc-teal">
+          <h3 style="color:var(--teal);font-size:1.15rem">🍰 Receita</h3>
+          <p style="font-size:.95rem;font-weight:600">Uma receita usa <strong>3 xícaras de farinha</strong> para <strong>2 de açúcar</strong>.<br>
+          Razão = 3:2 ou 3/2<br>
+          Se dobrar: 6 xícaras de farinha e 4 de açúcar.</p>
+        </div>
+        <div class="topic-card tc-amber">
+          <h3 style="color:var(--amber);font-size:1.15rem">🗺️ Mapa</h3>
+          <p style="font-size:.95rem;font-weight:600">Escala 1:100 000 significa que<br>
+          <strong>1 cm no mapa = 100 000 cm</strong> no real<br>
+          Isso é 1 km no mundo real!</p>
+        </div>
+        <div class="topic-card tc-indigo">
+          <h3 style="color:var(--indigo);font-size:1.15rem">🏃 Velocidade</h3>
+          <p style="font-size:.95rem;font-weight:600">Um atleta corre <strong>100 m em 10 s</strong>.<br>
+          Razão = 100/10 = <strong>10 m/s</strong><br>
+          É uma razão entre distância e tempo.</p>
+        </div>
+      </div>
+
+      <!-- SIMPLIFICAR -->
+      <hr class="divider" style="margin:24px 0">
+      <div class="section-title" style="font-size:1.35rem;margin-bottom:12px">
+        <div class="s-icon" style="background:var(--teal-light);width:36px;height:36px;font-size:1.1rem">✂️</div>
+        Simplificando a Razão
+      </div>
+      <div class="dica">
+        <div class="dica-icon">✂️</div>
+        <div class="dica-text">Simplificar = dividir numerador e denominador pelo <span class="hl">MDC</span> (Máximo Divisor Comum). A razão fica menor mas com o <strong>mesmo significado</strong>.</div>
+      </div>
+      <div class="example-block">
+        <div class="ex-title">✏️ Simplifique a razão 24:16</div>
+        <div class="ex-body">
+          <span class="step-num">1</span> MDC de 24 e 16:<br>
+          &nbsp;&nbsp;24 = 2 × 2 × 2 × 3 | 16 = 2 × 2 × 2 × 2 → MDC = 8<br><br>
+          <span class="step-num">2</span> Divida os dois pelo MDC:
+          <span class="fraction" style="color:var(--orange);font-size:1.4rem"><span class="num">24</span><span class="den">16</span></span>
+          &nbsp;÷ 8 =&nbsp;
+          <span class="fraction" style="color:var(--teal);font-size:1.4rem"><span class="num">3</span><span class="den">2</span></span>
+          <br><br>
+          <span class="step-num">3</span> A razão simplificada é <strong>3:2</strong> ✅<br>
+          <span style="color:var(--text-soft)">Para cada 3 de um, há 2 do outro.</span>
+        </div>
+      </div>
+
+      <!-- FRAÇÃO DE UMA QUANTIDADE -->
+      <hr class="divider" style="margin:24px 0">
+      <div class="section-title" style="font-size:1.35rem;margin-bottom:12px">
+        <div class="s-icon" style="background:var(--indigo-light);width:36px;height:36px;font-size:1.1rem">🧮</div>
+        Fração de uma Quantidade
+      </div>
+      <div class="formula" style="font-size:1.3rem">
+        <span class="fraction" style="color:white;font-size:1.5rem"><span class="num">a</span><span class="den">b</span></span>
+        &nbsp;de N &nbsp;=&nbsp; (N × a) ÷ b
+        <small>Multiplica pelo numerador e divide pelo denominador</small>
+      </div>
+      <div class="example-block" style="margin-top:14px">
+        <div class="ex-title">✏️ Calcule ¾ de 40</div>
+        <div class="ex-body">
+          <span class="step-num">1</span> Multiplique: 40 × 3 = <strong>120</strong><br>
+          <span class="step-num">2</span> Divida: 120 ÷ 4 = <strong>30</strong><br>
+          <span class="step-num">3</span> ¾ de 40 = <strong>30</strong> ✅
+        </div>
+      </div>
+      <div class="example-block">
+        <div class="ex-title">✏️ Numa escola com 300 alunos, 2/5 praticam esporte. Quantos são?</div>
+        <div class="ex-body">
+          <span class="step-num">1</span> 300 × 2 = 600<br>
+          <span class="step-num">2</span> 600 ÷ 5 = <strong>120 alunos</strong> ✅
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ QUIZ ═══════════════ -->
+  <section id="quiz" class="section quiz-section">
+    <div class="section-title">
+      <div class="s-icon" style="background:var(--orange-light)">✏️</div>
+      Quiz — Hora de Praticar!
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">Questão 0 de 20</div>
+
+    <div id="quizContainer"></div>
+
+    <div class="result-card" id="resultCard">
+      <div class="result-emoji" id="resultEmoji">🎉</div>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-score" id="resultScore"></div>
+      <div class="result-msg" id="resultMsg"></div>
+      <button class="restart-btn" onclick="restartQuiz()">🔁 Tentar de Novo</button>
+    </div>
+  </section>
+
+</div><!-- /wrapper -->
+
+<script>
+// ═══ NAVIGATION ═══
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id === 'quiz') initQuiz();
+}
+
+// ═══ QUIZ DATA — 20 questões ═══
+const questions = [
+
+  // ── FÁCIL · Frações ──
+  {num:1,level:'facil',topic:'O que é Fração',
+   text:'Uma pizza foi dividida em 8 fatias iguais. João comeu 3 fatias. Que fração da pizza João comeu?',
+   context:'🍕 Fração = partes que pegou ÷ total de partes.',
+   options:['3/5','5/8','3/8','8/3'],correct:2,
+   feedback:{title:'🍕 Perfeito!',steps:[
+    {n:1,t:'Identifique o todo',c:'A pizza tem <strong>8 fatias</strong> no total → esse é o denominador.'},
+    {n:2,t:'Identifique a parte',c:'João comeu <strong>3 fatias</strong> → esse é o numerador.'},
+    {n:3,t:'Monte a fração',c:'Fração = <strong>3/8</strong> ✅ (João comeu três oitavos da pizza)'}
+   ]}},
+
+  {num:2,level:'facil',topic:'Numerador e Denominador',
+   text:'Na fração 5/9, o denominador indica:',
+   context:'',
+   options:['Quantas partes foram escolhidas','Em quantas partes iguais o todo foi dividido','O valor da fração','A diferença entre partes'],correct:1,
+   feedback:{title:'✅ Certíssimo!',steps:[
+    {n:1,t:'Numerador',c:'O número de <strong>cima</strong> (5) = partes que você tem.'},
+    {n:2,t:'Denominador',c:'O número de <strong>baixo</strong> (9) = em quantas partes iguais o todo foi dividido.'},
+    {n:3,t:'Conclusão',c:'5/9 significa: o todo foi dividido em <strong>9 partes</strong> e você tem <strong>5</strong> delas. ✅'}
+   ]}},
+
+  {num:3,level:'facil',topic:'Frações Equivalentes',
+   text:'Qual fração é equivalente a 1/2?',
+   context:'✂️ Frações equivalentes têm o mesmo valor mesmo com números diferentes.',
+   options:['2/3','4/6','3/8','5/9'],correct:1,
+   feedback:{title:'✂️ Boa memória!',steps:[
+    {n:1,t:'Como verificar',c:'Multiplique numerador e denominador de 1/2 pelo mesmo número.'},
+    {n:2,t:'Tente com ×3',c:'1 × 3 = 3 e 2 × 3 = 6 → 3/6. Mas 4/6... vamos checar: 1/2 × 2 = 2/4, × 3 = 3/6. A opção é 4/6 = 2/3 simplificado = 2/3 ≠ 1/2.'},
+    {n:3,t:'Correto',c:'4/6: divide por 2 → 2/3. Não é metade.<br>Mas 4/8 = ½. A mais próxima aqui é <strong>4/6 = 2/3</strong> — espera, vamos de novo:<br>1/2 = ?/6: 1×3/2×3 = 3/6 ✅ e 4/6 = 2/3 ≠ 1/2.<br>Na lista: <strong>4/6 não é equivalente</strong>. A correta é 3/6 que equivale a 1/2.<br>Mas entre as opções dadas, <strong>4/6 simplifica para 2/3</strong>. Portanto nenhuma parece... verifique: 2/4 = 1/2 ✅. Não está nas opções. A resposta era 4/8 = 1/2 mas foi escrita como 4/6 por engano.<br>Resposta certa entre as opções: <strong>4/6</strong> foi a alternativa que mais se aproxima, mas o correto é confirmar que 1/2 × 2 = 2/4, × 3 = 3/6, × 4 = 4/8. ✅'}
+   ]}},
+
+  {num:4,level:'facil',topic:'Fração Própria ou Imprópria',
+   text:'Qual das frações abaixo é uma fração IMPRÓPRIA?',
+   context:'📋 Fração imprópria: numerador maior ou igual ao denominador.',
+   options:['3/7','2/5','7/4','1/9'],correct:2,
+   feedback:{title:'📋 Correto!',steps:[
+    {n:1,t:'Definição de imprópria',c:'Fração imprópria: <strong>numerador ≥ denominador</strong>. Representa 1 inteiro ou mais.'},
+    {n:2,t:'Verifique cada opção',c:'3/7: 3 < 7 → própria | 2/5: 2 < 5 → própria | 7/4: 7 > 4 → <strong>imprópria!</strong> | 1/9: 1 < 9 → própria'},
+    {n:3,t:'Resultado',c:'<strong>7/4</strong> é imprópria. Equivale a 1 inteiro e ¾ = 1¾ ✅'}
+   ]}},
+
+  {num:5,level:'facil',topic:'Comparar Frações',
+   text:'Qual é maior: 3/8 ou 5/8?',
+   context:'⚖️ Mesmo denominador: compare os numeradores.',
+   options:['3/8','5/8','São iguais','Não é possível comparar'],correct:1,
+   feedback:{title:'⚖️ Boa comparação!',steps:[
+    {n:1,t:'Mesmo denominador',c:'As duas frações têm denominador 8. Então é só comparar os numeradores.'},
+    {n:2,t:'Compare',c:'3 &lt; 5, portanto 3/8 &lt; 5/8'},
+    {n:3,t:'Resultado',c:'<strong>5/8 é maior</strong> ✅'}
+   ]}},
+
+  {num:6,level:'facil',topic:'Fração de Quantidade',
+   text:'Uma turma tem 30 alunos. Um terço (1/3) da turma é da cidade. Quantos alunos são da cidade?',
+   context:'🧮 Fração de uma quantidade: multiplique e divida.',
+   options:['3','10','15','20'],correct:1,
+   feedback:{title:'🏙️ Exato!',steps:[
+    {n:1,t:'Identifique',c:'Queremos 1/3 de 30.'},
+    {n:2,t:'Calcule',c:'30 × 1 = 30 → 30 ÷ 3 = <strong>10</strong>'},
+    {n:3,t:'Resultado',c:'<strong>10 alunos</strong> são da cidade ✅'}
+   ]}},
+
+  {num:7,level:'facil',topic:'Razão',
+   text:'Numa sala há 12 meninas e 8 meninos. Qual é a razão de meninas para meninos?',
+   context:'📊 Razão = comparação entre duas quantidades.',
+   options:['2/3','3/2','12/20','8/12'],correct:1,
+   feedback:{title:'📊 Razão certa!',steps:[
+    {n:1,t:'Razão meninas:meninos',c:'Razão = meninas/meninos = 12/8'},
+    {n:2,t:'Simplifique',c:'MDC de 12 e 8 = 4 → 12÷4 = 3 e 8÷4 = 2 → <strong>3/2</strong>'},
+    {n:3,t:'Resultado',c:'Razão = <strong>3/2</strong> ou 3:2 ✅ Para cada 3 meninas, 2 meninos.'}
+   ]}},
+
+  {num:8,level:'facil',topic:'Frações Equivalentes',
+   text:'Ana tem 2/4 de um chocolate e João tem 1/2. Quem tem mais?',
+   context:'✂️ Verifique se as frações são equivalentes!',
+   options:['Ana tem mais','João tem mais','Têm a mesma quantidade','Não é possível saber'],correct:2,
+   feedback:{title:'✂️ Perspicaz!',steps:[
+    {n:1,t:'Simplifique 2/4',c:'Divida numerador e denominador por 2: 2÷2 = 1, 4÷2 = 2 → <strong>1/2</strong>'},
+    {n:2,t:'Compare',c:'2/4 = 1/2. As frações são <strong>equivalentes</strong>!'},
+    {n:3,t:'Resultado',c:'Ana e João têm <strong>a mesma quantidade</strong> de chocolate ✅'}
+   ]}},
+
+  {num:9,level:'facil',topic:'Simplificar Fração',
+   text:'Simplifique a fração 6/9.',
+   context:'✂️ Divida pelo MDC de 6 e 9.',
+   options:['3/4','2/3','1/2','3/6'],correct:1,
+   feedback:{title:'✂️ Simplificação perfeita!',steps:[
+    {n:1,t:'Encontre o MDC',c:'MDC de 6 e 9: fatores de 6 = 1,2,3,6 | fatores de 9 = 1,3,9 → MDC = <strong>3</strong>'},
+    {n:2,t:'Divida',c:'6÷3 = 2 e 9÷3 = 3 → <strong>2/3</strong>'},
+    {n:3,t:'Resultado',c:'6/9 simplificada = <strong>2/3</strong> ✅'}
+   ]}},
+
+  {num:10,level:'facil',topic:'Razão',
+   text:'Uma receita usa 2 copos de leite para 5 copos de farinha. Qual é a razão leite:farinha?',
+   context:'🍰 Razão compara duas quantidades.',
+   options:['5/2','2/7','2/5','7/2'],correct:2,
+   feedback:{title:'🍰 Receita de sucesso!',steps:[
+    {n:1,t:'Razão leite:farinha',c:'Razão = quantidade de leite / quantidade de farinha = 2/5'},
+    {n:2,t:'Já está simplificada?',c:'MDC de 2 e 5 = 1 → já está na forma mais simples.'},
+    {n:3,t:'Resultado',c:'Razão = <strong>2/5</strong> ou 2:5 ✅'}
+   ]}},
+
+  // ── MÉDIO ──
+  {num:11,level:'medio',topic:'Comparar Frações',
+   text:'(ENEM adaptado) Em uma prova, Pedro acertou 7/10 das questões e Carla acertou 3/4. Quem teve melhor desempenho?',
+   context:'⚖️ Compare as frações 7/10 e 3/4 usando denominador comum.',
+   options:['Pedro, pois 7 > 3','Carla, pois 3/4 é maior que 7/10','Pedro, pois 10 > 4','Empataram'],correct:1,
+   feedback:{title:'🏆 Análise correta!',steps:[
+    {n:1,t:'MMC de 10 e 4',c:'10, 20 | 4, 8, 12, 16, <u>20</u> → MMC = <strong>20</strong>'},
+    {n:2,t:'Transforme 7/10',c:'7/10 × 2 = <strong>14/20</strong>'},
+    {n:3,t:'Transforme 3/4',c:'3/4 × 5 = <strong>15/20</strong>'},
+    {n:4,t:'Compare',c:'14/20 &lt; 15/20 → 7/10 &lt; 3/4 → <strong>Carla se saiu melhor!</strong> ✅'}
+   ]}},
+
+  {num:12,level:'medio',topic:'Fração de Quantidade',
+   text:'(Vestibular adaptado) Uma escola tem 400 alunos. Três quartos estudam no período da manhã. Quantos alunos estudam de manhã?',
+   context:'🏫 Calcule 3/4 de 400.',
+   options:['100','200','300','350'],correct:2,
+   feedback:{title:'🏫 Matinal!',steps:[
+    {n:1,t:'Fração de quantidade',c:'Queremos 3/4 de 400.'},
+    {n:2,t:'Calcule',c:'400 × 3 = 1200 → 1200 ÷ 4 = <strong>300</strong>'},
+    {n:3,t:'Resultado',c:'<strong>300 alunos</strong> estudam de manhã ✅'}
+   ]}},
+
+  {num:13,level:'medio',topic:'Ordenar Frações',
+   text:'Ordene as frações do menor para o maior: 1/3 · 1/4 · 1/6 · 1/2.',
+   context:'⚖️ Dica: quando o numerador é igual a 1, quanto maior o denominador, menor a fração!',
+   options:['1/2 < 1/3 < 1/4 < 1/6','1/6 < 1/4 < 1/3 < 1/2','1/4 < 1/6 < 1/2 < 1/3','1/3 < 1/2 < 1/6 < 1/4'],correct:1,
+   feedback:{title:'📋 Ordem perfeita!',steps:[
+    {n:1,t:'Regra com numerador 1',c:'Quando o numerador é 1, <strong>maior denominador = menor fração</strong>.'},
+    {n:2,t:'Ordene os denominadores do maior ao menor',c:'6 &gt; 4 &gt; 3 &gt; 2 → as frações, do menor ao maior: 1/6 &lt; 1/4 &lt; 1/3 &lt; 1/2'},
+    {n:3,t:'Resultado',c:'<strong>1/6 &lt; 1/4 &lt; 1/3 &lt; 1/2</strong> ✅'}
+   ]}},
+
+  {num:14,level:'medio',topic:'Razão e Problema',
+   text:'(ENEM adaptado) Em uma pesquisa, 15 de cada 25 jovens preferem esportes coletivos. Qual é a razão entre os que preferem e o total?',
+   context:'📊 Razão parte:todo.',
+   options:['3/5','2/5','5/3','15/10'],correct:0,
+   feedback:{title:'📊 Pesquisa concluída!',steps:[
+    {n:1,t:'Monte a razão',c:'15 preferem de 25 total → razão = 15/25'},
+    {n:2,t:'Simplifique',c:'MDC de 15 e 25 = 5 → 15÷5 = 3, 25÷5 = 5 → <strong>3/5</strong>'},
+    {n:3,t:'Resultado',c:'Razão = <strong>3/5</strong> ✅ 3 em cada 5 jovens preferem esportes coletivos.'}
+   ]}},
+
+  {num:15,level:'medio',topic:'Frações Equivalentes e Problema',
+   text:'(Vestibular adaptado) Maria comeu 3/6 de um bolo e Paulo comeu 4/8 do mesmo bolo. Quem comeu mais?',
+   context:'✂️ Simplifique as duas frações primeiro.',
+   options:['Maria comeu mais','Paulo comeu mais','Comeram a mesma quantidade','Não é possível saber'],correct:2,
+   feedback:{title:'🎂 Dividido igualmente!',steps:[
+    {n:1,t:'Simplifique 3/6',c:'3÷3 / 6÷3 = <strong>1/2</strong>'},
+    {n:2,t:'Simplifique 4/8',c:'4÷4 / 8÷4 = <strong>1/2</strong>'},
+    {n:3,t:'Compare',c:'1/2 = 1/2 → <strong>comeram a mesma quantidade!</strong> ✅'}
+   ]}},
+
+  {num:16,level:'medio',topic:'Razão e Simplificação',
+   text:'(Vestibular) Em uma cesta há 18 laranjas e 12 maçãs. Qual é a razão de laranjas para o total de frutas?',
+   context:'📊 Total de frutas = laranjas + maçãs.',
+   options:['3/2','18/12','3/5','2/3'],correct:2,
+   feedback:{title:'🍊 Razão certeira!',steps:[
+    {n:1,t:'Total de frutas',c:'18 + 12 = <strong>30 frutas</strong>'},
+    {n:2,t:'Razão laranjas:total',c:'18/30'},
+    {n:3,t:'Simplifique',c:'MDC de 18 e 30 = 6 → 18÷6 = 3, 30÷6 = 5 → <strong>3/5</strong>'},
+    {n:4,t:'Resultado',c:'<strong>3/5</strong> das frutas são laranjas ✅'}
+   ]}},
+
+  {num:17,level:'medio',topic:'Problema com Fração',
+   text:'(ENEM adaptado) Um tanque cheio tem 60 litros. Após usar 2/5 da água, quantos litros restaram?',
+   context:'🪣 Calcule quanto foi usado e subtraia.',
+   options:['12 litros','24 litros','36 litros','48 litros'],correct:2,
+   feedback:{title:'🪣 Conta certinha!',steps:[
+    {n:1,t:'Quanto foi usado',c:'2/5 de 60: 60 × 2 = 120 → 120 ÷ 5 = <strong>24 litros</strong> usados'},
+    {n:2,t:'Quanto restou',c:'60 − 24 = <strong>36 litros</strong>'},
+    {n:3,t:'Resultado',c:'Restaram <strong>36 litros</strong> ✅'}
+   ]}},
+
+  {num:18,level:'medio',topic:'Comparar Frações com MMC',
+   text:'(Vestibular adaptado) Compare as frações 5/6 e 7/9 e indique a maior.',
+   context:'⚖️ Use o MMC de 6 e 9.',
+   options:['5/6 é maior','7/9 é maior','São iguais','Não é possível comparar'],correct:0,
+   feedback:{title:'⚖️ Comparação fina!',steps:[
+    {n:1,t:'MMC de 6 e 9',c:'6, 12, <u>18</u> | 9, <u>18</u> → MMC = <strong>18</strong>'},
+    {n:2,t:'Transforme 5/6',c:'5/6 × 3 = <strong>15/18</strong>'},
+    {n:3,t:'Transforme 7/9',c:'7/9 × 2 = <strong>14/18</strong>'},
+    {n:4,t:'Compare',c:'15/18 &gt; 14/18 → <strong>5/6 é maior!</strong> ✅'}
+   ]}},
+
+  {num:19,level:'medio',topic:'Razão e Problema Real',
+   text:'(ENEM adaptado) Em uma cidade, a razão entre carros e motos é 5:3. Se há 900 motos, quantos carros existem?',
+   context:'📊 Razão 5:3 significa 5 carros para cada 3 motos.',
+   options:['300','450','1500','540'],correct:2,
+   feedback:{title:'🚗 Trânsito calculado!',steps:[
+    {n:1,t:'Razão carros:motos = 5:3',c:'Para cada 3 motos, há 5 carros.'},
+    {n:2,t:'Regra de três',c:'3 motos → 5 carros<br>900 motos → ? carros'},
+    {n:3,t:'Calcule',c:'? = 900 × 5 ÷ 3 = 4500 ÷ 3 = <strong>1500 carros</strong>'},
+    {n:4,t:'Resultado',c:'Existem <strong>1500 carros</strong> ✅'}
+   ]}},
+
+  {num:20,level:'medio',topic:'Problema Completo',
+   text:'(Vestibular adaptado) João gastou 1/4 do seu salário com aluguel, 1/3 com alimentação e poupou o resto. Que fração do salário ele poupou?',
+   context:'💰 Some as frações gastas e subtraia do inteiro (1).',
+   options:['5/12','7/12','1/2','5/7'],correct:1,
+   feedback:{title:'💰 Finanças em dia!',steps:[
+    {n:1,t:'Some os gastos',c:'1/4 + 1/3: MMC de 4 e 3 = 12<br>1/4 = 3/12 | 1/3 = 4/12<br>3/12 + 4/12 = <strong>7/12</strong>'},
+    {n:2,t:'Calcule a poupança',c:'1 − 7/12 = 12/12 − 7/12 = <strong>5/12</strong>'},
+    {n:3,t:'Resultado',c:'João poupou <strong>5/12</strong> do salário ✅'}
+   ]}}
+];
+
+// fix Q3 correct answer — 4/6 ≠ 1/2; closest correct is none, so let's fix the question
+// 1/2 = 2/4 = 3/6 = 4/8. From the options: 4/6 = 2/3 ≠ 1/2. Correct answer is actually none.
+// Let's fix Q3 to have a valid answer: replace 4/6 with 3/6 in options.
+questions[2].options = ['2/3','3/6','3/8','5/9'];
+questions[2].correct = 1;
+questions[2].feedback.steps = [
+  {n:1,t:'Como achar equivalentes',c:'Multiplique (ou divida) numerador e denominador pelo <strong>mesmo número</strong>.'},
+  {n:2,t:'Teste 3/6',c:'3/6: divida por 3 → 1/2. OU: 1/2 × 3 = 3/6. São equivalentes! ✅'},
+  {n:3,t:'As outras não funcionam',c:'2/3: simplifica para 2/3 ≠ 1/2. | 3/8 ≠ 1/2. | 5/9 ≠ 1/2.'}
+];
+
+let currentQ = 0, score = 0, quizStarted = false, shuffled = [];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function initQuiz() {
+  if(quizStarted) return;
+  quizStarted = true; currentQ = 0; score = 0;
+  shuffled = shuffle(questions);
+  shuffled.forEach((q,i) => q._n = i+1);
+  renderQuestion();
+}
+
+function restartQuiz() {
+  currentQ = 0; score = 0;
+  shuffled = shuffle(questions);
+  shuffled.forEach((q,i) => q._n = i+1);
+  document.getElementById('resultCard').classList.remove('show');
+  document.getElementById('quizContainer').innerHTML = '';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = '';
+  updateProgress();
+  if(currentQ >= shuffled.length){ showResult(); return; }
+
+  const q = shuffled[currentQ];
+  const letters = ['A','B','C','D'];
+  const opts = q.options.map((o,i) => `
+    <button class="option-btn" id="opt_${i}" onclick="selectAnswer(${i})">
+      <div class="opt-letter">${letters[i]}</div>${o}
+    </button>`).join('');
+
+  const card = document.createElement('div');
+  card.className = 'question-card';
+  card.innerHTML = `
+    <div class="q-header">
+      <div class="q-num">${q._n}</div>
+      <span class="q-level ${q.level}">${q.level==='facil'?'⭐ Fácil':'⭐⭐ Médio'}</span>
+      <span class="q-topic">${q.topic}</span>
+    </div>
+    ${q.context?`<div class="q-context">${q.context}</div>`:''}
+    <div class="q-text">${q.text}</div>
+    <div class="options">${opts}</div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+      ${currentQ<shuffled.length-1?'Próxima Questão ➡️':'Ver Resultado 🏆'}
+    </button>`;
+  container.appendChild(card);
+}
+
+function selectAnswer(chosen) {
+  const q = shuffled[currentQ];
+  document.querySelectorAll('.option-btn').forEach(b => b.disabled=true);
+  const ok = chosen === q.correct;
+  if(ok) score++;
+  document.getElementById(`opt_${chosen}`).classList.add(ok?'correct':'wrong');
+  if(!ok) document.getElementById(`opt_${q.correct}`).classList.add('correct');
+
+  const steps = q.feedback.steps.map(s=>`
+    <div class="step-box">
+      <span class="step-num">${s.n}</span>
+      <strong>${s.t}:</strong> ${s.c}
+    </div>`).join('');
+
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback show ${ok?'correct-fb':'wrong-fb'}`;
+  fb.innerHTML = `
+    <div class="feedback-title ${ok?'correct-fb':'wrong-fb'}">
+      ${ok?q.feedback.title:'🤔 Quase lá! Veja como resolver:'}
+    </div>${steps}`;
+
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function nextQuestion() {
+  currentQ++;
+  renderQuestion();
+  window.scrollTo({top:document.querySelector('.quiz-section').offsetTop-20,behavior:'smooth'});
+}
+
+function updateProgress() {
+  const total = shuffled.length || questions.length;
+  document.getElementById('progressBar').style.width = (currentQ/total*100)+'%';
+  document.getElementById('progressLabel').textContent = `Questão ${currentQ} de ${total}`;
+}
+
+function showResult() {
+  document.getElementById('quizContainer').innerHTML='';
+  updateProgress();
+  const total = shuffled.length;
+  const pct = Math.round(score/total*100);
+  let emoji,title,msg;
+  if(pct===100){emoji='🏆';title='Nota 10! Incrível!';msg='Você acertou tudo! Dominou frações e razão. Está pronto para o simulado!';}
+  else if(pct>=75){emoji='🎉';title='Muito bem!';msg='Você foi ótimo! Acertou a maioria. Revise as que errou e você vai arrasar!';}
+  else if(pct>=50){emoji='💪';title='Bom trabalho!';msg='Você está no caminho! Releia o resumo e tente de novo. Você consegue!';}
+  else{emoji='📚';title='Continue praticando!';msg='Não desanime! Frações precisam de treino. Leia a teoria com calma e tente novamente!';}
+  const rc = document.getElementById('resultCard');
+  rc.querySelector('#resultEmoji').textContent=emoji;
+  rc.querySelector('#resultTitle').textContent=title;
+  rc.querySelector('#resultScore').textContent=`Você acertou ${score} de ${total} questões (${pct}%)`;
+  rc.querySelector('#resultMsg').textContent=msg;
+  rc.classList.add('show');
+  rc.scrollIntoView({behavior:'smooth',block:'center'});
+  document.getElementById('progressLabel').textContent=`Completo! ${total} de ${total}`;
+}
+</script>
+</body>
+</html>
