@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matemática 6º Ano – Decimais + Copa</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+
+/* ══ RESET ══ */
+*{box-sizing:border-box;margin:0;padding:0;}
+
+/* ══ MODO: AULA (fundo claro) / COPA (fundo escuro) ══ */
+body{
+  font-family:'Nunito',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+  transition: background .4s, color .4s;
+}
+body.modo-aula { background:#fdf6ff; color:#2d2d3a; }
+body.modo-copa { background:#0a120a; color:#f0f4f0; }
+
+/* ══ TABS PRINCIPAIS ══ */
+.tabs-principais{
+  position:sticky;top:0;z-index:50;
+  display:flex;
+  box-shadow:0 2px 12px rgba(0,0,0,0.15);
+}
+.tab-principal{
+  flex:1;border:none;cursor:pointer;
+  padding:14px 10px;
+  font-family:'Baloo 2',cursive;
+  font-size:1rem;
+  font-weight:800;
+  letter-spacing:.5px;
+  transition:background .2s, color .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+/* AULA tab */
+.tab-principal.tab-aula{
+  background:#ede5f9;color:#5b4fa0;
+}
+.tab-principal.tab-aula.ativa{
+  background:#6b3fa0;color:white;
+}
+/* COPA tab */
+.tab-principal.tab-copa{
+  background:#1a2e1a;color:#5bbf5b;
+}
+.tab-principal.tab-copa.ativa{
+  background:#1a7a3a;color:#f5c518;
+}
+
+/* ══════════════════════════════════
+   PAINEL AULA
+══════════════════════════════════ */
+#painel-aula{ display:none; }
+#painel-aula.visivel{ display:block; }
+
+/* variáveis aula */
+.aula-wrap{
+  --azul:#5b9bd5; --azul-s:#deeef9;
+  --verde:#5bbf8a; --verde-s:#dff5ec;
+  --rosa:#e07aa0; --rosa-s:#fce8f1;
+  --laranja:#f4a24a; --laranja-s:#fff2df;
+  --roxo:#a07fd4; --roxo-s:#ede5f9;
+  --texto:#2d2d3a; --suave:#7a7a9a;
+  --borda:#e8e0f0; --bg:#fdf6ff; --card:#fff;
+}
+
+/* símbolos flutuantes */
+.simbolos-bg{
+  position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+}
+.s{
+  position:absolute;font-size:1.6rem;opacity:.07;
+  animation:flutuar linear infinite;user-select:none;
+}
+@keyframes flutuar{
+  0%{transform:translateY(110vh) rotate(0deg);}
+  100%{transform:translateY(-10vh) rotate(360deg);}
+}
+
+.aula-wrap{
+  position:relative;z-index:1;
+  max-width:760px;margin:0 auto;
+  padding:20px 16px 60px;
+}
+
+/* capa */
+.capa{
+  background:linear-gradient(135deg,#b8d8f8 0%,#d8c8f8 50%,#f8c8df 100%);
+  border-radius:24px;padding:34px 28px 28px;
+  text-align:center;margin-bottom:24px;
+  box-shadow:0 4px 20px rgba(90,80,180,.12);
+  position:relative;overflow:hidden;
+}
+.capa::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 20% 80%,rgba(255,255,255,.4) 0%,transparent 60%);
+}
+.capa-tag{
+  display:inline-block;background:rgba(255,255,255,.6);
+  border-radius:50px;padding:5px 18px;
+  font-size:.88rem;font-weight:800;color:#5b4fa0;
+  margin-bottom:14px;letter-spacing:.5px;position:relative;
+}
+.capa h1{
+  font-family:'Baloo 2',cursive;font-size:2.1rem;
+  line-height:1.2;color:#2d2050;position:relative;
+}
+.capa p{margin-top:10px;font-size:.98rem;color:#4a3a70;font-weight:600;position:relative;}
+
+/* menu tópicos */
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;}
+.menu-item{
+  background:white;border:2.5px solid var(--borda);
+  border-radius:16px;padding:14px 16px;
+  cursor:pointer;transition:all .2s;text-align:left;
+  font-family:'Nunito',sans-serif;
+  display:flex;align-items:center;gap:12px;
+}
+.menu-item:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.08);}
+.menu-item.ativo{border-color:var(--azul);background:var(--azul-s);}
+.menu-item .m-icon{font-size:1.5rem;flex-shrink:0;}
+.menu-item .m-txt{font-weight:800;font-size:.9rem;color:var(--texto);}
+.menu-item .m-sub{font-size:.78rem;color:var(--suave);margin-top:2px;}
+
+/* seções aula */
+.secao-aula{display:none;}
+.secao-aula.visivel{display:block;}
+
+/* card */
+.card{
+  background:var(--card);border-radius:20px;
+  border:2px solid var(--borda);padding:24px 22px;
+  margin-bottom:18px;box-shadow:0 2px 12px rgba(0,0,0,.05);
+}
+
+/* sec titulo */
+.sec-titulo{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.sec-titulo .icone-grande{
+  font-size:2.2rem;width:56px;height:56px;
+  border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ic-azul{background:var(--azul-s);}
+.ic-verde{background:var(--verde-s);}
+.ic-laranja{background:var(--laranja-s);}
+.ic-roxo{background:var(--roxo-s);}
+.sec-titulo h2{font-family:'Baloo 2',cursive;font-size:1.45rem;line-height:1.2;color:var(--texto);}
+.sec-titulo p{font-size:.88rem;color:var(--suave);margin-top:3px;font-weight:600;}
+
+/* textos */
+p.leitura{font-size:1.05rem;line-height:1.8;color:var(--texto);}
+.espaco{margin-bottom:14px;}
+
+/* destaque */
+.destaque{border-radius:14px;padding:14px 18px;font-size:1rem;font-weight:700;line-height:1.7;margin-bottom:14px;}
+.destaque.azul{background:var(--azul-s);border-left:5px solid var(--azul);}
+.destaque.verde{background:var(--verde-s);border-left:5px solid var(--verde);}
+.destaque.rosa{background:var(--rosa-s);border-left:5px solid var(--rosa);}
+.destaque.laranja{background:var(--laranja-s);border-left:5px solid var(--laranja);}
+.destaque.roxo{background:var(--roxo-s);border-left:5px solid var(--roxo);}
+
+/* passos */
+.passos{display:flex;flex-direction:column;gap:10px;margin:8px 0;}
+.passo{display:flex;align-items:flex-start;gap:12px;background:#f7f3ff;border-radius:12px;padding:12px 14px;}
+.p-num{min-width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.95rem;color:white;flex-shrink:0;}
+.p-num.azul{background:var(--azul);}
+.p-num.verde{background:var(--verde);}
+.p-num.laranja{background:var(--laranja);}
+.p-num.roxo{background:var(--roxo);}
+.p-txt{font-size:.98rem;line-height:1.6;padding-top:4px;}
+
+/* regra */
+.regra{border-radius:16px;padding:18px 20px;margin-bottom:14px;}
+.regra.azul{background:var(--azul-s);border:2px solid var(--azul);}
+.regra.verde{background:var(--verde-s);border:2px solid var(--verde);}
+.regra.laranja{background:var(--laranja-s);border:2px solid var(--laranja);}
+.regra.roxo{background:var(--roxo-s);border:2px solid var(--roxo);}
+.regra h3{font-family:'Baloo 2',cursive;font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+
+/* tabela */
+table{width:100%;border-collapse:collapse;font-size:.95rem;}
+th{padding:10px 13px;text-align:left;font-weight:800;background:var(--azul);color:white;}
+th:first-child{border-radius:10px 0 0 0;}th:last-child{border-radius:0 10px 0 0;}
+td{padding:9px 13px;border-bottom:1.5px solid var(--borda);}
+tr:nth-child(even) td{background:#f7f3ff;}
+tr:last-child td{border-bottom:none;}
+
+/* reta */
+.reta-box{background:var(--laranja-s);border:2px solid var(--laranja);border-radius:16px;padding:18px 20px;margin-bottom:14px;}
+.reta-box h4{font-family:'Baloo 2',cursive;font-size:1rem;color:#7a4a00;margin-bottom:14px;}
+.reta-svg{width:100%;overflow:visible;}
+
+/* função */
+.funcao-linha{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:800;font-size:1rem;padding:10px 0;}
+.fn-caixa{background:var(--azul-s);border:2px solid var(--azul);border-radius:10px;padding:6px 14px;color:var(--azul);}
+.fn-op{background:var(--verde);color:white;border-radius:30px;padding:5px 14px;font-size:.9rem;}
+.fn-seta{color:#aaa;font-size:1.2rem;}
+
+/* fórmula */
+.formula{background:white;border:2.5px dashed var(--borda);border-radius:12px;padding:12px 18px;font-size:1.1rem;font-weight:900;text-align:center;letter-spacing:.5px;margin:10px 0;}
+
+/* atenção */
+.atencao{display:flex;gap:12px;align-items:flex-start;background:#fffbe8;border:2px solid #f4cc50;border-radius:14px;padding:14px 16px;font-size:.97rem;margin-bottom:14px;}
+.atencao .em{font-size:1.5rem;flex-shrink:0;}
+
+/* nav btns aula */
+.nav-btns{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;}
+.btn-nav{flex:1;min-width:120px;border:none;border-radius:50px;padding:13px 22px;font-family:'Baloo 2',cursive;font-size:1rem;cursor:pointer;transition:transform .1s,box-shadow .1s;}
+.btn-nav:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.12);}
+.btn-ant{background:white;border:2.5px solid var(--borda);color:var(--suave);}
+.btn-prox{background:linear-gradient(135deg,var(--azul),#7ab4e8);color:white;box-shadow:0 4px 14px rgba(90,155,210,.35);}
+.btn-prox.verde{background:linear-gradient(135deg,var(--verde),#7dd4a8);}
+.btn-prox.laranja{background:linear-gradient(135deg,var(--laranja),#f8bf7a);}
+.btn-prox.roxo{background:linear-gradient(135deg,var(--roxo),#c0a4e8);}
+
+/* resumo */
+.resumo-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.r-card{border-radius:14px;padding:16px 18px;}
+.r-card h4{font-family:'Baloo 2',cursive;font-size:1rem;margin-bottom:8px;}
+.r-card p{font-size:.9rem;line-height:1.7;}
+.r-card.azul{background:var(--azul-s);border:2px solid var(--azul);}
+.r-card.verde{background:var(--verde-s);border:2px solid var(--verde);}
+.r-card.laranja{background:var(--laranja-s);border:2px solid var(--laranja);}
+.r-card.roxo{background:var(--roxo-s);border:2px solid var(--roxo);}
+
+/* fim aula */
+.fim{background:linear-gradient(135deg,#b8d8f8,#d8c8f8,#f8c8df);border-radius:24px;padding:36px 24px;text-align:center;margin-bottom:18px;}
+.fim h2{font-family:'Baloo 2',cursive;font-size:1.8rem;color:#2d2050;margin-top:12px;}
+.fim p{color:#4a3a70;font-weight:700;margin-top:8px;}
+
+/* ══════════════════════════════════
+   PAINEL COPA
+══════════════════════════════════ */
+#painel-copa{display:none;}
+#painel-copa.visivel{display:block;}
+
+.copa-wrap{
+  max-width:1100px;margin:0 auto;
+  padding:20px 16px 40px;
+  position:relative;z-index:1;
+}
+
+/* grama fundo */
+.grama-bg{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(90deg,rgba(15,79,36,.18) 0px,rgba(15,79,36,.18) 60px,rgba(26,122,58,.12) 60px,rgba(26,122,58,.12) 120px);
+}
+
+/* header copa */
+.copa-header{
+  text-align:center;margin-bottom:24px;padding:28px 20px 20px;
+  background:linear-gradient(180deg,rgba(245,197,24,.15) 0%,transparent 100%);
+  border-bottom:2px solid rgba(245,197,24,.2);
+}
+.copa-header h1{
+  font-family:'Bebas Neue',cursive;font-size:3rem;letter-spacing:4px;
+  color:#f5c518;text-shadow:0 0 30px rgba(245,197,24,.5);line-height:1;
+}
+.copa-header .sub{font-size:.9rem;color:rgba(240,244,240,.5);margin-top:4px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+
+/* ── SETUP DE NOMES ── */
+.setup-nomes{
+  background:#1a2a1a;
+  border:2px solid rgba(245,197,24,.25);
+  border-radius:20px;padding:22px 20px;
+  margin-bottom:24px;
+}
+.setup-titulo{
+  font-family:'Bebas Neue',cursive;
+  font-size:1.3rem;letter-spacing:3px;color:#f5c518;
+  margin-bottom:16px;display:flex;align-items:center;gap:8px;
+}
+.nomes-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  margin-bottom:16px;
+}
+.nome-input-wrap{
+  display:flex;flex-direction:column;gap:6px;
+}
+.nome-label{
+  font-size:.72rem;font-weight:900;letter-spacing:2px;
+  color:rgba(240,244,240,.35);text-transform:uppercase;
+}
+.nome-input{
+  background:#0f1f0f;border:2px solid rgba(255,255,255,.1);
+  border-radius:10px;padding:9px 12px;
+  font-family:'Bebas Neue',cursive;font-size:1.1rem;letter-spacing:1px;
+  color:#f0f4f0;outline:none;width:100%;
+  transition:border-color .2s;
+}
+.nome-input:focus{border-color:#f5c518;}
+.nome-input::placeholder{color:rgba(240,244,240,.2);font-family:'Nunito',sans-serif;font-size:.85rem;letter-spacing:0;}
+.btn-aplicar{
+  background:linear-gradient(135deg,#1a7a3a,#2a9a4a);
+  color:white;border:none;border-radius:50px;
+  padding:11px 28px;font-family:'Baloo 2',cursive;
+  font-size:1rem;cursor:pointer;
+  transition:transform .1s;
+}
+.btn-aplicar:hover{transform:scale(1.04);}
+
+/* cronômetro */
+.crono-section{display:flex;justify-content:center;margin-bottom:28px;}
+.crono-card{
+  background:#1c2c1c;border:2px solid rgba(245,197,24,.3);
+  border-radius:20px;padding:20px 36px;text-align:center;min-width:280px;
+}
+.crono-card.urgente{border-color:#e03030;animation:pulsa-crono .5s infinite alternate;}
+@keyframes pulsa-crono{0%{box-shadow:0 0 0 0 rgba(224,48,48,.4);}100%{box-shadow:0 0 0 12px rgba(224,48,48,0);}}
+.crono-label{font-size:.75rem;font-weight:900;letter-spacing:3px;color:rgba(240,244,240,.45);text-transform:uppercase;margin-bottom:6px;}
+.crono-display{font-family:'Bebas Neue',cursive;font-size:5rem;line-height:1;color:#f5c518;text-shadow:0 0 20px rgba(245,197,24,.6);transition:color .2s;}
+.crono-card.urgente .crono-display{color:#e03030;text-shadow:0 0 20px rgba(224,48,48,.7);}
+.crono-btns{display:flex;gap:10px;margin-top:14px;justify-content:center;flex-wrap:wrap;}
+.btn-crono{border:none;border-radius:50px;padding:9px 22px;font-family:'Nunito',sans-serif;font-weight:900;font-size:.9rem;cursor:pointer;transition:transform .1s;}
+.btn-crono:hover{transform:scale(1.05);}
+.btn-iniciar{background:#1a7a3a;color:white;}
+.btn-pausar{background:#f5c518;color:#1a1a1a;}
+.btn-reset{background:#2a3a2a;color:rgba(240,244,240,.7);border:1px solid rgba(255,255,255,.1);}
+
+/* placar grid */
+.placar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+.grupo-card{
+  background:#1c2c1c;border:2px solid rgba(255,255,255,.07);
+  border-radius:18px;padding:18px 16px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s;
+}
+.grupo-card.lider{border-color:#f5c518;box-shadow:0 0 24px rgba(245,197,24,.25);}
+.grupo-card.gol-anim{animation:gol-flash .7s ease;}
+@keyframes gol-flash{0%{background:#1c2c1c;}30%{background:rgba(26,122,58,.6);}100%{background:#1c2c1c;}}
+.corona{position:absolute;top:-2px;left:50%;transform:translateX(-50%);font-size:1.3rem;display:none;}
+.grupo-card.lider .corona{display:block;}
+.grupo-num{font-size:.7rem;font-weight:900;letter-spacing:2px;color:rgba(240,244,240,.35);text-transform:uppercase;}
+.nome-grupo-display{
+  font-family:'Bebas Neue',cursive;font-size:1.35rem;
+  letter-spacing:2px;color:#f0f4f0;text-align:center;
+  min-height:28px;word-break:break-word;
+}
+.gols-display{font-family:'Bebas Neue',cursive;font-size:4.2rem;line-height:1;color:#f5c518;text-shadow:0 2px 12px rgba(245,197,24,.4);letter-spacing:4px;}
+.gols-label{font-size:.7rem;font-weight:900;letter-spacing:2px;color:rgba(240,244,240,.3);text-transform:uppercase;}
+.gols-bolinhas{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;min-height:18px;}
+.bolinha-gol{font-size:.85rem;animation:pop-bolinha .3s ease;}
+@keyframes pop-bolinha{0%{transform:scale(0);}60%{transform:scale(1.3);}100%{transform:scale(1);}}
+.btn-gols{display:flex;gap:8px;width:100%;}
+.btn-gol{flex:1;border:none;border-radius:10px;padding:9px 0;font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;transition:transform .1s;}
+.btn-gol:hover{transform:scale(1.06);}
+.btn-gol:active{transform:scale(.94);}
+.btn-mais{background:#1a7a3a;color:white;}
+.btn-menos{background:#2a3a2a;color:rgba(240,244,240,.6);border:1px solid rgba(255,255,255,.08);}
+
+/* tabela ranking */
+.tabela-section{background:#1c2c1c;border:2px solid rgba(255,255,255,.07);border-radius:18px;padding:20px;margin-bottom:20px;}
+.tabela-titulo{font-family:'Bebas Neue',cursive;font-size:1.4rem;letter-spacing:3px;color:#f5c518;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.tabela-ranking{width:100%;border-collapse:collapse;}
+.tabela-ranking th{font-size:.72rem;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:rgba(240,244,240,.4);padding:8px 12px;text-align:left;border-bottom:1px solid rgba(255,255,255,.06);}
+.tabela-ranking td{padding:10px 12px;font-weight:800;border-bottom:1px solid rgba(255,255,255,.04);font-size:.95rem;}
+.tabela-ranking tr:last-child td{border-bottom:none;}
+.rank-pos{font-family:'Bebas Neue',cursive;font-size:1.3rem;width:36px;text-align:center;}
+.pos-1{color:#f5c518;}.pos-2{color:#c0c0c0;}.pos-3{color:#cd7f32;}.pos-outros{color:rgba(240,244,240,.3);}
+.rank-gols{font-family:'Bebas Neue',cursive;font-size:1.5rem;color:#f5c518;text-align:right;}
+
+/* overlay gol */
+#overlay-gol{
+  position:fixed;inset:0;background:rgba(0,0,0,.75);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:100;pointer-events:none;opacity:0;transition:opacity .15s;
+}
+#overlay-gol.mostra{opacity:1;}
+.gol-texto{font-family:'Bebas Neue',cursive;font-size:min(15vw,130px);color:#f5c518;text-shadow:0 0 60px rgba(245,197,24,.8),0 0 120px rgba(245,197,24,.4);letter-spacing:10px;animation:gol-bounce .6s ease;}
+.gol-subtexto{font-family:'Bebas Neue',cursive;font-size:min(5vw,40px);color:white;letter-spacing:4px;margin-top:8px;opacity:.85;}
+@keyframes gol-bounce{0%{transform:scale(.2) rotate(-10deg);}60%{transform:scale(1.15) rotate(3deg);}80%{transform:scale(.95) rotate(-1deg);}100%{transform:scale(1) rotate(0);}}
+
+/* confetes */
+.confete{position:fixed;pointer-events:none;z-index:99;border-radius:2px;animation:confete-cai linear forwards;}
+@keyframes confete-cai{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+
+/* rodapé */
+.rodape{text-align:center;font-size:.75rem;color:rgba(240,244,240,.2);margin-top:20px;font-weight:700;letter-spacing:1px;}
+
+/* ══ RESPONSIVO ══ */
+@media(max-width:700px){
+  .placar-grid{grid-template-columns:repeat(2,1fr);}
+  .nomes-grid{grid-template-columns:repeat(2,1fr);}
+  .copa-header h1{font-size:2.2rem;}
+  .gols-display{font-size:3rem;}
+  .crono-display{font-size:3.8rem;}
+  .menu{grid-template-columns:1fr;}
+  .resumo-grid{grid-template-columns:1fr;}
+  .capa h1{font-size:1.6rem;}
+}
+@media(max-width:440px){
+  .placar-grid{grid-template-columns:1fr 1fr;}
+  .nomes-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body class="modo-aula">
+
+<!-- OVERLAY GOL -->
+<div id="overlay-gol">
+  <div class="gol-texto">GOOOOL!</div>
+  <div class="gol-subtexto" id="gol-nome-grupo"></div>
+</div>
+
+<!-- TABS PRINCIPAIS -->
+<div class="tabs-principais">
+  <button class="tab-principal tab-aula ativa" id="tab-aula" onclick="mudarModo('aula')">
+    📘 Aula
+  </button>
+  <button class="tab-principal tab-copa" id="tab-copa" onclick="mudarModo('copa')">
+    🏆 Copa da Matemática
+  </button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAINEL AULA
+══════════════════════════════════════════ -->
+<div id="painel-aula" class="visivel">
+  <div class="simbolos-bg" id="bg-simbolos"></div>
+  <div class="aula-wrap">
+
+    <div class="capa">
+      <div class="capa-tag">📐 Matemática · 6º Ano</div>
+      <h1>Decimais na Prática ✨</h1>
+      <p>Arredondamento · Estimativas · Notação · Conversões de Comprimento</p>
+    </div>
+
+    <div class="menu" id="menu-topicos">
+      <button class="menu-item ativo" onclick="irAula(0)" id="m0">
+        <span class="m-icon">🎯</span>
+        <div><div class="m-txt">1. Arredondar</div><div class="m-sub">O que é? Para que serve?</div></div>
+      </button>
+      <button class="menu-item" onclick="irAula(1)" id="m1">
+        <span class="m-icon">📏</span>
+        <div><div class="m-txt">2. Regras</div><div class="m-sub">Como arredondar passo a passo</div></div>
+      </button>
+      <button class="menu-item" onclick="irAula(2)" id="m2">
+        <span class="m-icon">🔢</span>
+        <div><div class="m-txt">3. Notação</div><div class="m-sub">Mil, milhão, bilhão…</div></div>
+      </button>
+      <button class="menu-item" onclick="irAula(3)" id="m3">
+        <span class="m-icon">📐</span>
+        <div><div class="m-txt">4. Comprimento</div><div class="m-sub">km, m, cm, mm</div></div>
+      </button>
+      <button class="menu-item" onclick="irAula(4)" id="m4" style="grid-column:1/-1;">
+        <span class="m-icon">⭐</span>
+        <div><div class="m-txt">Resumão Final</div><div class="m-sub">Tudo em um só lugar!</div></div>
+      </button>
+    </div>
+
+    <!-- SEC 0 -->
+    <div class="secao-aula visivel" id="sa0">
+      <div class="card">
+        <div class="sec-titulo">
+          <div class="icone-grande ic-azul">🎯</div>
+          <div><h2>Aproximações e Estimativas</h2><p>Para que serve arredondar um número?</p></div>
+        </div>
+        <p class="leitura espaco">Às vezes não precisamos do número <strong>exato</strong>. Um número <strong>aproximado</strong> já resolve!</p>
+        <div class="destaque azul">
+          🌍 A distância da Terra à Lua é <strong>aprox. 384 000 km</strong><br>
+          🏙️ A população de Brasília é <strong>aprox. 2 500 000 pessoas</strong><br>
+          🛒 No mercado, arredondamos para saber se temos dinheiro
+        </div>
+        <div class="atencao">
+          <span class="em">💡</span>
+          <div><strong>Arredondar</strong> = trocar um número por outro mais simples que está <strong>perto</strong> dele.</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="font-family:'Baloo 2',cursive;font-size:1.1rem;margin-bottom:14px;">📏 Vendo na reta numérica</h3>
+        <p class="leitura espaco">Vamos arredondar <strong>28,135</strong> para a <strong>dezena mais próxima</strong>.</p>
+        <div class="reta-box">
+          <h4>28,135 está entre quais dezenas?</h4>
+          <svg class="reta-svg" height="80" viewBox="0 0 600 80">
+            <line x1="30" y1="45" x2="570" y2="45" stroke="#ccc" stroke-width="4" stroke-linecap="round"/>
+            <polygon points="570,38 585,45 570,52" fill="#ccc"/>
+            <circle cx="90"  cy="45" r="7" fill="#5b9bd5"/>
+            <text x="90"  y="70" text-anchor="middle" font-family="Nunito" font-size="16" font-weight="800" fill="#2d2d3a">0</text>
+            <circle cx="220" cy="45" r="7" fill="#5b9bd5"/>
+            <text x="220" y="70" text-anchor="middle" font-family="Nunito" font-size="16" font-weight="800" fill="#2d2d3a">10</text>
+            <circle cx="350" cy="45" r="7" fill="#5b9bd5"/>
+            <text x="350" y="70" text-anchor="middle" font-family="Nunito" font-size="16" font-weight="800" fill="#2d2d3a">20</text>
+            <circle cx="480" cy="45" r="7" fill="#5b9bd5"/>
+            <text x="480" y="70" text-anchor="middle" font-family="Nunito" font-size="16" font-weight="800" fill="#2d2d3a">30</text>
+            <circle cx="447" cy="45" r="9" fill="#e07aa0" stroke="white" stroke-width="2"/>
+            <text x="447" y="28" text-anchor="middle" font-family="Nunito" font-size="14" font-weight="900" fill="#c0305a">28,135</text>
+            <line x1="447" y1="32" x2="447" y2="38" stroke="#e07aa0" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="destaque verde">✅ 28,135 está <strong>mais perto de 30</strong> do que de 20.<br>Então o arredondamento para a dezena é <strong>30</strong>.</div>
+        <div class="nav-btns">
+          <button class="btn-nav btn-prox" onclick="irAula(1)">Próximo: Regras de Arredondamento →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEC 1 -->
+    <div class="secao-aula" id="sa1">
+      <div class="card">
+        <div class="sec-titulo">
+          <div class="icone-grande ic-verde">📏</div>
+          <div><h2>Regras de Arredondamento</h2><p>Aprenda o passo a passo</p></div>
+        </div>
+        <div class="regra verde">
+          <h3>📌 A Regra de Ouro</h3>
+          <p class="leitura">Olhe o dígito <strong>logo depois</strong> do que você quer manter:</p>
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
+            <div class="destaque verde" style="margin:0;">Se o dígito for <strong>0, 1, 2, 3 ou 4</strong> → arredonde para <strong>baixo</strong> (mantém)</div>
+            <div class="destaque rosa" style="margin:0;">Se o dígito for <strong>5, 6, 7, 8 ou 9</strong> → arredonde para <strong>cima</strong> (+1)</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <p style="font-weight:800;font-size:1.05rem;margin-bottom:16px;">Vamos usar o número <span style="color:#5b9bd5;font-size:1.15rem;">28,135</span> em todos os exemplos:</p>
+        <div class="destaque azul"><strong>🔵 Para a DEZENA mais próxima</strong><br>Vizinhas: 20 e 30 → 28,135 está <strong>mais perto de 30</strong><br><span style="font-size:1.1rem;">28,135 ≈ <strong>30</strong></span></div>
+        <div class="destaque verde"><strong>🟢 Para a UNIDADE mais próxima</strong><br>Vizinhas: 28 e 29 → olhe o décimo: é o <strong>1</strong><br>1 &lt; 5 → arredonda para baixo<br><span style="font-size:1.1rem;">28,135 ≈ <strong>28</strong></span></div>
+        <div class="destaque laranja"><strong>🟠 Para o DÉCIMO mais próximo</strong><br>Vizinhos: 28,1 e 28,2 → olhe o centésimo: é o <strong>3</strong><br>3 &lt; 5 → arredonda para baixo<br><span style="font-size:1.1rem;">28,135 ≈ <strong>28,1</strong></span></div>
+        <div class="destaque roxo"><strong>🟣 Para o CENTÉSIMO mais próximo</strong><br>Vizinhos: 28,13 e 28,14 → olhe o milésimo: é o <strong>5</strong><br>5 = 5 → fica no meio → arredonda para cima<br><span style="font-size:1.1rem;">28,135 ≈ <strong>28,14</strong></span></div>
+      </div>
+      <div class="card">
+        <h3 style="font-family:'Baloo 2',cursive;margin-bottom:12px;">📊 Tabela Resumo — número 28,135</h3>
+        <table>
+          <tr><th>Arredondar para…</th><th>Resultado</th></tr>
+          <tr><td>Dezena mais próxima</td><td><strong>30</strong></td></tr>
+          <tr><td>Unidade mais próxima</td><td><strong>28</strong></td></tr>
+          <tr><td>Décimo mais próximo</td><td><strong>28,1</strong></td></tr>
+          <tr><td>Centésimo mais próximo</td><td><strong>28,14</strong></td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3 style="font-family:'Baloo 2',cursive;margin-bottom:14px;">🛒 Usando estimativas para calcular</h3>
+        <p class="leitura espaco">Carlos foi à padaria e arredondou cada preço para a unidade antes de somar:</p>
+        <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px;">
+          <div class="destaque azul" style="flex:1;min-width:160px;"><strong>Preços reais:</strong><br>R$ 3,82<br>R$ 1,65<br>R$ 4,15<br>R$ 5,37<br><hr style="margin:8px 0;border-color:#5b9bd5;">Total: <strong>R$ 15,13</strong></div>
+          <div class="destaque verde" style="flex:1;min-width:160px;"><strong>Arredondados:</strong><br>≈ 4<br>≈ 2<br>≈ 4<br>≈ 5<br><hr style="margin:8px 0;border-color:#5bbf8a;">Estimativa: <strong>≈ 15</strong></div>
+        </div>
+        <div class="atencao"><span class="em">✅</span><div>A estimativa R$ 15 ficou bem próxima do valor real R$ 15,13. Funcionou!</div></div>
+      </div>
+      <div class="card" style="padding:16px 20px;">
+        <div class="nav-btns">
+          <button class="btn-nav btn-ant" onclick="irAula(0)">← Voltar</button>
+          <button class="btn-nav btn-prox verde" onclick="irAula(2)">Próximo: Notação Abreviada →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEC 2 -->
+    <div class="secao-aula" id="sa2">
+      <div class="card">
+        <div class="sec-titulo">
+          <div class="icone-grande ic-laranja">🔢</div>
+          <div><h2>Inteiros e Decimais</h2><p>Escrever números grandes de forma curta</p></div>
+        </div>
+        <p class="leitura espaco">Números muito grandes aparecem em jornais e na ciência. Podemos usar <strong>mil, milhão, bilhão</strong> para escrevê-los de forma mais prática!</p>
+        <div class="regra laranja"><h3>💡 A ideia</h3><p class="leitura">Usamos decimais + o nome do grupo para representar números grandes de forma compacta.</p></div>
+      </div>
+      <div class="card">
+        <p style="font-weight:800;margin-bottom:16px;">📊 Tabela dos grupos numéricos:</p>
+        <table>
+          <tr><th>Nome</th><th>Valor</th><th>Zeros</th></tr>
+          <tr><td><strong>Mil</strong></td><td>1 000</td><td>3 zeros</td></tr>
+          <tr><td><strong>Milhão</strong></td><td>1 000 000</td><td>6 zeros</td></tr>
+          <tr><td><strong>Bilhão</strong></td><td>1 000 000 000</td><td>9 zeros</td></tr>
+          <tr><td><strong>Trilhão</strong></td><td>1 000 000 000 000</td><td>12 zeros</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3 style="font-family:'Baloo 2',cursive;margin-bottom:14px;">🌍 Exemplo 1 — 233 000 000</h3>
+        <div class="passos">
+          <div class="passo"><div class="p-num laranja">1</div><div class="p-txt">Maior grupo: <strong>milhão</strong> (6 zeros)</div></div>
+          <div class="passo"><div class="p-num laranja">2</div><div class="p-txt">233 000 000 ÷ 1 000 000 = <strong>233</strong></div></div>
+          <div class="passo"><div class="p-num laranja">3</div><div class="p-txt">Resposta: <strong>233 milhões</strong></div></div>
+        </div>
+        <div class="formula" style="margin-top:12px;">233 000 000 = <span style="color:#f4a24a">233 milhões</span></div>
+      </div>
+      <div class="card">
+        <h3 style="font-family:'Baloo 2',cursive;margin-bottom:14px;">💰 Exemplo 2 — R$ 1 730,00</h3>
+        <div class="passos">
+          <div class="passo"><div class="p-num laranja">1</div><div class="p-txt">Maior grupo: <strong>mil</strong> (3 zeros)</div></div>
+          <div class="passo"><div class="p-num laranja">2</div><div class="p-txt">1 730 ÷ 1 000 = <strong>1,73</strong></div></div>
+          <div class="passo"><div class="p-num laranja">3</div><div class="p-txt">Resposta: <strong>1,73 mil</strong></div></div>
+        </div>
+        <div class="formula" style="margin-top:12px;">R$ 1 730,00 = <span style="color:#f4a24a">1,73 mil</span></div>
+        <div class="atencao" style="margin-top:14px;"><span class="em">💡</span><div><strong>Dica:</strong> Deslocar a vírgula para a esquerda — tantas casas quanto os zeros do grupo!</div></div>
+      </div>
+      <div class="card" style="padding:16px 20px;">
+        <div class="nav-btns">
+          <button class="btn-nav btn-ant" onclick="irAula(1)">← Voltar</button>
+          <button class="btn-nav btn-prox laranja" onclick="irAula(3)">Próximo: Conversões de Comprimento →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEC 3 -->
+    <div class="secao-aula" id="sa3">
+      <div class="card">
+        <div class="sec-titulo">
+          <div class="icone-grande ic-roxo">📐</div>
+          <div><h2>Conversão de Comprimento</h2><p>km · m · cm · mm</p></div>
+        </div>
+        <p class="leitura espaco">As unidades de comprimento estão ligadas por <strong>potências de 10</strong>. Basta multiplicar ou dividir!</p>
+        <div class="regra roxo">
+          <h3>🧠 Como lembrar?</h3>
+          <div style="background:rgba(255,255,255,.6);border-radius:12px;padding:14px;margin-top:8px;">
+            <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-weight:800;font-size:.95rem;">
+              <span style="background:#a07fd4;color:white;border-radius:8px;padding:4px 10px;">km</span>
+              <span style="font-size:.8rem;color:#7a7a9a;">÷1000 / ×1000</span>
+              <span style="background:#5b9bd5;color:white;border-radius:8px;padding:4px 10px;">m</span>
+              <span style="font-size:.8rem;color:#7a7a9a;">÷100 / ×100</span>
+              <span style="background:#5bbf8a;color:white;border-radius:8px;padding:4px 10px;">cm</span>
+              <span style="font-size:.8rem;color:#7a7a9a;">÷10 / ×10</span>
+              <span style="background:#e07aa0;color:white;border-radius:8px;padding:4px 10px;">mm</span>
+            </div>
+            <div style="text-align:center;margin-top:10px;font-size:.88rem;color:#7a7a9a;">⬅ unidade maior: <strong>dividir</strong> &nbsp;|&nbsp; unidade menor: <strong>multiplicar</strong> ➡</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="font-family:'Baloo 2',cursive;margin-bottom:14px;">📊 Tabela de Conversões</h3>
+        <table>
+          <tr><th>De → Para</th><th>Operação</th><th>Exemplo</th></tr>
+          <tr><td><strong>km → m</strong></td><td>× 1 000</td><td>1,35 km = <strong>1 350 m</strong></td></tr>
+          <tr><td><strong>m → cm</strong></td><td>× 100</td><td>0,53 m = <strong>53 cm</strong></td></tr>
+          <tr><td><strong>cm → mm</strong></td><td>× 10</td><td>7,3 cm = <strong>73 mm</strong></td></tr>
+          <tr><td><strong>m → km</strong></td><td>÷ 1 000</td><td>300 m = <strong>0,3 km</strong></td></tr>
+          <tr><td><strong>cm → m</strong></td><td>÷ 100</td><td>147 cm = <strong>1,47 m</strong></td></tr>
+          <tr><td><strong>mm → cm</strong></td><td>÷ 10</td><td>73 mm = <strong>7,3 cm</strong></td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3 style="font-family:'Baloo 2',cursive;margin-bottom:14px;">✏️ Exemplos práticos</h3>
+        <div class="passos">
+          <div class="passo"><div class="p-num roxo">a</div><div class="p-txt">35,121 km × 1 000 = <strong>35 121 m</strong></div></div>
+          <div class="passo"><div class="p-num roxo">b</div><div class="p-txt">0,12 km × 1 000 = <strong>120 m</strong></div></div>
+          <div class="passo"><div class="p-num roxo">c</div><div class="p-txt">0,21 m × 100 = <strong>21 cm</strong></div></div>
+          <div class="passo"><div class="p-num roxo">d</div><div class="p-txt">1 350 m ÷ 1 000 = <strong>1,35 km</strong></div></div>
+          <div class="passo"><div class="p-num roxo">e</div><div class="p-txt">147 cm ÷ 100 = <strong>1,47 m</strong></div></div>
+          <div class="passo"><div class="p-num roxo">f</div><div class="p-txt">73 mm ÷ 10 = <strong>7,3 cm</strong></div></div>
+        </div>
+      </div>
+      <div class="card" style="padding:16px 20px;">
+        <div class="nav-btns">
+          <button class="btn-nav btn-ant" onclick="irAula(2)">← Voltar</button>
+          <button class="btn-nav btn-prox roxo" onclick="irAula(4)">Ver Resumão Final ⭐</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEC 4 RESUMO -->
+    <div class="secao-aula" id="sa4">
+      <div class="card">
+        <div class="sec-titulo">
+          <div class="icone-grande" style="background:#fff3b0;width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:2rem;">⭐</div>
+          <div><h2>Resumão Final</h2><p>Tudo que você precisa lembrar!</p></div>
+        </div>
+        <div class="resumo-grid">
+          <div class="r-card azul"><h4>🎯 Arredondamento</h4><p>Olhe o dígito <em>seguinte</em>:<br>• 0–4 → mantém (baixo)<br>• 5–9 → sobe 1 (cima)<br>• No meio (5) → cima</p></div>
+          <div class="r-card verde"><h4>🧮 Estimativas</h4><p>Arredonde antes de calcular. Serve para saber o valor aproximado sem fazer conta difícil!</p></div>
+          <div class="r-card laranja"><h4>🔢 Notação</h4><p>mil = 1 000 (3 zeros)<br>milhão = 1 000 000<br>bilhão = 1 000 000 000<br>Desloque a vírgula!</p></div>
+          <div class="r-card roxo"><h4>📐 Comprimento</h4><p>km→m: ×1000<br>m→cm: ×100<br>cm→mm: ×10<br>Ao contrário: dividir</p></div>
+        </div>
+        <div class="atencao" style="margin-top:16px;"><span class="em">📝</span><div><strong>Símbolo importante:</strong> O <strong>≈</strong> significa <em>"aproximadamente igual a"</em>.</div></div>
+      </div>
+      <div class="fim">
+        <div style="font-size:3rem;">🎉</div>
+        <h2>Você estudou tudo!</h2>
+        <p>Agora é hora de praticar. Que tal jogar a Copa da Matemática?</p>
+        <p style="margin-top:10px;">
+          <button class="btn-nav btn-prox" style="display:inline-block;padding:12px 28px;font-size:1rem;" onclick="mudarModo('copa')">🏆 Ir para a Copa →</button>
+        </p>
+      </div>
+      <div class="card" style="padding:16px 20px;">
+        <div class="nav-btns">
+          <button class="btn-nav btn-ant" onclick="irAula(3)">← Voltar</button>
+          <button class="btn-nav btn-prox" onclick="irAula(0)">🔄 Recomeçar</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- fim aula-wrap -->
+</div><!-- fim painel-aula -->
+
+<!-- ══════════════════════════════════════════
+     PAINEL COPA
+══════════════════════════════════════════ -->
+<div id="painel-copa">
+  <div class="grama-bg"></div>
+  <div class="copa-wrap">
+
+    <div class="copa-header">
+      <div style="font-size:2.8rem;line-height:1;margin-bottom:6px;">🏆</div>
+      <h1>Copa da Matemática</h1>
+      <div class="sub">⚽ Cada acerto vale um gol ⚽</div>
+    </div>
+
+    <!-- SETUP DE NOMES -->
+    <div class="setup-nomes">
+      <div class="setup-titulo">✏️ Nome dos Grupos</div>
+      <div class="nomes-grid" id="nomes-grid"></div>
+      <button class="btn-aplicar" onclick="aplicarNomes()">✅ Aplicar nomes ao placar</button>
+    </div>
+
+    <!-- CRONÔMETRO -->
+    <div class="crono-section">
+      <div class="crono-card" id="crono-card">
+        <div class="crono-label">⏱ Tempo da rodada</div>
+        <div class="crono-display" id="crono-display">4:00</div>
+        <div class="crono-btns">
+          <button class="btn-crono btn-iniciar" id="btn-iniciar" onclick="cronometroPause()">▶ Iniciar</button>
+          <button class="btn-crono btn-reset" onclick="cronometroReset()">↺ Resetar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLACAR -->
+    <div class="placar-grid" id="placar-grid"></div>
+
+    <!-- TABELA -->
+    <div class="tabela-section">
+      <div class="tabela-titulo">📊 Classificação</div>
+      <table class="tabela-ranking">
+        <thead><tr><th style="width:44px;">Pos</th><th>Grupo</th><th style="text-align:right;">Gols</th></tr></thead>
+        <tbody id="tabela-body"></tbody>
+      </table>
+    </div>
+
+    <div class="rodape">COPA DA MATEMÁTICA · 6º ANO · PROFESSORA RAFA</div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════
+   MODO (AULA / COPA)
+══════════════════════════════ */
+function mudarModo(modo){
+  const isAula = modo === 'aula';
+  document.body.className = isAula ? 'modo-aula' : 'modo-copa';
+  document.getElementById('painel-aula').classList.toggle('visivel', isAula);
+  document.getElementById('painel-copa').classList.toggle('visivel', !isAula);
+  document.getElementById('tab-aula').classList.toggle('ativa', isAula);
+  document.getElementById('tab-copa').classList.toggle('ativa', !isAula);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ══════════════════════════════
+   AULA — NAVEGAÇÃO
+══════════════════════════════ */
+const SIMBOLOS_LISTA = ['÷','×','+','−','=','%','π','∑','√','≈','∞','½','¼','²','³','0','1','2','3','4','5','6','7','8','9'];
+(function criarSimbolos(){
+  const bg = document.getElementById('bg-simbolos');
+  for(let i=0;i<55;i++){
+    const s = document.createElement('span');
+    s.className='s';
+    s.textContent=SIMBOLOS_LISTA[Math.floor(Math.random()*SIMBOLOS_LISTA.length)];
+    s.style.left=Math.random()*100+'vw';
+    s.style.fontSize=(1.2+Math.random()*2)+'rem';
+    s.style.animationDuration=(18+Math.random()*28)+'s';
+    s.style.animationDelay=(-Math.random()*30)+'s';
+    bg.appendChild(s);
+  }
+})();
+
+function irAula(n){
+  document.querySelectorAll('.secao-aula').forEach(s=>s.classList.remove('visivel'));
+  document.getElementById('sa'+n).classList.add('visivel');
+  document.querySelectorAll('.menu-item').forEach((m,i)=>m.classList.toggle('ativo',i===n));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ══════════════════════════════
+   COPA — ESTADO
+══════════════════════════════ */
+const TOTAL_GRUPOS = 6;
+const TEMPO_INICIAL = 4 * 60;
+const ALERTA_EM = 15;
+
+let grupos = Array.from({length:TOTAL_GRUPOS},(_,i)=>({nome:'Grupo '+(i+1), gols:0}));
+let cronoSeg = TEMPO_INICIAL;
+let cronoRodando = false;
+let cronoInterval = null;
+let alertouUltimosSeg = false;
+
+/* ── ÁUDIO ── */
+let audioCtx = null;
+function getAudio(){
+  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  return audioCtx;
+}
+function somGol(){
+  const ctx=getAudio();
+  [[523,0],[659,.08],[784,.16],[1047,.24],[784,.36],[1047,.44],[1047,.56]].forEach(([f,t])=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);o.type='square';o.frequency.value=f;
+    g.gain.setValueAtTime(.18,ctx.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t+.18);
+    o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+.2);
+  });
+  const buf=ctx.createBuffer(1,ctx.sampleRate*.8,ctx.sampleRate);
+  const d=buf.getChannelData(0);for(let j=0;j<d.length;j++)d[j]=(Math.random()*2-1)*.15;
+  const src=ctx.createBufferSource();src.buffer=buf;
+  const gn=ctx.createGain();gn.gain.setValueAtTime(.3,ctx.currentTime+.3);gn.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+1.1);
+  src.connect(gn);gn.connect(ctx.destination);src.start(ctx.currentTime+.3);
+}
+function somApito(){
+  const ctx=getAudio();
+  const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);
+  o.type='sine';o.frequency.setValueAtTime(2200,ctx.currentTime);o.frequency.linearRampToValueAtTime(2000,ctx.currentTime+.15);
+  g.gain.setValueAtTime(.35,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.18);
+  o.start(ctx.currentTime);o.stop(ctx.currentTime+.2);
+}
+function somAlerta(){
+  const ctx=getAudio();
+  for(let i=0;i<3;i++){
+    const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);
+    o.type='square';o.frequency.value=880;const t=ctx.currentTime+i*.22;
+    g.gain.setValueAtTime(.22,t);g.gain.exponentialRampToValueAtTime(.001,t+.15);
+    o.start(t);o.stop(t+.17);
+  }
+}
+function somFimJogo(){
+  const ctx=getAudio();
+  [0,.35,.7].forEach(d=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);
+    o.type='sine';o.frequency.value=1800;
+    g.gain.setValueAtTime(.4,ctx.currentTime+d);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.3);
+    o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.32);
+  });
+}
+
+/* ── CRONÔMETRO ── */
+function formatarTempo(s){return`${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`;}
+function atualizarDisplay(){
+  document.getElementById('crono-display').textContent=formatarTempo(cronoSeg);
+  document.getElementById('crono-card').classList.toggle('urgente',cronoSeg<=ALERTA_EM&&cronoSeg>0);
+}
+function cronometroPause(){
+  const btn=document.getElementById('btn-iniciar');
+  if(!cronoRodando){
+    cronoRodando=true;btn.textContent='⏸ Pausar';btn.className='btn-crono btn-pausar';
+    cronoInterval=setInterval(()=>{
+      if(cronoSeg<=0){clearInterval(cronoInterval);cronoRodando=false;btn.textContent='▶ Iniciar';btn.className='btn-crono btn-iniciar';somFimJogo();return;}
+      cronoSeg--;atualizarDisplay();
+      if(cronoSeg===ALERTA_EM&&!alertouUltimosSeg){alertouUltimosSeg=true;somAlerta();}
+      if(cronoSeg<=5&&cronoSeg>0)somApito();
+    },1000);
+  } else {
+    cronoRodando=false;clearInterval(cronoInterval);btn.textContent='▶ Continuar';btn.className='btn-crono btn-iniciar';
+  }
+}
+function cronometroReset(){
+  clearInterval(cronoInterval);cronoRodando=false;cronoSeg=TEMPO_INICIAL;alertouUltimosSeg=false;
+  const btn=document.getElementById('btn-iniciar');btn.textContent='▶ Iniciar';btn.className='btn-crono btn-iniciar';
+  atualizarDisplay();document.getElementById('crono-card').classList.remove('urgente');
+}
+
+/* ── SETUP DE NOMES ── */
+function criarInputsNomes(){
+  const grid=document.getElementById('nomes-grid');grid.innerHTML='';
+  grupos.forEach((g,i)=>{
+    const div=document.createElement('div');div.className='nome-input-wrap';
+    div.innerHTML=`<span class="nome-label">Grupo ${i+1}</span>
+      <input class="nome-input" id="ni${i}" type="text" maxlength="16" placeholder="Ex: Turma A" value="${g.nome}">`;
+    grid.appendChild(div);
+  });
+}
+function aplicarNomes(){
+  grupos.forEach((_,i)=>{
+    const val=document.getElementById('ni'+i).value.trim();
+    grupos[i].nome=val||('Grupo '+(i+1));
+  });
+  renderGrupos();renderTabela();
+}
+
+/* ── GOL ── */
+let golTimeout=null;
+function ativarGol(idx){
+  document.getElementById('gol-nome-grupo').textContent=grupos[idx].nome;
+  const ov=document.getElementById('overlay-gol');ov.classList.add('mostra');
+  if(golTimeout)clearTimeout(golTimeout);golTimeout=setTimeout(()=>ov.classList.remove('mostra'),1800);
+  const card=document.getElementById('gc'+idx);card.classList.remove('gol-anim');void card.offsetWidth;card.classList.add('gol-anim');
+  lancarConfetes();somGol();
+}
+function lancarConfetes(){
+  const cores=['#f5c518','#1a7a3a','#e03030','#3a8aff','#ff8c00','#fff'];
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');c.className='confete';
+    c.style.left=Math.random()*100+'vw';c.style.top='-12px';
+    c.style.background=cores[Math.floor(Math.random()*cores.length)];
+    c.style.width=(8+Math.random()*10)+'px';c.style.height=(8+Math.random()*10)+'px';
+    c.style.borderRadius=Math.random()>.5?'50%':'2px';
+    c.style.animationDuration=(1.5+Math.random()*2.5)+'s';c.style.animationDelay=(Math.random()*.8)+'s';
+    document.body.appendChild(c);setTimeout(()=>c.remove(),4000);
+  }
+}
+function addGol(idx){grupos[idx].gols++;ativarGol(idx);renderGrupos();renderTabela();}
+function remGol(idx){if(grupos[idx].gols>0){grupos[idx].gols--;renderGrupos();renderTabela();}}
+
+/* ── RENDER GRUPOS ── */
+function lideresIdx(){
+  const mx=Math.max(...grupos.map(g=>g.gols));
+  if(mx===0)return[];
+  return grupos.reduce((a,g,i)=>{if(g.gols===mx)a.push(i);return a;},[]);
+}
+function criarCards(){
+  const grid=document.getElementById('placar-grid');grid.innerHTML='';
+  grupos.forEach((_,idx)=>{
+    const div=document.createElement('div');div.className='grupo-card';div.id='gc'+idx;
+    div.innerHTML=`
+      <span class="corona">👑</span>
+      <div class="grupo-num">Grupo ${idx+1}</div>
+      <div class="nome-grupo-display" id="ngd${idx}">${grupos[idx].nome}</div>
+      <div class="gols-display" id="gd${idx}">0</div>
+      <div class="gols-label">gols</div>
+      <div class="gols-bolinhas" id="gb${idx}"></div>
+      <div class="btn-gols">
+        <button class="btn-gol btn-menos" onclick="remGol(${idx})">− Gol</button>
+        <button class="btn-gol btn-mais" onclick="addGol(${idx})">⚽ GOL!</button>
+      </div>`;
+    grid.appendChild(div);
+  });
+}
+function renderGrupos(){
+  const lideres=lideresIdx();
+  grupos.forEach((g,idx)=>{
+    document.getElementById('ngd'+idx).textContent=g.nome;
+    document.getElementById('gd'+idx).textContent=g.gols;
+    const bb=document.getElementById('gb'+idx);bb.innerHTML='';
+    for(let i=0;i<g.gols;i++){const b=document.createElement('span');b.className='bolinha-gol';b.textContent='⚽';bb.appendChild(b);}
+    document.getElementById('gc'+idx).classList.toggle('lider',lideres.includes(idx));
+  });
+}
+function renderTabela(){
+  const ranking=[...grupos].map((g,i)=>({...g,idx:i})).sort((a,b)=>b.gols-a.gols);
+  const md=['🥇','🥈','🥉'],pc=['pos-1','pos-2','pos-3'];
+  const tb=document.getElementById('tabela-body');tb.innerHTML='';
+  ranking.forEach((g,pos)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="rank-pos ${pc[pos]||'pos-outros'}">${md[pos]||pos+1}</td><td>${g.nome}</td><td class="rank-gols">${g.gols}</td>`;
+    tb.appendChild(tr);
+  });
+}
+
+/* ── INIT ── */
+criarInputsNomes();
+criarCards();
+renderGrupos();
+renderTabela();
+atualizarDisplay();
+</script>
+</body>
+</html>
