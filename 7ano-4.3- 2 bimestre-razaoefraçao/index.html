@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Razão e Fração – 7º Ano</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+/* ============================================================
+   RESET + VARIÁVEIS
+============================================================ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* compartilhadas */
+  --verde-forte:  #1B5E20;
+  --verde-medio:  #2E7D32;
+  --amarelo:      #FFF9C4;
+  --amarelo-vivo: #F9A825;
+  --azul:         #E3F2FD;
+  --azul-forte:   #0D47A1;
+  --roxo:         #EDE7F6;
+  --roxo-forte:   #4527A0;
+  --cinza:        #F5F5F5;
+  --texto:        #1A1A2E;
+  --borda:        #BDBDBD;
+  /* jogo */
+  --gol:          #00C853;
+  --ouro:         #FFD600;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #F8FFF8;
+  color: var(--texto);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   NAVBAR DE ABAS
+============================================================ */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: white;
+  border-bottom: 3px solid #c8e6c9;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: stretch;
+}
+
+.nav-brand {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  color: var(--verde-forte);
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-right: 2px solid #e0e0e0;
+  white-space: nowrap;
+}
+
+.nav-tabs {
+  display: flex;
+  flex: 1;
+}
+
+.nav-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.25rem;
+  letter-spacing: 2px;
+  color: #888;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid transparent;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  text-decoration: none;
+}
+
+.nav-tab:hover {
+  color: var(--verde-forte);
+  background: #f1f8e9;
+}
+
+.nav-tab.active {
+  color: var(--verde-forte);
+  border-bottom-color: var(--verde-forte);
+  background: #f1f8e9;
+  font-weight: 900;
+}
+
+.tab-icon { font-size: 1.3rem; }
+
+/* ============================================================
+   PAINÉIS
+============================================================ */
+.painel { display: none; }
+.painel.active { display: block; }
+
+/* ============================================================
+   FUNDO FLUTUANTE (AULA)
+============================================================ */
+.bg-floats {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.bg-floats span {
+  position: absolute;
+  font-family: 'Fredoka One', cursive;
+  user-select: none;
+}
+.bg-floats .sym  { color: rgba(13,71,161,0.05); font-size: clamp(1.4rem,3.5vw,3rem); }
+.bg-floats .ball { font-size: clamp(1.8rem,4vw,3.5rem); opacity: 0.06; }
+
+/* ============================================================
+   AULA — LAYOUT
+============================================================ */
+#painel-aula {
+  position: relative;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* Cabeçalho da aula */
+.header {
+  background: linear-gradient(135deg, var(--verde-forte) 0%, #388E3C 55%, #F9A825 100%);
+  border-radius: 22px;
+  padding: 2rem 2.5rem;
+  color: white;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 10px 36px rgba(27,94,32,0.3);
+  position: relative;
+  overflow: hidden;
+}
+.header::after {
+  content: '⚽';
+  position: absolute;
+  right: 1.5rem; top: 50%;
+  transform: translateY(-50%);
+  font-size: clamp(4rem,10vw,7rem);
+  opacity: 0.15;
+}
+.header .serie {
+  font-size: 1rem; font-weight: 800;
+  opacity: 0.9; letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 0.4rem;
+}
+.header h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(2.2rem,6vw,3.4rem);
+  line-height: 1.1; margin-bottom: 0.4rem;
+}
+.header p { font-size: 1.15rem; opacity: 0.92; font-weight: 700; }
+
+/* Seções */
+.secao {
+  background: white;
+  border-radius: 18px;
+  padding: 2rem 2.2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+  border-left: 8px solid var(--azul-forte);
+}
+.secao.verde { border-left-color: var(--verde-medio); }
+.secao.ouro  { border-left-color: #E65100; }
+.secao.roxo  { border-left-color: var(--roxo-forte); }
+
+.secao-titulo {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.5rem,4vw,2rem);
+  margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.secao-titulo .icone {
+  background: var(--azul-forte);
+  color: white; border-radius: 50%;
+  min-width: 2.2rem; height: 2.2rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+.secao.verde .secao-titulo .icone { background: var(--verde-medio); }
+.secao.ouro  .secao-titulo .icone { background: #E65100; }
+.secao.roxo  .secao-titulo .icone { background: var(--roxo-forte); }
+
+p.texto { font-size: clamp(1.1rem,2.5vw,1.3rem); line-height: 1.8; margin-bottom: 0.9rem; }
+
+/* Copie no caderno */
+.copie {
+  background: var(--amarelo);
+  border: 3px dashed var(--amarelo-vivo);
+  border-radius: 16px;
+  padding: 1.6rem 2rem;
+  margin: 1.5rem 0;
+}
+.copie::before {
+  content: '✏️ COPIE NO CADERNO';
+  display: block; font-size: 0.92rem;
+  font-weight: 900; letter-spacing: 1.5px;
+  color: #BF6900; margin-bottom: 0.9rem;
+}
+.copie p, .copie li {
+  font-size: clamp(1.1rem,2.5vw,1.3rem);
+  line-height: 1.85; color: var(--texto); font-weight: 700;
+}
+.copie ul { list-style: none; padding: 0; }
+.copie ul li::before { content: '▸ '; color: var(--amarelo-vivo); }
+
+/* Destaque */
+.destaque {
+  background: var(--azul);
+  border-radius: 12px; padding: 1.2rem 1.5rem;
+  margin: 1rem 0; border-left: 5px solid var(--azul-forte);
+}
+.destaque p {
+  font-size: clamp(1.1rem,2.5vw,1.28rem);
+  font-weight: 700; line-height: 1.7; color: var(--azul-forte);
+}
+
+/* Tiras */
+.tiras-container { margin: 1.5rem 0; }
+.tira-linha { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.7rem; }
+.tira-label { font-size: 1.05rem; font-weight: 800; min-width: 140px; color: var(--texto); }
+.tiras { display: flex; gap: 4px; flex-wrap: wrap; }
+.tira {
+  width: 38px; height: 38px; border-radius: 7px;
+  border: 2.5px solid; display: flex;
+  align-items: center; justify-content: center; font-size: 1.1rem;
+}
+.tira.azul  { background: var(--azul);  border-color: var(--azul-forte); }
+.tira.verde { background: #E8F5E9;      border-color: var(--verde-medio); }
+.tira.cinza { background: #ECEFF1;      border-color: #607D8B; }
+.tira-total { font-size: 1rem; font-weight: 700; color: #555; margin-top: 0.4rem; padding-left: 156px; }
+
+/* Passos */
+.passo {
+  background: var(--cinza); border-radius: 12px;
+  padding: 1rem 1.4rem; margin-bottom: 0.8rem;
+  display: flex; align-items: flex-start; gap: 1rem;
+}
+.passo-num {
+  background: var(--azul-forte); color: white; border-radius: 50%;
+  min-width: 2.2rem; height: 2.2rem;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 1.1rem; flex-shrink: 0;
+}
+.passo.verde .passo-num { background: var(--verde-medio); }
+.passo.ouro  .passo-num { background: #E65100; }
+.passo-texto { font-size: clamp(1.05rem,2.3vw,1.22rem); line-height: 1.75; font-weight: 600; }
+.passo-texto strong { color: var(--azul-forte); }
+.passo.verde .passo-texto strong { color: var(--verde-forte); }
+.passo.ouro  .passo-texto strong { color: #E65100; }
+
+/* Dica TEA */
+.dica-tea {
+  background: var(--roxo); border-radius: 14px;
+  padding: 1.2rem 1.5rem; margin: 1.5rem 0;
+  border-left: 5px solid var(--roxo-forte);
+  display: flex; gap: 0.8rem; align-items: flex-start;
+}
+.dica-tea .emoji { font-size: 1.8rem; flex-shrink: 0; }
+.dica-tea p { font-size: clamp(1rem,2.2vw,1.15rem); line-height: 1.7; font-weight: 600; color: var(--roxo-forte); }
+
+/* Razão box */
+.razao-box {
+  background: white; border: 3px solid var(--amarelo-vivo);
+  border-radius: 14px; padding: 1.2rem 1.5rem;
+  text-align: center; margin: 0.5rem;
+  box-shadow: 0 4px 12px rgba(249,168,37,0.2);
+  flex: 1; min-width: 160px;
+}
+.razao-valor { font-family: 'Fredoka One', cursive; font-size: clamp(1.8rem,4.5vw,2.6rem); color: #E65100; }
+.razao-desc  { font-size: 0.95rem; color: #777; font-weight: 700; margin: 0.2rem 0; }
+
+/* Exemplo box */
+.exemplo-header {
+  background: var(--verde-forte); color: white;
+  border-radius: 12px 12px 0 0; padding: 0.9rem 1.5rem;
+  font-family: 'Fredoka One', cursive; font-size: 1.4rem;
+}
+.exemplo-body {
+  background: #E8F5E9; border: 3px solid var(--verde-forte);
+  border-top: none; border-radius: 0 0 12px 12px;
+  padding: 1.5rem; margin-bottom: 1.5rem;
+}
+.exemplo-body p { font-size: clamp(1.05rem,2.3vw,1.22rem); line-height: 1.8; font-weight: 600; margin-bottom: 0.7rem; }
+
+/* Resultado */
+.resultado {
+  background: linear-gradient(90deg, var(--verde-forte), #388E3C);
+  color: white; border-radius: 12px;
+  padding: 1rem 1.5rem; font-size: clamp(1.1rem,2.5vw,1.3rem);
+  font-weight: 900; margin-top: 1rem; text-align: center;
+}
+
+/* Figurinha */
+.figurinha {
+  display: inline-flex; flex-direction: column;
+  align-items: center; background: white;
+  border: 3px solid #FFD600; border-radius: 10px;
+  width: 52px; padding: 4px 6px; margin: 3px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  font-size: 0.65rem; font-weight: 900; color: #555;
+}
+.figurinha .fig-emoji { font-size: 1.6rem; line-height: 1; margin-bottom: 2px; }
+.figurinha.repetida   { border-color: #BDBDBD; opacity: 0.6; }
+.figurinhas-grid { display: flex; flex-wrap: wrap; margin: 1rem 0; gap: 4px; }
+
+hr.sep { border: none; border-top: 3px dashed var(--borda); margin: 1.8rem 0; }
+.rodape { text-align: center; color: #999; font-size: 0.95rem; font-weight: 700; margin-top: 3rem; }
+
+/* ============================================================
+   JOGO — ESTILOS
+============================================================ */
+#painel-jogo {
+  background: #f0f7f0;
+  min-height: calc(100vh - 60px);
+  position: relative;
+}
+
+/* Gramado fundo */
+#painel-jogo::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0,100,0,0.05) 0px, rgba(0,100,0,0.05) 40px,
+    transparent 40px, transparent 80px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.jogo-wrapper {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto;
+  padding: 1.5rem 1.5rem 3rem;
+}
+
+/* Setup */
+#setup-screen {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 2rem; padding: 2rem; min-height: 80vh;
+}
+
+.setup-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2.5rem,7vw,4.5rem);
+  color: var(--verde-forte); letter-spacing: 3px;
+  line-height: 1; text-align: center;
+}
+.setup-sub { font-size: 1.1rem; color: #444; font-weight: 700; text-align: center; }
+
+.setup-card {
+  background: white; border: 2px solid #c8e6c9;
+  border-radius: 20px; padding: 2rem 2.5rem;
+  width: 100%; max-width: 680px;
+}
+.setup-card h2 {
+  font-family: 'Bebas Neue', cursive; font-size: 1.5rem;
+  color: var(--verde-forte); letter-spacing: 2px; margin-bottom: 1.4rem;
+}
+
+.groups-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.4rem; }
+
+.group-input-row {
+  display: flex; align-items: center; gap: 0.6rem;
+  background: #f5f5f5; border: 1.5px solid #bdbdbd;
+  border-radius: 10px; padding: 0.5rem 0.8rem;
+  transition: border-color 0.2s;
+}
+.group-input-row:focus-within { border-color: var(--verde-medio); }
+.group-input-row input {
+  background: transparent; border: none; outline: none;
+  color: #111; font-family: 'Nunito', sans-serif;
+  font-size: 1rem; font-weight: 800; width: 100%;
+}
+.group-input-row input::placeholder { color: #aaa; font-weight: 700; }
+
+.setup-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.setup-row label { font-size: 1rem; font-weight: 800; color: #222; min-width: 165px; }
+.setup-row input[type=number] {
+  background: #f5f5f5; border: 1.5px solid #bdbdbd;
+  border-radius: 10px; color: #111;
+  font-family: 'Bebas Neue', cursive; font-size: 1.4rem;
+  letter-spacing: 2px; padding: 0.4rem 0.8rem;
+  width: 90px; outline: none; text-align: center;
+}
+.setup-row input[type=number]:focus { border-color: var(--verde-medio); }
+
+.btn-start {
+  background: linear-gradient(135deg, var(--verde-medio), #F9A825);
+  border: none; border-radius: 14px; color: white;
+  font-family: 'Bebas Neue', cursive; font-size: 1.8rem;
+  letter-spacing: 3px; padding: 1rem 3rem; cursor: pointer;
+  box-shadow: 0 8px 30px rgba(46,125,50,0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-start:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(46,125,50,0.4); }
+
+/* Jogo tela */
+#game-screen { display: none; }
+
+.game-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.4rem; flex-wrap: wrap; gap: 1rem;
+}
+.game-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(1.8rem,4vw,2.6rem);
+  color: var(--verde-forte); letter-spacing: 3px;
+}
+.rodada-info {
+  background: white; border: 1.5px solid #c8e6c9;
+  border-radius: 12px; padding: 0.5rem 1.2rem;
+  font-family: 'Bebas Neue', cursive; font-size: 1.3rem;
+  letter-spacing: 2px; color: var(--verde-forte);
+}
+
+/* Cronômetro */
+.timer-section {
+  background: white; border: 3px solid #c8e6c9;
+  border-radius: 20px; padding: 1.5rem 2rem;
+  text-align: center; margin-bottom: 1.5rem;
+  position: relative; overflow: hidden;
+}
+.timer-section::before {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; height: 5px;
+  background: var(--gol);
+  width: var(--progress, 100%);
+  transition: width 1s linear, background 0.5s;
+  border-radius: 0 0 20px 20px;
+}
+.timer-section.warning::before { background: #F9A825; }
+.timer-section.danger::before  { background: #f44336; }
+
+.timer-label {
+  font-size: 0.85rem; font-weight: 900;
+  letter-spacing: 2px; color: #555;
+  text-transform: uppercase; margin-bottom: 0.3rem;
+}
+.timer-display {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(4rem,12vw,8rem);
+  line-height: 1; color: #111; letter-spacing: 6px;
+  transition: color 0.3s;
+}
+.timer-display.warning { color: #E65100; }
+.timer-display.danger  { color: #f44336; }
+
+.timer-controls {
+  display: flex; justify-content: center;
+  gap: 1rem; margin-top: 1rem; flex-wrap: wrap;
+}
+
+.btn {
+  border: none; border-radius: 12px;
+  font-family: 'Bebas Neue', cursive; font-size: 1.15rem;
+  letter-spacing: 2px; padding: 0.6rem 1.5rem;
+  cursor: pointer; transition: transform 0.12s;
+}
+.btn:hover  { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+.btn-play   { background: var(--gol);    color: #0a2e0a; }
+.btn-pause  { background: #F9A825;       color: #1a0a00; }
+.btn-reset  { background: #e0e0e0;       color: #222; }
+.btn-next   { background: var(--verde-medio); color: white; }
+.btn-cfg    { background: #e8f5e9; color: var(--verde-medio); font-size: 0.9rem; padding: 0.5rem 1.1rem; }
+
+/* Placar */
+.placar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1rem; margin-bottom: 1.5rem;
+}
+.team-card {
+  background: white; border: 2px solid #e0e0e0;
+  border-radius: 18px; padding: 1.2rem 1rem;
+  text-align: center; transition: border-color 0.3s;
+  position: relative; overflow: hidden;
+}
+.team-card.leading {
+  border-color: var(--ouro);
+  background: #fffde7;
+  box-shadow: 0 0 24px rgba(255,214,0,0.25);
+}
+.team-card.leading::after {
+  content: '🥇'; position: absolute;
+  top: 8px; right: 10px; font-size: 1.1rem;
+}
+.team-name {
+  font-family: 'Bebas Neue', cursive; font-size: 1.25rem;
+  letter-spacing: 1.5px; color: #111; margin-bottom: 0.6rem;
+  word-break: break-word;
+}
+.team-score {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2.5rem,6vw,3.5rem);
+  color: var(--verde-forte); line-height: 1;
+  transition: transform 0.2s;
+}
+.team-score.bump { animation: scoreBump 0.4s ease; }
+@keyframes scoreBump {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.45); color: var(--gol); }
+  100% { transform: scale(1); }
+}
+.score-unit { font-size: 0.75rem; font-weight: 900; letter-spacing: 1px; color: #888; margin-top: 0.2rem; }
+.score-btns { display: flex; justify-content: center; gap: 0.5rem; margin-top: 0.8rem; }
+.btn-gol {
+  background: var(--gol); color: #0a2e0a; border: none;
+  border-radius: 8px; font-family: 'Bebas Neue', cursive;
+  font-size: 1rem; letter-spacing: 1px; padding: 0.35rem 0.8rem;
+  cursor: pointer; transition: transform 0.12s;
+}
+.btn-gol:hover { transform: scale(1.1); }
+.btn-remove {
+  background: #f5f5f5; color: #666; border: none;
+  border-radius: 8px; font-family: 'Bebas Neue', cursive;
+  font-size: 1rem; padding: 0.35rem 0.8rem;
+  cursor: pointer; transition: transform 0.12s;
+}
+.btn-remove:hover { transform: scale(1.1); background: #ffcdd2; color: #b71c1c; }
+
+/* Overlays */
+.gol-overlay {
+  position: fixed; inset: 0; background: rgba(0,200,83,0.12);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 999; pointer-events: none; opacity: 0;
+}
+.gol-overlay.show { animation: golFlash 1.3s ease forwards; }
+@keyframes golFlash {
+  0%   { opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.gol-text {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(5rem,15vw,10rem);
+  color: var(--gol); letter-spacing: 8px;
+  text-shadow: 0 0 60px rgba(0,200,83,0.7);
+  animation: golPop 0.4s ease;
+}
+@keyframes golPop {
+  0%   { transform: scale(0.4) rotate(-8deg); opacity: 0; }
+  70%  { transform: scale(1.1) rotate(2deg); }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+.apito-overlay {
+  position: fixed; inset: 0; background: rgba(244,67,54,0.15);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 998; pointer-events: none; opacity: 0;
+}
+.apito-overlay.show { animation: apitoFlash 2.2s ease forwards; }
+@keyframes apitoFlash {
+  0%,100% { opacity: 0; }
+  10%,90% { opacity: 1; }
+}
+.apito-text {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(3rem,10vw,7rem);
+  color: #f44336; letter-spacing: 6px;
+  text-shadow: 0 0 40px rgba(244,67,54,0.8);
+  text-align: center; line-height: 1.2;
+}
+
+/* Fim / Pódio */
+#end-screen { display: none; }
+.podio-wrapper {
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  gap: 1.5rem; padding: 2rem; min-height: 70vh;
+  justify-content: center;
+}
+.podio-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2.5rem,7vw,5rem);
+  color: var(--verde-forte); letter-spacing: 4px; line-height: 1.1;
+}
+.podio-grid {
+  display: flex; gap: 1.2rem;
+  justify-content: center; align-items: flex-end; flex-wrap: wrap;
+}
+.podio-item {
+  background: white; border-radius: 16px;
+  padding: 1.4rem 1.8rem; min-width: 150px;
+  border: 2px solid #e0e0e0;
+}
+.podio-item.p1 { border-color: var(--ouro); background: #fffde7; transform: translateY(-20px); }
+.podio-item.p2 { border-color: #B0BEC5; }
+.podio-item.p3 { border-color: #A1887F; }
+.podio-pos { font-family: 'Bebas Neue', cursive; font-size: 2.5rem; line-height: 1; }
+.p1 .podio-pos { color: #F9A825; }
+.p2 .podio-pos { color: #78909C; }
+.p3 .podio-pos { color: #8D6E63; }
+.podio-name { font-family: 'Bebas Neue', cursive; font-size: 1.4rem; letter-spacing: 1px; margin: 0.4rem 0; color: #111; }
+.podio-score { font-family: 'Bebas Neue', cursive; font-size: 2rem; color: var(--verde-forte); }
+
+/* ============================================================
+   RESPONSIVO
+============================================================ */
+@media (max-width: 600px) {
+  .nav-brand { display: none; }
+  .nav-tab { font-size: 1rem; padding: 0.8rem 0.8rem; }
+  .container { padding: 1rem 1rem 3rem; }
+  .secao { padding: 1.3rem 1.1rem; }
+  .copie { padding: 1.2rem 1.1rem; }
+  .tira-label { min-width: 105px; font-size: 0.9rem; }
+  .tira { width: 30px; height: 30px; }
+  .tira-total { padding-left: 120px; }
+  .groups-grid { grid-template-columns: 1fr; }
+  .placar-grid { grid-template-columns: repeat(2,1fr); }
+  .header::after { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     OVERLAYS DO JOGO (fora dos painéis para funcionar em fullscreen)
+============================================================ -->
+<div class="gol-overlay" id="golOverlay"><div class="gol-text">⚽ GOL!</div></div>
+<div class="apito-overlay" id="apitoOverlay"><div class="apito-text">⏱️ APITO!<br>Mostrem as respostas!</div></div>
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<nav class="navbar">
+  <div class="nav-brand">⚽ 7º Ano</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showTab('aula')" id="tab-aula">
+      <span class="tab-icon">📖</span> AULA
+    </button>
+    <button class="nav-tab" onclick="showTab('jogo')" id="tab-jogo">
+      <span class="tab-icon">🏆</span> CAMPEONATO
+    </button>
+  </div>
+</nav>
+
+<!-- ============================================================
+     PAINEL: AULA
+============================================================ -->
+<div id="painel-aula" class="painel active">
+
+  <!-- Fundo flutuante -->
+  <div class="bg-floats" aria-hidden="true">
+    <span class="ball" style="top:3%;left:1%">⚽</span>
+    <span class="sym"  style="top:5%;left:14%">3:5</span>
+    <span class="sym"  style="top:2%;left:32%">½</span>
+    <span class="ball" style="top:6%;left:50%">🏆</span>
+    <span class="sym"  style="top:3%;left:68%">÷</span>
+    <span class="ball" style="top:7%;left:84%">⚽</span>
+    <span class="sym"  style="top:18%;left:90%">4:1</span>
+    <span class="sym"  style="top:35%;left:0%">⅗</span>
+    <span class="ball" style="top:55%;left:95%">⚽</span>
+    <span class="sym"  style="top:70%;left:3%">2:3</span>
+    <span class="sym"  style="top:88%;left:10%">¼</span>
+    <span class="sym"  style="top:95%;left:78%">÷</span>
+  </div>
+
+  <div class="container">
+
+    <!-- Cabeçalho -->
+    <div class="header">
+      <div class="serie">⚽ Matemática · 7º Ano · Copa do Mundo</div>
+      <h1>Razão e Fração</h1>
+      <p>Comparar quantidades usando razão e fração</p>
+    </div>
+
+    <!-- SEÇÃO 1 – DEFINIÇÃO -->
+    <div class="secao">
+      <div class="secao-titulo"><div class="icone">1</div>O que é Razão?</div>
+      <p class="texto">
+        Na Copa do Mundo comparamos muitas coisas:<br>
+        ⚽ Gols marcados por dois times.<br>
+        🃏 Figurinhas repetidas e figurinhas novas no álbum.<br>
+        🏟️ Número de torcedores de países diferentes.
+      </p>
+      <p class="texto">Uma forma de fazer essas comparações é usando a ideia de <strong>razão</strong>.</p>
+      <div class="copie">
+        <p><strong>Definição:</strong></p>
+        <p>
+          A <strong>razão</strong> entre dois números <strong>a</strong> e <strong>b</strong>
+          é a divisão de <strong>a</strong> por <strong>b</strong>.<br><br>
+          Escrevemos: &nbsp;<strong>a : b</strong>&nbsp; ou &nbsp;<strong>a/b</strong><br><br>
+          Exemplo: a razão <strong>3 : 5</strong> significa que para cada
+          <strong>3</strong> de um lado há <strong>5</strong> do outro.
+        </p>
+      </div>
+      <div class="dica-tea">
+        <div class="emoji">💡</div>
+        <p><strong>Dica visual:</strong> Pense na razão como uma "comparação com dois números". O "<strong>:</strong>" é como uma balança colocando dois grupos lado a lado.</p>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 2 – ÁLBUM -->
+    <div class="secao verde">
+      <div class="secao-titulo"><div class="icone">2</div>Exemplo: Álbum de Figurinhas da Copa 🃏</div>
+      <p class="texto">
+        Lucas está montando o álbum da Copa do Mundo.<br>
+        Ele abriu um pacotinho e encontrou:
+      </p>
+      <div class="figurinhas-grid">
+        <div class="figurinha"><div class="fig-emoji">⭐</div>nova</div>
+        <div class="figurinha"><div class="fig-emoji">⭐</div>nova</div>
+        <div class="figurinha"><div class="fig-emoji">⭐</div>nova</div>
+        <div class="figurinha repetida"><div class="fig-emoji">🃏</div>repetida</div>
+        <div class="figurinha repetida"><div class="fig-emoji">🃏</div>repetida</div>
+      </div>
+      <p class="texto">
+        🟢 <strong>3 figurinhas novas</strong><br>
+        ⚪ <strong>2 figurinhas repetidas</strong><br>
+        📌 Total: <strong>5 figurinhas</strong>
+      </p>
+      <p class="texto">Para visualizar, usamos um <strong>esquema de tiras</strong>:</p>
+      <div class="tiras-container">
+        <div class="tira-linha">
+          <span class="tira-label">Novas</span>
+          <div class="tiras">
+            <div class="tira verde">🟢</div><div class="tira verde">🟢</div><div class="tira verde">🟢</div>
+          </div>
+        </div>
+        <div class="tira-linha">
+          <span class="tira-label">Repetidas</span>
+          <div class="tiras">
+            <div class="tira cinza">⚪</div><div class="tira cinza">⚪</div>
+          </div>
+        </div>
+        <div class="tira-total">⬆️ Cada quadrinho = 1 figurinha &nbsp;|&nbsp; Total = 3 + 2 = 5</div>
+      </div>
+      <hr class="sep">
+      <p class="texto">Com esse esquema conseguimos escrever três razões:</p>
+      <div class="passo verde">
+        <div class="passo-num">A</div>
+        <div class="passo-texto">Novas em relação ao <strong>total</strong>:<br>&nbsp;&nbsp; <strong>3 : 5</strong> → as figurinhas novas são <strong>3/5</strong> do pacote</div>
+      </div>
+      <div class="passo verde">
+        <div class="passo-num">B</div>
+        <div class="passo-texto">Repetidas em relação ao <strong>total</strong>:<br>&nbsp;&nbsp; <strong>2 : 5</strong> → as figurinhas repetidas são <strong>2/5</strong> do pacote</div>
+      </div>
+      <div class="passo verde">
+        <div class="passo-num">C</div>
+        <div class="passo-texto">Novas em relação às <strong>repetidas</strong>:<br>&nbsp;&nbsp; <strong>3 : 2</strong> → há <strong>3/2</strong> novas para cada repetida</div>
+      </div>
+      <div class="copie">
+        <p><strong>📌 Razão e Fração: Álbum da Copa</strong><br><br>
+          Figurinhas novas: 3 &nbsp;|&nbsp; Repetidas: 2 &nbsp;|&nbsp; Total: 5<br><br>
+          • Razão novas/total &nbsp;&nbsp;&nbsp;&nbsp;= 3 : 5 = 3/5<br>
+          • Razão repetidas/total = 2 : 5 = 2/5<br>
+          • Razão novas/repetidas = 3 : 2 = 3/2<br><br>
+          <strong>Conclusão: toda razão pode ser escrita como uma fração!</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 3 – LIGAÇÃO -->
+    <div class="secao">
+      <div class="secao-titulo"><div class="icone">3</div>Razão e Fração: a ligação 🔗</div>
+      <p class="texto">Toda razão pode ser escrita como uma fração. Veja:</p>
+      <div style="display:flex; flex-wrap:wrap; margin:1rem 0;">
+        <div class="razao-box"><div class="razao-valor">3 : 5</div><div class="razao-desc">é a mesma coisa que</div><div class="razao-valor" style="color:var(--azul-forte)">3/5</div></div>
+        <div class="razao-box"><div class="razao-valor">4 : 9</div><div class="razao-desc">é a mesma coisa que</div><div class="razao-valor" style="color:var(--azul-forte)">4/9</div></div>
+        <div class="razao-box"><div class="razao-valor">7 : 10</div><div class="razao-desc">é a mesma coisa que</div><div class="razao-valor" style="color:var(--azul-forte)">7/10</div></div>
+      </div>
+      <div class="destaque">
+        <p>🔑 <strong>Regra:</strong> Para escrever uma razão como fração, o primeiro número vai no <strong>numerador</strong> (cima) e o segundo vai no <strong>denominador</strong> (baixo).</p>
+      </div>
+      <div class="dica-tea">
+        <div class="emoji">🎯</div>
+        <p><strong>Atenção:</strong> a razão <strong>a : b</strong> só faz sentido quando os dois valores estão na <strong>mesma unidade</strong>. Exemplo: figurinhas com figurinhas, gols com gols.</p>
+      </div>
+    </div>
+
+    <!-- SEÇÃO 4 – EXEMPLO GOLS -->
+    <div class="secao ouro">
+      <div class="secao-titulo"><div class="icone">4</div>Exemplo para Copiar e Resolver ✏️</div>
+      <div class="exemplo-header">⚽ Problema – Gols da Copa</div>
+      <div class="exemplo-body">
+        <p><strong>Situação:</strong> O Brasil marcou <strong>360 gols</strong> em Copas do Mundo. Esse número representa <strong>4/9</strong> do total de gols que o Brasil e a Alemanha marcaram juntos. Quantos gols os dois países marcaram <strong>ao total</strong>?</p>
+        <p><strong>Esquema de tiras:</strong></p>
+        <div class="tiras-container">
+          <div class="tira-linha">
+            <span class="tira-label">Brasil</span>
+            <div class="tiras">
+              <div class="tira verde">⚽</div><div class="tira verde">⚽</div><div class="tira verde">⚽</div><div class="tira verde">⚽</div>
+            </div>
+          </div>
+          <div class="tira-linha">
+            <span class="tira-label">Alemanha</span>
+            <div class="tiras">
+              <div class="tira azul">⚽</div><div class="tira azul">⚽</div><div class="tira azul">⚽</div><div class="tira azul">⚽</div><div class="tira azul">⚽</div>
+            </div>
+          </div>
+          <div class="tira-total">Razão = 4 : 9 &nbsp;|&nbsp; Total = 4 + 5 = 9 unidades</div>
+        </div>
+      </div>
+      <div class="copie">
+        <p><strong>Resolução:</strong><br><br>
+          4 unidades → 360 gols (Brasil)<br>
+          1 unidade &nbsp;→ 360 ÷ 4 = 90 gols<br>
+          9 unidades → 90 × 9 = 810 gols<br><br>
+          <strong>Resposta: Brasil e Alemanha marcaram 810 gols juntos.</strong>
+        </p>
+      </div>
+      <div class="resultado">🏆 Total: 810 gols marcados pelos dois países</div>
+    </div>
+
+    <!-- SEÇÃO 5 – ÁLBUM COMPLETO -->
+    <div class="secao verde">
+      <div class="secao-titulo"><div class="icone">5</div>Bônus: Problema do Álbum 🃏</div>
+      <div class="exemplo-header" style="background:#1565C0;">📋 Problema – Completando o Álbum</div>
+      <div class="exemplo-body" style="background:var(--azul); border-color:var(--azul-forte);">
+        <p><strong>Situação:</strong> Maria já colou <strong>252 figurinhas</strong> no seu álbum da Copa. Isso representa <strong>4/7</strong> do total de figurinhas do álbum. Quantas figurinhas tem o álbum completo? E quantas ainda faltam?</p>
+        <p><strong>Esquema de tiras:</strong></p>
+        <div class="tiras-container">
+          <div class="tira-linha">
+            <span class="tira-label">✅ Coladas</span>
+            <div class="tiras">
+              <div class="tira verde">🃏</div><div class="tira verde">🃏</div><div class="tira verde">🃏</div><div class="tira verde">🃏</div>
+            </div>
+          </div>
+          <div class="tira-linha">
+            <span class="tira-label">❌ Faltam</span>
+            <div class="tiras">
+              <div class="tira cinza">🃏</div><div class="tira cinza">🃏</div><div class="tira cinza">🃏</div>
+            </div>
+          </div>
+          <div class="tira-total">Razão coladas/total = 4 : 7 &nbsp;|&nbsp; Total = 7 unidades</div>
+        </div>
+      </div>
+      <div class="copie">
+        <p><strong>Resolução:</strong><br><br>
+          4 unidades → 252 figurinhas coladas<br>
+          1 unidade &nbsp;→ 252 ÷ 4 = 63 figurinhas<br>
+          7 unidades → 63 × 7 = 441 figurinhas no total<br><br>
+          Faltam: 441 − 252 = <strong>189 figurinhas</strong><br><br>
+          <strong>Resposta: o álbum tem 441 figurinhas. Faltam 189.</strong>
+        </p>
+      </div>
+      <div class="resultado">🃏 Álbum completo: 441 figurinhas &nbsp;|&nbsp; Faltam: 189</div>
+    </div>
+
+    <!-- RESUMO -->
+    <div class="secao roxo">
+      <div class="secao-titulo"><div class="icone">★</div>Resumo da Aula</div>
+      <div class="copie" style="background:#EDE7F6; border-color:#7E57C2;">
+        <p style="margin-bottom:0.7rem"><strong>O que aprendemos hoje:</strong></p>
+        <ul>
+          <li>Razão é a <strong>comparação entre dois valores</strong> por divisão.</li>
+          <li>Escrevemos a razão como <strong>a : b</strong> ou como fração <strong>a/b</strong>.</li>
+          <li>O <strong>esquema de tiras</strong> ajuda a visualizar a razão.</li>
+          <li>Toda razão pode ser transformada em <strong>fração</strong>.</li>
+          <li>Usamos a razão para <strong>resolver problemas</strong> de comparação.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Botão para o jogo -->
+    <div style="text-align:center; margin-top:1rem;">
+      <button class="btn-start" onclick="showTab('jogo')" style="font-size:1.4rem; padding:0.9rem 2.5rem;">
+        🏆 IR PARA O CAMPEONATO
+      </button>
+    </div>
+
+    <div class="rodape">⚽ Matemática – 7º Ano &nbsp;·&nbsp; Razão e Fração &nbsp;·&nbsp; Copa do Mundo</div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAINEL: JOGO
+============================================================ -->
+<div id="painel-jogo" class="painel">
+  <div class="jogo-wrapper">
+
+    <!-- SETUP -->
+    <div id="setup-screen">
+      <div class="setup-title">🏆 Campeonato<br>das Seleções</div>
+      <div class="setup-sub">Configure os grupos antes de começar</div>
+      <div class="setup-card">
+        <h2>✏️ Nome dos Grupos</h2>
+        <div class="groups-grid" id="groupsGrid"></div>
+        <div class="setup-row">
+          <label>Número de grupos</label>
+          <input type="number" id="numGroups" value="5" min="2" max="8">
+        </div>
+        <div class="setup-row">
+          <label>Rodadas (questões)</label>
+          <input type="number" id="numRodadas" value="5" min="1" max="10">
+        </div>
+        <div class="setup-row">
+          <label>Tempo por rodada</label>
+          <input type="number" id="tempoRodada" value="4" min="1" max="15"> &nbsp;min
+        </div>
+      </div>
+      <button class="btn-start" onclick="startGame()">▶ INICIAR JOGO</button>
+    </div>
+
+    <!-- JOGO -->
+    <div id="game-screen">
+      <div class="game-header">
+        <div class="game-title">🏆 Campeonato das Seleções</div>
+        <div class="rodada-info" id="rodadaInfo">RODADA 1 / 5</div>
+      </div>
+      <div class="timer-section" id="timerSection">
+        <div class="timer-label">⏱ TEMPO DA RODADA</div>
+        <div class="timer-display" id="timerDisplay">4:00</div>
+        <div class="timer-controls">
+          <button class="btn btn-play"  id="btnPlay"  onclick="startTimer()">▶ INICIAR</button>
+          <button class="btn btn-pause" id="btnPause" onclick="pauseTimer()" style="display:none">⏸ PAUSAR</button>
+          <button class="btn btn-reset" onclick="resetTimer()">↺ RESETAR</button>
+          <button class="btn btn-next"  onclick="nextRodada()">PRÓXIMA RODADA ▶</button>
+        </div>
+      </div>
+      <div class="placar-grid" id="placarGrid"></div>
+      <div style="text-align:center; margin-top:0.5rem;">
+        <button class="btn btn-cfg" onclick="goSetup()">⚙ Reiniciar configurações</button>
+      </div>
+    </div>
+
+    <!-- FIM -->
+    <div id="end-screen">
+      <div class="podio-wrapper">
+        <div class="podio-title">🏆 Fim do Jogo!<br>Pódio Final</div>
+        <div class="podio-grid" id="podioGrid"></div>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-top:1rem;">
+          <button class="btn-start" onclick="goSetup()" style="font-size:1.3rem; padding:0.8rem 2rem;">🔄 Jogar Novamente</button>
+          <button class="btn-start" onclick="showTab('aula')" style="font-size:1.3rem; padding:0.8rem 2rem; background: linear-gradient(135deg,var(--azul-forte),#1976D2);">📖 Voltar à Aula</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+/* --- ABAS --- */
+function showTab(id) {
+  document.querySelectorAll('.painel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('painel-' + id).classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* --- JOGO --- */
+const PLACEHOLDERS = ['Grupo 1','Grupo 2','Grupo 3','Grupo 4','Grupo 5','Grupo 6','Grupo 7','Grupo 8'];
+
+let numGroups = 5, numRodadas = 5, tempoSeg = 240;
+let rodadaAtual = 1, scores = [], groupNames = [];
+let timerInterval = null, tempoRestante = 240, tempoTotal = 240, running = false;
+
+const numGroupsInput = document.getElementById('numGroups');
+const numRodasInput  = document.getElementById('numRodadas');
+const tempoInput     = document.getElementById('tempoRodada');
+const groupsGrid     = document.getElementById('groupsGrid');
+
+function renderGroupInputs() {
+  const n = parseInt(numGroupsInput.value) || 5;
+  groupsGrid.innerHTML = '';
+  for (let i = 0; i < n; i++) {
+    groupsGrid.innerHTML += `
+      <div class="group-input-row">
+        <span style="font-size:0.95rem;color:#666;min-width:22px;font-weight:800">${i+1}.</span>
+        <input type="text" id="gname_${i}" placeholder="${PLACEHOLDERS[i]||'Grupo '+(i+1)}" maxlength="20">
+      </div>`;
+  }
+}
+numGroupsInput.addEventListener('input', renderGroupInputs);
+renderGroupInputs();
+
+function startGame() {
+  numGroups  = parseInt(numGroupsInput.value) || 5;
+  numRodadas = parseInt(numRodasInput.value)  || 5;
+  tempoSeg   = (parseInt(tempoInput.value)||4) * 60;
+  groupNames = []; scores = [];
+  for (let i = 0; i < numGroups; i++) {
+    const inp = document.getElementById('gname_' + i);
+    groupNames.push(inp && inp.value.trim() ? inp.value.trim() : (PLACEHOLDERS[i]||'Grupo '+(i+1)));
+    scores.push(0);
+  }
+  rodadaAtual = 1; tempoRestante = tempoSeg; tempoTotal = tempoSeg;
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('game-screen').style.display  = 'block';
+  document.getElementById('end-screen').style.display   = 'none';
+  updateRodadaInfo(); renderPlacar(); resetTimer();
+}
+
+function goSetup() {
+  clearInterval(timerInterval); running = false;
+  document.getElementById('setup-screen').style.display = 'flex';
+  document.getElementById('game-screen').style.display  = 'none';
+  document.getElementById('end-screen').style.display   = 'none';
+  renderGroupInputs();
+}
+
+/* Timer */
+function formatTime(s) {
+  return `${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`;
+}
+function updateTimerUI() {
+  const disp = document.getElementById('timerDisplay');
+  const sec  = document.getElementById('timerSection');
+  disp.textContent = formatTime(tempoRestante);
+  sec.style.setProperty('--progress', (tempoRestante/tempoTotal*100)+'%');
+  disp.className = 'timer-display';
+  sec.className  = 'timer-section';
+  if (tempoRestante <= 30)      { disp.classList.add('danger');  sec.classList.add('danger'); }
+  else if (tempoRestante <= 60) { disp.classList.add('warning'); sec.classList.add('warning'); }
+}
+function startTimer() {
+  if (running) return; running = true;
+  document.getElementById('btnPlay').style.display  = 'none';
+  document.getElementById('btnPause').style.display = 'inline-block';
+  timerInterval = setInterval(() => {
+    tempoRestante--;
+    updateTimerUI();
+    if (tempoRestante <= 0) {
+      clearInterval(timerInterval); running = false;
+      document.getElementById('btnPlay').style.display  = 'inline-block';
+      document.getElementById('btnPause').style.display = 'none';
+      showApito();
+    }
+  }, 1000);
+}
+function pauseTimer() {
+  clearInterval(timerInterval); running = false;
+  document.getElementById('btnPlay').style.display  = 'inline-block';
+  document.getElementById('btnPause').style.display = 'none';
+}
+function resetTimer() {
+  clearInterval(timerInterval); running = false;
+  tempoRestante = tempoSeg;
+  document.getElementById('btnPlay').style.display  = 'inline-block';
+  document.getElementById('btnPause').style.display = 'none';
+  updateTimerUI();
+}
+function nextRodada() {
+  clearInterval(timerInterval); running = false;
+  if (rodadaAtual >= numRodadas) { showEndScreen(); return; }
+  rodadaAtual++; tempoRestante = tempoSeg;
+  document.getElementById('btnPlay').style.display  = 'inline-block';
+  document.getElementById('btnPause').style.display = 'none';
+  updateRodadaInfo(); updateTimerUI(); renderPlacar();
+}
+function updateRodadaInfo() {
+  document.getElementById('rodadaInfo').textContent = `RODADA ${rodadaAtual} / ${numRodadas}`;
+}
+
+/* Placar */
+function renderPlacar() {
+  const grid = document.getElementById('placarGrid');
+  const maxScore = Math.max(...scores);
+  grid.innerHTML = '';
+  for (let i = 0; i < numGroups; i++) {
+    const leading = scores[i] === maxScore && maxScore > 0;
+    grid.innerHTML += `
+      <div class="team-card ${leading?'leading':''}" id="card_${i}">
+        <div class="team-name">${groupNames[i]}</div>
+        <div class="team-score" id="score_${i}">${scores[i]}</div>
+        <div class="score-unit">⚽ gols</div>
+        <div class="score-btns">
+          <button class="btn-gol"    onclick="addGol(${i})">+1 GOL</button>
+          <button class="btn-remove" onclick="removeGol(${i})">−</button>
+        </div>
+      </div>`;
+  }
+}
+function addGol(i) {
+  scores[i]++;
+  const el = document.getElementById('score_'+i);
+  el.textContent = scores[i];
+  el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+  showGolOverlay(); updateLeader();
+}
+function removeGol(i) {
+  if (scores[i] > 0) { scores[i]--; document.getElementById('score_'+i).textContent = scores[i]; updateLeader(); }
+}
+function updateLeader() {
+  const max = Math.max(...scores);
+  for (let i = 0; i < numGroups; i++) {
+    const c = document.getElementById('card_'+i);
+    if (!c) continue;
+    scores[i] === max && max > 0 ? c.classList.add('leading') : c.classList.remove('leading');
+  }
+}
+
+/* Overlays */
+function showGolOverlay() {
+  const el = document.getElementById('golOverlay');
+  el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1400);
+}
+function showApito() {
+  const el = document.getElementById('apitoOverlay');
+  el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2400);
+}
+
+/* Fim */
+function showEndScreen() {
+  document.getElementById('game-screen').style.display = 'none';
+  document.getElementById('end-screen').style.display  = 'block';
+  const sorted = scores.map((s,i)=>({name:groupNames[i],score:s})).sort((a,b)=>b.score-a.score);
+  const medals = ['🥇','🥈','🥉'];
+  const cls    = ['p1','p2','p3'];
+  document.getElementById('podioGrid').innerHTML = sorted.slice(0,3).map((t,idx)=>`
+    <div class="podio-item ${cls[idx]||''}">
+      <div class="podio-pos">${medals[idx]||(idx+1)+'º'}</div>
+      <div class="podio-name">${t.name}</div>
+      <div class="podio-score">${t.score} ⚽</div>
+    </div>`).join('');
+}
+</script>
+</body>
+</html>
