@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gabarito – Produtos Notáveis | 9º Ano</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #f5f3ee;
+    --card: #ffffff;
+    --accent1: #1a5276;   /* azul escuro */
+    --accent2: #d4ac0d;   /* dourado */
+    --accent3: #c0392b;   /* vermelho atenção */
+    --accent4: #1e8449;   /* verde */
+    --border: #ddd8cc;
+    --text: #1c1c1c;
+    --muted: #6b6560;
+    --highlight-bg: #fef9e7;
+    --highlight-border: #d4ac0d;
+    --warn-bg: #fdf2f8;
+    --warn-border: #c0392b;
+    --formula-bg: #eaf4fb;
+    --formula-border: #1a5276;
+    --step-line: #c8c2b8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Nunito', sans-serif;
+    color: var(--text);
+    font-size: 18px;
+    line-height: 1.7;
+    padding: 32px 20px 60px;
+  }
+
+  header {
+    background: var(--accent1);
+    color: #fff;
+    border-radius: 16px;
+    padding: 28px 36px;
+    margin-bottom: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: 'x²';
+    position: absolute;
+    right: 30px; top: 10px;
+    font-size: 80px;
+    opacity: 0.08;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+  }
+  header h1 {
+    font-family: 'Merriweather', serif;
+    font-size: 26px;
+    letter-spacing: -0.5px;
+  }
+  header p {
+    margin-top: 6px;
+    opacity: 0.85;
+    font-size: 16px;
+  }
+
+  /* REMINDER BOX */
+  .lembrete {
+    background: var(--formula-bg);
+    border-left: 5px solid var(--formula-border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+  }
+  .lembrete h3 {
+    color: var(--accent1);
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    font-family: 'Space Mono', monospace;
+  }
+  .lembrete .formula-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .formula-item {
+    background: white;
+    border: 1px solid #bee3f8;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    color: var(--accent1);
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 44px;
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .section-num {
+    background: var(--accent1);
+    color: white;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-num.yellow { background: var(--accent2); color: #1c1c1c; }
+  .section-num.red { background: var(--accent3); }
+  .section-num.green { background: var(--accent4); }
+
+  .section-title h2 {
+    font-size: 19px;
+    font-family: 'Merriweather', serif;
+    color: var(--accent1);
+    font-weight: 700;
+  }
+
+  /* EXERCISE CARD */
+  .exercise {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .exercise.important {
+    border-color: var(--accent3);
+    border-width: 2.5px;
+  }
+
+  /* ATTENTION BADGE */
+  .atencao-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent3);
+    color: white;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+  .atencao-badge::before { content: '⚠️'; }
+
+  .ex-label {
+    font-weight: 800;
+    color: var(--accent1);
+    font-size: 17px;
+    margin-bottom: 8px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .enunciado {
+    background: #f9f8f5;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    font-size: 17px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* STEPS */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .step-num {
+    background: var(--formula-bg);
+    border: 1.5px solid var(--formula-border);
+    color: var(--accent1);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    min-width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .step-body {
+    flex: 1;
+    font-size: 16.5px;
+    line-height: 1.6;
+  }
+  .step-body .math {
+    display: inline-block;
+    background: #f0f9ff;
+    border: 1px solid #bee3f8;
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 14.5px;
+    color: #1a4f6e;
+    margin: 2px 0;
+  }
+  .step-body .math-block {
+    display: block;
+    background: #f0f9ff;
+    border: 1px solid #bee3f8;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    color: #1a4f6e;
+    margin: 8px 0;
+  }
+
+  .result {
+    margin-top: 12px;
+    background: #e9f7ef;
+    border: 2px solid var(--accent4);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    color: var(--accent4);
+    font-weight: 700;
+  }
+  .result::before { content: '✓ '; }
+
+  .tip {
+    margin-top: 10px;
+    background: var(--highlight-bg);
+    border-left: 4px solid var(--highlight-border);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 15px;
+    color: #7d6608;
+  }
+  .tip::before { content: '💡 '; }
+
+  /* divider between sub-exercises */
+  .sub-divider {
+    border: none;
+    border-top: 1.5px dashed var(--step-line);
+    margin: 18px 0;
+  }
+
+  /* special for ex 5 */
+  .calc-box {
+    background: #fef5e7;
+    border: 2px solid var(--accent2);
+    border-radius: 10px;
+    padding: 12px 18px;
+    margin-top: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    color: #7e5109;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Produtos Notáveis — Gabarito Detalhado</h1>
+  <p>9º Ano · Exercícios 1, 2, 4, 5, 6, 7, 10 e 11</p>
+</header>
+
+<!-- LEMBRETE GERAL -->
+<div class="lembrete">
+  <h3>📌 Lembrete — Fórmulas dos Produtos Notáveis</h3>
+  <div class="formula-list">
+    <div class="formula-item">Quadrado da soma:&nbsp;&nbsp;&nbsp; (a + b)² = a² + 2ab + b²</div>
+    <div class="formula-item">Quadrado da diferença: (a – b)² = a² – 2ab + b²</div>
+    <div class="formula-item">Produto da soma pela diferença: (a + b)(a – b) = a² – b²</div>
+  </div>
+</div>
+
+<!-- =========================================================== -->
+<!-- EXERCÍCIO 1 -->
+<!-- =========================================================== -->
+<div class="section">
+  <div class="section-title">
+    <div class="section-num">1</div>
+    <h2>Escreva na forma reduzida as expressões</h2>
+  </div>
+
+  <!-- 1a — IMPORTANTE -->
+  <div class="exercise important">
+    <div class="atencao-badge">CAI NA PROVA</div>
+    <div class="ex-label">a) (p + q)²</div>
+    <div class="enunciado">Aplique o quadrado da soma: (a + b)² = a² + 2ab + b²</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Identifique: <span class="math">a = p</span> e <span class="math">b = q</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">Calcule cada parcela:
+          <div class="math-block">a² = p²&nbsp;&nbsp;|&nbsp;&nbsp;2ab = 2pq&nbsp;&nbsp;|&nbsp;&nbsp;b² = q²</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">(p + q)² = p² + 2pq + q²</div>
+    <div class="tip">O termo do meio sempre é o <strong>dobro do produto</strong> dos dois termos!</div>
+  </div>
+
+  <!-- 1b — IMPORTANTE -->
+  <div class="exercise important">
+    <div class="atencao-badge">CAI NA PROVA</div>
+    <div class="ex-label">b) (x + 2)²</div>
+    <div class="enunciado">Aplique o quadrado da soma: (a + b)² = a² + 2ab + b²</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Identifique: <span class="math">a = x</span> e <span class="math">b = 2</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="math-block">a² = x²&nbsp;&nbsp;|&nbsp;&nbsp;2ab = 2·x·2 = 4x&nbsp;&nbsp;|&nbsp;&nbsp;b² = 2² = 4</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">(x + 2)² = x² + 4x + 4</div>
+  </div>
+
+  <!-- 1c — IMPORTANTE -->
+  <div class="exercise important">
+    <div class="atencao-badge">CAI NA PROVA</div>
+    <div class="ex-label">c) (3a + 5b)²</div>
+    <div class="enunciado">Aplique o quadrado da soma: (a + b)² = a² + 2ab + b²</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Identifique: <span class="math">a = 3a</span> e <span class="math">b = 5b</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="math-block">a² = (3a)² = 9a²</div>
+          <div class="math-block">2ab = 2·(3a)·(5b) = 30ab</div>
+          <div class="math-block">b² = (5b)² = 25b²</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">(3a + 5b)² = 9a² + 30ab + 25b²</div>
+    <div class="tip">Atenção: (3a)² = 3²·a² = 9a² — não esqueça de elevar o número E a letra!</div>
+  </div>
+
+  <!-- 1d -->
+  <div class="exercise">
+    <div class="ex-label">d) (–⅓x + 3)²</div>
+    <div class="enunciado">Quadrado da soma com coeficiente fracionário</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Identifique: <span class="math">a = –⅓x</span> e <span class="math">b = 3</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="math-block">a² = (–⅓x)² = (1/9)x²</div>
+          <div class="math-block">2ab = 2·(–⅓x)·3 = –2x</div>
+          <div class="math-block">b² = 3² = 9</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">(–⅓x + 3)² = (1/9)x² – 2x + 9</div>
+  </div>
+
+  <!-- 1e -->
+  <div class="exercise">
+    <div class="ex-label">e) (–4x – ½)²</div>
+    <div class="enunciado">Quadrado da diferença — atenção ao sinal negativo duplo</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Identifique: <span class="math">a = –4x</span> e <span class="math">b = ½</span> → é quadrado da diferença</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="math-block">a² = (–4x)² = 16x²</div>
+          <div class="math-block">2ab = 2·(–4x)·(–½) = +4x  ← dois negativos = positivo!</div>
+          <div class="math-block">b² = (½)² = ¼</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">(–4x – ½)² = 16x² + 4x + ¼</div>
+    <div class="tip">Quando elevamos um número negativo ao quadrado, o resultado é sempre positivo!</div>
+  </div>
+
+  <!-- 1f -->
+  <div class="exercise">
+    <div class="ex-label">f) (0,5a – 0,2b)²</div>
+    <div class="enunciado">Quadrado da diferença com decimais: (a – b)² = a² – 2ab + b²</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Identifique: <span class="math">a = 0,5a</span> e <span class="math">b = 0,2b</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="math-block">a² = (0,5a)² = 0,25a²</div>
+          <div class="math-block">2ab = 2·(0,5a)·(0,2b) = 0,2ab</div>
+          <div class="math-block">b² = (0,2b)² = 0,04b²</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">(0,5a – 0,2b)² = 0,25a² – 0,2ab + 0,04b²</div>
+  </div>
+</div>
+
+<!-- =========================================================== -->
+<!-- EXERCÍCIO 2 -->
+<!-- =========================================================== -->
+<div class="section">
+  <div class="section-title">
+    <div class="section-num yellow">2</div>
+    <h2>Determine a forma reduzida em x</h2>
+  </div>
+
+  <!-- 2a — IMPORTANTE -->
+  <div class="exercise important">
+    <div class="atencao-badge">CAI NA PROVA</div>
+    <div class="ex-label">a) (2x – ½)² + 2(x – 3)²</div>
+    <div class="enunciado">Desenvolva cada quadrado separadamente, depois some os termos semelhantes</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><strong>Desenvolva (2x – ½)²:</strong>
+          <div class="math-block">(2x)² – 2·(2x)·(½) + (½)²
+= 4x² – 2x + ¼</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><strong>Desenvolva 2·(x – 3)²:</strong>
+          <div class="math-block">2·[(x)² – 2·x·3 + 3²]
+= 2·[x² – 6x + 9]
+= 2x² – 12x + 18</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Some tudo:</strong>
+          <div class="math-block">4x² – 2x + ¼ + 2x² – 12x + 18</div>
+          <div class="math-block">= (4x² + 2x²) + (–2x – 12x) + (¼ + 18)
+= 6x² – 14x + 73/4</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">6x² – 14x + 73/4</div>
+    <div class="tip">18 = 72/4, então ¼ + 72/4 = 73/4</div>
+  </div>
+
+  <!-- 2b — IMPORTANTE -->
+  <div class="exercise important">
+    <div class="atencao-badge">CAI NA PROVA</div>
+    <div class="ex-label">b) (1 – 2x)² – (x – ½)²</div>
+    <div class="enunciado">Desenvolva os dois quadrados e subtraia</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><strong>Desenvolva (1 – 2x)²:</strong>
+          <div class="math-block">1² – 2·1·2x + (2x)²
+= 1 – 4x + 4x²</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><strong>Desenvolva (x – ½)²:</strong>
+          <div class="math-block">x² – 2·x·(½) + (½)²
+= x² – x + ¼</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Subtraia (atenção ao sinal!):</strong>
+          <div class="math-block">(1 – 4x + 4x²) – (x² – x + ¼)
+= 1 – 4x + 4x² – x² + x – ¼
+= 3x² – 3x + ¾</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">3x² – 3x + 3/4</div>
+    <div class="tip">Ao subtrair, distribua o sinal negativo em TODOS os termos do segundo parêntese!</div>
+  </div>
+
+  <!-- 2c -->
+  <div class="exercise">
+    <div class="ex-label">c) (x – 1)² – 3(x – 2)·(x + 3)</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><strong>(x – 1)²:</strong>
+          <div class="math-block">x² – 2x + 1</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><strong>3·(x – 2)·(x + 3):</strong> produto comum (distributiva)
+          <div class="math-block">(x – 2)(x + 3) = x² + 3x – 2x – 6 = x² + x – 6
+→ 3·(x² + x – 6) = 3x² + 3x – 18</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Subtraia:</strong>
+          <div class="math-block">(x² – 2x + 1) – (3x² + 3x – 18)
+= x² – 2x + 1 – 3x² – 3x + 18
+= –2x² – 5x + 19</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">–2x² – 5x + 19</div>
+  </div>
+
+  <!-- 2d -->
+  <div class="exercise">
+    <div class="ex-label">d) (1 – x)² – (1 – x)·(1 + x)</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><strong>(1 – x)²:</strong>
+          <div class="math-block">1 – 2x + x²</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><strong>(1 – x)(1 + x):</strong> produto da soma pela diferença!
+          <div class="math-block">= 1² – x² = 1 – x²</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Subtraia:</strong>
+          <div class="math-block">(1 – 2x + x²) – (1 – x²)
+= 1 – 2x + x² – 1 + x²
+= 2x² – 2x</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">2x² – 2x</div>
+  </div>
+</div>
+
+<!-- =========================================================== -->
+<!-- EXERCÍCIO 4 -->
+<!-- =========================================================== -->
+<div class="section">
+  <div class="section-title">
+    <div class="section-num green">4</div>
+    <h2>Aplique a² – b² = (a + b)·(a – b)</h2>
+  </div>
+
+  <!-- 4a -->
+  <div class="exercise">
+    <div class="ex-label">a) 49 – a²</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Escreva como diferença de quadrados: <span class="math">49 = 7²</span> e <span class="math">a² = a²</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">Aplique a fórmula: <span class="math">(7 + a)·(7 – a)</span></div>
+      </div>
+    </div>
+    <div class="result">49 – a² = (7 + a)·(7 – a)</div>
+  </div>
+
+  <!-- 4b -->
+  <div class="exercise">
+    <div class="ex-label">b) m² – n²</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Diretamente: <span class="math">a = m</span> e <span class="math">b = n</span></div>
+      </div>
+    </div>
+    <div class="result">m² – n² = (m + n)·(m – n)</div>
+  </div>
+
+  <!-- 4c -->
+  <div class="exercise">
+    <div class="ex-label">c) x² – 1/9</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Note que <span class="math">1/9 = (1/3)²</span></div>
+      </div>
+    </div>
+    <div class="result">x² – 1/9 = (x + 1/3)·(x – 1/3)</div>
+  </div>
+
+  <!-- 4d — IMPORTANTE -->
+  <div class="exercise important">
+    <div class="atencao-badge">CAI NA PROVA</div>
+    <div class="ex-label">d) x² – 25</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Note que <span class="math">25 = 5²</span></div>
+      </div>
+    </div>
+    <div class="result">x² – 25 = (x + 5)·(x – 5)</div>
+  </div>
+
+  <!-- 4e — IMPORTANTE -->
+  <div class="exercise important">
+    <div class="atencao-badge">CAI NA PROVA</div>
+    <div class="ex-label">e) x²/9 – 1</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Reescreva: <span class="math">x²/9 = (x/3)²</span> e <span class="math">1 = 1²</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">Aplique a fórmula com <span class="math">a = x/3</span> e <span class="math">b = 1</span></div>
+      </div>
+    </div>
+    <div class="result">x²/9 – 1 = (x/3 + 1)·(x/3 – 1)</div>
+  </div>
+
+  <!-- 4f -->
+  <div class="exercise">
+    <div class="ex-label">f) 2x² – 3</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Reescreva: <span class="math">2x² = (x√2)²</span> e <span class="math">3 = (√3)²</span></div>
+      </div>
+    </div>
+    <div class="result">2x² – 3 = (x√2 + √3)·(x√2 – √3)</div>
+  </div>
+</div>
+
+<!-- =========================================================== -->
+<!-- EXERCÍCIO 5 -->
+<!-- =========================================================== -->
+<div class="section">
+  <div class="section-title">
+    <div class="section-num yellow">5</div>
+    <h2>Considere: n² – (n – 1)·(n + 1)</h2>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-label">a) Forma reduzida</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Reconheça o produto da soma pela diferença:
+          <div class="math-block">(n – 1)·(n + 1) = n² – 1²  = n² – 1</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">Substitua na expressão:
+          <div class="math-block">n² – (n² – 1) = n² – n² + 1 = 1</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">n² – (n – 1)·(n + 1) = 1  (sempre!)</div>
+    <div class="tip">Essa expressão vale 1 para qualquer valor de n!</div>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-label">b) Calcule 2 998² – 2 997 · 2 999</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Observe que <span class="math">2997 = 2998 – 1</span> e <span class="math">2999 = 2998 + 1</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">Então: <span class="math">2997 · 2999 = (2998 – 1)·(2998 + 1)</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">A expressão vira <span class="math">n² – (n–1)·(n+1)</span> com <span class="math">n = 2998</span></div>
+      </div>
+    </div>
+    <div class="calc-box">2 998² – 2 997 · 2 999 = 1</div>
+    <div class="tip">Sem calculadora! Usamos o resultado do item (a) diretamente.</div>
+  </div>
+</div>
+
+<!-- =========================================================== -->
+<!-- EXERCÍCIO 6 -->
+<!-- =========================================================== -->
+<div class="section">
+  <div class="section-title">
+    <div class="section-num">6</div>
+    <h2>Área das figuras em forma reduzida</h2>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-label">a) Figura com quadrado (3x + 1)² e retângulo (4x + 1)²</div>
+    <div class="enunciado">Área total = área do quadrado menor + área do quadrado maior</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><strong>Quadrado lado (3x + 1):</strong>
+          <div class="math-block">(3x + 1)² = 9x² + 6x + 1</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><strong>Quadrado lado (4x + 1):</strong>
+          <div class="math-block">(4x + 1)² = 16x² + 8x + 1</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Some as áreas:</strong>
+          <div class="math-block">9x² + 6x + 1 + 16x² + 8x + 1 = 25x² + 14x + 2</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">A = 25x² + 14x + 2</div>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-label">b) Dois retângulos: (x + ½) e (2x – 1)</div>
+    <div class="enunciado">Área total = soma das áreas dos dois retângulos</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><strong>Quadrado lado (x + ½):</strong>
+          <div class="math-block">(x + ½)² = x² + x + ¼</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><strong>Quadrado lado (2x – 1):</strong>
+          <div class="math-block">(2x – 1)² = 4x² – 4x + 1</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Some:</strong>
+          <div class="math-block">x² + x + ¼ + 4x² – 4x + 1 = 5x² – 3x + 5/4</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">A = 5x² – 3x + 5/4</div>
+  </div>
+</div>
+
+<!-- =========================================================== -->
+<!-- EXERCÍCIO 7 -->
+<!-- =========================================================== -->
+<div class="section">
+  <div class="section-title">
+    <div class="section-num green">7</div>
+    <h2>Simplifique as expressões</h2>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-label">a) (x + 2)² – 2(x + 2)·(x – 2) + (x – 2)²</div>
+    <div class="enunciado">Reconheça o quadrado da diferença! Se chamarmos A = (x+2) e B = (x–2), temos: A² – 2AB + B² = (A – B)²</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Identifique: <span class="math">A = (x + 2)</span> e <span class="math">B = (x – 2)</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">A expressão é <span class="math">A² – 2AB + B² = (A – B)²</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">Calcule A – B:
+          <div class="math-block">(x + 2) – (x – 2) = x + 2 – x + 2 = 4</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">Logo: <span class="math">(A – B)² = 4² = 16</span></div>
+      </div>
+    </div>
+    <div class="result">= 16</div>
+    <div class="tip">A expressão toda simplifica para uma constante!</div>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-label">b) (a + b)² – 2(a + b)·(a – b) + (a – b)²</div>
+    <div class="enunciado">Mesmo padrão do item anterior: A² – 2AB + B² = (A – B)²</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Identifique: <span class="math">A = (a + b)</span> e <span class="math">B = (a – b)</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">Calcule A – B:
+          <div class="math-block">(a + b) – (a – b) = a + b – a + b = 2b</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><span class="math">(A – B)² = (2b)² = 4b²</span></div>
+      </div>
+    </div>
+    <div class="result">= 4b²</div>
+  </div>
+</div>
+
+<!-- =========================================================== -->
+<!-- EXERCÍCIO 10 -->
+<!-- =========================================================== -->
+<div class="section">
+  <div class="section-title">
+    <div class="section-num red">10</div>
+    <h2>Desenvolva as expressões</h2>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-label">a) (2ab + 3c)²</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><span class="math">a = 2ab</span>, <span class="math">b = 3c</span></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">
+        <div class="math-block">(2ab)² = 4a²b²</div>
+        <div class="math-block">2·(2ab)·(3c) = 12abc</div>
+        <div class="math-block">(3c)² = 9c²</div>
+      </div></div>
+    </div>
+    <div class="result">(2ab + 3c)² = 4a²b² + 12abc + 9c²</div>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-label">b) (11ab – 2c)²</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><span class="math">a = 11ab</span>, <span class="math">b = 2c</span> → quadrado da diferença</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">
+        <div class="math-block">(11ab)² = 121a²b²</div>
+        <div class="math-block">2·(11ab)·(2c) = 44abc</div>
+        <div class="math-block">(2c)² = 4c²</div>
+      </div></div>
+    </div>
+    <div class="result">(11ab – 2c)² = 121a²b² – 44abc + 4c²</div>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-label">c) (⅔a + b)²</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">
+        <div class="math-block">(⅔a)² = 4/9 · a²</div>
+        <div class="math-block">2·(⅔a)·b = 4/3 · ab</div>
+        <div class="math-block">b² = b²</div>
+      </div></div>
+    </div>
+    <div class="result">(⅔a + b)² = 4/9 a² + 4/3 ab + b²</div>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-label">d) (5/6 a²b + 2c²)²</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">
+        <div class="math-block">(5/6 a²b)² = 25/36 a⁴b²</div>
+        <div class="math-block">2·(5/6 a²b)·(2c²) = 10/3 a²bc²</div>
+        <div class="math-block">(2c²)² = 4c⁴</div>
+      </div></div>
+    </div>
+    <div class="result">25/36 a⁴b² + 10/3 a²bc² + 4c⁴</div>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-label">e) (–1 – 3a)²</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">
+        <div class="math-block">(–1)² = 1</div>
+        <div class="math-block">2·(–1)·(–3a) = +6a  ← dois negativos!</div>
+        <div class="math-block">(–3a)² = 9a²</div>
+      </div></div>
+    </div>
+    <div class="result">(–1 – 3a)² = 9a² + 6a + 1</div>
+  </div>
+
+  <div class="exercise">
+    <div class="ex-label">f) (8abc – 1/6)²</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">
+        <div class="math-block">(8abc)² = 64a²b²c²</div>
+        <div class="math-block">2·(8abc)·(1/6) = 8/3 abc</div>
+        <div class="math-block">(1/6)² = 1/36</div>
+      </div></div>
+    </div>
+    <div class="result">64a²b²c² – 8/3 abc + 1/36</div>
+  </div>
+</div>
+
+<!-- =========================================================== -->
+<!-- EXERCÍCIO 11 -->
+<!-- =========================================================== -->
+<div class="section">
+  <div class="section-title">
+    <div class="section-num red">11</div>
+    <h2>Área da parte colorida: A = (x + 2)·(x – 2) – (x – 3)²</h2>
+  </div>
+
+  <!-- 11a -->
+  <div class="exercise important">
+    <div class="atencao-badge">CAI NA PROVA</div>
+    <div class="ex-label">a) Explique o raciocínio de Lúcia</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">O retângulo maior tem lados <span class="math">(x + 2)</span> e <span class="math">(x – 2)</span> → área = produto desses lados</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">O quadrado branco retirado tem lado <span class="math">(x – 3)</span> → área = <span class="math">(x – 3)²</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">Área verde = área do retângulo – área do quadrado branco</div>
+      </div>
+    </div>
+    <div class="result">Lúcia calculou a área do retângulo maior e subtraiu a área do quadrado retirado</div>
+  </div>
+
+  <!-- 11b -->
+  <div class="exercise important">
+    <div class="atencao-badge">CAI NA PROVA</div>
+    <div class="ex-label">b) Mostre que A = 6x – 13</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><strong>Desenvolva (x + 2)·(x – 2):</strong> produto da soma pela diferença!
+          <div class="math-block">(x + 2)·(x – 2) = x² – 4</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><strong>Desenvolva (x – 3)²:</strong> quadrado da diferença
+          <div class="math-block">(x – 3)² = x² – 6x + 9</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Subtraia:</strong>
+          <div class="math-block">A = (x² – 4) – (x² – 6x + 9)
+= x² – 4 – x² + 6x – 9
+= 6x – 13</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">A = 6x – 13  ✓</div>
+    <div class="tip">Os termos x² se cancelam, sobrando apenas 6x – 13!</div>
+  </div>
+
+  <!-- 11c -->
+  <div class="exercise">
+    <div class="ex-label">c) Se A = 23 m², qual é o perímetro?</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">Resolva a equação:
+          <div class="math-block">6x – 13 = 23
+6x = 36
+x = 6</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">Calcule as medidas com x = 6:
+          <div class="math-block">x + 2 = 8&nbsp;&nbsp;|&nbsp;&nbsp;x – 2 = 4&nbsp;&nbsp;|&nbsp;&nbsp;x – 3 = 3</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">A figura colorida tem lados: 8, 4, 3, 3, 5, 1 (retângulo com canto cortado)
+          <div class="math-block">Perímetro = 8 + 4 + 4 + 4 = 24 m</div>
+        </div>
+      </div>
+    </div>
+    <div class="result">Perímetro = 24 m</div>
+  </div>
+</div>
+
+<footer>
+  aulasdarafa.com.br · Produtos Notáveis · 9º Ano · 2º Bimestre<br>
+  ⚠️ = questões prioritárias para a Avaliação 2
+</footer>
+
+</body>
+</html>
