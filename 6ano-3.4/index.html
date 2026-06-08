@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6º Ano – Decimais e Conversão de Unidades</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+
+  :root {
+    --sky: #e8f4fd;
+    --blue: #2d7dd2;
+    --teal: #0fa3b1;
+    --green: #3bb273;
+    --orange: #f4a261;
+    --yellow: #ffd166;
+    --pink: #ef6b99;
+    --purple: #7b5ea7;
+    --white: #ffffff;
+    --text: #1a2a4a;
+    --light: #f5faff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--sky);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ── Floating math symbols ── */
+  .floaters {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .floater {
+    position: absolute;
+    font-size: clamp(1.4rem, 3vw, 2.6rem);
+    font-weight: 900;
+    opacity: 0.10;
+    animation: drift linear infinite;
+    color: var(--blue);
+    font-family: 'Baloo 2', cursive;
+    user-select: none;
+  }
+  @keyframes drift {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.12; }
+    90%  { opacity: 0.12; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* ── Layout ── */
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* ── Header ── */
+  .hero {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--teal) 100%);
+    border-radius: 2rem;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    color: white;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 30px rgba(45,125,210,0.3);
+  }
+  .hero .tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.25);
+    border-radius: 2rem;
+    padding: .3rem 1.2rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    margin-bottom: .8rem;
+  }
+  .hero h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.1;
+    margin-bottom: .5rem;
+  }
+  .hero p {
+    font-size: 1.25rem;
+    opacity: .92;
+    font-weight: 600;
+  }
+
+  /* ── Section card ── */
+  .card {
+    background: var(--white);
+    border-radius: 1.5rem;
+    padding: 2rem 2rem 2.2rem;
+    margin-bottom: 1.8rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  }
+  .card-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.7rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── Concept box ── */
+  .concept {
+    background: var(--light);
+    border-left: 5px solid var(--blue);
+    border-radius: .8rem;
+    padding: 1.2rem 1.5rem;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  .concept b { color: var(--blue); }
+
+  /* ── Arrow chain ── */
+  .chain {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin: 1.2rem 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .chain-box {
+    background: var(--blue);
+    color: white;
+    border-radius: .7rem;
+    padding: .45rem 1rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .chain-box.green  { background: var(--green); }
+  .chain-box.orange { background: var(--orange); }
+  .chain-box.teal   { background: var(--teal); }
+  .chain-box.purple { background: var(--purple); }
+
+  .chain-op {
+    background: var(--yellow);
+    color: var(--text);
+    border-radius: 2rem;
+    padding: .35rem .9rem;
+    font-weight: 900;
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+  .arrow { font-size: 1.4rem; color: var(--blue); }
+
+  /* ── Step table ── */
+  .steps {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .5rem 1rem;
+    margin: 1rem 0;
+    align-items: start;
+  }
+  .step-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: white;
+    font-weight: 900;
+    font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-text {
+    font-size: 1.15rem;
+    font-weight: 600;
+    padding-top: .3rem;
+    line-height: 1.55;
+  }
+
+  /* ── Highlight callout ── */
+  .callout {
+    border-radius: 1.2rem;
+    padding: 1.2rem 1.5rem;
+    margin: 1.2rem 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.6;
+    display: flex;
+    gap: .8rem;
+    align-items: flex-start;
+  }
+  .callout.yellow { background: #fff8e1; border-left: 5px solid var(--yellow); }
+  .callout.green  { background: #e8f8ef; border-left: 5px solid var(--green); }
+  .callout.pink   { background: #fdeef4; border-left: 5px solid var(--pink); }
+  .callout .icon  { font-size: 1.6rem; flex-shrink: 0; line-height: 1; }
+
+  /* ── Example block ── */
+  .example {
+    background: #f0f7ff;
+    border-radius: 1rem;
+    padding: 1.2rem 1.5rem;
+    margin: .8rem 0;
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
+  .example strong { color: var(--teal); font-size: 1.2rem; }
+
+  /* ── Table ── */
+  .conv-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 1.1rem;
+  }
+  .conv-table th {
+    background: var(--blue);
+    color: white;
+    padding: .8rem 1rem;
+    font-weight: 800;
+    font-size: 1.15rem;
+    text-align: center;
+  }
+  .conv-table th:first-child { border-radius: .7rem 0 0 0; }
+  .conv-table th:last-child  { border-radius: 0 .7rem 0 0; }
+  .conv-table td {
+    padding: .7rem 1rem;
+    text-align: center;
+    font-weight: 600;
+    border-bottom: 1px solid #e2ecf8;
+  }
+  .conv-table tr:nth-child(even) td { background: #f4f9ff; }
+  .conv-table tr:last-child td { border-bottom: none; }
+
+  /* ── Quiz section ── */
+  .quiz-wrapper { margin-top: 2.5rem; }
+  .quiz-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--blue);
+    margin-bottom: .4rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .quiz-sub {
+    font-size: 1.1rem;
+    color: #5a6e8a;
+    margin-bottom: 1.8rem;
+    font-weight: 600;
+  }
+
+  .q-card {
+    background: white;
+    border-radius: 1.5rem;
+    padding: 1.8rem 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+    transition: box-shadow .2s;
+  }
+  .q-card:hover { box-shadow: 0 6px 26px rgba(45,125,210,0.14); }
+
+  .q-number {
+    display: inline-block;
+    background: var(--blue);
+    color: white;
+    border-radius: 2rem;
+    padding: .2rem .9rem;
+    font-weight: 900;
+    font-size: 1rem;
+    margin-bottom: .6rem;
+  }
+  .q-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+
+  .options { display: flex; flex-direction: column; gap: .55rem; }
+  .option-btn {
+    background: #f0f7ff;
+    border: 2.5px solid #d0e5f7;
+    border-radius: .9rem;
+    padding: .8rem 1.2rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    transition: all .18s;
+  }
+  .option-btn:hover:not(:disabled) {
+    background: #dceefb;
+    border-color: var(--blue);
+    transform: translateX(4px);
+  }
+  .option-btn.correct {
+    background: #d4f5e2;
+    border-color: var(--green);
+    color: #1a5c35;
+  }
+  .option-btn.wrong {
+    background: #fde8ee;
+    border-color: var(--pink);
+    color: #8b1a35;
+  }
+  .option-btn.reveal-correct {
+    background: #d4f5e2;
+    border-color: var(--green);
+    color: #1a5c35;
+  }
+
+  .feedback {
+    margin-top: .9rem;
+    padding: 1rem 1.2rem;
+    border-radius: .9rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.6;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok   { background: #d4f5e2; color: #1a5c35; }
+  .feedback.err  { background: #fde8ee; color: #8b1a35; }
+
+  /* ── Progress ── */
+  .progress-bar-wrap {
+    background: #dce8f5;
+    border-radius: 2rem;
+    height: 14px;
+    margin: 1rem 0 1.5rem;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue), var(--teal));
+    border-radius: 2rem;
+    transition: width .4s ease;
+    width: 0%;
+  }
+  .score-display {
+    text-align: right;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--blue);
+    margin-bottom: .5rem;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .wrapper { padding: 1rem .8rem 3rem; }
+    .card, .q-card { padding: 1.3rem 1.2rem; }
+    .chain { font-size: 1rem; }
+    .chain-box { padding: .35rem .7rem; font-size: .95rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating symbols -->
+<div class="floaters" id="floaters"></div>
+
+<div class="wrapper">
+
+  <!-- ── HEADER ── -->
+  <div class="hero">
+    <div class="tag">📚 6º Ano — Bimestre 2</div>
+    <h1>Decimais &amp; Conversão de Medidas</h1>
+    <p>Inteiros, decimais e funções de conversão de comprimento</p>
+  </div>
+
+  <!-- ── PARTE 1: Inteiros e Decimais ── -->
+  <div class="card">
+    <div class="card-title">
+      <span class="dot" style="background:var(--blue)"></span>
+      Parte 1 – Inteiros e Decimais
+    </div>
+
+    <div class="concept">
+      <b>Mil, milhão, bilhão…</b> são formas de escrever números grandes.<br>
+      Podemos usar decimais para simplificar:
+    </div>
+
+    <div class="example">
+      <strong>233 000 000</strong> = 233 milhões<br>
+      Porque: 233 × 1 000 000 = 233 000 000
+    </div>
+    <div class="example">
+      <strong>1 730</strong> → <strong>1,73 mil</strong><br>
+      Porque: 1,73 × 1 000 = 1 730
+    </div>
+
+    <table class="conv-table">
+      <tr><th>Nome</th><th>Valor</th><th>Zeros</th></tr>
+      <tr><td>1 mil</td><td>1 000</td><td>3 zeros</td></tr>
+      <tr><td>1 milhão</td><td>1 000 000</td><td>6 zeros</td></tr>
+      <tr><td>1 bilhão</td><td>1 000 000 000</td><td>9 zeros</td></tr>
+      <tr><td>1 trilhão</td><td>1 000 000 000 000</td><td>12 zeros</td></tr>
+    </table>
+
+    <div class="callout yellow">
+      <span class="icon">💡</span>
+      <div>
+        Para ir de decimal para inteiro: <b>mova a vírgula para a direita</b> conforme o número de zeros.<br>
+        Para ir de inteiro para decimal: <b>mova para a esquerda</b>.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PARTE 2: Funções de Conversão ── -->
+  <div class="card">
+    <div class="card-title">
+      <span class="dot" style="background:var(--teal)"></span>
+      Parte 2 – Convertendo Medidas de Comprimento
+    </div>
+
+    <div class="concept">
+      Usamos <b>funções</b> para converter unidades.<br>
+      Cada função é uma <b>operação</b> que transforma a medida.
+    </div>
+
+    <!-- km → m -->
+    <p style="font-size:1.15rem;font-weight:700;margin:.8rem 0 .4rem;color:var(--blue)">📏 km → m &nbsp;(multiplicar por 1 000)</p>
+    <div class="chain">
+      <span class="chain-box">km</span>
+      <span class="arrow">→</span>
+      <span class="chain-op">× 1 000</span>
+      <span class="arrow">→</span>
+      <span class="chain-box green">m</span>
+    </div>
+    <div class="example">
+      1,35 km × 1 000 = <strong>1 350 m</strong><br>
+      0,12 km × 1 000 = <strong>120 m</strong>
+    </div>
+
+    <!-- m → cm -->
+    <p style="font-size:1.15rem;font-weight:700;margin:.8rem 0 .4rem;color:var(--teal)">📏 m → cm &nbsp;(multiplicar por 100)</p>
+    <div class="chain">
+      <span class="chain-box teal">m</span>
+      <span class="arrow">→</span>
+      <span class="chain-op">× 100</span>
+      <span class="arrow">→</span>
+      <span class="chain-box orange">cm</span>
+    </div>
+    <div class="example">
+      0,53 m × 100 = <strong>53 cm</strong><br>
+      13,15 m × 100 = <strong>1 315 cm</strong>
+    </div>
+
+    <!-- cm → mm -->
+    <p style="font-size:1.15rem;font-weight:700;margin:.8rem 0 .4rem;color:var(--orange)">📏 cm → mm &nbsp;(multiplicar por 10)</p>
+    <div class="chain">
+      <span class="chain-box orange">cm</span>
+      <span class="arrow">→</span>
+      <span class="chain-op">× 10</span>
+      <span class="arrow">→</span>
+      <span class="chain-box purple">mm</span>
+    </div>
+    <div class="example">
+      28 cm × 10 = <strong>280 mm</strong>
+    </div>
+
+    <!-- Função composta -->
+    <div class="callout green">
+      <span class="icon">🔗</span>
+      <div>
+        <b>Função composta</b> — posso encadear várias conversões:<br>
+        <div class="chain" style="margin-top:.5rem">
+          <span class="chain-box">km</span>
+          <span class="arrow">→</span>
+          <span class="chain-op">× 1000</span>
+          <span class="arrow">→</span>
+          <span class="chain-box green">m</span>
+          <span class="arrow">→</span>
+          <span class="chain-op">× 100</span>
+          <span class="arrow">→</span>
+          <span class="chain-box orange">cm</span>
+          <span class="arrow">→</span>
+          <span class="chain-op">× 10</span>
+          <span class="arrow">→</span>
+          <span class="chain-box purple">mm</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inversas -->
+    <p style="font-size:1.15rem;font-weight:700;margin:1.2rem 0 .4rem;color:var(--pink)">🔄 Funções inversas (voltando para a unidade maior)</p>
+    <table class="conv-table">
+      <tr><th>De</th><th>Para</th><th>Operação</th><th>Exemplo</th></tr>
+      <tr><td>m</td><td>km</td><td>÷ 1 000</td><td>300 m → 0,3 km</td></tr>
+      <tr><td>cm</td><td>m</td><td>÷ 100</td><td>147 cm → 1,47 m</td></tr>
+      <tr><td>mm</td><td>cm</td><td>÷ 10</td><td>73 mm → 7,3 cm</td></tr>
+    </table>
+  </div>
+
+  <!-- ── PARTE 3: Macete da vírgula ── -->
+  <div class="card">
+    <div class="card-title">
+      <span class="dot" style="background:var(--orange)"></span>
+      Parte 3 – Macete da Vírgula
+    </div>
+    <div class="callout pink">
+      <span class="icon">✏️</span>
+      <div>
+        <b>Multiplicar por 10, 100, 1000…</b><br>
+        Move a vírgula para a <b>direita</b> (1, 2, 3 casas)<br><br>
+        <b>Dividir por 10, 100, 1000…</b><br>
+        Move a vírgula para a <b>esquerda</b>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step-num">1</div>
+      <div class="step-text">Identifique quantos zeros tem o multiplicador (100 → 2 zeros)</div>
+      <div class="step-num">2</div>
+      <div class="step-text">Mova a vírgula esse número de casas para a direita</div>
+      <div class="step-num">3</div>
+      <div class="step-text">Se faltar dígito, adicione zero: 0,3 × 100 → 030 → 30</div>
+    </div>
+    <div class="example">
+      0,049 m → × 100 → <strong>4,9 cm</strong> → × 10 → <strong>49 mm</strong>
+    </div>
+  </div>
+
+  <!-- ── EXERCÍCIOS ── -->
+  <div class="quiz-wrapper">
+    <div class="quiz-title">✏️ Exercícios para a Prova</div>
+    <div class="quiz-sub">Clique na resposta que você acha correta. O feedback aparece logo depois!</div>
+
+    <div class="score-display">Acertos: <span id="score">0</span> / <span id="total">0</span></div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="pbar"></div></div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <span class="q-number">Questão 1</span>
+      <div class="q-text">Converta: 1,3 km = _____ m</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,false,'Q1')">A) 13 m</button>
+        <button class="option-btn" onclick="answer(this,false,'Q1')">B) 130 m</button>
+        <button class="option-btn" onclick="answer(this,true,'Q1')">C) 1 300 m</button>
+        <button class="option-btn" onclick="answer(this,false,'Q1')">D) 13 000 m</button>
+      </div>
+      <div class="feedback" id="fb-Q1">
+        ✅ Correto! <b>1,3 × 1 000 = 1 300 m</b><br>
+        Move a vírgula 3 casas para a direita: 1,300 → 1 300.
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <span class="q-number">Questão 2</span>
+      <div class="q-text">Converta: 0,53 km = _____ m e depois = _____ cm</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,false,'Q2')">A) 53 m e 530 cm</button>
+        <button class="option-btn" onclick="answer(this,true,'Q2')">B) 530 m e 53 000 cm</button>
+        <button class="option-btn" onclick="answer(this,false,'Q2')">C) 5 300 m e 530 000 cm</button>
+        <button class="option-btn" onclick="answer(this,false,'Q2')">D) 53 m e 5 300 cm</button>
+      </div>
+      <div class="feedback" id="fb-Q2">
+        ✅ Correto! <b>0,53 × 1 000 = 530 m</b>, depois <b>530 × 100 = 53 000 cm</b>.
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <span class="q-number">Questão 3</span>
+      <div class="q-text">Qual é o valor de 0,28 m em milímetros?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,false,'Q3')">A) 28 mm</button>
+        <button class="option-btn" onclick="answer(this,false,'Q3')">B) 2,8 mm</button>
+        <button class="option-btn" onclick="answer(this,true,'Q3')">C) 280 mm</button>
+        <button class="option-btn" onclick="answer(this,false,'Q3')">D) 2 800 mm</button>
+      </div>
+      <div class="feedback" id="fb-Q3">
+        ✅ Correto! <b>0,28 m × 100 = 28 cm</b>, depois <b>28 cm × 10 = 280 mm</b>.
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <span class="q-number">Questão 4</span>
+      <div class="q-text">300 m = _____ km? (função inversa)</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,false,'Q4')">A) 3 km</button>
+        <button class="option-btn" onclick="answer(this,false,'Q4')">B) 30 km</button>
+        <button class="option-btn" onclick="answer(this,true,'Q4')">C) 0,3 km</button>
+        <button class="option-btn" onclick="answer(this,false,'Q4')">D) 0,03 km</button>
+      </div>
+      <div class="feedback" id="fb-Q4">
+        ✅ Correto! <b>300 ÷ 1 000 = 0,3 km</b><br>
+        Dividir por 1 000 move a vírgula 3 casas para a esquerda.
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <span class="q-number">Questão 5</span>
+      <div class="q-text">Um trem tem comprimento total de 2 km. Expresse esse valor em metros.</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,false,'Q5')">A) 200 m</button>
+        <button class="option-btn" onclick="answer(this,true,'Q5')">B) 2 000 m</button>
+        <button class="option-btn" onclick="answer(this,false,'Q5')">C) 20 m</button>
+        <button class="option-btn" onclick="answer(this,false,'Q5')">D) 200 000 m</button>
+      </div>
+      <div class="feedback" id="fb-Q5">
+        ✅ Correto! <b>2 × 1 000 = 2 000 m</b>.
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <span class="q-number">Questão 6</span>
+      <div class="q-text">Qual dessas afirmações é VERDADEIRA?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,false,'Q6')">A) 1 m = 10 cm</button>
+        <button class="option-btn" onclick="answer(this,true,'Q6')">B) 1 km = 1 000 m</button>
+        <button class="option-btn" onclick="answer(this,false,'Q6')">C) 1 cm = 100 mm</button>
+        <button class="option-btn" onclick="answer(this,false,'Q6')">D) 1 m = 10 mm</button>
+      </div>
+      <div class="feedback" id="fb-Q6">
+        ✅ Correto! <b>1 km = 1 000 m</b>.<br>
+        Lembre: 1 m = 100 cm e 1 cm = 10 mm.
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card">
+      <span class="q-number">Questão 7</span>
+      <div class="q-text">Complete a cadeia: 1,3 km → _____ m → _____ cm</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,false,'Q7')">A) 130 m → 1 300 cm</button>
+        <button class="option-btn" onclick="answer(this,false,'Q7')">B) 13 m → 130 cm</button>
+        <button class="option-btn" onclick="answer(this,true,'Q7')">C) 1 300 m → 130 000 cm</button>
+        <button class="option-btn" onclick="answer(this,false,'Q7')">D) 1 300 m → 13 000 cm</button>
+      </div>
+      <div class="feedback" id="fb-Q7">
+        ✅ Correto! <b>1,3 × 1000 = 1 300 m</b>, depois <b>1 300 × 100 = 130 000 cm</b>.
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card">
+      <span class="q-number">Questão 8</span>
+      <div class="q-text">Márcia quer tricotar 1,8 m de cachecol. Quantos centímetros é isso?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,false,'Q8')">A) 18 cm</button>
+        <button class="option-btn" onclick="answer(this,true,'Q8')">B) 180 cm</button>
+        <button class="option-btn" onclick="answer(this,false,'Q8')">C) 1 800 cm</button>
+        <button class="option-btn" onclick="answer(this,false,'Q8')">D) 0,18 cm</button>
+      </div>
+      <div class="feedback" id="fb-Q8">
+        ✅ Correto! <b>1,8 × 100 = 180 cm</b>.<br>
+        Com 15 cm/dia, ela levará 180 ÷ 15 = 12 dias.
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="q-card">
+      <span class="q-number">Questão 9</span>
+      <div class="q-text">Um número decimal pode ser lido como "137 milhões". Qual é esse número?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,false,'Q9')">A) 1 370 000</button>
+        <button class="option-btn" onclick="answer(this,true,'Q9')">B) 137 000 000</button>
+        <button class="option-btn" onclick="answer(this,false,'Q9')">C) 13 700 000</button>
+        <button class="option-btn" onclick="answer(this,false,'Q9')">D) 1 370 000 000</button>
+      </div>
+      <div class="feedback" id="fb-Q9">
+        ✅ Correto! <b>137 × 1 000 000 = 137 000 000</b> — seis zeros depois do 137.
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q-card">
+      <span class="q-number">Questão 10 ⭐</span>
+      <div class="q-text">
+        Uma cerca de 14 m tem estacas igualmente espaçadas, com uma no começo e uma no fim.
+        São usadas 9 estacas no total. Qual é a distância (em cm) entre duas estacas consecutivas?
+      </div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,false,'Q10')">A) 140 cm</button>
+        <button class="option-btn" onclick="answer(this,false,'Q10')">B) 155,5 cm</button>
+        <button class="option-btn" onclick="answer(this,true,'Q10')">C) 175 cm</button>
+        <button class="option-btn" onclick="answer(this,false,'Q10')">D) 200 cm</button>
+      </div>
+      <div class="feedback" id="fb-Q10">
+        ✅ Correto! 9 estacas formam <b>8 espaços</b>. <br>
+        14 m ÷ 8 = 1,75 m = <b>175 cm</b>.<br>
+        Primeiro converti: 14 m × 100 = 1 400 cm. Depois: 1 400 ÷ 8 = 175 cm.
+      </div>
+    </div>
+
+  </div><!-- /quiz-wrapper -->
+
+</div><!-- /wrapper -->
+
+<script>
+  // ── Floating symbols ──
+  const symbols = ['×','÷','+','-','=','km','m','cm','mm','0,5','1,3','100','1000','½','π','∞','%','÷','×'];
+  const container = document.getElementById('floaters');
+  for (let i = 0; i < 28; i++) {
+    const el = document.createElement('div');
+    el.className = 'floater';
+    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    el.style.left = (Math.random() * 100) + 'vw';
+    el.style.animationDuration = (18 + Math.random() * 22) + 's';
+    el.style.animationDelay = (-Math.random() * 30) + 's';
+    el.style.fontSize = (1.2 + Math.random() * 2) + 'rem';
+    container.appendChild(el);
+  }
+
+  // ── Quiz logic ──
+  let answered = {};
+  let score = 0;
+  const TOTAL = 10;
+
+  function answer(btn, isCorrect, qid) {
+    if (answered[qid]) return;
+    answered[qid] = true;
+
+    const allBtns = btn.closest('.options').querySelectorAll('.option-btn');
+    allBtns.forEach(b => b.disabled = true);
+
+    const fb = document.getElementById('fb-' + qid);
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      score++;
+      fb.className = 'feedback show ok';
+    } else {
+      btn.classList.add('wrong');
+      fb.className = 'feedback show err';
+      // reveal correct
+      allBtns.forEach(b => {
+        if (b.onclick.toString().includes('true')) b.classList.add('reveal-correct');
+      });
+      fb.innerHTML = '❌ Não foi dessa vez. A resposta correta está marcada em verde.<br>' + fb.innerHTML;
+    }
+
+    document.getElementById('score').textContent = score;
+    document.getElementById('total').textContent = Object.keys(answered).length;
+    document.getElementById('pbar').style.width = (Object.keys(answered).length / TOTAL * 100) + '%';
+  }
+</script>
+</body>
+</html>
