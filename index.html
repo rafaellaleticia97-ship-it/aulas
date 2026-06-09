@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Números Racionais – 7º Ano</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #1a6fb5;
+    --azul-claro: #e8f3fc;
+    --verde: #1a9e6e;
+    --verde-claro: #e4f7f0;
+    --laranja: #e86b1a;
+    --laranja-claro: #fff0e6;
+    --roxo: #7c3aed;
+    --roxo-claro: #f3eeff;
+    --amarelo: #f5c800;
+    --vermelho: #d32f2f;
+    --cinza-bg: #f4f6fa;
+    --texto: #1a1a2e;
+    --caderno: #fff9c4;
+    --caderno-borda: #e0aa00;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--cinza-bg); color: var(--texto); font-size: 1.15rem; line-height: 1.75; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0d47a1 0%, #1a6fb5 50%, #1a9e6e 100%);
+    color: white; padding: 2.5rem 2rem 2rem; text-align: center; position: relative; overflow: hidden;
+  }
+  .header-floats {
+    position: absolute; top:0; left:0; right:0; bottom:0;
+    font-size: 2.5rem; display:flex; align-items:center; justify-content:center;
+    gap: 2rem; opacity: 0.08; pointer-events: none; flex-wrap:wrap;
+  }
+  .header .turma {
+    font-size: 0.9rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; background: rgba(255,255,255,0.2);
+    display: inline-block; padding: 0.25rem 1rem; border-radius: 20px; margin-bottom: 0.7rem;
+    position: relative;
+  }
+  .header h1 { font-family: 'Baloo 2', cursive; font-size: 2.4rem; font-weight: 800; margin-bottom: 0.3rem; position:relative; }
+  .header .subtitulo { font-size: 1rem; opacity: 0.9; font-weight: 600; position:relative; }
+
+  /* CONTINUIDADE */
+  .continuidade {
+    background: #e8f3fc; border-left: 5px solid var(--azul);
+    padding: 1rem 1.5rem; margin: 1.5rem auto; max-width: 860px;
+    border-radius: 0 12px 12px 0; font-size: 1rem;
+  }
+  .continuidade strong { color: var(--azul); }
+
+  /* ÍNDICE */
+  .indice {
+    display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap;
+    padding: 1rem; background: white; border-bottom: 3px solid var(--azul-claro);
+  }
+  .indice a {
+    background: var(--azul-claro); color: var(--azul); border-radius: 20px;
+    padding: 0.3rem 0.9rem; font-size: 0.9rem; font-weight: 700; text-decoration: none; transition: all 0.2s;
+  }
+  .indice a:hover { background: var(--azul); color: white; }
+
+  /* CONTAINER */
+  .container { max-width: 860px; margin: 0 auto; padding: 2rem 1.2rem 4rem; }
+
+  /* SEÇÃO */
+  .secao {
+    background: white; border-radius: 18px; padding: 2rem 1.8rem;
+    margin-bottom: 2rem; box-shadow: 0 3px 16px rgba(26,111,181,0.08);
+    border-left: 6px solid var(--azul);
+  }
+  .secao.verde { border-left-color: var(--verde); }
+  .secao.laranja { border-left-color: var(--laranja); }
+  .secao.roxo { border-left-color: var(--roxo); }
+
+  .secao-titulo {
+    font-family: 'Baloo 2', cursive; font-size: 1.55rem; font-weight: 800;
+    margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.6rem;
+  }
+  .secao-titulo.azul { color: var(--azul); }
+  .secao-titulo.verde { color: var(--verde); }
+  .secao-titulo.laranja { color: var(--laranja); }
+  .secao-titulo.roxo { color: var(--roxo); }
+
+  .num-secao {
+    color: white; border-radius: 50%; width: 2rem; height: 2rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 1rem; font-weight: 900; flex-shrink: 0; background: var(--azul);
+  }
+  .num-secao.verde { background: var(--verde); }
+  .num-secao.laranja { background: var(--laranja); }
+  .num-secao.roxo { background: var(--roxo); }
+
+  /* CADERNO */
+  .caderno {
+    background: var(--caderno); border: 2.5px solid var(--caderno-borda);
+    border-radius: 14px; padding: 1.3rem 1.5rem; margin: 1.2rem 0; position: relative;
+  }
+  .caderno::before {
+    content: "✏️ COPIE NO CADERNO";
+    position: absolute; top: -14px; left: 18px;
+    background: var(--caderno-borda); color: #4a3000;
+    font-size: 0.78rem; font-weight: 900; letter-spacing: 0.1em;
+    padding: 2px 10px; border-radius: 8px;
+  }
+  .caderno ul, .caderno ol { margin-left: 1.3rem; line-height: 2.2; }
+  .caderno strong { color: #7a3500; }
+
+  /* JÁ VIMOS */
+  .ja-vimos {
+    background: #f0f0f0; border: 2px dashed #bbb; border-radius: 12px;
+    padding: 0.8rem 1.2rem; margin: 0.8rem 0; font-size: 0.97rem; color: #666;
+  }
+  .ja-vimos::before { content: "✅ Vocês já viram: "; font-weight: 800; color: #444; }
+
+  /* NOVO badge */
+  .novo-badge {
+    display: inline-block; background: var(--vermelho); color: white;
+    font-size: 0.75rem; font-weight: 900; padding: 2px 8px; border-radius: 8px;
+    margin-left: 0.4rem; vertical-align: middle; letter-spacing: 0.05em;
+  }
+
+  /* EXEMPLO */
+  .exemplo {
+    background: #f0f7ff; border: 2px dashed var(--azul);
+    border-radius: 14px; padding: 1.2rem 1.5rem; margin: 1rem 0;
+  }
+  .exemplo-titulo { font-weight: 900; color: var(--azul); font-size: 0.95rem; text-transform: uppercase; margin-bottom: 0.7rem; }
+  .exemplo.verde { background: #f0faf6; border-color: var(--verde); }
+  .exemplo.verde .exemplo-titulo { color: var(--verde); }
+  .exemplo.laranja { background: #fff4ee; border-color: var(--laranja); }
+  .exemplo.laranja .exemplo-titulo { color: var(--laranja); }
+
+  /* PASSOS */
+  .passos { margin: 0.8rem 0; }
+  .passo { display: flex; gap: 0.9rem; align-items: flex-start; margin-bottom: 0.8rem; }
+  .passo-num {
+    background: var(--azul); color: white; border-radius: 50%;
+    width: 1.9rem; height: 1.9rem; min-width: 1.9rem;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 0.95rem; margin-top: 0.15rem;
+  }
+  .passo-num.verde { background: var(--verde); }
+  .passo-num.laranja { background: var(--laranja); }
+  .passo-num.roxo { background: var(--roxo); }
+
+  /* ATENÇÃO */
+  .atencao {
+    background: #fff3e0; border: 2px solid #ff9800; border-radius: 12px;
+    padding: 0.9rem 1.2rem; margin: 1rem 0; display: flex; gap: 0.7rem; align-items: flex-start;
+  }
+  .atencao .icone { font-size: 1.4rem; flex-shrink: 0; }
+
+  /* TABELA */
+  .tabela { width: 100%; border-collapse: collapse; font-size: 1rem; margin: 1rem 0; }
+  .tabela th { background: var(--azul); color: white; padding: 0.7rem 1rem; text-align: left; font-weight: 800; }
+  .tabela td { padding: 0.65rem 1rem; border-bottom: 1px solid #e8edf5; vertical-align: middle; }
+  .tabela tr:nth-child(even) td { background: #f4f8ff; }
+  .tabela th:first-child { border-radius: 10px 0 0 0; }
+  .tabela th:last-child { border-radius: 0 10px 0 0; }
+
+  /* CORES */
+  .neg { color: var(--vermelho); font-weight: 800; }
+  .pos { color: var(--verde); font-weight: 800; }
+
+  /* RETA VISUAL */
+  .reta-wrap { overflow-x: auto; padding: 0.5rem 0 1.5rem; margin: 1rem 0; }
+
+  /* CARDS LADO A LADO */
+  .dois-lados { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  .lado { border-radius: 14px; padding: 1.1rem 1.2rem; text-align: center; }
+  .lado .lado-icone { font-size: 2.2rem; margin-bottom: 0.3rem; }
+  .lado .lado-titulo { font-weight: 900; font-size: 1rem; margin-bottom: 0.3rem; }
+  .lado .lado-ex { font-size: 1.05rem; font-weight: 700; }
+
+  /* VISUAL DE BARRA (tiras) */
+  .tiras { display: flex; gap: 4px; flex-wrap: wrap; margin: 0.8rem 0; align-items: center; }
+  .tira {
+    width: 44px; height: 38px; border-radius: 8px; border: 2.5px solid;
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+    font-weight: 900; transition: all 0.2s;
+  }
+  .tira.preenchida { background: var(--azul); border-color: var(--azul); color: white; }
+  .tira.vazia { background: white; border-color: #bbb; color: #bbb; }
+  .tira.vermelha { background: var(--vermelho); border-color: var(--vermelho); color: white; }
+  .tira.verde-f { background: var(--verde); border-color: var(--verde); color: white; }
+  .tira.laranja-f { background: var(--laranja); border-color: var(--laranja); color: white; }
+
+  /* ESCADA VISUAL negativos */
+  .escada { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+  .escada-item {
+    display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 1rem;
+    border-radius: 10px; font-weight: 700; font-size: 1.05rem;
+  }
+  .escada-item .barra-neg {
+    height: 22px; border-radius: 4px; background: var(--vermelho); opacity: 0.85;
+    min-width: 4px;
+  }
+  .escada-item .barra-pos {
+    height: 22px; border-radius: 4px; background: var(--verde); opacity: 0.85;
+    min-width: 4px;
+  }
+
+  /* VISUAL TERMÔMETRO / RETA */
+  .reta-visual-container { position: relative; height: 100px; min-width: 540px; }
+
+  /* DIVISÃO VISUAL fração→decimal */
+  .div-visual {
+    display: inline-flex; gap: 0.3rem; align-items: center; flex-wrap: wrap;
+    background: #f8f4ff; border-radius: 10px; padding: 0.5rem 1rem; margin: 0.3rem 0;
+    font-size: 1.05rem; font-weight: 700;
+  }
+  .seta-dir { color: var(--roxo); font-size: 1.2rem; }
+
+  /* QUESTÃO ATIVIDADE */
+  .questao-box {
+    background: #f8faff; border: 2px solid #d0e4ff; border-radius: 14px;
+    padding: 1.3rem 1.5rem; margin-bottom: 1.2rem; position: relative;
+  }
+  .questao-num {
+    position: absolute; top: -14px; left: 16px;
+    background: var(--azul); color: white;
+    font-size: 0.85rem; font-weight: 900; padding: 2px 12px; border-radius: 8px;
+  }
+  .questao-enunciado { font-size: 1.05rem; line-height: 1.7; margin-bottom: 0.9rem; }
+  .resp-toggle {
+    background: var(--azul); color: white; border: none; border-radius: 10px;
+    padding: 0.45rem 1.2rem; font-size: 0.95rem; font-weight: 800; cursor: pointer;
+    font-family: 'Nunito', sans-serif; transition: background 0.2s;
+  }
+  .resp-toggle:hover { background: #0d47a1; }
+  .resp-body {
+    display: none; margin-top: 0.9rem; background: #e8f3fc;
+    border-radius: 10px; padding: 1rem 1.2rem;
+  }
+  .resp-body.aberta { display: block; }
+
+  /* RESUMO FINAL */
+  .resumo-final {
+    background: linear-gradient(135deg, #0d47a1, #1a9e6e);
+    color: white; border-radius: 18px; padding: 2rem 1.8rem; margin-bottom: 2rem;
+  }
+  .resumo-final h2 { font-family: 'Baloo 2', cursive; font-size: 1.5rem; margin-bottom: 1rem; }
+  .resumo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.9rem; }
+  .resumo-item { background: rgba(255,255,255,0.15); border-radius: 12px; padding: 1rem; }
+  .resumo-item .ri { font-size: 1.6rem; margin-bottom: 0.3rem; }
+
+  .footer { text-align: center; color: #888; font-size: 0.88rem; padding: 1rem; }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.8rem; }
+    .secao { padding: 1.3rem 1rem; }
+    .dois-lados { grid-template-columns: 1fr; }
+    .tira { width: 36px; height: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-floats">½ −¾ 0,75 −⅔ ¼ −3,25 ⅗ −½ 0,6̄</div>
+  <div class="turma">📚 Matemática · 7º Ano · Cap. 4 · Tópico 4</div>
+  <h1>Números Racionais</h1>
+  <div class="subtitulo">Frações e decimais positivos e negativos</div>
+</div>
+
+<div class="continuidade">
+  <strong>📌 Continuando de onde paramos!</strong> Vocês já conhecem frações, comparação e razão. Hoje vamos expandir para os <strong>números racionais negativos</strong> — uma novidade importante!
+</div>
+
+<div class="indice">
+  <a href="#sec1">1. O conjunto racional</a>
+  <a href="#sec2">2. Negativos na reta</a>
+  <a href="#sec3">3. Fração → Decimal</a>
+  <a href="#sec4">4. Comparar negativos</a>
+  <a href="#sec5">5. Atividades</a>
+</div>
+
+<div class="container">
+
+<!-- ═══ SEÇÃO 1 ═══ -->
+<div class="secao" id="sec1">
+  <div class="secao-titulo azul">
+    <span class="num-secao">1</span> O Conjunto dos Números Racionais
+  </div>
+
+  <div class="ja-vimos">frações positivas · comparação · razão e fração · frações na reta numerada</div>
+
+  <p style="margin-top:0.9rem;">Tudo que vocês já aprenderam faz parte de um grupo maior chamado <strong>números racionais</strong>. Mas esse grupo também inclui as versões <span class="neg">negativas</span>!</p>
+
+  <!-- Visual: conjunto em círculos concêntricos -->
+  <div style="display:flex; justify-content:center; margin: 1.5rem 0;">
+    <div style="position:relative; width:320px; height:200px;">
+      <!-- círculo externo: racionais -->
+      <div style="position:absolute;inset:0;border:3px solid var(--azul);border-radius:50%;background:#f0f7ff;display:flex;align-items:center;justify-content:center;">
+        <span style="position:absolute;top:10px;font-size:0.85rem;font-weight:900;color:var(--azul);">RACIONAIS</span>
+      </div>
+      <!-- círculo médio: frações/decimais -->
+      <div style="position:absolute;inset:28px;border:3px solid var(--laranja);border-radius:50%;background:#fff4ee;display:flex;align-items:center;justify-content:center;">
+        <span style="position:absolute;top:8px;font-size:0.78rem;font-weight:800;color:var(--laranja);">Frações · Decimais</span>
+      </div>
+      <!-- círculo interno: inteiros -->
+      <div style="position:absolute;inset:62px;border:3px solid var(--verde);border-radius:50%;background:#e8fff5;display:flex;align-items:center;justify-content:center;">
+        <span style="position:absolute;top:6px;font-size:0.72rem;font-weight:800;color:var(--verde);">Inteiros</span>
+      </div>
+      <!-- centro: naturais -->
+      <div style="position:absolute;inset:96px;border:3px solid #888;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;">
+        <span style="font-size:0.68rem;font-weight:800;color:#555;">Naturais</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="caderno">
+    <p><strong>Número racional</strong> é todo número que pode ser escrito como fração <strong>a/b</strong>, com a e b inteiros e b ≠ 0.</p>
+    <p style="margin-top:0.7rem;"><strong>Fazem parte dos racionais:</strong></p>
+    <ul>
+      <li>Números inteiros → −4 &nbsp;·&nbsp; 0 &nbsp;·&nbsp; 8 &nbsp;&nbsp;<em>(pois 8 = 8/1)</em></li>
+      <li>Frações positivas → ¾ &nbsp;·&nbsp; ⅕ &nbsp;·&nbsp; 7/2</li>
+      <li><strong>Frações negativas</strong> → −¾ &nbsp;·&nbsp; −⅔ &nbsp;·&nbsp; −5/8 <span class="novo-badge">NOVO</span></li>
+      <li>Decimais → 0,75 &nbsp;·&nbsp; −3,25 <span class="novo-badge">NOVO</span></li>
+      <li>Dízimas periódicas → 0,666… &nbsp;·&nbsp; −2,53̄ <span class="novo-badge">NOVO</span></li>
+    </ul>
+  </div>
+
+  <div class="atencao">
+    <div class="icone">💡</div>
+    <div>Todo número que vocês já conheciam <strong>continua sendo racional</strong>. O que é novo é que o grupo inclui também os <span class="neg">negativos</span>.</div>
+  </div>
+</div>
+
+<!-- ═══ SEÇÃO 2 ═══ -->
+<div class="secao verde" id="sec2">
+  <div class="secao-titulo verde">
+    <span class="num-secao verde">2</span> Números Negativos na Reta Numerada <span class="novo-badge">NOVO</span>
+  </div>
+
+  <div class="ja-vimos">marcar frações positivas na reta · mais à direita = maior</div>
+
+  <p style="margin-top:0.9rem;">Agora vamos incluir os <span class="neg">negativos</span>. Pense num <strong>elevador</strong>:</p>
+
+  <!-- Visual elevador -->
+  <div style="display:flex; gap:1rem; flex-wrap:wrap; margin:1rem 0; justify-content:center;">
+    <div style="background:#fdeaea; border:2.5px solid var(--vermelho); border-radius:14px; padding:1rem 1.3rem; text-align:center; min-width:140px;">
+      <div style="font-size:2rem;">🏢</div>
+      <div style="font-size:0.9rem; font-weight:800; color:var(--vermelho); margin-top:0.3rem;">Andar −1, −2, −3…</div>
+      <div style="font-size:0.82rem; color:#888; margin-top:0.2rem;">abaixo do térreo</div>
+      <div style="font-size:1.5rem; margin-top:0.4rem;" class="neg">← esquerda</div>
+    </div>
+    <div style="background:#e4f7f0; border:2.5px solid var(--verde); border-radius:14px; padding:1rem 1.3rem; text-align:center; min-width:140px;">
+      <div style="font-size:2rem;">🏙️</div>
+      <div style="font-size:0.9rem; font-weight:800; color:var(--verde); margin-top:0.3rem;">Andar +1, +2, +3…</div>
+      <div style="font-size:0.82rem; color:#888; margin-top:0.2rem;">acima do térreo</div>
+      <div style="font-size:1.5rem; margin-top:0.4rem;" class="pos">direita →</div>
+    </div>
+    <div style="background:#f4f6fa; border:2.5px solid #aaa; border-radius:14px; padding:1rem 1.3rem; text-align:center; min-width:100px;">
+      <div style="font-size:2rem;">🚪</div>
+      <div style="font-size:0.9rem; font-weight:800; color:#555; margin-top:0.3rem;">Térreo = 0</div>
+      <div style="font-size:0.82rem; color:#888; margin-top:0.2rem;">ponto de referência</div>
+    </div>
+  </div>
+
+  <!-- Reta numerada visual -->
+  <div class="reta-wrap">
+    <div class="reta-visual-container">
+      <div style="position:absolute;top:42px;left:10px;right:10px;height:4px;background:#1a1a2e;border-radius:2px;"></div>
+      <div style="position:absolute;top:34px;left:2px;font-size:1.2rem;">◀</div>
+      <div style="position:absolute;top:34px;right:0px;font-size:1.2rem;">▶</div>
+
+      <!-- −1 @ 5% -->
+      <div style="position:absolute;left:5%;top:34px;display:flex;flex-direction:column;align-items:center;">
+        <div style="width:3px;height:16px;background:#1a1a2e;"></div>
+        <div style="font-size:0.82rem;font-weight:700;margin-top:3px;">−1</div>
+      </div>
+      <!-- −3/4 @ 38% -->
+      <div style="position:absolute;left:38%;top:26px;display:flex;flex-direction:column;align-items:center;transform:translateX(-50%);">
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--vermelho);border:2px solid white;box-shadow:0 0 0 2px var(--vermelho);"></div>
+        <div style="font-size:0.88rem;font-weight:800;color:var(--vermelho);margin-top:4px;">−¾</div>
+      </div>
+      <!-- −1/2 @ 27.5% -->
+      <div style="position:absolute;left:27%;top:26px;display:flex;flex-direction:column;align-items:center;transform:translateX(-50%);">
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--vermelho);border:2px solid white;box-shadow:0 0 0 2px var(--vermelho);"></div>
+        <div style="font-size:0.88rem;font-weight:800;color:var(--vermelho);margin-top:4px;">−½</div>
+      </div>
+      <!-- 0 @ 50% -->
+      <div style="position:absolute;left:50%;top:34px;display:flex;flex-direction:column;align-items:center;transform:translateX(-50%);">
+        <div style="width:3px;height:16px;background:#1a1a2e;"></div>
+        <div style="font-size:0.92rem;font-weight:900;margin-top:3px;background:#1a1a2e;color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;">0</div>
+      </div>
+      <!-- 1/2 @ 72.5% -->
+      <div style="position:absolute;left:72%;top:26px;display:flex;flex-direction:column;align-items:center;transform:translateX(-50%);">
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--verde);border:2px solid white;box-shadow:0 0 0 2px var(--verde);"></div>
+        <div style="font-size:0.88rem;font-weight:800;color:var(--verde);margin-top:4px;">½</div>
+      </div>
+      <!-- 3/4 @ 83% -->
+      <div style="position:absolute;left:83%;top:26px;display:flex;flex-direction:column;align-items:center;transform:translateX(-50%);">
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--verde);border:2px solid white;box-shadow:0 0 0 2px var(--verde);"></div>
+        <div style="font-size:0.88rem;font-weight:800;color:var(--verde);margin-top:4px;">¾</div>
+      </div>
+      <!-- 1 @ 95% -->
+      <div style="position:absolute;left:95%;top:34px;display:flex;flex-direction:column;align-items:center;">
+        <div style="width:3px;height:16px;background:#1a1a2e;"></div>
+        <div style="font-size:0.82rem;font-weight:700;margin-top:3px;">1</div>
+      </div>
+      <!-- seta esquerda menor -->
+      <div style="position:absolute;bottom:2px;left:5%;font-size:0.78rem;font-weight:800;color:var(--vermelho);">← menores</div>
+      <!-- seta direita maior -->
+      <div style="position:absolute;bottom:2px;right:3%;font-size:0.78rem;font-weight:800;color:var(--verde);">maiores →</div>
+    </div>
+  </div>
+
+  <div class="caderno">
+    <p><strong>O que muda com os negativos na reta:</strong></p>
+    <ul>
+      <li>O oposto de <strong>a/b</strong> é <strong class="neg">−a/b</strong> → mesma distância do zero, lado oposto</li>
+      <li>Todo <span class="neg">negativo</span> é <strong>menor</strong> que todo <span class="pos">positivo</span></li>
+      <li>Entre dois negativos: mais longe do zero (mais à esquerda) = <strong>menor</strong></li>
+      <li>Exemplo: <span class="neg">−¾ &lt; −½</span> &nbsp;(−¾ está mais à esquerda na reta)</li>
+    </ul>
+  </div>
+
+  <!-- Visual comparativo com escada -->
+  <p style="margin-top:0.8rem; font-weight:700; color:var(--verde);">📊 Visualizando a ordem:</p>
+  <div class="escada">
+    <div class="escada-item" style="background:#fdeaea;">
+      <div class="barra-neg" style="width:90px;"></div>
+      <span class="neg">−¾ = −0,75</span>
+      <span style="color:#888; font-size:0.9rem;">← o menor dos 4</span>
+    </div>
+    <div class="escada-item" style="background:#fff0e6;">
+      <div class="barra-neg" style="width:60px;"></div>
+      <span class="neg">−½ = −0,5</span>
+    </div>
+    <div class="escada-item" style="background:#e8fff5;">
+      <div class="barra-pos" style="width:60px;"></div>
+      <span class="pos">+½ = 0,5</span>
+    </div>
+    <div class="escada-item" style="background:#e4f7f0;">
+      <div class="barra-pos" style="width:90px;"></div>
+      <span class="pos">+¾ = 0,75</span>
+      <span style="color:#888; font-size:0.9rem;">← o maior dos 4</span>
+    </div>
+  </div>
+
+  <div class="exemplo">
+    <div class="exemplo-titulo">🌊 Dia a dia: praia</div>
+    <p>Elisabete fez um monte de areia de <span class="pos">+0,4 m</span> (acima do solo).<br>
+    Joana fez um buraco de <span class="neg">−0,6 m</span> (abaixo do solo).<br>
+    Na reta: <span class="neg">−0,6</span> fica à esquerda do zero → <span class="neg">−0,6 &lt; 0,4</span></p>
+  </div>
+</div>
+
+<!-- ═══ SEÇÃO 3 ═══ -->
+<div class="secao laranja" id="sec3">
+  <div class="secao-titulo laranja">
+    <span class="num-secao laranja">3</span> Fração Negativa → Decimal <span class="novo-badge">NOVO</span>
+  </div>
+
+  <div class="ja-vimos">fração positiva → decimal: divide numerador pelo denominador</div>
+
+  <p style="margin-top:0.9rem;">Para frações negativas, é <strong>quase o mesmo</strong>. Só tem um passo extra no final.</p>
+
+  <div class="caderno">
+    <p><strong>Regra — fração negativa para decimal:</strong></p>
+    <ol>
+      <li>Ignore o sinal <span class="neg">−</span> por enquanto</li>
+      <li>Divida numerador ÷ denominador normalmente</li>
+      <li>Coloque o sinal <strong class="neg">−</strong> na frente do resultado</li>
+    </ol>
+  </div>
+
+  <!-- Visual passo a passo com setas -->
+  <div style="display:flex; align-items:center; flex-wrap:wrap; gap:0.7rem; margin:1.2rem 0; justify-content:center; font-size:1.05rem;">
+    <div style="background:#fdeaea; border-radius:12px; padding:0.7rem 1.1rem; font-weight:800; color:var(--vermelho); text-align:center;">
+      <div style="font-size:0.75rem; color:#888; margin-bottom:2px;">fração</div>
+      −²⁄₃
+    </div>
+    <div style="font-size:1.4rem; color:#bbb;">→</div>
+    <div style="background:#fff4ee; border-radius:12px; padding:0.7rem 1.1rem; font-weight:800; color:var(--laranja); text-align:center;">
+      <div style="font-size:0.75rem; color:#888; margin-bottom:2px;">passo 1: ignore o −</div>
+      ²⁄₃
+    </div>
+    <div style="font-size:1.4rem; color:#bbb;">→</div>
+    <div style="background:#fff4ee; border-radius:12px; padding:0.7rem 1.1rem; font-weight:800; color:var(--laranja); text-align:center;">
+      <div style="font-size:0.75rem; color:#888; margin-bottom:2px;">passo 2: divida</div>
+      2 ÷ 3 = 0,666…
+    </div>
+    <div style="font-size:1.4rem; color:#bbb;">→</div>
+    <div style="background:#fdeaea; border-radius:12px; padding:0.7rem 1.1rem; font-weight:800; color:var(--vermelho); text-align:center;">
+      <div style="font-size:0.75rem; color:#888; margin-bottom:2px;">passo 3: coloque o −</div>
+      <span class="neg">−0,6̄</span>
+    </div>
+  </div>
+
+  <table class="tabela">
+    <tr><th>Fração</th><th>Divisão</th><th>Decimal</th><th>Tipo</th></tr>
+    <tr>
+      <td>³⁄₄</td><td>3 ÷ 4</td>
+      <td style="color:var(--verde);font-weight:800;">0,75</td><td>Termina ✅</td>
+    </tr>
+    <tr>
+      <td class="neg">−²⁄₃</td><td>2 ÷ 3</td>
+      <td class="neg">−0,666… = −0,6̄</td><td>Dízima 🔁</td>
+    </tr>
+    <tr>
+      <td>⁵⁄₈</td><td>5 ÷ 8</td>
+      <td style="color:var(--verde);font-weight:800;">0,625</td><td>Termina ✅</td>
+    </tr>
+    <tr>
+      <td class="neg">−⁷⁄₁₀</td><td>7 ÷ 10</td>
+      <td class="neg">−0,7</td><td>Termina ✅</td>
+    </tr>
+    <tr>
+      <td class="neg">−⁷⁄₆</td><td>7 ÷ 6</td>
+      <td class="neg">−1,1̄6̄</td><td>Dízima 🔁</td>
+    </tr>
+  </table>
+
+  <div class="atencao">
+    <div class="icone">📝</div>
+    <div><strong>Dízima periódica:</strong> a divisão nunca termina, mas os algarismos se repetem em bloco. Usamos uma <strong>barra</strong> sobre eles.<br>
+    Ex: 0,373737… = 0,3̄7̄ &nbsp;·&nbsp; −2,5333… = −2,53̄</div>
+  </div>
+</div>
+
+<!-- ═══ SEÇÃO 4 ═══ -->
+<div class="secao roxo" id="sec4">
+  <div class="secao-titulo roxo">
+    <span class="num-secao roxo">4</span> Comparar Frações Negativas <span class="novo-badge">NOVO</span>
+  </div>
+
+  <div class="ja-vimos">comparar frações positivas com MMC e produtos cruzados</div>
+
+  <p style="margin-top:0.9rem;">Com negativos há uma <strong>pegadinha</strong> que muita gente erra. Veja:</p>
+
+  <!-- Visual pegadinha -->
+  <div style="display:flex; gap:1rem; flex-wrap:wrap; margin:1rem 0; justify-content:center;">
+    <div style="background:#e8fff5; border:2px solid var(--verde); border-radius:14px; padding:1rem 1.2rem; text-align:center; min-width:160px;">
+      <div style="font-size:0.85rem; font-weight:800; color:var(--verde); margin-bottom:0.3rem;">POSITIVOS</div>
+      <div style="font-size:1.1rem;">0,75 vs 0,5</div>
+      <div style="font-size:1.3rem; margin-top:0.4rem;">0,75 <span class="pos">&gt;</span> 0,5 ✅</div>
+      <div style="font-size:0.82rem; color:#888; margin-top:0.3rem;">maior número = maior valor</div>
+    </div>
+    <div style="font-size:2rem; display:flex; align-items:center; color:#ccc;">vs</div>
+    <div style="background:#fdeaea; border:2px solid var(--vermelho); border-radius:14px; padding:1rem 1.2rem; text-align:center; min-width:160px;">
+      <div style="font-size:0.85rem; font-weight:800; color:var(--vermelho); margin-bottom:0.3rem;">NEGATIVOS ⚠️</div>
+      <div style="font-size:1.1rem;">−0,75 vs −0,5</div>
+      <div style="font-size:1.3rem; margin-top:0.4rem;"><span class="neg">−0,75 &lt; −0,5</span> !</div>
+      <div style="font-size:0.82rem; color:#888; margin-top:0.3rem;">mais longe do zero = menor</div>
+    </div>
+  </div>
+
+  <div class="caderno">
+    <p><strong>Cuidado com negativos!</strong></p>
+    <p style="margin-top:0.5rem;">Entre dois números negativos, o que parece "maior em valor absoluto" é na verdade o <strong>menor</strong>.</p>
+    <ul style="margin-top:0.5rem;">
+      <li>Converta para decimal e compare na reta numerada</li>
+      <li>Mais à <strong>esquerda</strong> = menor &nbsp;·&nbsp; mais à <strong>direita</strong> = maior</li>
+      <li>Exemplo: <span class="neg">−0,375 &lt; −0,370</span> &nbsp;(−0,375 está mais à esquerda)</li>
+    </ul>
+  </div>
+
+  <div class="exemplo">
+    <div class="exemplo-titulo">🔎 Exemplo resolvido — Comparar −³⁄₈ e −¹⁰⁄₂₇</div>
+    <div class="passos" style="margin-top:0.5rem;">
+      <div class="passo">
+        <div class="passo-num roxo">1</div>
+        <div class="passo-texto"><span class="neg">−³⁄₈</span> = −(3 ÷ 8) = <strong class="neg">−0,375</strong></div>
+      </div>
+      <div class="passo">
+        <div class="passo-num roxo">2</div>
+        <div class="passo-texto"><span class="neg">−¹⁰⁄₂₇</span> = −(10 ÷ 27) = <strong class="neg">−0,370…</strong></div>
+      </div>
+      <div class="passo">
+        <div class="passo-num roxo">3</div>
+        <div class="passo-texto">Na reta: −0,375 está mais à esquerda → <span class="neg">−³⁄₈ &lt; −¹⁰⁄₂₇</span></div>
+      </div>
+    </div>
+    <!-- mini reta comparativa -->
+    <div class="reta-wrap" style="margin-top:0.7rem;">
+      <div style="position:relative;height:60px;min-width:340px;">
+        <div style="position:absolute;top:28px;left:10px;right:10px;height:3px;background:#1a1a2e;border-radius:2px;"></div>
+        <div style="position:absolute;top:22px;left:3px;font-size:1rem;">◀</div>
+        <div style="position:absolute;top:22px;right:0;font-size:1rem;">▶</div>
+        <!-- −0,375 @ 15% -->
+        <div style="position:absolute;left:15%;top:18px;display:flex;flex-direction:column;align-items:center;transform:translateX(-50%);">
+          <div style="width:14px;height:14px;border-radius:50%;background:var(--vermelho);"></div>
+          <div style="font-size:0.78rem;font-weight:800;color:var(--vermelho);margin-top:2px;white-space:nowrap;">−0,375<br><span style="font-size:0.7rem;">(−³⁄₈)</span></div>
+        </div>
+        <!-- −0,370 @ 28% -->
+        <div style="position:absolute;left:30%;top:18px;display:flex;flex-direction:column;align-items:center;transform:translateX(-50%);">
+          <div style="width:14px;height:14px;border-radius:50%;background:#b05000;"></div>
+          <div style="font-size:0.78rem;font-weight:800;color:#b05000;margin-top:2px;white-space:nowrap;">−0,370<br><span style="font-size:0.7rem;">(−¹⁰⁄₂₇)</span></div>
+        </div>
+        <!-- 0 @ 70% -->
+        <div style="position:absolute;left:70%;top:22px;display:flex;flex-direction:column;align-items:center;transform:translateX(-50%);">
+          <div style="width:3px;height:12px;background:#1a1a2e;"></div>
+          <div style="font-size:0.8rem;font-weight:900;margin-top:2px;">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="atencao">
+    <div class="icone">🔁</div>
+    <div><strong>Macete:</strong> entre negativos, ignore o sinal, compare os valores — depois <strong>inverta a desigualdade</strong>. O que era o "maior" vira o <strong>menor</strong>.</div>
+  </div>
+</div>
+
+<!-- ═══ SEÇÃO 5: ATIVIDADES ═══ -->
+<div class="secao" id="sec5">
+  <div class="secao-titulo azul">
+    <span class="num-secao">5</span> Atividades
+  </div>
+
+  <p style="margin-bottom:1.3rem;">Resolvam as questões. Clique em <strong>Ver resposta</strong> depois de tentar!</p>
+
+  <!-- Q25 adaptada (estilo livro — fração como operador, 2 etapas) -->
+  <div class="questao-box">
+    <div class="questao-num">Questão 1</div>
+    <div class="questao-enunciado">
+      <p>Larissa e Letícia decidiram poupar dinheiro. Larissa economizou <strong>⁵⁄₂</strong> da quantia economizada por Letícia. Sabendo que Larissa poupou <strong>R$ 65,00</strong>, calcule:</p>
+      <p style="margin-top:0.5rem;"><strong>a)</strong> A razão entre o que Larissa economizou e o que Letícia economizou.</p>
+      <p style="margin-top:0.3rem;"><strong>b)</strong> Quanto as duas economizaram juntas.</p>
+      <!-- visual tiras -->
+      <div style="margin-top:0.9rem;">
+        <div style="font-size:0.85rem; font-weight:800; color:#555; margin-bottom:0.4rem;">Esquema de tiras:</div>
+        <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.3rem;">
+          <span style="font-size:0.85rem; font-weight:700; width:60px;">Larissa:</span>
+          <div class="tiras">
+            <div class="tira preenchida">💰</div>
+            <div class="tira preenchida">💰</div>
+            <div class="tira preenchida">💰</div>
+            <div class="tira preenchida">💰</div>
+            <div class="tira preenchida">💰</div>
+          </div>
+          <span style="font-size:0.85rem; color:#888;">= 5 unidades = R$ 65,00</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap;">
+          <span style="font-size:0.85rem; font-weight:700; width:60px;">Letícia:</span>
+          <div class="tiras">
+            <div class="tira vazia">?</div>
+            <div class="tira vazia">?</div>
+          </div>
+          <span style="font-size:0.85rem; color:#888;">= 2 unidades = ?</span>
+        </div>
+      </div>
+    </div>
+    <button class="resp-toggle" onclick="this.nextElementSibling.classList.toggle('aberta'); this.textContent = this.nextElementSibling.classList.contains('aberta') ? '▲ Fechar' : '▼ Ver resposta'">▼ Ver resposta</button>
+    <div class="resp-body">
+      <div class="passos">
+        <div class="passo"><div class="passo-num">a</div><div class="passo-texto">Razão Larissa : Letícia = <strong>5 : 2</strong></div></div>
+        <div class="passo"><div class="passo-num">1</div><div class="passo-texto">1 unidade = 65 ÷ 5 = <strong>R$ 13,00</strong></div></div>
+        <div class="passo"><div class="passo-num">2</div><div class="passo-texto">Letícia = 2 × 13 = <strong>R$ 26,00</strong></div></div>
+        <div class="passo"><div class="passo-num">b</div><div class="passo-texto">Total = 65 + 26 = <strong style="color:var(--verde);">R$ 91,00 ✅</strong></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q24 adaptada (razão entre grupos, 3 etapas) -->
+  <div class="questao-box">
+    <div class="questao-num">Questão 2</div>
+    <div class="questao-enunciado">
+      <p>Para a festa da escola, Janice preparou <strong>35 pães de queijo</strong> e sua amiga Paula preparou <strong>70 pães de queijo</strong>.</p>
+      <p style="margin-top:0.5rem;"><strong>a)</strong> Qual a razão entre a quantidade preparada por Janice e a preparada por Paula?</p>
+      <p style="margin-top:0.3rem;"><strong>b)</strong> A quantidade de Janice representa que fração da quantidade de Paula?</p>
+      <p style="margin-top:0.3rem;"><strong>c)</strong> A quantidade de Paula representa que fração do total de pães das duas?</p>
+      <!-- visual tiras -->
+      <div style="margin-top:0.9rem;">
+        <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.3rem;">
+          <span style="font-size:0.85rem; font-weight:700; width:60px;">Janice:</span>
+          <div class="tiras">
+            <div class="tira preenchida" style="font-size:0.9rem;">🧀</div>
+          </div>
+          <span style="font-size:0.85rem; color:#888;">35 pães</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap;">
+          <span style="font-size:0.85rem; font-weight:700; width:60px;">Paula:</span>
+          <div class="tiras">
+            <div class="tira laranja-f" style="font-size:0.9rem;">🧀</div>
+            <div class="tira laranja-f" style="font-size:0.9rem;">🧀</div>
+          </div>
+          <span style="font-size:0.85rem; color:#888;">70 pães</span>
+        </div>
+      </div>
+    </div>
+    <button class="resp-toggle" onclick="this.nextElementSibling.classList.toggle('aberta'); this.textContent = this.nextElementSibling.classList.contains('aberta') ? '▲ Fechar' : '▼ Ver resposta'">▼ Ver resposta</button>
+    <div class="resp-body">
+      <div class="passos">
+        <div class="passo"><div class="passo-num">a</div><div class="passo-texto">35 : 70 = simplificando ÷ 35 → <strong>1 : 2</strong></div></div>
+        <div class="passo"><div class="passo-num">b</div><div class="passo-texto">Janice/Paula = 35/70 = <strong>½</strong></div></div>
+        <div class="passo"><div class="passo-num">c</div><div class="passo-texto">Total = 35 + 70 = 105 &nbsp;→&nbsp; Paula/Total = 70/105 = <strong style="color:var(--verde);">²⁄₃ ✅</strong></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q27 (razão com 3 termos, perímetro) -->
+  <div class="questao-box">
+    <div class="questao-num">Questão 3</div>
+    <div class="questao-enunciado">
+      <p>Uma praça tem formato triangular com lados na razão <strong>2 : 3 : 4</strong>. Se o perímetro é de <strong>108 m</strong>, qual a medida de cada lado?</p>
+      <!-- visual triângulo -->
+      <div style="display:flex; justify-content:center; margin:1rem 0;">
+        <svg width="200" height="150" viewBox="0 0 200 150">
+          <polygon points="100,15 185,135 15,135" fill="#e8f3fc" stroke="#1a6fb5" stroke-width="3"/>
+          <text x="100" y="10" text-anchor="middle" font-size="13" fill="#1a6fb5" font-weight="bold">? m</text>
+          <text x="160" y="100" text-anchor="middle" font-size="13" fill="#1a9e6e" font-weight="bold">? m</text>
+          <text x="40" y="100" text-anchor="middle" font-size="13" fill="#e86b1a" font-weight="bold">? m</text>
+          <text x="100" y="80" text-anchor="middle" font-size="11" fill="#555">razão 2:3:4</text>
+          <text x="100" y="95" text-anchor="middle" font-size="11" fill="#555">P = 108 m</text>
+        </svg>
+      </div>
+    </div>
+    <button class="resp-toggle" onclick="this.nextElementSibling.classList.toggle('aberta'); this.textContent = this.nextElementSibling.classList.contains('aberta') ? '▲ Fechar' : '▼ Ver resposta'">▼ Ver resposta</button>
+    <div class="resp-body">
+      <div class="passos">
+        <div class="passo"><div class="passo-num">1</div><div class="passo-texto">Total de unidades = 2 + 3 + 4 = <strong>9 unidades</strong></div></div>
+        <div class="passo"><div class="passo-num">2</div><div class="passo-texto">1 unidade = 108 ÷ 9 = <strong>12 m</strong></div></div>
+        <div class="passo"><div class="passo-num">3</div>
+          <div class="passo-texto">
+            Lado 1 = 2 × 12 = <strong>24 m</strong><br>
+            Lado 2 = 3 × 12 = <strong>36 m</strong><br>
+            Lado 3 = 4 × 12 = <strong style="color:var(--verde);">48 m ✅</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q30 adaptada (fração → decimal, com e sem dízima) -->
+  <div class="questao-box">
+    <div class="questao-num">Questão 4</div>
+    <div class="questao-enunciado">
+      <p>Escreva cada fração na forma de decimal. Se for dízima periódica, use a barra sobre os algarismos que se repetem.</p>
+      <p style="margin-top:0.5rem;"><strong>a)</strong> ⁵⁄₈ &nbsp;&nbsp;&nbsp; <strong>b)</strong> −⁷⁄₁₀ &nbsp;&nbsp;&nbsp; <strong>c)</strong> ¹⁹⁄₇ &nbsp;&nbsp;&nbsp; <strong>d)</strong> −⁷⁄₆</p>
+    </div>
+    <button class="resp-toggle" onclick="this.nextElementSibling.classList.toggle('aberta'); this.textContent = this.nextElementSibling.classList.contains('aberta') ? '▲ Fechar' : '▼ Ver resposta'">▼ Ver resposta</button>
+    <div class="resp-body">
+      <p><strong>a)</strong> 5 ÷ 8 = <span class="pos">0,625</span></p>
+      <p><strong>b)</strong> −(7 ÷ 10) = <span class="neg">−0,7</span></p>
+      <p><strong>c)</strong> 19 ÷ 7 = <span class="pos">2,714285… = 2,7̄1̄4̄2̄8̄5̄</span></p>
+      <p><strong>d)</strong> −(7 ÷ 6) = <span class="neg">−1,1666… = −1,16̄ ✅</span></p>
+    </div>
+  </div>
+
+</div>
+
+<!-- RESUMO -->
+<div class="resumo-final">
+  <h2>⭐ O que aprendemos hoje</h2>
+  <div class="resumo-grid">
+    <div class="resumo-item">
+      <div class="ri">🔢</div>
+      <strong>Racionais</strong><br>
+      <span style="font-size:0.93rem;">Inteiros, frações e decimais — positivos e negativos</span>
+    </div>
+    <div class="resumo-item">
+      <div class="ri">📏</div>
+      <strong>Reta com negativos</strong><br>
+      <span style="font-size:0.93rem;">Esquerda = menor · entre negativos: mais longe do zero = menor</span>
+    </div>
+    <div class="resumo-item">
+      <div class="ri">➗</div>
+      <strong>Fração neg. → decimal</strong><br>
+      <span style="font-size:0.93rem;">Divide normalmente e coloca − na frente</span>
+    </div>
+    <div class="resumo-item">
+      <div class="ri">⚖️</div>
+      <strong>Comparar negativos</strong><br>
+      <span style="font-size:0.93rem;">Converta, compare e inverta a desigualdade</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- fim container -->
+
+<div class="footer">aulasdarafa.com.br · Matemática 7º Ano · 2026</div>
+
+<script>
+  // botões de resposta já funcionam via onclick inline
+</script>
+</body>
+</html>
