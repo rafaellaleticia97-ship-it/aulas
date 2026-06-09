@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistemas de Equações — 8º Ano</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Roboto+Mono:wght@500;700&display=swap');
+
+  :root {
+    --bg: #f0f4ff;
+    --card: #ffffff;
+    --primary: #2d3fcb;
+    --primary-light: #e8ecff;
+    --accent: #f59e0b;
+    --accent-light: #fef3c7;
+    --green: #059669;
+    --green-light: #d1fae5;
+    --red: #dc2626;
+    --red-light: #fee2e2;
+    --purple: #7c3aed;
+    --purple-light: #ede9fe;
+    --text: #1e1b4b;
+    --muted: #6b7280;
+    --border: #e0e4f7;
+    --step-bg: #f8faff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--primary);
+    color: white;
+    padding: 28px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 20px rgba(45,63,203,0.3);
+  }
+  .header-left h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+  }
+  .header-left p {
+    font-size: 1rem;
+    opacity: 0.85;
+    margin-top: 4px;
+  }
+  .header-badge {
+    background: var(--accent);
+    color: #1e1b4b;
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 1rem;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    gap: 12px;
+    padding: 24px 48px 0;
+    flex-wrap: wrap;
+  }
+  .nav-btn {
+    padding: 12px 28px;
+    border-radius: 50px;
+    border: 2px solid var(--border);
+    background: var(--card);
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .nav-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(45,63,203,0.25);
+  }
+
+  /* CONTENT */
+  .content {
+    padding: 32px 48px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* INTRO PAGE */
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .intro-card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 28px;
+    border: 2px solid var(--border);
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .intro-card .icon {
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+  }
+  .intro-card h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: var(--primary);
+  }
+  .intro-card p {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .strategy-box {
+    background: var(--primary-light);
+    border: 2px solid var(--primary);
+    border-radius: 20px;
+    padding: 28px 36px;
+    margin-bottom: 24px;
+  }
+  .strategy-box h2 {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--primary);
+    margin-bottom: 16px;
+  }
+  .strategy-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .strategy-step {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+  }
+  .strategy-step .num {
+    width: 36px;
+    height: 36px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.1rem;
+    margin: 0 auto 10px;
+  }
+  .strategy-step p {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  /* EXERCISE PAGE */
+  .ex-header {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 28px 36px;
+    border: 2px solid var(--border);
+    margin-bottom: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .ex-header .ex-tag {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    padding: 4px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+  .ex-header h2 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .ex-header .hint {
+    margin-top: 12px;
+    padding: 12px 18px;
+    background: var(--accent-light);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #92400e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* STEP SYSTEM */
+  .steps-container { display: flex; flex-direction: column; gap: 16px; }
+
+  .step {
+    background: var(--card);
+    border-radius: 16px;
+    border: 2px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: all 0.3s;
+  }
+  .step.revealed { border-color: var(--primary); }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 24px;
+    background: var(--step-bg);
+    cursor: pointer;
+    user-select: none;
+  }
+  .step.revealed .step-header { background: var(--primary-light); }
+
+  .step-num {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    background: var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--muted);
+    transition: all 0.3s;
+  }
+  .step.revealed .step-num {
+    background: var(--primary);
+    color: white;
+  }
+
+  .step-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text);
+    flex: 1;
+  }
+  .step-arrow {
+    font-size: 1.2rem;
+    color: var(--muted);
+    transition: transform 0.3s;
+  }
+  .step.revealed .step-arrow { transform: rotate(180deg); color: var(--primary); }
+
+  .step-body {
+    display: none;
+    padding: 24px 28px;
+    border-top: 2px solid var(--border);
+  }
+  .step.revealed .step-body { display: block; }
+  .step.revealed .step-body { border-top-color: var(--primary); }
+
+  /* MATH DISPLAY */
+  .math-block {
+    background: var(--step-bg);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 14px 0;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 2;
+    border-left: 4px solid var(--primary);
+  }
+
+  .math-block.green { border-left-color: var(--green); background: var(--green-light); }
+  .math-block.accent { border-left-color: var(--accent); background: var(--accent-light); }
+  .math-block.purple { border-left-color: var(--purple); background: var(--purple-light); }
+  .math-block.red { border-left-color: var(--red); background: var(--red-light); }
+
+  .explain {
+    font-size: 1rem;
+    color: var(--text);
+    line-height: 1.7;
+    margin: 10px 0;
+    font-weight: 600;
+  }
+  .explain b { color: var(--primary); }
+  .explain.green b { color: var(--green); }
+
+  .highlight {
+    display: inline-block;
+    background: var(--accent);
+    color: #1e1b4b;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-weight: 800;
+  }
+
+  /* ANSWER BOX */
+  .answer-box {
+    background: var(--green-light);
+    border: 3px solid var(--green);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .answer-box .check { font-size: 2.5rem; }
+  .answer-box div h3 {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--green);
+    margin-bottom: 4px;
+  }
+  .answer-box div p {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    font-family: 'Roboto Mono', monospace;
+  }
+
+  /* REVEAL BTN */
+  .reveal-btn {
+    margin-top: 28px;
+    padding: 14px 36px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(45,63,203,0.25);
+    display: block;
+    width: 100%;
+  }
+  .reveal-btn:hover { background: #1e2d9e; transform: translateY(-1px); }
+  .reveal-btn:disabled {
+    background: var(--green);
+    cursor: default;
+    transform: none;
+  }
+
+  /* SYSTEM DISPLAY */
+  .system {
+    display: inline-flex;
+    flex-direction: column;
+    border-left: 4px solid var(--primary);
+    padding-left: 20px;
+    margin: 14px 0;
+    gap: 6px;
+  }
+  .system span {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.8;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 50px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .tag.eq1 { background: #dbeafe; color: #1d4ed8; }
+  .tag.eq2 { background: #fce7f3; color: #be185d; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 14px 0;
+  }
+
+  .mini-card {
+    background: var(--step-bg);
+    border-radius: 12px;
+    padding: 16px 20px;
+    border: 2px solid var(--border);
+  }
+  .mini-card h4 {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .mini-card p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.8;
+  }
+
+  /* SUMMARY PAGE */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+  .summary-card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 28px;
+    border: 2px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .summary-card .s-tag {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+  }
+  .summary-card h3 {
+    font-size: 1rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+  .summary-card .answer {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-light);
+    padding: 10px 16px;
+    border-radius: 10px;
+    margin-top: 12px;
+  }
+
+  .tips-box {
+    margin-top: 28px;
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 20px;
+    padding: 28px 36px;
+  }
+  .tips-box h2 {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #92400e;
+    margin-bottom: 16px;
+  }
+  .tips-list { display: flex; flex-direction: column; gap: 10px; }
+  .tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #78350f;
+    line-height: 1.5;
+  }
+  .tip-icon { font-size: 1.3rem; min-width: 28px; }
+
+  @media (max-width: 900px) {
+    .content, .nav { padding-left: 20px; padding-right: 20px; }
+    .header { padding: 20px; flex-direction: column; gap: 12px; text-align: center; }
+    .intro-grid, .strategy-steps, .summary-grid { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>📐 Sistemas de Equações</h1>
+    <p>Matemática · 8º Ano · Resolução passo a passo</p>
+  </div>
+  <div class="header-badge">AV2 — Preparação 🎯</div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showPage('intro')">📋 Estratégia</button>
+  <button class="nav-btn" onclick="showPage('ex19')">🐾 Exercício 19</button>
+  <button class="nav-btn" onclick="showPage('ex25')">🪙 Exercício 25</button>
+  <button class="nav-btn" onclick="showPage('ex20')">🎵 Exercício 20</button>
+  <button class="nav-btn" onclick="showPage('resumo')">✅ Resumo</button>
+</div>
+
+<div class="content">
+
+  <!-- INTRO -->
+  <div class="page active" id="intro">
+    <div class="intro-grid">
+      <div class="intro-card">
+        <div class="icon">🔍</div>
+        <h3>O que é um sistema?</h3>
+        <p>Duas equações com duas incógnitas (x e y) que precisam ser satisfeitas ao mesmo tempo.</p>
+      </div>
+      <div class="intro-card">
+        <div class="icon">🎯</div>
+        <h3>O que queremos?</h3>
+        <p>Encontrar os valores de <b>x</b> e <b>y</b> que satisfazem as duas equações simultaneamente.</p>
+      </div>
+      <div class="intro-card">
+        <div class="icon">📝</div>
+        <h3>Hoje vamos resolver</h3>
+        <p>3 problemas contextualizados — exatamente o estilo da AV2!</p>
+      </div>
+    </div>
+
+    <div class="strategy-box">
+      <h2>🗺️ Nossa estratégia em 4 passos</h2>
+      <div class="strategy-steps">
+        <div class="strategy-step">
+          <div class="num">1</div>
+          <p>Ler o problema e identificar as duas incógnitas</p>
+        </div>
+        <div class="strategy-step">
+          <div class="num">2</div>
+          <p>Montar as duas equações a partir das informações do enunciado</p>
+        </div>
+        <div class="strategy-step">
+          <div class="num">3</div>
+          <p>Resolver o sistema pelo método da substituição ou adição</p>
+        </div>
+        <div class="strategy-step">
+          <div class="num">4</div>
+          <p>Verificar a resposta e responder o que foi perguntado</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top: 16px;">
+      <button class="reveal-btn" style="max-width:400px; display:inline-block;" onclick="showPage('ex19')">
+        Vamos começar! → Exercício 19
+      </button>
+    </div>
+  </div>
+
+  <!-- EXERCÍCIO 19 -->
+  <div class="page" id="ex19">
+    <div class="ex-header">
+      <div class="ex-tag">EXERCÍCIO 19</div>
+      <h2>Em um sítio existem 21 animais, entre patos e cachorros. Sendo 54 o total de pés de animais, calcule a diferença entre o número de patos e o de cachorros.</h2>
+      <div class="hint">💡 Dica: Pato tem 2 pés. Cachorro tem 4 pés.</div>
+    </div>
+
+    <div class="steps-container">
+
+      <div class="step" id="ex19-s1">
+        <div class="step-header" onclick="toggleStep('ex19-s1')">
+          <div class="step-num">1</div>
+          <div class="step-title">Identificar as incógnitas — o que não sabemos?</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain">Temos dois tipos de animais que não conhecemos a quantidade. Vamos chamar:</p>
+          <div class="math-block">
+            x = número de patos<br>
+            y = número de cachorros
+          </div>
+          <p class="explain">Agora temos nomes para o que não sabemos. O próximo passo é usar as informações do enunciado para criar equações.</p>
+        </div>
+      </div>
+
+      <div class="step" id="ex19-s2">
+        <div class="step-header" onclick="toggleStep('ex19-s2')">
+          <div class="step-num">2</div>
+          <div class="step-title">Montar as equações</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain">O enunciado nos dá <b>duas informações</b>. Cada uma vira uma equação:</p>
+
+          <p class="explain" style="margin-top:16px;"><b>Informação 1:</b> "existem 21 animais no total"</p>
+          <div class="math-block">
+            x + y = 21 <span style="font-size:0.85rem; color: #6b7280; font-family: sans-serif;">(Equação 1)</span>
+          </div>
+
+          <p class="explain"><b>Informação 2:</b> "total de 54 pés" — pato tem 2 pés, cachorro tem 4 pés</p>
+          <div class="math-block">
+            2x + 4y = 54 <span style="font-size:0.85rem; color: #6b7280; font-family: sans-serif;">(Equação 2)</span>
+          </div>
+
+          <p class="explain">Nosso sistema é:</p>
+          <div class="system">
+            <span>x + y = 21 <span class="tag eq1">Eq. 1</span></span>
+            <span>2x + 4y = 54 <span class="tag eq2">Eq. 2</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="ex19-s3">
+        <div class="step-header" onclick="toggleStep('ex19-s3')">
+          <div class="step-num">3</div>
+          <div class="step-title">Resolver — isolar x na Equação 1</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain">Vamos usar o <b>método da substituição</b>. Primeiro, isolamos <b>x</b> na Equação 1:</p>
+          <div class="math-block">
+            x + y = 21<br>
+            x = 21 − y
+          </div>
+          <p class="explain">Agora temos x em função de y. Vamos substituir isso na Equação 2.</p>
+        </div>
+      </div>
+
+      <div class="step" id="ex19-s4">
+        <div class="step-header" onclick="toggleStep('ex19-s4')">
+          <div class="step-num">4</div>
+          <div class="step-title">Substituir na Equação 2 e resolver</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain">Substituímos <b>x = 21 − y</b> na Equação 2:</p>
+          <div class="math-block">
+            2(21 − y) + 4y = 54<br>
+            42 − 2y + 4y = 54<br>
+            42 + 2y = 54<br>
+            2y = 54 − 42<br>
+            2y = 12<br>
+            y = 12 ÷ 2<br>
+            <b>y = 6</b>
+          </div>
+          <p class="explain">Encontramos que há <span class="highlight">6 cachorros</span>!</p>
+        </div>
+      </div>
+
+      <div class="step" id="ex19-s5">
+        <div class="step-header" onclick="toggleStep('ex19-s5')">
+          <div class="step-num">5</div>
+          <div class="step-title">Encontrar x e calcular a diferença</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain">Voltamos à expressão <b>x = 21 − y</b> e substituímos y = 6:</p>
+          <div class="math-block">
+            x = 21 − 6<br>
+            <b>x = 15</b>
+          </div>
+          <p class="explain">Há <span class="highlight">15 patos</span>. Agora calculamos a diferença pedida:</p>
+          <div class="math-block green">
+            diferença = x − y = 15 − 6 = <b>9</b>
+          </div>
+
+          <div class="answer-box">
+            <div class="check">✅</div>
+            <div>
+              <h3>Resposta</h3>
+              <p>15 patos e 6 cachorros. A diferença é 9.</p>
+            </div>
+          </div>
+
+          <p class="explain" style="margin-top:20px; color: var(--muted);">🔍 <b>Verificação:</b> 15 + 6 = 21 ✓ &nbsp;&nbsp; 2×15 + 4×6 = 30 + 24 = 54 ✓</p>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="reveal-btn" id="btn19" onclick="revealAll19()">
+      👁️ Revelar todos os passos
+    </button>
+  </div>
+
+  <!-- EXERCÍCIO 25 -->
+  <div class="page" id="ex25">
+    <div class="ex-header">
+      <div class="ex-tag">EXERCÍCIO 25</div>
+      <h2>Janaína recebeu um pacote com moedas de R$ 0,05 e de R$ 0,10. No pacote está marcado que ele contém R$ 84,55. Se há ao todo 1 056 moedas, quantas são de R$ 0,05 e quantas são de R$ 0,10?</h2>
+      <div class="hint">⚠️ Cuidado com os centavos! Vamos trabalhar tudo em centavos para evitar confusão.</div>
+    </div>
+
+    <div class="steps-container">
+
+      <div class="step" id="ex25-s1">
+        <div class="step-header" onclick="toggleStep('ex25-s1')">
+          <div class="step-num">1</div>
+          <div class="step-title">Identificar as incógnitas</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain">Não sabemos quantas moedas há de cada tipo. Vamos chamar:</p>
+          <div class="math-block">
+            x = quantidade de moedas de R$ 0,05<br>
+            y = quantidade de moedas de R$ 0,10
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="ex25-s2">
+        <div class="step-header" onclick="toggleStep('ex25-s2')">
+          <div class="step-num">2</div>
+          <div class="step-title">Montar as equações</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain"><b>Informação 1:</b> Total de 1 056 moedas</p>
+          <div class="math-block">
+            x + y = 1 056 <span style="font-size:0.85rem; color: #6b7280; font-family: sans-serif;">(Eq. 1)</span>
+          </div>
+
+          <p class="explain"><b>Informação 2:</b> Valor total de R$ 84,55 — vamos converter para centavos!</p>
+          <div class="math-block accent">
+            R$ 84,55 = 8 455 centavos<br>
+            R$ 0,05 = 5 centavos<br>
+            R$ 0,10 = 10 centavos
+          </div>
+
+          <div class="math-block">
+            5x + 10y = 8 455 <span style="font-size:0.85rem; color: #6b7280; font-family: sans-serif;">(Eq. 2)</span>
+          </div>
+
+          <p class="explain">Nosso sistema:</p>
+          <div class="system">
+            <span>x + y = 1 056 <span class="tag eq1">Eq. 1</span></span>
+            <span>5x + 10y = 8 455 <span class="tag eq2">Eq. 2</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="ex25-s3">
+        <div class="step-header" onclick="toggleStep('ex25-s3')">
+          <div class="step-num">3</div>
+          <div class="step-title">Isolar x na Equação 1</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain">Isolamos <b>x</b> na Equação 1:</p>
+          <div class="math-block">
+            x + y = 1 056<br>
+            x = 1 056 − y
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="ex25-s4">
+        <div class="step-header" onclick="toggleStep('ex25-s4')">
+          <div class="step-num">4</div>
+          <div class="step-title">Substituir na Equação 2</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain">Substituímos <b>x = 1 056 − y</b> na Equação 2:</p>
+          <div class="math-block">
+            5(1 056 − y) + 10y = 8 455<br>
+            5 280 − 5y + 10y = 8 455<br>
+            5 280 + 5y = 8 455<br>
+            5y = 8 455 − 5 280<br>
+            5y = 3 175<br>
+            y = 3 175 ÷ 5<br>
+            <b>y = 635</b>
+          </div>
+          <p class="explain">Há <span class="highlight">635 moedas de R$ 0,10</span>!</p>
+        </div>
+      </div>
+
+      <div class="step" id="ex25-s5">
+        <div class="step-header" onclick="toggleStep('ex25-s5')">
+          <div class="step-num">5</div>
+          <div class="step-title">Encontrar x</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain">Voltamos a <b>x = 1 056 − y</b> e substituímos y = 635:</p>
+          <div class="math-block">
+            x = 1 056 − 635<br>
+            <b>x = 421</b>
+          </div>
+          <p class="explain">Há <span class="highlight">421 moedas de R$ 0,05</span>.</p>
+
+          <div class="answer-box">
+            <div class="check">✅</div>
+            <div>
+              <h3>Resposta</h3>
+              <p>421 moedas de R$ 0,05 e 635 moedas de R$ 0,10</p>
+            </div>
+          </div>
+
+          <p class="explain" style="margin-top:20px; color: var(--muted);">🔍 <b>Verificação:</b> 421 + 635 = 1 056 ✓ &nbsp;&nbsp; 5×421 + 10×635 = 2 105 + 6 350 = 8 455 centavos = R$ 84,55 ✓</p>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="reveal-btn" id="btn25" onclick="revealAll25()">
+      👁️ Revelar todos os passos
+    </button>
+  </div>
+
+  <!-- EXERCÍCIO 20 -->
+  <div class="page" id="ex20">
+    <div class="ex-header">
+      <div class="ex-tag">EXERCÍCIO 20</div>
+      <h2>Um site de vendas de músicas teve 1 000 vendas em um dia. O valor total foi de R$ 6 300,00 entre álbuns e faixas avulsas. Um álbum completo custa R$ 15,00 e cada faixa avulsa R$ 3,00. Quantos álbuns foram vendidos? E em média, quantas faixas avulsas no total (considerando que um álbum tem 12 músicas)?</h2>
+    </div>
+
+    <div class="steps-container">
+
+      <div class="step" id="ex20-s1">
+        <div class="step-header" onclick="toggleStep('ex20-s1')">
+          <div class="step-num">1</div>
+          <div class="step-title">Identificar as incógnitas</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain">Não sabemos quantos álbuns e faixas avulsas foram vendidos:</p>
+          <div class="math-block">
+            x = número de álbuns vendidos<br>
+            y = número de faixas avulsas vendidas
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="ex20-s2">
+        <div class="step-header" onclick="toggleStep('ex20-s2')">
+          <div class="step-num">2</div>
+          <div class="step-title">Montar as equações</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain"><b>Informação 1:</b> Total de 1 000 vendas</p>
+          <div class="math-block">
+            x + y = 1 000 <span style="font-size:0.85rem; color: #6b7280; font-family: sans-serif;">(Eq. 1)</span>
+          </div>
+
+          <p class="explain"><b>Informação 2:</b> Valor total de R$ 6 300,00</p>
+          <div class="math-block">
+            15x + 3y = 6 300 <span style="font-size:0.85rem; color: #6b7280; font-family: sans-serif;">(Eq. 2)</span>
+          </div>
+
+          <p class="explain">Nosso sistema:</p>
+          <div class="system">
+            <span>x + y = 1 000 <span class="tag eq1">Eq. 1</span></span>
+            <span>15x + 3y = 6 300 <span class="tag eq2">Eq. 2</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="ex20-s3">
+        <div class="step-header" onclick="toggleStep('ex20-s3')">
+          <div class="step-num">3</div>
+          <div class="step-title">Simplificar a Equação 2</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain">Antes de substituir, podemos <b>simplificar a Equação 2</b> dividindo tudo por 3:</p>
+          <div class="math-block accent">
+            15x + 3y = 6 300  (÷3)<br>
+            5x + y = 2 100 <span style="font-size:0.85rem; color: #6b7280; font-family: sans-serif;">(Eq. 2 simplificada)</span>
+          </div>
+          <p class="explain">Ficou mais fácil de trabalhar!</p>
+        </div>
+      </div>
+
+      <div class="step" id="ex20-s4">
+        <div class="step-header" onclick="toggleStep('ex20-s4')">
+          <div class="step-num">4</div>
+          <div class="step-title">Isolar y e substituir</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain">Da Equação 1, isolamos <b>y</b>:</p>
+          <div class="math-block">
+            y = 1 000 − x
+          </div>
+
+          <p class="explain">Substituímos na Equação 2 simplificada:</p>
+          <div class="math-block">
+            5x + (1 000 − x) = 2 100<br>
+            5x + 1 000 − x = 2 100<br>
+            4x = 2 100 − 1 000<br>
+            4x = 1 100<br>
+            x = 1 100 ÷ 4<br>
+            <b>x = 275</b>
+          </div>
+          <p class="explain">Foram vendidos <span class="highlight">275 álbuns</span>!</p>
+        </div>
+      </div>
+
+      <div class="step" id="ex20-s5">
+        <div class="step-header" onclick="toggleStep('ex20-s5')">
+          <div class="step-num">5</div>
+          <div class="step-title">Encontrar y e responder a parte b</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p class="explain">Substituímos x = 275 em <b>y = 1 000 − x</b>:</p>
+          <div class="math-block">
+            y = 1 000 − 275<br>
+            <b>y = 725</b>
+          </div>
+          <p class="explain">Foram vendidas <span class="highlight">725 faixas avulsas</span>.</p>
+
+          <p class="explain" style="margin-top:16px;"><b>Parte b:</b> Total de faixas (avulsas + as dos álbuns)</p>
+          <div class="math-block green">
+            Faixas dos álbuns: 275 × 12 = 3 300<br>
+            Faixas avulsas: 725<br>
+            Total: 3 300 + 725 = <b>4 025 faixas</b>
+          </div>
+
+          <div class="answer-box">
+            <div class="check">✅</div>
+            <div>
+              <h3>Resposta</h3>
+              <p>a) 275 álbuns &nbsp;|&nbsp; b) 4 025 faixas no total</p>
+            </div>
+          </div>
+
+          <p class="explain" style="margin-top:20px; color: var(--muted);">🔍 <b>Verificação:</b> 275 + 725 = 1 000 ✓ &nbsp;&nbsp; 15×275 + 3×725 = 4 125 + 2 175 = 6 300 ✓</p>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="reveal-btn" id="btn20" onclick="revealAll20()">
+      👁️ Revelar todos os passos
+    </button>
+  </div>
+
+  <!-- RESUMO -->
+  <div class="page" id="resumo">
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="s-tag">Exercício 19</div>
+        <h3>🐾 Patos e Cachorros</h3>
+        <p style="font-size:0.9rem; color:var(--muted); line-height:1.6;">21 animais, 54 pés. Montamos: x + y = 21 e 2x + 4y = 54</p>
+        <div class="answer">x = 15 patos · y = 6 cachorros<br>Diferença = 9</div>
+      </div>
+      <div class="summary-card">
+        <div class="s-tag">Exercício 25</div>
+        <h3>🪙 Moedas de R$0,05 e R$0,10</h3>
+        <p style="font-size:0.9rem; color:var(--muted); line-height:1.6;">1 056 moedas, R$84,55. Convertemos para centavos: x + y = 1 056 e 5x + 10y = 8 455</p>
+        <div class="answer">x = 421 moedas de R$0,05<br>y = 635 moedas de R$0,10</div>
+      </div>
+      <div class="summary-card">
+        <div class="s-tag">Exercício 20</div>
+        <h3>🎵 Álbuns e Faixas Avulsas</h3>
+        <p style="font-size:0.9rem; color:var(--muted); line-height:1.6;">1 000 vendas, R$6 300. Montamos: a + f = 1 000 e 15a + 3f = 6 300</p>
+        <div class="answer">a = 275 álbuns · f = 725 faixas<br>Total de faixas = 4 025</div>
+      </div>
+    </div>
+
+    <div class="tips-box">
+      <h2>⚠️ Atenção na prova — erros mais comuns</h2>
+      <div class="tips-list">
+        <div class="tip">
+          <div class="tip-icon">1️⃣</div>
+          <div><b>Montar as equações errado:</b> leia o enunciado com calma. Cada informação gera uma equação.</div>
+        </div>
+        <div class="tip">
+          <div class="tip-icon">2️⃣</div>
+          <div><b>Esquecer de responder o que foi perguntado:</b> às vezes a pergunta pede a diferença, não os valores de x e y sozinhos.</div>
+        </div>
+        <div class="tip">
+          <div class="tip-icon">3️⃣</div>
+          <div><b>Erro de sinal na substituição:</b> ao distribuir, cuidado com o sinal negativo. Ex: 2(21 − c) = 42 − 2c, não 42 + 2c.</div>
+        </div>
+        <div class="tip">
+          <div class="tip-icon">4️⃣</div>
+          <div><b>Trabalhar com decimais:</b> quando aparecer dinheiro, converta para centavos. Fica mais fácil operar.</div>
+        </div>
+        <div class="tip">
+          <div class="tip-icon">5️⃣</div>
+          <div><b>Não verificar a resposta:</b> substitua os valores encontrados nas duas equações para confirmar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    const labels = { intro: 0, ex19: 1, ex25: 2, ex20: 3, resumo: 4 };
+    document.querySelectorAll('.nav-btn')[labels[id]].classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleStep(id) {
+    const step = document.getElementById(id);
+    step.classList.toggle('revealed');
+  }
+
+  function revealAllSteps(prefix, count, btnId) {
+    for (let i = 1; i <= count; i++) {
+      document.getElementById(prefix + i).classList.add('revealed');
+    }
+    const btn = document.getElementById(btnId);
+    btn.textContent = '✅ Todos os passos revelados';
+    btn.disabled = true;
+  }
+
+  function revealAll19() { revealAllSteps('ex19-s', 5, 'btn19'); }
+  function revealAll25() { revealAllSteps('ex25-s', 5, 'btn25'); }
+  function revealAll20() { revealAllSteps('ex20-s', 5, 'btn20'); }
+</script>
+
+</body>
+</html>
