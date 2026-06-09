@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Correção — Exercícios 35, 37 e 40</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --bg:     #f0f6ff;
+  --white:  #ffffff;
+  --ink:    #1a2340;
+  --blue:   #1a6fcf;
+  --teal:   #0e9e8e;
+  --green:  #27a05a;
+  --orange: #e07c24;
+  --pink:   #d63f72;
+  --purple: #6f48c9;
+  --yellow: #f5c518;
+  --rule:   #dde6f5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* TOP BAR */
+#topbar {
+  width: 100%;
+  background: var(--ink);
+  padding: .7rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+#topbar .title {
+  font-family: 'Fredoka One', cursive;
+  color: #fff;
+  font-size: 1.1rem;
+}
+.nav-dots { display: flex; gap: .45rem; align-items: center; }
+.nav-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #ffffff33;
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+  border: none;
+}
+.nav-dot.active { background: var(--yellow); transform: scale(1.35); }
+#counter { color: #a0aec8; font-size: .85rem; font-weight: 700; min-width: 55px; text-align: right; }
+
+/* PROGRESS */
+#progbar { width: 100%; height: 4px; background: #ccd8ee; }
+#progfill { height: 100%; background: linear-gradient(90deg,var(--blue),var(--teal)); transition: width .35s ease; }
+
+/* STAGE */
+#stage {
+  flex: 1;
+  width: 100%;
+  max-width: 1020px;
+  padding: 1.8rem 1.5rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+/* SLIDE */
+.slide { display: none; flex-direction: column; gap: 1.3rem; animation: fadeIn .3s ease; }
+.slide.active { display: flex; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+
+/* SLIDE TAG */
+.slide-tag {
+  display: inline-flex; align-items: center; gap: .4rem;
+  background: var(--blue); color: #fff;
+  border-radius: 2rem; padding: .28rem 1rem;
+  font-size: .8rem; font-weight: 900;
+  letter-spacing: .08em; text-transform: uppercase; width: fit-content;
+}
+.slide-tag.green  { background: var(--green); }
+.slide-tag.orange { background: var(--orange); }
+.slide-tag.teal   { background: var(--teal); }
+.slide-tag.pink   { background: var(--pink); }
+.slide-tag.purple { background: var(--purple); }
+
+/* HEADING */
+.slide-h {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  line-height: 1.2;
+  color: var(--ink);
+}
+.slide-h span { color: var(--blue); }
+
+/* DICA */
+.dica {
+  background: #fffbe6; border: 2px solid var(--yellow);
+  border-radius: 1rem; padding: .9rem 1.3rem;
+  font-size: 1.05rem; font-weight: 700; line-height: 1.6;
+  display: flex; gap: .6rem; align-items: flex-start;
+}
+.dica .icon { font-size: 1.5rem; flex-shrink: 0; }
+
+/* CARD */
+.card {
+  background: var(--white); border-radius: 1.3rem;
+  padding: 1.4rem 1.7rem;
+  box-shadow: 0 3px 16px rgba(26,35,64,.07);
+}
+.card-label {
+  font-size: .72rem; font-weight: 900;
+  letter-spacing: .12em; text-transform: uppercase; margin-bottom: .6rem;
+}
+
+/* ══ TABELA DO QUADRO ══ */
+.board-table {
+  width: 100%;
+  border-radius: 1.1rem;
+  overflow: hidden;
+  border-collapse: collapse;
+  font-size: 1rem;
+  box-shadow: 0 3px 16px rgba(26,35,64,.1);
+}
+.board-table thead tr { background: var(--blue); }
+.board-table thead th {
+  color: #fff; padding: .7rem 1rem;
+  font-weight: 900; font-size: .95rem;
+  letter-spacing: .04em; text-align: center;
+}
+.board-table tbody tr { transition: background .15s; }
+.board-table tbody tr:hover { filter: brightness(.97); }
+.board-table td {
+  padding: .65rem 1rem; text-align: center;
+  font-weight: 700; font-size: 1rem; line-height: 1.4;
+  border-bottom: 1px solid var(--rule);
+}
+.board-table tbody tr:last-child td { border-bottom: none; }
+
+/* cores das linhas: IDA = azuis/verdes, VOLTA = alaranjadas/rosa */
+.row-kmm  td { background: #e8f2ff; }
+.row-mcm  td { background: #e5f9f5; }
+.row-cmm  td { background: #edfaf3; }
+.row-mkm  td { background: #fff3e0; }
+.row-cmm2 td { background: #fff8f0; }
+.row-mmcm td { background: #fff0f5; }
+
+/* badge IDA / VOLTA dentro da tabela */
+.dir-badge {
+  display: inline-block;
+  border-radius: 2rem;
+  padding: .15rem .65rem;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+}
+.dir-badge.ida   { background: #1a6fcf22; color: var(--blue); }
+.dir-badge.volta { background: #e07c2422; color: var(--orange); }
+
+/* group label */
+.group-header td {
+  background: #f0f4ff !important;
+  color: #7a8baa;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .4rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* ══ CAMINHO IDA + VOLTA ══ */
+.double-path {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  background: var(--white);
+  border-radius: 1.1rem;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(26,35,64,.07);
+}
+.path-row {
+  display: flex; align-items: center; flex-wrap: wrap; gap: .45rem;
+  font-size: 1.05rem;
+}
+.path-label {
+  font-size: .72rem; font-weight: 900; letter-spacing: .1em;
+  text-transform: uppercase; width: 50px; flex-shrink: 0;
+}
+.path-label.ida   { color: var(--blue); }
+.path-label.volta { color: var(--orange); }
+
+.ch-box {
+  border-radius: .6rem; padding: .4rem 1rem;
+  font-weight: 900; font-size: 1.05rem; color: #fff;
+  white-space: nowrap; font-family: 'Fredoka One', cursive;
+}
+.ch-box.km  { background: var(--blue); }
+.ch-box.m   { background: var(--teal); }
+.ch-box.cm  { background: var(--green); }
+.ch-box.mm  { background: var(--orange); }
+.ch-box.num { background: var(--ink); }
+.ch-box.res { background: var(--pink); }
+
+.ch-op {
+  background: #eef3fc; border: 2px solid var(--rule);
+  border-radius: 2rem; padding: .25rem .85rem;
+  font-weight: 900; font-size: .95rem; color: var(--ink); white-space: nowrap;
+}
+.ch-op.inv { background: #fff3e0; border-color: #f5c09a; color: var(--orange); }
+.ch-arrow   { color: #9aaccf; font-size: 1.3rem; font-weight: 900; }
+.ch-arrow.back { color: var(--orange); }
+
+.path-divider {
+  border: none;
+  border-top: 1.5px dashed var(--rule);
+  margin: .1rem 0;
+}
+
+/* item grid */
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 1rem;
+}
+.item-card {
+  background: var(--white); border-radius: 1.2rem;
+  padding: 1.2rem 1.4rem;
+  box-shadow: 0 2px 12px rgba(26,35,64,.06);
+  border-top: 5px solid var(--blue);
+}
+.item-card.b { border-top-color: var(--teal); }
+.item-card.c { border-top-color: var(--green); }
+.item-card.d { border-top-color: var(--orange); }
+
+.item-letter {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem; color: #7a8baa; margin-bottom: .5rem;
+}
+.item-result {
+  margin-top: .55rem;
+  display: inline-block;
+  background: #e8faf2; color: var(--green);
+  border-radius: .5rem; padding: .2rem .7rem;
+  font-weight: 900; font-size: 1rem;
+}
+
+/* steps */
+.steps { display: flex; flex-direction: column; gap: .7rem; }
+.step  { display: flex; gap: .8rem; align-items: flex-start; }
+.step-n {
+  width: 32px; height: 32px; flex-shrink: 0;
+  border-radius: 50%; background: var(--blue); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 1rem; margin-top: .1rem;
+}
+.step-body { flex: 1; font-size: 1rem; font-weight: 600; line-height: 1.6; }
+
+/* rule box */
+.rule-box {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--teal) 100%);
+  border-radius: 1.2rem; padding: 1.2rem 1.7rem;
+  color: #fff; font-size: 1.1rem; font-weight: 700;
+  line-height: 1.7; text-align: center;
+}
+.rule-box .rule-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.45rem; margin-bottom: .35rem;
+}
+
+/* compare */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.cmp-col { border-radius: 1rem; padding: .9rem 1.1rem; }
+.cmp-col h5 { font-size: .78rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .4rem; }
+.cmp-col.bad  { background: #fff0f3; border: 2px solid #f5a0b0; }
+.cmp-col.bad h5 { color: var(--pink); }
+.cmp-col.good { background: #e8faf2; border: 2px solid #7dd5a8; }
+.cmp-col.good h5 { color: var(--green); }
+.cmp-col p { font-size: .98rem; font-weight: 700; line-height: 1.6; }
+
+/* nice table */
+.nice-table { width: 100%; border-collapse: collapse; font-size: .98rem; }
+.nice-table th { background: var(--ink); color: #fff; padding: .65rem 1rem; font-weight: 800; font-size: .88rem; text-align: left; }
+.nice-table th:first-child { border-radius: .5rem 0 0 0; }
+.nice-table th:last-child  { border-radius: 0 .5rem 0 0; }
+.nice-table td { padding: .6rem 1rem; border-bottom: 1px solid var(--rule); font-weight: 600; line-height: 1.5; }
+.nice-table tr:last-child td { border-bottom: none; }
+.nice-table tr:nth-child(even) td { background: #f6f9ff; }
+.nice-table .ok { color: var(--green); font-weight: 900; }
+
+/* bottom nav */
+#botnav {
+  width: 100%; max-width: 1020px;
+  padding: .9rem 1.5rem 1.8rem;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+}
+.btn {
+  font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem;
+  border: none; border-radius: 2rem; padding: .65rem 1.7rem;
+  cursor: pointer; transition: transform .15s, box-shadow .15s;
+}
+.btn:active { transform: scale(.97); }
+.btn-prev { background: var(--white); color: var(--ink); border: 2px solid var(--rule); }
+.btn-next { background: var(--blue); color: #fff; box-shadow: 0 4px 16px rgba(26,111,207,.28); }
+.btn:disabled { opacity: .35; cursor: default; }
+#slide-label { font-weight: 700; font-size: .9rem; color: #7a8baa; text-align: center; flex: 1; }
+
+@media (max-width:600px) {
+  #stage { padding: 1rem .9rem 1rem; }
+  .item-grid { grid-template-columns: 1fr; }
+  .compare   { grid-template-columns: 1fr; }
+  .slide-h   { font-size: 1.4rem; }
+  .ch-box    { font-size: .95rem; padding: .35rem .75rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="title">📐 Correção — Ex. 35, 37 e 40</div>
+  <div class="nav-dots" id="navdots"></div>
+  <div id="counter">1 / 14</div>
+</div>
+<div id="progbar"><div id="progfill" style="width:7%"></div></div>
+
+<div id="stage">
+
+<!-- ══════════════════════════════════════
+     S0 — CAPA
+══════════════════════════════════════ -->
+<div class="slide active" id="s0">
+  <div class="slide-tag">🏁 Vamos corrigir juntos</div>
+  <div class="slide-h">Exercícios <span>35, 37 e 40</span></div>
+
+  <div class="rule-box">
+    <div class="rule-title">A regra de ouro</div>
+    Vai para unidade <b>menor</b>? → <b>Multiplica</b> (número fica maior)<br>
+    Vai para unidade <b>maior</b>? → <b>Divide</b> (número fica menor)<br>
+    <span style="font-size:.9rem;opacity:.85">km é maior que m, que é maior que cm, que é maior que mm</span>
+  </div>
+
+  <div class="dica">
+    <div class="icon">💡</div>
+    <div>
+      Em cada slide você vai ver primeiro a <b>tabela do quadro</b> com a linha que vai usar — ida e volta. Depois, o caminho detalhado de resolução.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S1 — A TABELA COMPLETA (referência)
+══════════════════════════════════════ -->
+<div class="slide" id="s1">
+  <div class="slide-tag purple">📋 Tabela de Referência</div>
+  <div class="slide-h">A tabela completa — <span>ida e volta</span></div>
+
+  <div class="dica">
+    <div class="icon">📌</div>
+    <div>Esta é a tabela que vai ficar no quadro durante toda a aula. Cada exercício vai usar uma ou mais linhas dela.</div>
+  </div>
+
+  <div class="card">
+    <table class="board-table">
+      <thead>
+        <tr>
+          <th>Direção</th>
+          <th>De</th>
+          <th>Para</th>
+          <th>Operação</th>
+          <th>Vírgula</th>
+          <th>Exemplo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="group-header"><td colspan="6">➡️ IDA — indo para unidade menor (número cresce)</td></tr>
+        <tr class="row-kmm">
+          <td><span class="dir-badge ida">IDA</span></td>
+          <td><b>km</b></td><td><b>m</b></td>
+          <td><b>× 1 000</b></td><td>3 casas →</td>
+          <td>1,35 km → <b style="color:var(--blue)">1 350 m</b></td>
+        </tr>
+        <tr class="row-mcm">
+          <td><span class="dir-badge ida">IDA</span></td>
+          <td><b>m</b></td><td><b>cm</b></td>
+          <td><b>× 100</b></td><td>2 casas →</td>
+          <td>0,53 m → <b style="color:var(--teal)">53 cm</b></td>
+        </tr>
+        <tr class="row-cmm">
+          <td><span class="dir-badge ida">IDA</span></td>
+          <td><b>cm</b></td><td><b>mm</b></td>
+          <td><b>× 10</b></td><td>1 casa →</td>
+          <td>28 cm → <b style="color:var(--green)">280 mm</b></td>
+        </tr>
+        <tr class="group-header"><td colspan="6">⬅️ VOLTA — voltando para unidade maior (número diminui)</td></tr>
+        <tr class="row-mkm">
+          <td><span class="dir-badge volta">VOLTA</span></td>
+          <td><b>m</b></td><td><b>km</b></td>
+          <td><b>÷ 1 000</b></td><td>3 casas ←</td>
+          <td>300 m → <b style="color:var(--orange)">0,3 km</b></td>
+        </tr>
+        <tr class="row-cmm2">
+          <td><span class="dir-badge volta">VOLTA</span></td>
+          <td><b>cm</b></td><td><b>m</b></td>
+          <td><b>÷ 100</b></td><td>2 casas ←</td>
+          <td>147 cm → <b style="color:var(--orange)">1,47 m</b></td>
+        </tr>
+        <tr class="row-mmcm">
+          <td><span class="dir-badge volta">VOLTA</span></td>
+          <td><b>mm</b></td><td><b>cm</b></td>
+          <td><b>÷ 10</b></td><td>1 casa ←</td>
+          <td>73 mm → <b style="color:var(--orange)">7,3 cm</b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="dica" style="background:#e8f2ff;border-color:var(--blue)">
+    <div class="icon">🔑</div>
+    <div>
+      <b>Como usar a tabela:</b> primeiro descubra <i>de qual unidade</i> para <i>qual unidade</i> precisa ir. Ache a linha na tabela. Pronto — a operação está lá!
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S2 — Q35 intro
+══════════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="slide-tag">Questão 35</div>
+  <div class="slide-h">Use funções para fazer as conversões</div>
+
+  <div class="dica">
+    <div class="icon">🔑</div>
+    <div>
+      Primeiro passo sempre: <b>achar a linha certa na tabela.</b><br>
+      Pergunte: "De qual unidade estou partindo? Para qual quero chegar?"
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label" style="color:var(--blue)">Linhas da tabela usadas na Q35</div>
+    <table class="board-table">
+      <thead><tr><th>Direção</th><th>De</th><th>Para</th><th>Operação</th><th>Vírgula</th></tr></thead>
+      <tbody>
+        <tr class="row-kmm">
+          <td><span class="dir-badge ida">IDA</span></td><td>km</td><td>m</td><td><b>× 1 000</b></td><td>3 casas →</td>
+        </tr>
+        <tr class="row-mcm">
+          <td><span class="dir-badge ida">IDA</span></td><td>m</td><td>cm</td><td><b>× 100</b></td><td>2 casas →</td>
+        </tr>
+        <tr class="row-cmm2">
+          <td><span class="dir-badge volta">VOLTA</span></td><td>cm</td><td>m</td><td><b>÷ 100</b></td><td>2 casas ←</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S3 — Q35 a e b
+══════════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="slide-tag">Q35 — a) e b)</div>
+  <div class="slide-h">Convertendo km → m</div>
+
+  <div class="item-grid">
+    <div class="item-card">
+      <div class="item-letter">a) 35,121 km = _____ m</div>
+      <div class="dica" style="font-size:.92rem;padding:.65rem .9rem;margin:.4rem 0">
+        <div class="icon" style="font-size:1.2rem">📋</div>
+        <div>Tabela: <b>km → m = × 1 000</b> (IDA, 3 casas →)</div>
+      </div>
+      <div class="double-path" style="margin:.4rem 0">
+        <div class="path-row">
+          <span class="path-label ida">IDA →</span>
+          <span class="ch-box km">35,121 km</span>
+          <span class="ch-op">× 1 000</span>
+          <span class="ch-arrow">→</span>
+          <span class="ch-box res">35 121 m</span>
+        </div>
+      </div>
+      <div style="font-size:.9rem;font-weight:600;color:#5a6a88;margin:.3rem 0">
+        35,<b style="color:var(--pink)">121</b> → move 3 casas → 35 121
+      </div>
+      <div class="item-result">✅ 35 121 m</div>
+    </div>
+
+    <div class="item-card b">
+      <div class="item-letter">b) 0,12 km = _____ m</div>
+      <div class="dica" style="font-size:.92rem;padding:.65rem .9rem;margin:.4rem 0">
+        <div class="icon" style="font-size:1.2rem">📋</div>
+        <div>Tabela: <b>km → m = × 1 000</b><br>
+        0,12 tem 2 casas. Preciso de 3 → escrevo <b>0,120</b></div>
+      </div>
+      <div class="double-path" style="margin:.4rem 0">
+        <div class="path-row">
+          <span class="path-label ida">IDA →</span>
+          <span class="ch-box km">0,120 km</span>
+          <span class="ch-op">× 1 000</span>
+          <span class="ch-arrow">→</span>
+          <span class="ch-box res">120 m</span>
+        </div>
+      </div>
+      <div style="font-size:.9rem;font-weight:600;color:#5a6a88;margin:.3rem 0">
+        0,<b style="color:var(--pink)">120</b> → move 3 casas → 120
+      </div>
+      <div class="item-result">✅ 120 m</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S4 — Q35 c e d  (VOLTA)
+══════════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="slide-tag">Q35 — c) e d)</div>
+  <div class="slide-h">Agora a <span style="color:var(--orange)">volta</span> — m ↔ cm</div>
+
+  <div class="dica">
+    <div class="icon">🔄</div>
+    <div>
+      Aqui o exercício nos dá o <b>cm</b> e pede o <b>m</b> — ou o contrário.<br>
+      Veja as duas direções na tabela antes de resolver!
+    </div>
+  </div>
+
+  <div class="item-grid">
+    <div class="item-card c">
+      <div class="item-letter">c) _____ m = 1 315 cm</div>
+      <div class="dica" style="font-size:.92rem;padding:.65rem .9rem;margin:.4rem 0">
+        <div class="icon" style="font-size:1.2rem">📋</div>
+        <div>Tenho cm, quero m → <b>VOLTA: ÷ 100</b> (2 casas ←)</div>
+      </div>
+      <div class="double-path" style="margin:.4rem 0">
+        <div class="path-row">
+          <span class="path-label ida">IDA →</span>
+          <span class="ch-box m">13,15 m</span>
+          <span class="ch-op">× 100</span>
+          <span class="ch-arrow">→</span>
+          <span class="ch-box cm">1 315 cm</span>
+        </div>
+        <hr class="path-divider">
+        <div class="path-row">
+          <span class="path-label volta">VOLTA ←</span>
+          <span class="ch-box cm">1 315 cm</span>
+          <span class="ch-op inv">÷ 100</span>
+          <span class="ch-arrow back">←</span>
+          <span class="ch-box res">13,15 m</span>
+        </div>
+      </div>
+      <div style="font-size:.9rem;font-weight:600;color:#5a6a88;margin:.3rem 0">
+        1315 → move 2 casas ← → 13,15
+      </div>
+      <div class="item-result">✅ 13,15 m</div>
+    </div>
+
+    <div class="item-card d">
+      <div class="item-letter">d) 0,21 m = _____ cm</div>
+      <div class="dica" style="font-size:.92rem;padding:.65rem .9rem;margin:.4rem 0">
+        <div class="icon" style="font-size:1.2rem">📋</div>
+        <div>Tenho m, quero cm → <b>IDA: × 100</b> (2 casas →)</div>
+      </div>
+      <div class="double-path" style="margin:.4rem 0">
+        <div class="path-row">
+          <span class="path-label ida">IDA →</span>
+          <span class="ch-box m">0,21 m</span>
+          <span class="ch-op">× 100</span>
+          <span class="ch-arrow">→</span>
+          <span class="ch-box res">21 cm</span>
+        </div>
+        <hr class="path-divider">
+        <div class="path-row" style="opacity:.6">
+          <span class="path-label volta">VOLTA ←</span>
+          <span class="ch-box cm" style="opacity:.7">21 cm</span>
+          <span class="ch-op inv">÷ 100</span>
+          <span class="ch-arrow back">←</span>
+          <span class="ch-box num" style="background:#7a8baa">0,21 m ✓</span>
+        </div>
+      </div>
+      <div style="font-size:.9rem;font-weight:600;color:#5a6a88;margin:.3rem 0">
+        0,<b style="color:var(--pink)">21</b> → move 2 → 21 &nbsp;|&nbsp; Verifica: 21 ÷ 100 = 0,21 ✓
+      </div>
+      <div class="item-result">✅ 21 cm</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S5 — Q37 intro
+══════════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="slide-tag teal">Questão 37</div>
+  <div class="slide-h">Funções inversas — <span style="color:var(--orange)">o caminho da volta</span></div>
+
+  <div class="dica">
+    <div class="icon">🔄</div>
+    <div>
+      A Q37 toda usa a <b>VOLTA</b> — parte de uma unidade menor e pede a maior.<br>
+      Veja as 3 linhas VOLTA que vamos usar:
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label" style="color:var(--orange)">Linhas da tabela — só as VOLTAS</div>
+    <table class="board-table">
+      <thead><tr><th>Direção</th><th>De</th><th>Para</th><th>Operação</th><th>Vírgula</th><th>Exemplo</th></tr></thead>
+      <tbody>
+        <tr class="row-mkm">
+          <td><span class="dir-badge volta">VOLTA</span></td><td>m</td><td>km</td>
+          <td><b>÷ 1 000</b></td><td>3 casas ←</td>
+          <td>300 m → <b style="color:var(--orange)">0,3 km</b></td>
+        </tr>
+        <tr class="row-cmm2">
+          <td><span class="dir-badge volta">VOLTA</span></td><td>cm</td><td>m</td>
+          <td><b>÷ 100</b></td><td>2 casas ←</td>
+          <td>147 cm → <b style="color:var(--orange)">1,47 m</b></td>
+        </tr>
+        <tr class="row-mmcm">
+          <td><span class="dir-badge volta">VOLTA</span></td><td>mm</td><td>cm</td>
+          <td><b>÷ 10</b></td><td>1 casa ←</td>
+          <td>73 mm → <b style="color:var(--orange)">7,3 cm</b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rule-box" style="background:linear-gradient(135deg,var(--orange),var(--pink))">
+    <div class="rule-title">Por que dividir?</div>
+    km é unidade <b>maior</b> que m. Ir de m para km é ir para unidade maior.<br>
+    Unidade maior = número menor = <b>dividimos</b>.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S6 — Q37 m→km e cm→m
+══════════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="slide-tag teal">Q37 — itens m→km e cm→m</div>
+  <div class="slide-h">Vendo a <span style="color:var(--blue)">ida</span> e a <span style="color:var(--orange)">volta</span> juntas</div>
+
+  <div class="item-grid">
+    <div class="item-card" style="border-top-color:var(--orange)">
+      <div class="item-letter">300 m = _____ km</div>
+      <div class="dica" style="font-size:.9rem;padding:.6rem .85rem;margin:.4rem 0">
+        <div class="icon" style="font-size:1.1rem">📋</div>
+        <div>Tabela: <b>m → km = VOLTA ÷ 1 000</b> (3 casas ←)</div>
+      </div>
+      <div class="double-path" style="margin:.4rem 0">
+        <div class="path-row">
+          <span class="path-label ida">IDA →</span>
+          <span class="ch-box km">0,3 km</span>
+          <span class="ch-op">× 1 000</span>
+          <span class="ch-arrow">→</span>
+          <span class="ch-box m">300 m</span>
+        </div>
+        <hr class="path-divider">
+        <div class="path-row">
+          <span class="path-label volta">VOLTA ←</span>
+          <span class="ch-box m">300 m</span>
+          <span class="ch-op inv">÷ 1 000</span>
+          <span class="ch-arrow back">←</span>
+          <span class="ch-box res">0,3 km</span>
+        </div>
+      </div>
+      <div style="font-size:.9rem;font-weight:600;color:#5a6a88;margin:.3rem 0">
+        300 → move 3 casas ← → 0,300 → <b>0,3</b>
+      </div>
+      <div class="item-result">✅ 0,3 km</div>
+    </div>
+
+    <div class="item-card b" style="border-top-color:var(--orange)">
+      <div class="item-letter">147 cm = _____ m</div>
+      <div class="dica" style="font-size:.9rem;padding:.6rem .85rem;margin:.4rem 0">
+        <div class="icon" style="font-size:1.1rem">📋</div>
+        <div>Tabela: <b>cm → m = VOLTA ÷ 100</b> (2 casas ←)</div>
+      </div>
+      <div class="double-path" style="margin:.4rem 0">
+        <div class="path-row">
+          <span class="path-label ida">IDA →</span>
+          <span class="ch-box m">1,47 m</span>
+          <span class="ch-op">× 100</span>
+          <span class="ch-arrow">→</span>
+          <span class="ch-box cm">147 cm</span>
+        </div>
+        <hr class="path-divider">
+        <div class="path-row">
+          <span class="path-label volta">VOLTA ←</span>
+          <span class="ch-box cm">147 cm</span>
+          <span class="ch-op inv">÷ 100</span>
+          <span class="ch-arrow back">←</span>
+          <span class="ch-box res">1,47 m</span>
+        </div>
+      </div>
+      <div style="font-size:.9rem;font-weight:600;color:#5a6a88;margin:.3rem 0">
+        147 → move 2 casas ← → <b>1,47</b>
+      </div>
+      <div class="item-result">✅ 1,47 m</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S7 — Q37 mm→cm e 5mm
+══════════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="slide-tag teal">Q37 — itens mm→cm</div>
+  <div class="slide-h">Ida e volta: <span style="color:var(--orange)">mm ↔ cm</span></div>
+
+  <div class="item-grid">
+    <div class="item-card c" style="border-top-color:var(--orange)">
+      <div class="item-letter">73 mm = _____ cm</div>
+      <div class="dica" style="font-size:.9rem;padding:.6rem .85rem;margin:.4rem 0">
+        <div class="icon" style="font-size:1.1rem">📋</div>
+        <div>Tabela: <b>mm → cm = VOLTA ÷ 10</b> (1 casa ←)</div>
+      </div>
+      <div class="double-path" style="margin:.4rem 0">
+        <div class="path-row">
+          <span class="path-label ida">IDA →</span>
+          <span class="ch-box cm">7,3 cm</span>
+          <span class="ch-op">× 10</span>
+          <span class="ch-arrow">→</span>
+          <span class="ch-box mm">73 mm</span>
+        </div>
+        <hr class="path-divider">
+        <div class="path-row">
+          <span class="path-label volta">VOLTA ←</span>
+          <span class="ch-box mm">73 mm</span>
+          <span class="ch-op inv">÷ 10</span>
+          <span class="ch-arrow back">←</span>
+          <span class="ch-box res">7,3 cm</span>
+        </div>
+      </div>
+      <div style="font-size:.9rem;font-weight:600;color:#5a6a88;margin:.3rem 0">
+        73 → move 1 casa ← → <b>7,3</b>
+      </div>
+      <div class="item-result">✅ 7,3 cm</div>
+    </div>
+
+    <div class="item-card d" style="border-top-color:var(--orange)">
+      <div class="item-letter">5 mm = _____ cm</div>
+      <div class="dica" style="font-size:.9rem;padding:.6rem .85rem;margin:.4rem 0">
+        <div class="icon" style="font-size:1.1rem">📋</div>
+        <div>Tabela: <b>mm → cm = VOLTA ÷ 10</b><br>
+        5 é inteiro → vira 0,5 (move 1 casa ←)</div>
+      </div>
+      <div class="double-path" style="margin:.4rem 0">
+        <div class="path-row">
+          <span class="path-label ida">IDA →</span>
+          <span class="ch-box cm">0,5 cm</span>
+          <span class="ch-op">× 10</span>
+          <span class="ch-arrow">→</span>
+          <span class="ch-box mm">5 mm</span>
+        </div>
+        <hr class="path-divider">
+        <div class="path-row">
+          <span class="path-label volta">VOLTA ←</span>
+          <span class="ch-box mm">5 mm</span>
+          <span class="ch-op inv">÷ 10</span>
+          <span class="ch-arrow back">←</span>
+          <span class="ch-box res">0,5 cm</span>
+        </div>
+      </div>
+      <div style="font-size:.9rem;font-weight:600;color:#5a6a88;margin:.3rem 0">
+        5 → move 1 casa ← → <b>0,5</b>
+      </div>
+      <div class="item-result">✅ 0,5 cm</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S8 — Q40 intro
+══════════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="slide-tag orange">Questão 40</div>
+  <div class="slide-h">Complete a cadeia — <span style="color:var(--orange)">dois passos</span></div>
+
+  <div class="dica">
+    <div class="icon">🔑</div>
+    <div>
+      A Q40 mistura <b>IDA e VOLTA</b> na mesma cadeia. Às vezes o número do meio está dado e você precisa encontrar os extremos.<br>
+      <b>Um passo de cada vez — consulte a tabela!</b>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label" style="color:var(--orange)">As linhas da tabela usadas na Q40</div>
+    <table class="board-table">
+      <thead><tr><th>Direção</th><th>De</th><th>Para</th><th>Operação</th><th>Vírgula</th></tr></thead>
+      <tbody>
+        <tr class="row-kmm"><td><span class="dir-badge ida">IDA</span></td><td>km</td><td>m</td><td><b>× 1 000</b></td><td>3 →</td></tr>
+        <tr class="row-mcm"><td><span class="dir-badge ida">IDA</span></td><td>m</td><td>cm</td><td><b>× 100</b></td><td>2 →</td></tr>
+        <tr class="row-cmm"><td><span class="dir-badge ida">IDA</span></td><td>cm</td><td>mm</td><td><b>× 10</b></td><td>1 →</td></tr>
+        <tr class="row-mkm"><td><span class="dir-badge volta">VOLTA</span></td><td>m</td><td>km</td><td><b>÷ 1 000</b></td><td>3 ←</td></tr>
+        <tr class="row-cmm2"><td><span class="dir-badge volta">VOLTA</span></td><td>cm</td><td>m</td><td><b>÷ 100</b></td><td>2 ←</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S9 — Q40 a e b
+══════════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="slide-tag orange">Q40 — a) e b)</div>
+  <div class="slide-h">Cadeias km → m → cm</div>
+
+  <div class="item-grid">
+    <div class="item-card" style="border-top-color:var(--orange)">
+      <div class="item-letter">a) 1,3 km → ___ m → ___ cm</div>
+      <div class="dica" style="font-size:.9rem;padding:.6rem .85rem;margin:.35rem 0">
+        <div class="icon" style="font-size:1.1rem">📋</div>
+        <div>Passo 1: km→m = IDA × 1 000<br>Passo 2: m→cm = IDA × 100</div>
+      </div>
+      <div class="steps" style="margin:.4rem 0">
+        <div class="step">
+          <div class="step-n">1</div>
+          <div class="step-body">1,3 × 1 000 = <b style="color:var(--teal)">1 300 m</b></div>
+        </div>
+        <div class="step">
+          <div class="step-n" style="background:var(--green)">2</div>
+          <div class="step-body">1 300 × 100 = <b style="color:var(--green)">130 000 cm</b></div>
+        </div>
+      </div>
+      <div class="path-row" style="flex-wrap:wrap;gap:.4rem;margin-top:.5rem">
+        <span class="ch-box km">1,3 km</span>
+        <span class="ch-arrow">→</span>
+        <span class="ch-box m">1 300 m</span>
+        <span class="ch-arrow">→</span>
+        <span class="ch-box cm">130 000 cm</span>
+      </div>
+    </div>
+
+    <div class="item-card b" style="border-top-color:var(--teal)">
+      <div class="item-letter">b) ___ km → 530 m → ___ cm</div>
+      <div class="dica" style="font-size:.9rem;padding:.6rem .85rem;margin:.35rem 0">
+        <div class="icon" style="font-size:1.1rem">📋</div>
+        <div>
+          Tenho o m = 530.<br>
+          Achar km: VOLTA ÷ 1 000 &nbsp;|&nbsp; Achar cm: IDA × 100
+        </div>
+      </div>
+      <div class="double-path" style="margin:.4rem 0">
+        <div class="path-row">
+          <span class="path-label volta">VOLTA ←</span>
+          <span class="ch-box m">530 m</span>
+          <span class="ch-op inv">÷ 1 000</span>
+          <span class="ch-arrow back">←</span>
+          <span class="ch-box res">0,53 km</span>
+        </div>
+        <hr class="path-divider">
+        <div class="path-row">
+          <span class="path-label ida">IDA →</span>
+          <span class="ch-box m">530 m</span>
+          <span class="ch-op">× 100</span>
+          <span class="ch-arrow">→</span>
+          <span class="ch-box res">53 000 cm</span>
+        </div>
+      </div>
+      <div class="path-row" style="flex-wrap:wrap;gap:.4rem;margin-top:.4rem">
+        <span class="ch-box km">0,53 km</span>
+        <span class="ch-arrow">→</span>
+        <span class="ch-box m">530 m</span>
+        <span class="ch-arrow">→</span>
+        <span class="ch-box cm">53 000 cm</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S10 — Q40 c e d
+══════════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="slide-tag orange">Q40 — c) e d)</div>
+  <div class="slide-h">Cadeias m → cm → mm</div>
+
+  <div class="item-grid">
+    <div class="item-card c" style="border-top-color:var(--green)">
+      <div class="item-letter">c) ___ m → 28 cm → ___ mm</div>
+      <div class="dica" style="font-size:.9rem;padding:.6rem .85rem;margin:.35rem 0">
+        <div class="icon" style="font-size:1.1rem">📋</div>
+        <div>
+          Tenho cm = 28.<br>
+          Achar m: VOLTA ÷ 100 &nbsp;|&nbsp; Achar mm: IDA × 10
+        </div>
+      </div>
+      <div class="double-path" style="margin:.4rem 0">
+        <div class="path-row">
+          <span class="path-label volta">VOLTA ←</span>
+          <span class="ch-box cm">28 cm</span>
+          <span class="ch-op inv">÷ 100</span>
+          <span class="ch-arrow back">←</span>
+          <span class="ch-box res">0,28 m</span>
+        </div>
+        <hr class="path-divider">
+        <div class="path-row">
+          <span class="path-label ida">IDA →</span>
+          <span class="ch-box cm">28 cm</span>
+          <span class="ch-op">× 10</span>
+          <span class="ch-arrow">→</span>
+          <span class="ch-box res">280 mm</span>
+        </div>
+      </div>
+      <div class="path-row" style="flex-wrap:wrap;gap:.4rem;margin-top:.4rem">
+        <span class="ch-box m">0,28 m</span>
+        <span class="ch-arrow">→</span>
+        <span class="ch-box cm">28 cm</span>
+        <span class="ch-arrow">→</span>
+        <span class="ch-box mm">280 mm</span>
+      </div>
+    </div>
+
+    <div class="item-card d" style="border-top-color:var(--pink)">
+      <div class="item-letter">d) ___ m → 4,9 cm → ___ mm</div>
+      <div class="dica" style="font-size:.9rem;padding:.6rem .85rem;margin:.35rem 0">
+        <div class="icon" style="font-size:1.1rem">📋</div>
+        <div>
+          Tenho cm = 4,9.<br>
+          Achar m: VOLTA ÷ 100 &nbsp;|&nbsp; Achar mm: IDA × 10
+        </div>
+      </div>
+      <div class="double-path" style="margin:.4rem 0">
+        <div class="path-row">
+          <span class="path-label volta">VOLTA ←</span>
+          <span class="ch-box cm">4,9 cm</span>
+          <span class="ch-op inv">÷ 100</span>
+          <span class="ch-arrow back">←</span>
+          <span class="ch-box res">0,049 m</span>
+        </div>
+        <hr class="path-divider">
+        <div class="path-row">
+          <span class="path-label ida">IDA →</span>
+          <span class="ch-box cm">4,9 cm</span>
+          <span class="ch-op">× 10</span>
+          <span class="ch-arrow">→</span>
+          <span class="ch-box res">49 mm</span>
+        </div>
+      </div>
+      <div class="path-row" style="flex-wrap:wrap;gap:.4rem;margin-top:.4rem">
+        <span class="ch-box m">0,049 m</span>
+        <span class="ch-arrow">→</span>
+        <span class="ch-box cm">4,9 cm</span>
+        <span class="ch-arrow">→</span>
+        <span class="ch-box mm">49 mm</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S11 — ERRO COMUM
+══════════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="slide-tag pink">⚠️ Atenção — Erro frequente</div>
+  <div class="slide-h">O erro que mais acontece</div>
+
+  <div class="compare">
+    <div class="cmp-col bad">
+      <h5>❌ Erro comum</h5>
+      <p>300 m ÷ 1000 = 3 km<br>
+      <span style="font-size:.88rem">(esqueceram o zero: era 0,3, não 3)</span></p>
+    </div>
+    <div class="cmp-col good">
+      <h5>✅ Correto</h5>
+      <p>300 → move 3 casas ← → <b>0,300 = 0,3 km</b></p>
+    </div>
+  </div>
+
+  <div class="double-path">
+    <div class="path-row">
+      <span class="path-label ida">IDA →</span>
+      <span class="ch-box km">0,3 km</span>
+      <span class="ch-op">× 1 000</span>
+      <span class="ch-arrow">→</span>
+      <span class="ch-box m">300 m</span>
+    </div>
+    <hr class="path-divider">
+    <div class="path-row">
+      <span class="path-label volta">VOLTA ←</span>
+      <span class="ch-box m">300 m</span>
+      <span class="ch-op inv">÷ 1 000</span>
+      <span class="ch-arrow back">←</span>
+      <span class="ch-box res">0,3 km</span>
+    </div>
+  </div>
+
+  <div class="dica">
+    <div class="icon">🔍</div>
+    <div>
+      <b>Verificação sempre funciona:</b> fez a VOLTA e chegou em 0,3 km?<br>
+      Confirme: 0,3 × 1 000 = 300 m ✓ — voltou ao número original!
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S12 — RESUMÃO COM TABELA COMPLETA
+══════════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="slide-tag purple">📋 Resumão final</div>
+  <div class="slide-h">A tabela completa — <span>cole no caderno!</span></div>
+
+  <div class="card">
+    <table class="board-table">
+      <thead>
+        <tr>
+          <th>Direção</th><th>De</th><th>Para</th>
+          <th>Operação</th><th>Vírgula</th><th>Exemplo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="group-header"><td colspan="6">➡️ IDA — indo para unidade menor</td></tr>
+        <tr class="row-kmm">
+          <td><span class="dir-badge ida">IDA</span></td><td>km</td><td>m</td>
+          <td>× 1 000</td><td>3 →</td><td class="ok">1,35 km → 1 350 m</td>
+        </tr>
+        <tr class="row-mcm">
+          <td><span class="dir-badge ida">IDA</span></td><td>m</td><td>cm</td>
+          <td>× 100</td><td>2 →</td><td class="ok">0,53 m → 53 cm</td>
+        </tr>
+        <tr class="row-cmm">
+          <td><span class="dir-badge ida">IDA</span></td><td>cm</td><td>mm</td>
+          <td>× 10</td><td>1 →</td><td class="ok">28 cm → 280 mm</td>
+        </tr>
+        <tr class="group-header"><td colspan="6">⬅️ VOLTA — voltando para unidade maior</td></tr>
+        <tr class="row-mkm">
+          <td><span class="dir-badge volta">VOLTA</span></td><td>m</td><td>km</td>
+          <td>÷ 1 000</td><td>3 ←</td><td class="ok">300 m → 0,3 km</td>
+        </tr>
+        <tr class="row-cmm2">
+          <td><span class="dir-badge volta">VOLTA</span></td><td>cm</td><td>m</td>
+          <td>÷ 100</td><td>2 ←</td><td class="ok">147 cm → 1,47 m</td>
+        </tr>
+        <tr class="row-mmcm">
+          <td><span class="dir-badge volta">VOLTA</span></td><td>mm</td><td>cm</td>
+          <td>÷ 10</td><td>1 ←</td><td class="ok">73 mm → 7,3 cm</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-title">3 perguntas para qualquer item</div>
+    1️⃣ De qual unidade? Para qual?<br>
+    2️⃣ Ache a linha na tabela — é IDA ou VOLTA?<br>
+    3️⃣ Fez a conta? Verifica de volta!
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S13 — FIM
+══════════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="slide-tag green">🎉 Fim da correção</div>
+  <div class="slide-h">Parabéns por chegar até aqui!</div>
+  <div class="dica">
+    <div class="icon">⭐</div>
+    <div>
+      <b>Na hora da prova:</b> pense na tabela. Ache a linha certa. Aplique a operação. Verifique de volta. Simples assim!
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label" style="color:var(--green)">O que praticamos hoje</div>
+    <div class="steps">
+      <div class="step"><div class="step-n">35</div><div class="step-body">Conversão ida e volta entre km, m e cm — <b>base de tudo</b></div></div>
+      <div class="step"><div class="step-n" style="background:var(--teal)">37</div><div class="step-body">Só VOLTA: ÷ 1000, ÷ 100, ÷ 10 — <b>sempre mostrar ida e volta</b></div></div>
+      <div class="step"><div class="step-n" style="background:var(--orange)">40</div><div class="step-body">Cadeias mistas — <b>consultar tabela passo a passo</b></div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /stage -->
+
+<div id="botnav">
+  <button class="btn btn-prev" id="btnPrev" onclick="go(-1)" disabled>← Anterior</button>
+  <span id="slide-label">Introdução</span>
+  <button class="btn btn-next" id="btnNext" onclick="go(1)">Próximo →</button>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const dotsEl = document.getElementById('navdots');
+const TOTAL  = slides.length;
+let cur = 0;
+
+const labels = [
+  'Introdução','Tabela Completa',
+  'Q35 — Tabela','Q35 — a) e b)',
+  'Q35 — c) e d) VOLTA','Q37 — Entendendo a VOLTA',
+  'Q37 — m→km e cm→m','Q37 — mm→cm',
+  'Q40 — Tabela','Q40 — a) e b)',
+  'Q40 — c) e d)','Erro Frequente',
+  'Resumão Final','Fim 🎉'
+];
+
+for (let i = 0; i < TOTAL; i++) {
+  const b = document.createElement('button');
+  b.className = 'nav-dot' + (i===0?' active':'');
+  b.title = labels[i]||'';
+  b.onclick = ()=>goTo(i);
+  dotsEl.appendChild(b);
+}
+
+function goTo(n){
+  slides[cur].classList.remove('active');
+  dotsEl.querySelectorAll('.nav-dot')[cur].classList.remove('active');
+  cur = n;
+  slides[cur].classList.add('active');
+  dotsEl.querySelectorAll('.nav-dot')[cur].classList.add('active');
+  document.getElementById('counter').textContent = (cur+1)+' / '+TOTAL;
+  document.getElementById('slide-label').textContent = labels[cur]||'';
+  document.getElementById('btnPrev').disabled = cur===0;
+  document.getElementById('btnNext').disabled = cur===TOTAL-1;
+  document.getElementById('btnNext').textContent = cur===TOTAL-1?'✅ Fim':'Próximo →';
+  document.getElementById('progfill').style.width = ((cur+1)/TOTAL*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function go(d){ goTo(cur+d); }
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'&&cur<TOTAL-1) go(1);
+  if(e.key==='ArrowLeft' &&cur>0)       go(-1);
+});
+</script>
+</body>
+</html>
