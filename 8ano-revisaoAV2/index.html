@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisão de Matemática — 8º Ano</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Roboto+Mono:wght@500;700&display=swap');
+
+:root {
+  --bg: #f7f8ff;
+  --card: #ffffff;
+  --primary: #3b4fd4;
+  --primary-light: #eef0ff;
+  --primary-mid: #c7ccf7;
+  --accent: #f59e0b;
+  --accent-light: #fef9ec;
+  --green: #059669;
+  --green-light: #ecfdf5;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --purple: #7c3aed;
+  --purple-light: #f5f3ff;
+  --blue-eq: #2563eb;
+  --pink-sub: #be185d;
+  --text: #1e1b4b;
+  --muted: #6b7280;
+  --border: #e2e5f7;
+  --tip: #fffbeb;
+  --tip-border: #fcd34d;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* FLOATING SYMBOLS */
+.float-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.float-sym {
+  position: absolute;
+  font-size: 1.6rem;
+  color: var(--primary-mid);
+  opacity: 0.35;
+  animation: floatUp linear infinite;
+  user-select: none;
+}
+@keyframes floatUp {
+  0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.35; }
+  90%  { opacity: 0.35; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* LAYOUT */
+.layout {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  background: var(--card);
+  border-right: 2px solid var(--border);
+  padding: 24px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  box-shadow: 2px 0 12px rgba(59,79,212,0.07);
+}
+.sidebar-logo {
+  padding: 0 20px 20px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 16px;
+}
+.sidebar-logo h2 {
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--primary);
+  line-height: 1.3;
+}
+.sidebar-logo p {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.nav-section {
+  padding: 8px 20px 4px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 0;
+  transition: all 0.15s;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--muted);
+  border-left: 3px solid transparent;
+  width: 100%;
+  background: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  text-align: left;
+  font-family: 'Nunito', sans-serif;
+}
+.nav-item:hover { background: var(--primary-light); color: var(--primary); }
+.nav-item.active {
+  background: var(--primary-light);
+  color: var(--primary);
+  border-left-color: var(--primary);
+  font-weight: 900;
+}
+.nav-item .nav-icon { font-size: 1.1rem; min-width: 22px; }
+
+/* MAIN */
+.main {
+  flex: 1;
+  padding: 36px 48px 80px;
+  max-width: 860px;
+}
+
+.page { display: none; }
+.page.active { display: block; }
+
+/* PAGE HEADER */
+.page-header {
+  margin-bottom: 32px;
+}
+.page-header .eyebrow {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+.page-header h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1.2;
+}
+.page-header p {
+  font-size: 1rem;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.6;
+  font-weight: 600;
+}
+
+/* CARDS */
+.card {
+  background: var(--card);
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(59,79,212,0.06);
+}
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--primary);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* TIP BOX */
+.tip-box {
+  background: var(--tip);
+  border: 2px solid var(--tip-border);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.tip-box .tip-icon { font-size: 1.4rem; min-width: 28px; }
+.tip-box p { font-size: 0.95rem; font-weight: 700; color: #78350f; line-height: 1.6; }
+
+/* ALERT BOX */
+.alert-box {
+  background: #fef2f2;
+  border: 2px solid #fca5a5;
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.alert-box p { font-size: 0.95rem; font-weight: 700; color: #991b1b; line-height: 1.6; }
+
+/* MATH BLOCK */
+.math-block {
+  background: var(--primary-light);
+  border-left: 4px solid var(--primary);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 12px 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 2;
+  color: var(--text);
+}
+.math-block.blue  { border-left-color: var(--blue-eq);  background: #dbeafe; }
+.math-block.pink  { border-left-color: var(--pink-sub); background: #fce7f3; }
+.math-block.green { border-left-color: var(--green);    background: var(--green-light); }
+.math-block.amber { border-left-color: var(--accent);   background: var(--accent-light); }
+
+.math-note {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+}
+
+/* STEP REVEAL */
+.step-list { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+.step-item {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.step-item.open { border-color: var(--primary); }
+.step-trigger {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  cursor: pointer;
+  background: var(--bg);
+  user-select: none;
+}
+.step-item.open .step-trigger { background: var(--primary-light); }
+.step-num-badge {
+  width: 34px; height: 34px; min-width: 34px;
+  border-radius: 50%;
+  background: var(--border);
+  color: var(--muted);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 0.95rem;
+  transition: all 0.2s;
+}
+.step-item.open .step-num-badge { background: var(--primary); color: white; }
+.step-label { font-weight: 800; font-size: 0.95rem; flex: 1; }
+.step-arrow { color: var(--muted); transition: transform 0.2s; font-size: 1rem; }
+.step-item.open .step-arrow { transform: rotate(180deg); color: var(--primary); }
+.step-body { display: none; padding: 18px 24px; border-top: 2px solid var(--border); }
+.step-item.open .step-body { display: block; border-top-color: var(--primary); }
+
+/* FORMULA BOX */
+.formula-box {
+  background: var(--primary);
+  color: white;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin: 16px 0;
+  text-align: center;
+}
+.formula-box .formula-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+.formula-box .formula-text {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* GRID */
+.two-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+.three-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 16px 0; }
+
+.mini-card {
+  background: var(--primary-light);
+  border: 2px solid var(--primary-mid);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+.mini-card .mc-icon { font-size: 1.8rem; margin-bottom: 6px; }
+.mini-card h4 { font-size: 0.85rem; font-weight: 900; color: var(--primary); margin-bottom: 4px; }
+.mini-card p { font-size: 0.82rem; color: var(--muted); font-weight: 600; line-height: 1.4; }
+
+/* CHECKLIST */
+.checklist { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 14px 0; }
+.checklist li {
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 0.95rem; font-weight: 700; color: var(--text); line-height: 1.5;
+}
+.checklist li .ck { font-size: 1.2rem; min-width: 24px; }
+
+/* HIGHLIGHT */
+.hl { display: inline-block; background: var(--accent); color: #1e1b4b; padding: 1px 8px; border-radius: 5px; font-weight: 800; }
+.hl-green { background: var(--green-light); color: var(--green); padding: 1px 8px; border-radius: 5px; font-weight: 800; display: inline-block; }
+.hl-blue { background: #dbeafe; color: var(--blue-eq); padding: 1px 8px; border-radius: 5px; font-weight: 800; display: inline-block; }
+
+/* ANSWER BOX */
+.answer-box {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--green-light);
+  border: 2px solid var(--green);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-top: 16px;
+}
+.answer-box .ans-icon { font-size: 2rem; }
+.answer-box h4 { font-size: 0.85rem; font-weight: 900; color: var(--green); margin-bottom: 3px; }
+.answer-box p { font-family: 'Roboto Mono', monospace; font-size: 1rem; font-weight: 700; }
+
+/* ===================== QUIZ ===================== */
+.quiz-intro {
+  background: var(--primary);
+  color: white;
+  border-radius: 20px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  text-align: center;
+}
+.quiz-intro h2 { font-size: 1.6rem; font-weight: 900; margin-bottom: 6px; }
+.quiz-intro p { opacity: 0.85; font-size: 1rem; font-weight: 600; }
+
+.quiz-q {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  padding: 26px 30px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 10px rgba(59,79,212,0.06);
+}
+.quiz-q .q-tag {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  padding: 3px 14px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 900;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+.quiz-q .q-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 10px; }
+.quiz-opt {
+  display: flex; align-items: center; gap: 14px;
+  padding: 13px 18px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--bg);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  user-select: none;
+}
+.quiz-opt:hover:not(.disabled) { border-color: var(--primary); background: var(--primary-light); }
+.quiz-opt.selected { border-color: var(--primary); background: var(--primary-light); }
+.quiz-opt.correct { border-color: var(--green); background: var(--green-light); color: var(--green); }
+.quiz-opt.wrong { border-color: var(--red); background: var(--red-light); color: var(--red); }
+.quiz-opt.disabled { cursor: default; }
+.quiz-opt .opt-letter {
+  width: 30px; height: 30px; min-width: 30px;
+  border-radius: 50%;
+  background: var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 0.85rem;
+  transition: all 0.15s;
+}
+.quiz-opt.correct .opt-letter { background: var(--green); color: white; }
+.quiz-opt.wrong .opt-letter { background: var(--red); color: white; }
+.quiz-opt.selected .opt-letter { background: var(--primary); color: white; }
+
+.quiz-feedback {
+  display: none;
+  margin-top: 18px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid var(--border);
+}
+.quiz-feedback.show { display: block; }
+.feedback-header {
+  padding: 12px 18px;
+  font-weight: 900;
+  font-size: 0.95rem;
+  display: flex; gap: 10px; align-items: center;
+}
+.feedback-header.correct-h { background: var(--green-light); color: var(--green); border-bottom: 2px solid #bbf7d0; }
+.feedback-header.wrong-h { background: var(--red-light); color: var(--red); border-bottom: 2px solid #fecaca; }
+.feedback-body {
+  padding: 18px 22px;
+  background: var(--card);
+}
+.feedback-body .fb-step {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+.feedback-body .fb-math {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  background: var(--primary-light);
+  border-left: 3px solid var(--primary);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  line-height: 1.9;
+}
+.feedback-body .fb-math.pink { border-left-color: var(--pink-sub); background: #fce7f3; }
+.feedback-body .fb-math.green { border-left-color: var(--green); background: var(--green-light); }
+.feedback-body .fb-note {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+}
+
+.quiz-submit {
+  padding: 13px 32px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 14px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(59,79,212,0.25);
+}
+.quiz-submit:hover { background: #2d3fcb; transform: translateY(-1px); }
+.quiz-submit:disabled { background: var(--muted); cursor: default; transform: none; box-shadow: none; }
+
+/* SCORE BOX */
+.score-box {
+  display: none;
+  background: var(--primary);
+  color: white;
+  border-radius: 20px;
+  padding: 32px;
+  text-align: center;
+  margin-top: 28px;
+}
+.score-box.show { display: block; }
+.score-box h2 { font-size: 2rem; font-weight: 900; margin-bottom: 8px; }
+.score-box p { font-size: 1rem; opacity: 0.9; font-weight: 600; }
+.score-num { font-size: 3.5rem; font-weight: 900; margin: 12px 0; }
+
+/* PROGRESS BAR */
+.progress-wrap { background: var(--border); border-radius: 50px; height: 8px; margin: 8px 0 20px; }
+.progress-bar { height: 8px; border-radius: 50px; background: var(--primary); transition: width 0.4s ease; }
+
+/* TABLE CONTENT */
+.content-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  margin: 16px 0;
+}
+.content-table th {
+  background: var(--primary);
+  color: white;
+  padding: 10px 14px;
+  font-weight: 800;
+  text-align: left;
+}
+.content-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+.content-table tr:nth-child(even) td { background: var(--primary-light); }
+
+/* VALUE TABLE (x/y) */
+.val-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1rem;
+  margin: 14px 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.val-table th {
+  background: var(--primary);
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+  font-weight: 700;
+}
+.val-table td {
+  background: white;
+  border: 2px solid var(--border);
+  padding: 10px 0;
+  text-align: center;
+  font-weight: 600;
+}
+.val-table .row-label {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 900;
+  border: 2px solid var(--primary-mid);
+}
+
+/* DIVIDER */
+.divider { border: none; border-top: 2px solid var(--border); margin: 28px 0; }
+
+/* REVEAL BTN */
+.reveal-all-btn {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 2px solid var(--primary-mid);
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.2s;
+}
+.reveal-all-btn:hover { background: var(--primary); color: white; }
+
+/* RESPONSIVE */
+@media (max-width: 780px) {
+  .sidebar { display: none; }
+  .main { padding: 20px; }
+  .two-grid, .three-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- FLOATING SYMBOLS -->
+<div class="float-bg" id="floatBg"></div>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <h2>📐 Revisão<br>8º Ano</h2>
+    <p>Matemática · 2º Bimestre</p>
+  </div>
+
+  <div class="nav-section">Conteúdo</div>
+  <button class="nav-item active" onclick="showPage('home')">
+    <span class="nav-icon">🏠</span> Início
+  </button>
+  <button class="nav-item" onclick="showPage('expralg')">
+    <span class="nav-icon">🔢</span> Expressões Algébricas
+  </button>
+  <button class="nav-item" onclick="showPage('raiz')">
+    <span class="nav-icon">√</span> Operações com Raiz
+  </button>
+  <button class="nav-item" onclick="showPage('sistemas')">
+    <span class="nav-icon">⚖️</span> Sistemas de Equações
+  </button>
+  <button class="nav-item" onclick="showPage('tabela')">
+    <span class="nav-icon">📊</span> Tabela de Valores
+  </button>
+
+  <div class="nav-section" style="margin-top:12px;">Praticar</div>
+  <button class="nav-item" onclick="showPage('quiz')">
+    <span class="nav-icon">🎯</span> Quiz de Revisão
+  </button>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ========== HOME ========== -->
+<div class="page active" id="home">
+  <div class="page-header">
+    <div class="eyebrow">Guia de Revisão</div>
+    <h1>Revisão de Matemática 📐</h1>
+    <p>Use o menu ao lado para navegar pelos conteúdos. Quando terminar, faça o Quiz!</p>
+  </div>
+
+  <div class="three-grid">
+    <div class="mini-card">
+      <div class="mc-icon">🔢</div>
+      <h4>Expressões Algébricas</h4>
+      <p>Substituir o valor de x e calcular</p>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">√</div>
+      <h4>Operações com Raiz</h4>
+      <p>Simplificar expressões com raiz quadrada</p>
+    </div>
+    <div class="mini-card">
+      <div class="mc-icon">⚖️</div>
+      <h4>Sistemas de Equações</h4>
+      <p>Substituição e comparação</p>
+    </div>
+  </div>
+  <div class="two-grid" style="margin-top:0;">
+    <div class="mini-card">
+      <div class="mc-icon">📊</div>
+      <h4>Tabela de Valores</h4>
+      <p>Calcular y para cada valor de x</p>
+    </div>
+    <div class="mini-card" style="background:var(--green-light);border-color:#6ee7b7;">
+      <div class="mc-icon">🎯</div>
+      <h4>Quiz Final</h4>
+      <p>8 questões com resolução completa</p>
+    </div>
+  </div>
+
+  <div class="tip-box" style="margin-top:8px;">
+    <div class="tip-icon">💡</div>
+    <p>Dica de estudo: leia o conteúdo de cada seção, depois faça o Quiz. Se errar uma questão, a resolução completa aparece logo abaixo — leia com calma!</p>
+  </div>
+
+
+</div>
+
+<!-- ========== EXPRESSÕES ALGÉBRICAS ========== -->
+<div class="page" id="expralg">
+  <div class="page-header">
+    <div class="eyebrow">Conteúdo 1</div>
+    <h1>Expressões Algébricas 🔢</h1>
+    <p>Aprender a calcular o valor de uma expressão quando sabemos o valor de x.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📌 O que é valor numérico?</div>
+    <p style="font-size:0.95rem;font-weight:700;line-height:1.7;color:var(--text);">
+      Uma expressão algébrica tem letras (x, y) e números. Para calcular seu valor, basta <span class="hl">trocar a letra pelo número</span> que foi dado e fazer as operações na ordem certa.
+    </p>
+    <div class="tip-box">
+      <div class="tip-icon">⚠️</div>
+      <p>Ordem das operações: primeiro potências → depois multiplicação/divisão → depois adição/subtração.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔑 Passo a passo</div>
+    <div class="step-list">
+      <div class="step-item open" id="ea-s1">
+        <div class="step-trigger" onclick="toggleStep('ea-s1')">
+          <div class="step-num-badge">1</div>
+          <div class="step-label">Leia a expressão e identifique o valor de x</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p style="font-size:0.92rem;font-weight:700;line-height:1.7;">Exemplo: calcular <b>3x² + 2x − 1</b> para <b>x = 2</b></p>
+          <div class="math-block">3x² + 2x − 1 &nbsp;&nbsp; com x = 2</div>
+        </div>
+      </div>
+      <div class="step-item" id="ea-s2">
+        <div class="step-trigger" onclick="toggleStep('ea-s2')">
+          <div class="step-num-badge">2</div>
+          <div class="step-label">Substitua x pelo número em todos os lugares</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="math-block blue">
+            3·(2)² + 2·(2) − 1<br>
+            <span class="math-note">↳ trocamos cada x por (2)</span>
+          </div>
+        </div>
+      </div>
+      <div class="step-item" id="ea-s3">
+        <div class="step-trigger" onclick="toggleStep('ea-s3')">
+          <div class="step-num-badge">3</div>
+          <div class="step-label">Resolva as potências primeiro</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="math-block blue">
+            3·(2)² + 2·(2) − 1<br>
+            <span class="math-note">↳ (2)² = 2·2 = 4</span><br>
+            3·4 + 2·(2) − 1
+          </div>
+        </div>
+      </div>
+      <div class="step-item" id="ea-s4">
+        <div class="step-trigger" onclick="toggleStep('ea-s4')">
+          <div class="step-num-badge">4</div>
+          <div class="step-label">Resolva as multiplicações</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="math-block blue">
+            3·4 + 2·2 − 1<br>
+            <span class="math-note">↳ 3·4 = 12 e 2·2 = 4</span><br>
+            12 + 4 − 1
+          </div>
+        </div>
+      </div>
+      <div class="step-item" id="ea-s5">
+        <div class="step-trigger" onclick="toggleStep('ea-s5')">
+          <div class="step-num-badge">5</div>
+          <div class="step-label">Resolva a adição e subtração</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="math-block green">
+            12 + 4 − 1 = <b>15</b>
+          </div>
+          <div class="answer-box">
+            <div class="ans-icon">✅</div>
+            <div><h4>Resposta</h4><p>3x² + 2x − 1 para x = 2 = 15</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="reveal-all-btn" onclick="revealGroup(['ea-s1','ea-s2','ea-s3','ea-s4','ea-s5'])">👁️ Ver todos os passos</button>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-icon">⚠️</div>
+    <p>Cuidado com x negativo! Se x = −2, escreva (−2) com parênteses para não errar o sinal. Exemplo: (−2)² = 4, não −4.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📝 Mais um exemplo: 2x² + 3x − 5 para x = 3</div>
+    <div class="math-block pink">
+      2·(3)² + 3·(3) − 5<br>
+      <span class="math-note">↳ (3)² = 9</span><br>
+      2·9 + 3·3 − 5<br>
+      <span class="math-note">↳ 2·9 = 18 e 3·3 = 9</span><br>
+      18 + 9 − 5 = <b>22</b>
+    </div>
+  </div>
+</div>
+
+<!-- ========== RAIZ ========== -->
+<div class="page" id="raiz">
+  <div class="page-header">
+    <div class="eyebrow">Conteúdo 2</div>
+    <h1>Operações com Raiz √</h1>
+    <p>Como simplificar expressões que têm raiz quadrada.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📌 Regra de ouro</div>
+    <p style="font-size:0.95rem;font-weight:700;line-height:1.7;">
+      Quando a expressão tem raiz, você <span class="hl">resolve primeiro o que está dentro da raiz</span>, depois calcula a raiz, depois faz o resto.
+    </p>
+    <div class="formula-box">
+      <div class="formula-label">Ordem de resolução</div>
+      <div class="formula-text">√( operações dentro ) ÷ número</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔑 Passo a passo — √(30 + 7 − 12) ÷ 5</div>
+    <div class="step-list">
+      <div class="step-item open" id="r-s1">
+        <div class="step-trigger" onclick="toggleStep('r-s1')">
+          <div class="step-num-badge">1</div>
+          <div class="step-label">Resolver o que está dentro da raiz</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="math-block blue">
+            √(30 + 7 − 12) ÷ 5<br>
+            <span class="math-note">↳ calculamos: 30 + 7 − 12 = 25</span><br>
+            √25 ÷ 5
+          </div>
+        </div>
+      </div>
+      <div class="step-item" id="r-s2">
+        <div class="step-trigger" onclick="toggleStep('r-s2')">
+          <div class="step-num-badge">2</div>
+          <div class="step-label">Calcular a raiz quadrada</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="math-block blue">
+            √25 ÷ 5<br>
+            <span class="math-note">↳ √25 = 5 (porque 5·5 = 25)</span><br>
+            5 ÷ 5
+          </div>
+        </div>
+      </div>
+      <div class="step-item" id="r-s3">
+        <div class="step-trigger" onclick="toggleStep('r-s3')">
+          <div class="step-num-badge">3</div>
+          <div class="step-label">Fazer a divisão</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="math-block green">5 ÷ 5 = <b>1</b></div>
+          <div class="answer-box">
+            <div class="ans-icon">✅</div>
+            <div><h4>Resposta</h4><p>√(30 + 7 − 12) ÷ 5 = 1</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="reveal-all-btn" onclick="revealGroup(['r-s1','r-s2','r-s3'])">👁️ Ver todos os passos</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🗂️ Raízes quadradas que você precisa saber</div>
+    <div class="two-grid">
+      <div style="background:var(--primary-light);border-radius:10px;padding:14px 18px;font-family:'Roboto Mono',monospace;font-size:0.92rem;line-height:2.1;font-weight:600;">
+        √1 = 1 &nbsp; (1·1 = 1)<br>
+        √4 = 2 &nbsp; (2·2 = 4)<br>
+        √9 = 3 &nbsp; (3·3 = 9)<br>
+        √16 = 4 &nbsp; (4·4 = 16)
+      </div>
+      <div style="background:var(--primary-light);border-radius:10px;padding:14px 18px;font-family:'Roboto Mono',monospace;font-size:0.92rem;line-height:2.1;font-weight:600;">
+        √25 = 5 &nbsp; (5·5 = 25)<br>
+        √36 = 6 &nbsp; (6·6 = 36)<br>
+        √49 = 7 &nbsp; (7·7 = 49)<br>
+        √64 = 8 &nbsp; (8·8 = 64)
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-icon">💡</div>
+    <p>Dica: se você não lembra a raiz, pergunte a si mesmo: "qual número vezes ele mesmo dá esse resultado?" Exemplo: √36 → 6·6 = 36 ✓</p>
+  </div>
+</div>
+
+<!-- ========== SISTEMAS ========== -->
+<div class="page" id="sistemas">
+  <div class="page-header">
+    <div class="eyebrow">Conteúdo 3</div>
+    <h1>Sistemas de Equações ⚖️</h1>
+    <p>Como encontrar x e y quando temos duas equações juntas.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📌 O que é um sistema?</div>
+    <p style="font-size:0.95rem;font-weight:700;line-height:1.7;">
+      Um sistema tem <span class="hl">duas equações</span> com <span class="hl">duas incógnitas</span> (x e y). Precisamos encontrar os valores que satisfazem as duas ao mesmo tempo.
+    </p>
+    <div class="formula-box">
+      <div class="formula-label">Formato geral</div>
+      <div class="formula-text">{ equação 1 com x e y<br>{ equação 2 com x e y</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔑 Método da Substituição — passo a passo</div>
+    <div class="step-list">
+      <div class="step-item open" id="si-s1">
+        <div class="step-trigger" onclick="toggleStep('si-s1')">
+          <div class="step-num-badge">1</div>
+          <div class="step-label">Isolar x (ou y) em uma das equações</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p style="font-size:0.9rem;font-weight:700;margin-bottom:10px;">Exemplo: { x + y = 8 &nbsp;|&nbsp; 2x − y = 7</p>
+          <div class="math-block blue">
+            x + y = 8 &nbsp; (Eq. 1)<br>
+            <span class="math-note">↳ isolamos x: passamos y para o outro lado</span><br>
+            x = 8 − y
+          </div>
+        </div>
+      </div>
+      <div class="step-item" id="si-s2">
+        <div class="step-trigger" onclick="toggleStep('si-s2')">
+          <div class="step-num-badge">2</div>
+          <div class="step-label">Substituir na outra equação</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="math-block pink">
+            2x − y = 7 &nbsp; (Eq. 2)<br>
+            <span class="math-note">↳ no lugar de x colocamos (8 − y)</span><br>
+            2·(8 − y) − y = 7<br>
+            <span class="math-note">↳ distributiva: 2·8 = 16 e 2·(−y) = −2y</span><br>
+            16 − 2y − y = 7<br>
+            <span class="math-note">↳ juntamos: −2y − y = −3y</span><br>
+            16 − 3y = 7
+          </div>
+        </div>
+      </div>
+      <div class="step-item" id="si-s3">
+        <div class="step-trigger" onclick="toggleStep('si-s3')">
+          <div class="step-num-badge">3</div>
+          <div class="step-label">Encontrar o valor de y</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="math-block pink">
+            16 − 3y = 7<br>
+            −3y = 7 − 16<br>
+            −3y = −9<br>
+            y = −9 ÷ (−3)<br>
+            <b>y = 3</b>
+          </div>
+        </div>
+      </div>
+      <div class="step-item" id="si-s4">
+        <div class="step-trigger" onclick="toggleStep('si-s4')">
+          <div class="step-num-badge">4</div>
+          <div class="step-label">Encontrar o valor de x</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="math-block blue">
+            x = 8 − y<br>
+            x = 8 − 3<br>
+            <b>x = 5</b>
+          </div>
+          <div class="answer-box">
+            <div class="ans-icon">✅</div>
+            <div><h4>Resposta</h4><p>x = 5 e y = 3 &nbsp;|&nbsp; x + y = 8</p></div>
+          </div>
+          <p style="font-size:0.82rem;color:var(--muted);margin-top:12px;font-weight:600;">🔍 Verificação: 5 + 3 = 8 ✓ &nbsp; 2·5 − 3 = 7 ✓</p>
+        </div>
+      </div>
+    </div>
+    <button class="reveal-all-btn" onclick="revealGroup(['si-s1','si-s2','si-s3','si-s4'])">👁️ Ver todos os passos</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔑 Método da Comparação — passo a passo</div>
+    <p style="font-size:0.9rem;font-weight:700;color:var(--muted);margin-bottom:14px;">Use quando y já aparece isolado nas duas equações.</p>
+    <div class="step-list">
+      <div class="step-item open" id="sc-s1">
+        <div class="step-trigger" onclick="toggleStep('sc-s1')">
+          <div class="step-num-badge">1</div>
+          <div class="step-label">Identificar que y está isolado nas duas equações</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <p style="font-size:0.9rem;font-weight:700;margin-bottom:10px;">Exemplo: { y = x + 3 &nbsp;|&nbsp; y = −x − 5</p>
+          <div class="math-block blue">
+            y = x + 3 &nbsp; (Eq. 1)<br>
+            y = −x − 5 &nbsp; (Eq. 2)<br>
+            <span class="math-note">↳ y é igual nas duas → podemos igualar as expressões</span>
+          </div>
+        </div>
+      </div>
+      <div class="step-item" id="sc-s2">
+        <div class="step-trigger" onclick="toggleStep('sc-s2')">
+          <div class="step-num-badge">2</div>
+          <div class="step-label">Igualar as duas expressões e resolver</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="math-block pink">
+            x + 3 = −x − 5<br>
+            x + x = −5 − 3<br>
+            2x = −8<br>
+            x = −8 ÷ 2<br>
+            <b>x = −4</b>
+          </div>
+        </div>
+      </div>
+      <div class="step-item" id="sc-s3">
+        <div class="step-trigger" onclick="toggleStep('sc-s3')">
+          <div class="step-num-badge">3</div>
+          <div class="step-label">Encontrar y</div>
+          <div class="step-arrow">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="math-block blue">
+            y = x + 3<br>
+            y = −4 + 3<br>
+            <b>y = −1</b>
+          </div>
+          <div class="answer-box">
+            <div class="ans-icon">✅</div>
+            <div><h4>Resposta</h4><p>x = −4 e y = −1</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="reveal-all-btn" onclick="revealGroup(['sc-s1','sc-s2','sc-s3'])">👁️ Ver todos os passos</button>
+  </div>
+
+  <div class="alert-box">
+    <span style="font-size:1.4rem;">⚠️</span>
+    <p>Erro mais comum: esquecer de distribuir o sinal quando abre os parênteses. Se for 2·(8 − y), o resultado é 16 − 2y, NÃO 16 + 2y.</p>
+  </div>
+</div>
+
+<!-- ========== TABELA ========== -->
+<div class="page" id="tabela">
+  <div class="page-header">
+    <div class="eyebrow">Conteúdo 4</div>
+    <h1>Tabela de Valores 📊</h1>
+    <p>Como calcular y para cada valor de x em uma função do 1º grau.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📌 O que é uma tabela de valores?</div>
+    <p style="font-size:0.95rem;font-weight:700;line-height:1.7;">
+      Dada uma expressão como <b>y = 3x − 2</b>, você substitui cada valor de x e calcula o y correspondente. É como calcular valor numérico, mas várias vezes.
+    </p>
+    <div class="tip-box">
+      <div class="tip-icon">💡</div>
+      <p>Faça um cálculo de cada vez. Não tente resolver tudo de cabeça — escreva cada substituição no espaço de cálculo.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔑 Exemplo completo: y = 3x − 2</div>
+    <table class="val-table">
+      <tr>
+        <th>x</th><th>−2</th><th>−1</th><th>0</th><th>1</th><th>2</th>
+      </tr>
+      <tr>
+        <td class="row-label">y</td>
+        <td>−8</td><td>−5</td><td>−2</td><td>1</td><td>4</td>
+      </tr>
+    </table>
+    <div class="math-block" style="margin-top:16px;">
+      x = −2 → y = 3·(−2) − 2 = −6 − 2 = <b>−8</b><br>
+      x = −1 → y = 3·(−1) − 2 = −3 − 2 = <b>−5</b><br>
+      x = &nbsp;0 → y = 3·(0) − 2 = 0 − 2 = <b>−2</b><br>
+      x = &nbsp;1 → y = 3·(1) − 2 = 3 − 2 = <b>1</b><br>
+      x = &nbsp;2 → y = 3·(2) − 2 = 6 − 2 = <b>4</b>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-icon">⚠️</div>
+    <p>Cuidado com número negativo vezes número negativo! (−3)·(−2) = +6, não −6. Negativo · negativo = positivo.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📝 Exemplo com y = 2x − 1</div>
+    <div class="math-block pink">
+      x = −2 → y = 2·(−2) − 1 = −4 − 1 = <b>−5</b><br>
+      x = −1 → y = 2·(−1) − 1 = −2 − 1 = <b>−3</b><br>
+      x = &nbsp;0 → y = 2·(0) − 1 = 0 − 1 = <b>−1</b><br>
+      x = &nbsp;1 → y = 2·(1) − 1 = 2 − 1 = <b>1</b><br>
+      x = &nbsp;2 → y = 2·(2) − 1 = 4 − 1 = <b>3</b>
+    </div>
+  </div>
+</div>
+
+<!-- ========== QUIZ ========== -->
+<div class="page" id="quiz">
+  <div class="quiz-intro">
+    <h2>🎯 Quiz de Revisão</h2>
+    <p>8 questões · Responda e veja a resolução completa</p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar" id="progressBar" style="width:0%"></div>
+  </div>
+  <p id="progressText" style="font-size:0.82rem;font-weight:700;color:var(--muted);margin-bottom:20px;">0 de 8 respondidas</p>
+
+  <!-- Q1 -->
+  <div class="quiz-q" id="qq1">
+    <div class="q-tag">QUESTÃO 1 · Expressão Algébrica</div>
+    <div class="q-text">A área de um retângulo é dada pela expressão 3x² + 2x − 1. Qual o valor da área para x = 2?</div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="selectOpt(1,'A')"><div class="opt-letter">A</div> 10</div>
+      <div class="quiz-opt" onclick="selectOpt(1,'B')"><div class="opt-letter">B</div> 12</div>
+      <div class="quiz-opt" onclick="selectOpt(1,'C')"><div class="opt-letter">C</div> 15</div>
+      <div class="quiz-opt" onclick="selectOpt(1,'D')"><div class="opt-letter">D</div> 18</div>
+      <div class="quiz-opt" onclick="selectOpt(1,'E')"><div class="opt-letter">E</div> 20</div>
+    </div>
+    <button class="quiz-submit" id="sub1" onclick="submitQ(1,'C')" disabled>Confirmar resposta</button>
+    <div class="quiz-feedback" id="fb1">
+      <div class="feedback-header" id="fh1"></div>
+      <div class="feedback-body">
+        <div class="fb-step">Substituímos x = 2 na expressão 3x² + 2x − 1:</div>
+        <div class="fb-math">
+          3·(2)² + 2·(2) − 1<br>
+          <span class="fb-note">↳ (2)² = 2·2 = 4</span><br>
+          3·4 + 2·2 − 1<br>
+          <span class="fb-note">↳ 3·4 = 12 e 2·2 = 4</span><br>
+          12 + 4 − 1 = <b>15</b>
+        </div>
+        <div class="answer-box"><div class="ans-icon">✅</div><div><h4>Resposta correta: C</h4><p>15</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="quiz-q" id="qq2">
+    <div class="q-tag">QUESTÃO 2 · Operações com Raiz</div>
+    <div class="q-text">Efetue as operações e simplifique: √(20 + 18 − 2) ÷ 2</div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="selectOpt(2,'A')"><div class="opt-letter">A</div> 2</div>
+      <div class="quiz-opt" onclick="selectOpt(2,'B')"><div class="opt-letter">B</div> 3</div>
+      <div class="quiz-opt" onclick="selectOpt(2,'C')"><div class="opt-letter">C</div> 4</div>
+      <div class="quiz-opt" onclick="selectOpt(2,'D')"><div class="opt-letter">D</div> 6</div>
+      <div class="quiz-opt" onclick="selectOpt(2,'E')"><div class="opt-letter">E</div> 9</div>
+    </div>
+    <button class="quiz-submit" id="sub2" onclick="submitQ(2,'B')" disabled>Confirmar resposta</button>
+    <div class="quiz-feedback" id="fb2">
+      <div class="feedback-header" id="fh2"></div>
+      <div class="feedback-body">
+        <div class="fb-step">Passo 1 — Resolver dentro da raiz:</div>
+        <div class="fb-math">20 + 18 − 2 = 36</div>
+        <div class="fb-step">Passo 2 — Calcular a raiz:</div>
+        <div class="fb-math">√36 = 6 &nbsp; <span class="fb-note">(porque 6·6 = 36)</span></div>
+        <div class="fb-step">Passo 3 — Dividir:</div>
+        <div class="fb-math green">6 ÷ 2 = <b>3</b></div>
+        <div class="answer-box"><div class="ans-icon">✅</div><div><h4>Resposta correta: B</h4><p>3</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="quiz-q" id="qq3">
+    <div class="q-tag">QUESTÃO 3 · Sistema de Equações</div>
+    <div class="q-text">Dado o sistema { x + y = 8 e { 2x − y = 7, determine o valor de x + y.</div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="selectOpt(3,'A')"><div class="opt-letter">A</div> 5</div>
+      <div class="quiz-opt" onclick="selectOpt(3,'B')"><div class="opt-letter">B</div> 6</div>
+      <div class="quiz-opt" onclick="selectOpt(3,'C')"><div class="opt-letter">C</div> 7</div>
+      <div class="quiz-opt" onclick="selectOpt(3,'D')"><div class="opt-letter">D</div> 8</div>
+      <div class="quiz-opt" onclick="selectOpt(3,'E')"><div class="opt-letter">E</div> 10</div>
+    </div>
+    <button class="quiz-submit" id="sub3" onclick="submitQ(3,'D')" disabled>Confirmar resposta</button>
+    <div class="quiz-feedback" id="fb3">
+      <div class="feedback-header" id="fh3"></div>
+      <div class="feedback-body">
+        <div class="fb-step">Passo 1 — Isolamos x na Eq. 1:</div>
+        <div class="fb-math">x + y = 8 &nbsp;→&nbsp; x = 8 − y</div>
+        <div class="fb-step">Passo 2 — Substituímos na Eq. 2:</div>
+        <div class="fb-math pink">
+          2·(8 − y) − y = 7<br>
+          <span class="fb-note">↳ distributiva: 2·8 = 16 e 2·(−y) = −2y</span><br>
+          16 − 2y − y = 7<br>
+          16 − 3y = 7<br>
+          −3y = 7 − 16 = −9<br>
+          y = −9 ÷ (−3) = <b>3</b>
+        </div>
+        <div class="fb-step">Passo 3 — Encontrar x:</div>
+        <div class="fb-math">x = 8 − 3 = <b>5</b></div>
+        <div class="fb-step">Passo 4 — Responder o que foi perguntado:</div>
+        <div class="fb-math green">x + y = 5 + 3 = <b>8</b></div>
+        <div class="answer-box"><div class="ans-icon">✅</div><div><h4>Resposta correta: D</h4><p>x + y = 8</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="quiz-q" id="qq4">
+    <div class="q-tag">QUESTÃO 4 · Sistema Contextualizado</div>
+    <div class="q-text">Em uma fazenda há galinhas e bois. Ao todo são 15 animais e 34 patas. Quantas galinhas há na fazenda? (Galinha tem 2 patas, boi tem 4 patas.)</div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="selectOpt(4,'A')"><div class="opt-letter">A</div> 8</div>
+      <div class="quiz-opt" onclick="selectOpt(4,'B')"><div class="opt-letter">B</div> 10</div>
+      <div class="quiz-opt" onclick="selectOpt(4,'C')"><div class="opt-letter">C</div> 11</div>
+      <div class="quiz-opt" onclick="selectOpt(4,'D')"><div class="opt-letter">D</div> 13</div>
+      <div class="quiz-opt" onclick="selectOpt(4,'E')"><div class="opt-letter">E</div> 15</div>
+    </div>
+    <button class="quiz-submit" id="sub4" onclick="submitQ(4,'D')" disabled>Confirmar resposta</button>
+    <div class="quiz-feedback" id="fb4">
+      <div class="feedback-header" id="fh4"></div>
+      <div class="feedback-body">
+        <div class="fb-step">Chamamos: x = galinhas, y = bois</div>
+        <div class="fb-step">Passo 1 — Montar o sistema:</div>
+        <div class="fb-math">
+          x + y = 15 &nbsp; (total de animais)<br>
+          2x + 4y = 34 &nbsp; (total de patas)
+        </div>
+        <div class="fb-step">Passo 2 — Isolar x na Eq. 1:</div>
+        <div class="fb-math">x = 15 − y</div>
+        <div class="fb-step">Passo 3 — Substituir na Eq. 2:</div>
+        <div class="fb-math pink">
+          2·(15 − y) + 4y = 34<br>
+          <span class="fb-note">↳ distributiva: 2·15 = 30 e 2·(−y) = −2y</span><br>
+          30 − 2y + 4y = 34<br>
+          30 + 2y = 34<br>
+          2y = 4 &nbsp;→&nbsp; y = <b>2</b> bois
+        </div>
+        <div class="fb-step">Passo 4 — Encontrar x:</div>
+        <div class="fb-math green">x = 15 − 2 = <b>13</b> galinhas</div>
+        <div class="answer-box"><div class="ans-icon">✅</div><div><h4>Resposta correta: D</h4><p>13 galinhas</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="quiz-q" id="qq5">
+    <div class="q-tag">QUESTÃO 5 · Tabela de Valores</div>
+    <div class="q-text">Dada a expressão y = 2x − 1, qual é o valor de y quando x = −2?</div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="selectOpt(5,'A')"><div class="opt-letter">A</div> −3</div>
+      <div class="quiz-opt" onclick="selectOpt(5,'B')"><div class="opt-letter">B</div> −5</div>
+      <div class="quiz-opt" onclick="selectOpt(5,'C')"><div class="opt-letter">C</div> 3</div>
+      <div class="quiz-opt" onclick="selectOpt(5,'D')"><div class="opt-letter">D</div> 5</div>
+      <div class="quiz-opt" onclick="selectOpt(5,'E')"><div class="opt-letter">E</div> −1</div>
+    </div>
+    <button class="quiz-submit" id="sub5" onclick="submitQ(5,'B')" disabled>Confirmar resposta</button>
+    <div class="quiz-feedback" id="fb5">
+      <div class="feedback-header" id="fh5"></div>
+      <div class="feedback-body">
+        <div class="fb-step">Substituímos x = −2 em y = 2x − 1:</div>
+        <div class="fb-math pink">
+          y = 2·(−2) − 1<br>
+          <span class="fb-note">↳ 2·(−2) = −4 (positivo · negativo = negativo)</span><br>
+          y = −4 − 1<br>
+          y = <b>−5</b>
+        </div>
+        <div class="answer-box"><div class="ans-icon">✅</div><div><h4>Resposta correta: B</h4><p>y = −5</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="quiz-q" id="qq6">
+    <div class="q-tag">QUESTÃO 6 · Expressão Algébrica</div>
+    <div class="q-text">Calcule o valor numérico da expressão 2x² + 3x − 5 para x = 3.</div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="selectOpt(6,'A')"><div class="opt-letter">A</div> 18</div>
+      <div class="quiz-opt" onclick="selectOpt(6,'B')"><div class="opt-letter">B</div> 20</div>
+      <div class="quiz-opt" onclick="selectOpt(6,'C')"><div class="opt-letter">C</div> 22</div>
+      <div class="quiz-opt" onclick="selectOpt(6,'D')"><div class="opt-letter">D</div> 25</div>
+      <div class="quiz-opt" onclick="selectOpt(6,'E')"><div class="opt-letter">E</div> 28</div>
+    </div>
+    <button class="quiz-submit" id="sub6" onclick="submitQ(6,'C')" disabled>Confirmar resposta</button>
+    <div class="quiz-feedback" id="fb6">
+      <div class="feedback-header" id="fh6"></div>
+      <div class="feedback-body">
+        <div class="fb-step">Substituímos x = 3 em 2x² + 3x − 5:</div>
+        <div class="fb-math">
+          2·(3)² + 3·(3) − 5<br>
+          <span class="fb-note">↳ (3)² = 3·3 = 9</span><br>
+          2·9 + 3·3 − 5<br>
+          <span class="fb-note">↳ 2·9 = 18 e 3·3 = 9</span><br>
+          18 + 9 − 5 = <b>22</b>
+        </div>
+        <div class="answer-box"><div class="ans-icon">✅</div><div><h4>Resposta correta: C</h4><p>22</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="quiz-q" id="qq7">
+    <div class="q-tag">QUESTÃO 7 · Operações com Raiz</div>
+    <div class="q-text">Efetue as operações e simplifique: √(20 + 3 − 7) ÷ 2</div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="selectOpt(7,'A')"><div class="opt-letter">A</div> 1</div>
+      <div class="quiz-opt" onclick="selectOpt(7,'B')"><div class="opt-letter">B</div> 2</div>
+      <div class="quiz-opt" onclick="selectOpt(7,'C')"><div class="opt-letter">C</div> 3</div>
+      <div class="quiz-opt" onclick="selectOpt(7,'D')"><div class="opt-letter">D</div> 4</div>
+      <div class="quiz-opt" onclick="selectOpt(7,'E')"><div class="opt-letter">E</div> 8</div>
+    </div>
+    <button class="quiz-submit" id="sub7" onclick="submitQ(7,'B')" disabled>Confirmar resposta</button>
+    <div class="quiz-feedback" id="fb7">
+      <div class="feedback-header" id="fh7"></div>
+      <div class="feedback-body">
+        <div class="fb-step">Passo 1 — Resolver dentro da raiz:</div>
+        <div class="fb-math">20 + 3 − 7 = 16</div>
+        <div class="fb-step">Passo 2 — Calcular a raiz:</div>
+        <div class="fb-math">√16 = 4 &nbsp; <span class="fb-note">(porque 4·4 = 16)</span></div>
+        <div class="fb-step">Passo 3 — Dividir:</div>
+        <div class="fb-math green">4 ÷ 2 = <b>2</b></div>
+        <div class="answer-box"><div class="ans-icon">✅</div><div><h4>Resposta correta: B</h4><p>2</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="quiz-q" id="qq8">
+    <div class="q-tag">QUESTÃO 8 · Tabela de Valores</div>
+    <div class="q-text">Dada a expressão y = 4x + 1, qual é o valor de y quando x = 2?</div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="selectOpt(8,'A')"><div class="opt-letter">A</div> 7</div>
+      <div class="quiz-opt" onclick="selectOpt(8,'B')"><div class="opt-letter">B</div> 8</div>
+      <div class="quiz-opt" onclick="selectOpt(8,'C')"><div class="opt-letter">C</div> 9</div>
+      <div class="quiz-opt" onclick="selectOpt(8,'D')"><div class="opt-letter">D</div> 10</div>
+      <div class="quiz-opt" onclick="selectOpt(8,'E')"><div class="opt-letter">E</div> 11</div>
+    </div>
+    <button class="quiz-submit" id="sub8" onclick="submitQ(8,'C')" disabled>Confirmar resposta</button>
+    <div class="quiz-feedback" id="fb8">
+      <div class="feedback-header" id="fh8"></div>
+      <div class="feedback-body">
+        <div class="fb-step">Substituímos x = 2 em y = 4x + 1:</div>
+        <div class="fb-math green">
+          y = 4·(2) + 1<br>
+          <span class="fb-note">↳ 4·2 = 8</span><br>
+          y = 8 + 1 = <b>9</b>
+        </div>
+        <div class="answer-box"><div class="ans-icon">✅</div><div><h4>Resposta correta: C</h4><p>y = 9</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCORE -->
+  <div class="score-box" id="scoreBox">
+    <h2>Quiz concluído! 🎉</h2>
+    <div class="score-num" id="scoreNum">0/8</div>
+    <p id="scoreFeedback"></p>
+  </div>
+
+</div><!-- end quiz page -->
+
+</main>
+</div><!-- end layout -->
+
+<script>
+// FLOATING SYMBOLS
+const symbols = ['x','y','=','+','−','·','√','²','∑','∞','π','≠','≤','≥','2','3','5','7'];
+const bg = document.getElementById('floatBg');
+for (let i = 0; i < 28; i++) {
+  const el = document.createElement('div');
+  el.className = 'float-sym';
+  el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+  el.style.left = Math.random() * 100 + 'vw';
+  el.style.animationDuration = (18 + Math.random() * 22) + 's';
+  el.style.animationDelay = (Math.random() * 20) + 's';
+  el.style.fontSize = (1.1 + Math.random() * 1.2) + 'rem';
+  bg.appendChild(el);
+}
+
+// NAV
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const map = { home:0, expralg:1, raiz:2, sistemas:3, tabela:4, quiz:5 };
+  document.querySelectorAll('.nav-item')[map[id]].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// STEPS
+function toggleStep(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+function revealGroup(ids) {
+  ids.forEach(id => document.getElementById(id).classList.add('open'));
+}
+
+// QUIZ
+const selected = {};
+const answered = {};
+let totalAnswered = 0;
+const TOTAL = 8;
+
+function selectOpt(qNum, letter) {
+  if (answered[qNum]) return;
+  selected[qNum] = letter;
+  const qq = document.getElementById('qq' + qNum);
+  qq.querySelectorAll('.quiz-opt').forEach((opt, i) => {
+    opt.classList.remove('selected');
+    const letters = ['A','B','C','D','E'];
+    if (letters[i] === letter) opt.classList.add('selected');
+  });
+  document.getElementById('sub' + qNum).disabled = false;
+}
+
+function submitQ(qNum, correct) {
+  if (answered[qNum]) return;
+  if (!selected[qNum]) return;
+  answered[qNum] = true;
+  totalAnswered++;
+
+  const qq = document.getElementById('qq' + qNum);
+  const letters = ['A','B','C','D','E'];
+  const isCorrect = selected[qNum] === correct;
+
+  qq.querySelectorAll('.quiz-opt').forEach((opt, i) => {
+    opt.classList.add('disabled');
+    opt.onclick = null;
+    if (letters[i] === correct) opt.classList.add('correct');
+    else if (letters[i] === selected[qNum] && !isCorrect) opt.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('fb' + qNum);
+  const fh = document.getElementById('fh' + qNum);
+  fb.classList.add('show');
+  if (isCorrect) {
+    fh.className = 'feedback-header correct-h';
+    fh.innerHTML = '✅ Correto! Muito bem!';
+  } else {
+    fh.className = 'feedback-header wrong-h';
+    fh.innerHTML = '❌ Incorreto. Veja a resolução abaixo:';
+  }
+
+  document.getElementById('sub' + qNum).disabled = true;
+
+  // update progress
+  const pct = (totalAnswered / TOTAL) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = totalAnswered + ' de ' + TOTAL + ' respondidas';
+
+  if (totalAnswered === TOTAL) {
+    const correct_count = Object.keys(answered).filter(k => {
+      const correctMap = {1:'C',2:'B',3:'D',4:'D',5:'B',6:'C',7:'B',8:'C'};
+      return selected[k] === correctMap[k];
+    }).length;
+    const sb = document.getElementById('scoreBox');
+    sb.classList.add('show');
+    document.getElementById('scoreNum').textContent = correct_count + '/' + TOTAL;
+    const msgs = ['Continue praticando! Revise o conteúdo e tente novamente.','Bom trabalho! Revise os erros com calma.','Muito bem! Você está bem preparado(a)! 🌟','Excelente! Mandou muito bem! 🏆'];
+    const idx = correct_count <= 3 ? 0 : correct_count <= 5 ? 1 : correct_count <= 7 ? 2 : 3;
+    document.getElementById('scoreFeedback').textContent = msgs[idx];
+    sb.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+</script>
+</body>
+</html>
