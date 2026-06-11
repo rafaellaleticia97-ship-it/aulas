@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisão · 9º Ano · Matemática</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f5f0;
+  --card: #ffffff;
+  --primary: #1a3a5c;
+  --accent: #e07b2a;
+  --green: #1a7a4a;
+  --red: #c0392b;
+  --purple: #6c3a8e;
+  --teal: #1a7a7a;
+  --yellow-bg: #fef9e7;
+  --yellow-bd: #d4ac0d;
+  --soft: #eaf0fb;
+  --border: #dde6f0;
+  --text: #1a1a2e;
+  --muted: #5a6a7e;
+  --shadow: 0 6px 28px rgba(26,58,92,0.10);
+  --radius: 20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* FLOATING BG */
+.bg-layer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.sym{
+  position:absolute;
+  font-family:'Baloo 2',sans-serif;
+  font-weight:900;
+  opacity:0.055;
+  color:var(--primary);
+  animation:rise linear infinite;
+  user-select:none;
+}
+@keyframes rise{
+  0%{transform:translateY(105vh) rotate(0deg);}
+  100%{transform:translateY(-15vh) rotate(360deg);}
+}
+
+/* WRAPPER */
+.wrap{
+  position:relative;z-index:1;
+  max-width:1060px;margin:0 auto;
+  padding:36px 22px 80px;
+}
+
+/* ---- HEADER ---- */
+.site-header{text-align:center;margin-bottom:48px;}
+.site-header .badge{
+  display:inline-block;
+  background:var(--primary);color:#fff;
+  font-size:.9rem;font-weight:800;letter-spacing:2px;
+  padding:6px 22px;border-radius:30px;
+  margin-bottom:14px;text-transform:uppercase;
+}
+.site-header h1{
+  font-family:'Baloo 2',sans-serif;
+  font-size:clamp(2rem,5.5vw,3.6rem);
+  color:var(--primary);line-height:1.1;
+  margin-bottom:10px;
+}
+.site-header h1 em{color:var(--accent);font-style:normal;}
+.site-header p{font-size:clamp(1rem,2.3vw,1.2rem);color:var(--muted);font-weight:600;}
+
+/* ---- TAB NAV ---- */
+.tab-bar{
+  display:flex;flex-wrap:wrap;gap:8px;
+  justify-content:center;margin-bottom:36px;
+}
+.tab-btn{
+  font-family:'Nunito',sans-serif;
+  font-size:clamp(.82rem,1.7vw,.98rem);
+  font-weight:800;
+  padding:10px 18px;
+  border-radius:30px;
+  border:2.5px solid var(--border);
+  background:var(--card);
+  color:var(--muted);
+  cursor:pointer;
+  transition:all .22s;
+  white-space:nowrap;
+}
+.tab-btn:hover{border-color:var(--primary);color:var(--primary);}
+.tab-btn.active{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 4px 18px rgba(26,58,92,.22);}
+.tab-btn.quiz-tab{border-color:var(--accent);}
+.tab-btn.quiz-tab.active{background:var(--accent);border-color:var(--accent);}
+
+/* ---- PANELS ---- */
+.panel{display:none;animation:fadeUp .38s ease;}
+.panel.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+/* ---- CARD ---- */
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:clamp(22px,4vw,42px);
+  box-shadow:var(--shadow);
+  border:1.5px solid var(--border);
+  margin-bottom:24px;
+}
+.card-title{
+  font-family:'Baloo 2',sans-serif;
+  font-size:clamp(1.25rem,3vw,1.9rem);
+  color:var(--primary);
+  margin-bottom:18px;
+  display:flex;align-items:center;gap:12px;
+}
+.card-title .ico{
+  background:var(--soft);
+  width:46px;height:46px;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;flex-shrink:0;
+}
+
+/* ---- TEXT ---- */
+.txt{font-size:clamp(1rem,2.1vw,1.18rem);line-height:1.78;color:var(--text);margin-bottom:14px;}
+.txt:last-child{margin-bottom:0;}
+strong{color:var(--primary);}
+
+/* ---- BOXES ---- */
+.box{border-radius:14px;padding:16px 20px;margin:16px 0;font-size:clamp(.97rem,2vw,1.13rem);font-weight:700;line-height:1.7;}
+.box-blue{background:#dbeafe;border-left:5px solid var(--primary);color:#1e3a5f;}
+.box-orange{background:#fdebd0;border-left:5px solid var(--accent);color:#7d3c0a;}
+.box-green{background:#d5f5e3;border-left:5px solid var(--green);color:#145a32;}
+.box-yellow{background:var(--yellow-bg);border-left:5px solid var(--yellow-bd);color:#7d6608;}
+.box-red{background:#fadbd8;border-left:5px solid var(--red);color:#641e16;}
+.box-purple{background:#e8daef;border-left:5px solid var(--purple);color:#4a235a;}
+.box-teal{background:#d1f2eb;border-left:5px solid var(--teal);color:#0e4a4a;}
+
+/* ---- MATH BLOCK ---- */
+.math{
+  background:var(--soft);border:2px solid var(--border);
+  border-radius:16px;padding:18px 26px;
+  text-align:center;
+  font-family:'Baloo 2',sans-serif;
+  font-size:clamp(1.2rem,3.2vw,1.9rem);
+  font-weight:800;color:var(--primary);
+  margin:18px 0;letter-spacing:.3px;
+}
+.math .lbl{
+  font-family:'Nunito',sans-serif;
+  font-size:clamp(.72rem,1.4vw,.88rem);
+  font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1.5px;
+  display:block;margin-bottom:5px;
+}
+
+/* ---- STEPS ---- */
+.steps{display:flex;flex-direction:column;gap:14px;margin:18px 0;}
+.step{display:flex;gap:16px;align-items:flex-start;background:var(--soft);border-radius:14px;padding:16px 18px;border:1.5px solid var(--border);}
+.snum{background:var(--primary);color:#fff;font-family:'Baloo 2',sans-serif;font-size:1.2rem;font-weight:800;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.scon strong{display:block;font-size:clamp(.97rem,2vw,1.12rem);color:var(--primary);margin-bottom:5px;}
+.scon span{font-size:clamp(.93rem,1.9vw,1.07rem);color:var(--text);line-height:1.65;}
+
+/* ---- FORMULA CARD ---- */
+.formula-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:18px 0;}
+.formula-item{background:var(--soft);border:2px solid var(--border);border-radius:14px;padding:16px 18px;text-align:center;}
+.formula-item .f-label{font-size:.85rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.formula-item .f-eq{font-family:'Baloo 2',sans-serif;font-size:clamp(1rem,2.5vw,1.35rem);font-weight:800;color:var(--primary);}
+
+/* ---- ATTENTION ---- */
+.warn{background:#fff3cd;border:2.5px solid #f0ad4e;border-radius:14px;padding:14px 18px;display:flex;gap:12px;align-items:flex-start;margin:16px 0;font-size:clamp(.95rem,1.9vw,1.08rem);line-height:1.65;font-weight:600;color:#7d5100;}
+.warn .wi{font-size:1.5rem;flex-shrink:0;}
+
+/* ---- TEA TIP ---- */
+.tea{background:#e8f8f5;border:2px solid #76d7c4;border-radius:14px;padding:13px 17px;display:flex;gap:12px;align-items:flex-start;margin:14px 0;font-size:clamp(.93rem,1.9vw,1.05rem);color:#1a5244;font-weight:600;line-height:1.6;}
+.tea .ti{font-size:1.35rem;flex-shrink:0;}
+
+/* ---- DIVIDER ---- */
+hr.div{border:none;border-top:2px dashed var(--border);margin:24px 0;}
+
+/* ---- POLYGON TABLE ---- */
+.ptable{width:100%;border-collapse:collapse;margin:16px 0;font-size:clamp(.9rem,1.9vw,1.05rem);}
+.ptable th{background:var(--primary);color:#fff;padding:11px 14px;text-align:left;font-weight:800;}
+.ptable td{padding:10px 14px;border-bottom:1px solid var(--border);}
+.ptable tr:nth-child(even) td{background:var(--soft);}
+.ptable .hi td{background:#d5f5e3!important;font-weight:700;color:var(--green);}
+
+/* ---- REVEAL ---- */
+.rev-btn{
+  background:var(--accent);color:#fff;
+  font-family:'Nunito',sans-serif;font-size:clamp(.93rem,1.9vw,1.08rem);font-weight:800;
+  border:none;border-radius:12px;padding:12px 26px;cursor:pointer;
+  transition:all .2s;display:inline-flex;align-items:center;gap:8px;margin-bottom:12px;
+}
+.rev-btn:hover{background:#c0641a;transform:translateY(-2px);}
+.rev-content{display:none;animation:fadeUp .3s ease;}
+.rev-content.open{display:block;}
+
+/* ---- CHIP ---- */
+.chip{display:inline-block;background:var(--soft);border:1.5px solid var(--border);border-radius:8px;padding:4px 13px;font-weight:700;font-size:clamp(.88rem,1.8vw,1rem);color:var(--primary);margin:3px;}
+
+/* ============================
+   QUIZ
+   ============================ */
+.quiz-header{text-align:center;margin-bottom:32px;}
+.quiz-header h2{font-family:'Baloo 2',sans-serif;font-size:clamp(1.5rem,4vw,2.4rem);color:var(--primary);margin-bottom:8px;}
+.quiz-header p{font-size:clamp(.97rem,2vw,1.1rem);color:var(--muted);font-weight:600;}
+
+.qcard{
+  background:var(--card);border-radius:var(--radius);
+  border:2px solid var(--border);
+  padding:clamp(20px,3.5vw,38px);
+  margin-bottom:22px;
+  box-shadow:var(--shadow);
+}
+.qcard .qnum{
+  font-family:'Baloo 2',sans-serif;font-size:.9rem;font-weight:800;
+  color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;
+  margin-bottom:8px;
+}
+.qcard .qtext{font-size:clamp(1rem,2.2vw,1.18rem);font-weight:700;color:var(--text);margin-bottom:18px;line-height:1.7;}
+
+.options{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+.opt-btn{
+  background:var(--soft);border:2.5px solid var(--border);
+  border-radius:12px;padding:13px 18px;
+  font-family:'Nunito',sans-serif;font-size:clamp(.97rem,2vw,1.1rem);font-weight:700;
+  color:var(--text);cursor:pointer;text-align:left;
+  transition:all .2s;
+}
+.opt-btn:hover:not(:disabled){background:#dbeafe;border-color:var(--primary);color:var(--primary);}
+.opt-btn.correct{background:#d5f5e3!important;border-color:var(--green)!important;color:var(--green)!important;}
+.opt-btn.wrong{background:#fadbd8!important;border-color:var(--red)!important;color:var(--red)!important;}
+.opt-btn:disabled{cursor:default;}
+
+.q-feedback{display:none;margin-top:4px;}
+.q-feedback.show{display:block;animation:fadeUp .3s ease;}
+.feedback-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 18px;border-radius:10px;font-weight:800;
+  font-size:clamp(.95rem,2vw,1.1rem);margin-bottom:14px;
+}
+.badge-ok{background:#d5f5e3;color:var(--green);}
+.badge-err{background:#fadbd8;color:var(--red);}
+
+.resolution{
+  background:var(--soft);border:1.5px solid var(--border);
+  border-radius:14px;padding:18px 20px;margin-top:10px;
+}
+.resolution h4{
+  font-family:'Baloo 2',sans-serif;font-size:clamp(1rem,2.2vw,1.25rem);
+  color:var(--primary);margin-bottom:12px;
+}
+
+/* ---- SCORE ---- */
+#scoreBoard{
+  display:none;text-align:center;
+  background:var(--card);border-radius:var(--radius);
+  padding:50px 30px;box-shadow:var(--shadow);
+  border:2px solid var(--border);
+  margin-top:20px;
+}
+#scoreBoard .big{font-size:5rem;margin-bottom:10px;}
+#scoreBoard h2{font-family:'Baloo 2',sans-serif;font-size:clamp(1.6rem,4vw,2.6rem);color:var(--primary);margin-bottom:10px;}
+#scoreBoard p{font-size:clamp(1rem,2vw,1.15rem);color:var(--muted);max-width:520px;margin:0 auto 20px;line-height:1.7;}
+#scoreBoard .score-num{font-family:'Baloo 2',sans-serif;font-size:clamp(2rem,5vw,3.5rem);color:var(--accent);font-weight:900;margin:10px 0;}
+
+.restart-btn{
+  background:var(--primary);color:#fff;
+  font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:800;
+  border:none;border-radius:14px;padding:14px 32px;cursor:pointer;
+  transition:all .2s;margin-top:10px;
+}
+.restart-btn:hover{background:#0e2a42;transform:translateY(-2px);}
+
+/* ---- PROGRESS BAR ---- */
+.prog-bar-wrap{background:var(--border);border-radius:30px;height:10px;margin-bottom:28px;overflow:hidden;}
+.prog-bar{background:var(--accent);height:100%;border-radius:30px;transition:width .4s ease;}
+
+/* ---- SUMMARY TABLE ---- */
+.summary-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:20px 0;}
+.s-chip{
+  padding:8px 16px;border-radius:10px;font-weight:800;font-size:.95rem;
+}
+.s-chip.ok{background:#d5f5e3;color:var(--green);}
+.s-chip.err{background:#fadbd8;color:var(--red);}
+
+</style>
+</head>
+<body>
+
+<!-- FLOATING SYMBOLS -->
+<div class="bg-layer" id="bgLayer"></div>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="site-header">
+    <div class="badge">9º Ano · Matemática</div>
+    <h1>Guia de Revisão<br><em>de Matemática</em></h1>
+    <p>Revise o conteúdo → depois teste no Quiz com resolução completa</p>
+  </div>
+
+  <!-- TAB NAV -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('t1',this)">📐 Triângulos</button>
+    <button class="tab-btn" onclick="switchTab('t2',this)">🔺 Polígonos</button>
+    <button class="tab-btn" onclick="switchTab('t3',this)">↔ Retas Paralelas</button>
+    <button class="tab-btn" onclick="switchTab('t4',this)">✖ Produtos Notáveis</button>
+    <button class="tab-btn" onclick="switchTab('t5',this)">🔢 Fatoração</button>
+    <button class="tab-btn quiz-tab" onclick="switchTab('quiz',this)">🎯 Quiz</button>
+  </div>
+
+  <!-- =================== T1: TRIÂNGULOS =================== -->
+  <div class="panel active" id="t1">
+
+    <div class="card">
+      <div class="card-title"><div class="ico">📐</div>Soma dos ângulos internos do triângulo</div>
+      <p class="txt">Em <strong>qualquer triângulo</strong>, os três ângulos internos sempre somam <strong>180°</strong>. Isso nunca muda — nem no triângulo mais estranho do mundo!</p>
+      <div class="math">∠A + ∠B + ∠C = 180°</div>
+      <div class="box box-blue">📌 Isso vale para <strong>qualquer triângulo</strong> — grande, pequeno, reto, obtuso, isósceles. Sempre 180°, sem exceção.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="ico">💡</div>Como usar esse conteúdo</div>
+      <p class="txt">Nas questões sobre triângulos, você geralmente recebe 2 ângulos e precisa encontrar o terceiro. A estratégia é sempre a mesma:</p>
+      <div class="steps">
+        <div class="step"><div class="snum">1</div><div class="scon"><strong>Some os ângulos que você já tem</strong><span>Ex: 73° + 49° = 122°</span></div></div>
+        <div class="step"><div class="snum">2</div><div class="scon"><strong>Subtraia de 180°</strong><span>180° − 122° = 58°</span></div></div>
+        <div class="step"><div class="snum">3</div><div class="scon"><strong>Essa é a resposta</strong><span>O terceiro ângulo mede 58°</span></div></div>
+      </div>
+
+      <hr class="div">
+
+      <p class="txt" style="font-weight:800;color:var(--primary);">E se os ângulos tiverem x?</p>
+      <p class="txt">Some tudo e iguale a 180°. Exemplo: (x+10)° + (2x+20)° + (3x−30)° = 180°</p>
+      <div class="steps">
+        <div class="step"><div class="snum">1</div><div class="scon"><strong>Junte os termos com x</strong><span>x + 2x + 3x = 6x</span></div></div>
+        <div class="step"><div class="snum">2</div><div class="scon"><strong>Junte os números</strong><span>10 + 20 − 30 = 0</span></div></div>
+        <div class="step"><div class="snum">3</div><div class="scon"><strong>Resolva a equação</strong><span>6x = 180° → x = 30°</span></div></div>
+      </div>
+
+      <div class="warn"><span class="wi">⚠️</span><span>Nunca esqueça: o resultado de x tem que gerar ângulos positivos! Se der negativo, tem algo errado na conta.</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="ico">⭐</div>Tipos especiais de triângulo</div>
+      <div class="formula-grid">
+        <div class="formula-item"><div class="f-label">Triângulo Retângulo</div><div class="f-eq">Um ângulo = 90°<br>outros dois somam 90°</div></div>
+        <div class="formula-item"><div class="f-label">Triângulo Isósceles</div><div class="f-eq">2 ângulos da base iguais</div></div>
+        <div class="formula-item"><div class="f-label">Triângulo Equilátero</div><div class="f-eq">3 ângulos = 60° cada</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- =================== T2: POLÍGONOS =================== -->
+  <div class="panel" id="t2">
+
+    <div class="card">
+      <div class="card-title"><div class="ico">🔺</div>Soma dos ângulos internos de polígonos</div>
+      <p class="txt">Qualquer polígono pode ser cortado em triângulos. Cada triângulo soma 180°. Por isso temos a fórmula:</p>
+      <div class="math"><span class="lbl">Fórmula geral</span>S = (n − 2) × 180°</div>
+      <p class="txt">onde <strong>n</strong> é o número de lados do polígono.</p>
+      <div class="tea"><span class="ti">🧩</span><span>Memorize assim: <strong>tire 2 do número de lados</strong>, depois multiplique por 180. Simples!</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="ico">📋</div>Tabela dos polígonos — decore os principais!</div>
+      <table class="ptable">
+        <tr><th>Polígono</th><th>Lados (n)</th><th>Cálculo</th><th>Soma</th></tr>
+        <tr><td>Triângulo</td><td>3</td><td>(3−2)×180°</td><td>180°</td></tr>
+        <tr><td>Quadrilátero</td><td>4</td><td>(4−2)×180°</td><td>360°</td></tr>
+        <tr><td>Pentágono</td><td>5</td><td>(5−2)×180°</td><td>540°</td></tr>
+        <tr><td>Hexágono</td><td>6</td><td>(6−2)×180°</td><td>720°</td></tr>
+        <tr><td>Heptágono</td><td>7</td><td>(7−2)×180°</td><td>900°</td></tr>
+        <tr><td>Octógono</td><td>8</td><td>(8−2)×180°</td><td>1.080°</td></tr>
+        <tr><td>Nonágono</td><td>9</td><td>(9−2)×180°</td><td>1.260°</td></tr>
+        <tr><td>Decágono</td><td>10</td><td>(10−2)×180°</td><td>1.440°</td></tr>
+      </table>
+      <div class="box box-orange">🌟 A questão pode dar a <strong>soma</strong> e pedir o número de lados. Faça ao contrário: S ÷ 180 + 2 = n</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="ico">🔄</div>Quando a questão dá a soma e pede os lados</div>
+      <p class="txt">Exemplo: Soma = 1.080°. Quantos lados?</p>
+      <div class="steps">
+        <div class="step"><div class="snum">1</div><div class="scon"><strong>Monte a equação</strong><span>(n − 2) × 180 = 1080</span></div></div>
+        <div class="step"><div class="snum">2</div><div class="scon"><strong>Divida os dois lados por 180</strong><span>n − 2 = 1080 ÷ 180 = 6</span></div></div>
+        <div class="step"><div class="snum">3</div><div class="scon"><strong>Some 2</strong><span>n = 6 + 2 = 8 lados → octógono</span></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- =================== T3: RETAS =================== -->
+  <div class="panel" id="t3">
+
+    <div class="card">
+      <div class="card-title"><div class="ico">↔</div>Retas paralelas e transversal</div>
+      <p class="txt">Quando uma reta <strong>transversal</strong> corta duas retas <strong>paralelas</strong>, surgem pares de ângulos com relações fixas.</p>
+      <div class="formula-grid">
+        <div class="formula-item"><div class="f-label">Alternos internos</div><div class="f-eq">Lados opostos<br><strong>IGUAIS</strong></div></div>
+        <div class="formula-item"><div class="f-label">Correspondentes</div><div class="f-eq">Mesma posição<br><strong>IGUAIS</strong></div></div>
+        <div class="formula-item"><div class="f-label">Co-internos</div><div class="f-eq">Mesmo lado<br><strong>SOMAM 180°</strong></div></div>
+      </div>
+      <div class="tea"><span class="ti">🧩</span><span><strong>Dica rápida:</strong> "Alternos" e "Correspondentes" → <strong>iguais</strong>. "Co-internos" → <strong>somam 180°</strong> (suplementares).</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="ico">💡</div>Como resolver as questões</div>
+      <p class="txt"><strong>Tipo 1 — Ângulos com expressões (alternos ou correspondentes):</strong></p>
+      <div class="steps">
+        <div class="step"><div class="snum">1</div><div class="scon"><strong>Identifique que são iguais</strong><span>Ex: alterno interno → (4x−10)° = (2x+30)°</span></div></div>
+        <div class="step"><div class="snum">2</div><div class="scon"><strong>Monte a equação e resolva</strong><span>4x − 10 = 2x + 30 → 2x = 40 → x = 20</span></div></div>
+      </div>
+      <hr class="div">
+      <p class="txt"><strong>Tipo 2 — Co-internos (somam 180°):</strong></p>
+      <div class="steps">
+        <div class="step"><div class="snum">1</div><div class="scon"><strong>Identifique que somam 180°</strong><span>Ex: um ângulo é 72°</span></div></div>
+        <div class="step"><div class="snum">2</div><div class="scon"><strong>Subtraia de 180°</strong><span>180° − 72° = 108°</span></div></div>
+      </div>
+      <div class="warn"><span class="wi">⚠️</span><span>Leia com atenção qual par de ângulos a questão descreve. Não confunda alternos com co-internos!</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="ico">📌</div>Revisão: Suplementares e Complementares</div>
+      <div class="formula-grid">
+        <div class="formula-item"><div class="f-label">Suplementares</div><div class="f-eq">α + β = 180°<br>(linha reta)</div></div>
+        <div class="formula-item"><div class="f-label">Complementares</div><div class="f-eq">α + β = 90°<br>(ângulo reto)</div></div>
+      </div>
+      <div class="box box-blue">💡 <strong>Macete:</strong> Complementar → 90° (C vem antes de S no alfabeto, 90 vem antes de 180).</div>
+    </div>
+
+  </div>
+
+  <!-- =================== T4: PRODUTOS NOTÁVEIS =================== -->
+  <div class="panel" id="t4">
+
+    <div class="card">
+      <div class="card-title"><div class="ico">✖</div>Os 3 Produtos Notáveis</div>
+      <p class="txt">São fórmulas essenciais que precisam estar na ponta da língua!</p>
+      <div class="formula-grid">
+        <div class="formula-item"><div class="f-label">Quadrado da soma</div><div class="f-eq">(a+b)² =<br>a²+2ab+b²</div></div>
+        <div class="formula-item"><div class="f-label">Quadrado da diferença</div><div class="f-eq">(a−b)² =<br>a²−2ab+b²</div></div>
+        <div class="formula-item"><div class="f-label">Produto da soma pela diferença</div><div class="f-eq">(a+b)(a−b) =<br>a²−b²</div></div>
+      </div>
+      <div class="tea"><span class="ti">🧩</span><span>Atenção ao termo do meio! No quadrado da soma é <strong>+2ab</strong>, na diferença é <strong>−2ab</strong>. Só muda o sinal do meio!</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="ico">🔍</div>Passo a passo — Quadrado da soma</div>
+      <p class="txt">Exemplo: (3x + 2)²</p>
+      <div class="steps">
+        <div class="step"><div class="snum">1</div><div class="scon"><strong>Identifique a e b</strong><span>a = 3x &nbsp;&nbsp; b = 2</span></div></div>
+        <div class="step"><div class="snum">2</div><div class="scon"><strong>Calcule a²</strong><span>(3x)² = 9x²</span></div></div>
+        <div class="step"><div class="snum">3</div><div class="scon"><strong>Calcule 2ab</strong><span>2 × 3x × 2 = 12x</span></div></div>
+        <div class="step"><div class="snum">4</div><div class="scon"><strong>Calcule b²</strong><span>2² = 4</span></div></div>
+        <div class="step"><div class="snum">5</div><div class="scon"><strong>Monte o resultado</strong><span>(3x+2)² = 9x² + 12x + 4</span></div></div>
+      </div>
+      <div class="math">( 3x + 2 )² = 9x² + 12x + 4</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="ico">🔍</div>Área sombreada com dois quadrados</div>
+      <p class="txt">Quando temos dois quadrados e queremos a <strong>área sombreada</strong> (grande menos pequeno), usamos produtos notáveis.</p>
+      <p class="txt"><strong>Exemplo:</strong> Quadrado grande de lado (x+4), quadrado pequeno de lado (x−1) retirado do canto inferior direito.</p>
+      <div style="text-align:center;margin:18px 0;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="260" height="260" viewBox="0 0 320 320" font-family="Arial,sans-serif" style="max-width:100%;">
+          <rect x="40" y="40" width="240" height="240" fill="#b0c4de" stroke="#1a3a5c" stroke-width="2.5"/>
+          <rect x="180" y="180" width="100" height="100" fill="white" stroke="#1a3a5c" stroke-width="2.5"/>
+          <line x1="180" y1="40" x2="180" y2="180" stroke="#555" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <line x1="40" y1="180" x2="180" y2="180" stroke="#555" stroke-width="1.5" stroke-dasharray="6,4"/>
+          <line x1="40" y1="22" x2="280" y2="22" stroke="#1a3a5c" stroke-width="1.5"/>
+          <text x="160" y="16" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3a5c">x + 4</text>
+          <text x="14" y="165" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3a5c" transform="rotate(-90,14,165)">x + 4</text>
+          <text x="230" y="312" text-anchor="middle" font-size="14" font-weight="bold" fill="#c0392b">x − 1</text>
+          <text x="308" y="235" text-anchor="middle" font-size="14" font-weight="bold" fill="#c0392b" transform="rotate(-90,308,235)">x − 1</text>
+          <text x="100" y="118" text-anchor="middle" font-size="13" fill="#1a3a5c" font-weight="bold">Área</text>
+          <text x="100" y="134" text-anchor="middle" font-size="13" fill="#1a3a5c" font-weight="bold">sombreada</text>
+          <text x="230" y="237" text-anchor="middle" font-size="12" fill="#888">(retirado)</text>
+        </svg>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="snum">1</div><div class="scon"><strong>Área grande − Área pequena</strong><span>(x+4)² − (x−1)²</span></div></div>
+        <div class="step"><div class="snum">2</div><div class="scon"><strong>Expanda cada quadrado</strong><span>(x²+8x+16) − (x²−2x+1)</span></div></div>
+        <div class="step"><div class="snum">3</div><div class="scon"><strong>Distribua o sinal de subtração</strong><span>x²+8x+16 − x²+2x−1</span></div></div>
+        <div class="step"><div class="snum">4</div><div class="scon"><strong>Simplifique</strong><span>10x + 15</span></div></div>
+      </div>
+      <div class="warn"><span class="wi">⚠️</span><span>Cuidado ao distribuir o sinal de "<strong>−</strong>" no segundo parêntese! Todo sinal dentro inverte.</span></div>
+    </div>
+
+  </div>
+
+  <!-- =================== T5: FATORAÇÃO =================== -->
+  <div class="panel" id="t5">
+
+    <div class="card">
+      <div class="card-title"><div class="ico">🔢</div>O que é fatoração?</div>
+      <p class="txt">Fatorar é reescrever uma expressão como um <strong>produto de fatores</strong>. É o caminho inverso de expandir.</p>
+      <div class="box box-blue">📌 Expandir: (x+3)(x+4) → x²+7x+12<br>📌 Fatorar: x²+7x+12 → (x+3)(x+4)</div>
+      <div class="tea"><span class="ti">🧩</span><span>A fatoração transforma a equação num <strong>produto = 0</strong>, e aí fica fácil achar as raízes!</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="ico">1️⃣</div>Diferença de quadrados: a² − b²</div>
+      <div class="math">a² − b² = (a + b) · (a − b)</div>
+      <p class="txt">Exemplo: x² − 64 = x² − 8² = (x+8)(x−8)</p>
+      <div class="steps">
+        <div class="step"><div class="snum">1</div><div class="scon"><strong>Identifique a raiz de cada termo</strong><span>√x² = x &nbsp;&nbsp; √64 = 8</span></div></div>
+        <div class="step"><div class="snum">2</div><div class="scon"><strong>Monte os fatores</strong><span>(x + 8) · (x − 8)</span></div></div>
+        <div class="step"><div class="snum">3</div><div class="scon"><strong>Aplique produto zero para equação = 0</strong><span>x+8=0 → x=−8 &nbsp;&nbsp; x−8=0 → x=8</span></div></div>
+      </div>
+      <div class="math">S = { −8 ; 8 }</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="ico">2️⃣</div>Fatoração do trinômio: x² + bx + c</div>
+      <p class="txt">Procure dois números que <strong>multiplicam para dar c</strong> e <strong>somam para dar b</strong>.</p>
+      <div class="steps">
+        <div class="step"><div class="snum">1</div><div class="scon"><strong>Liste pares com produto = c</strong><span>Para x²+2x−15: c = −15 → pares: 1×(−15), 3×(−5), 5×(−3)...</span></div></div>
+        <div class="step"><div class="snum">2</div><div class="scon"><strong>Qual par soma b?</strong><span>b = +2 → 5 e (−3): 5+(−3)=2 ✓ e 5×(−3)=−15 ✓</span></div></div>
+        <div class="step"><div class="snum">3</div><div class="scon"><strong>Monte os fatores</strong><span>(x + 5)(x − 3) = 0</span></div></div>
+        <div class="step"><div class="snum">4</div><div class="scon"><strong>Produto zero</strong><span>x = −5 ou x = 3</span></div></div>
+      </div>
+      <div class="math">S = { −5 ; 3 }</div>
+      <div class="warn"><span class="wi">⚠️</span><span>Se a equação tiver coeficiente em x² (como 3x²), <strong>divida tudo pelo coeficiente primeiro</strong> antes de fatorar!</span></div>
+    </div>
+
+  </div>
+
+  <!-- =================== QUIZ =================== -->
+  <div class="panel" id="quiz">
+
+    <div class="quiz-header">
+      <h2>🎯 Quiz de Revisão</h2>
+      <p>10 questões · Resolução completa após cada resposta</p>
+    </div>
+
+    <div class="prog-bar-wrap"><div class="prog-bar" id="progBar" style="width:0%"></div></div>
+
+    <div id="quizQuestions">
+
+      <!-- Q1 -->
+      <div class="qcard" id="qc1">
+        <div class="qnum">Questão 1 · Produtos Notáveis</div>
+        <div class="qtext">Desenvolvendo a expressão (3x + 2)², qual expressão obtemos?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(1,'A')">A) 9x² + 4</button>
+          <button class="opt-btn" onclick="answer(1,'B')">B) 9x² + 6x + 4</button>
+          <button class="opt-btn" onclick="answer(1,'C')">C) 9x² + 12x + 4</button>
+          <button class="opt-btn" onclick="answer(1,'D')">D) 9x² − 12x + 4</button>
+          <button class="opt-btn" onclick="answer(1,'E')">E) 6x² + 12x + 4</button>
+        </div>
+        <div class="q-feedback" id="fb1">
+          <div class="feedback-badge" id="badge1"></div>
+          <div class="resolution">
+            <h4>📖 Resolução passo a passo</h4>
+            <p class="txt">Usamos a fórmula do <strong>quadrado da soma</strong>: (a + b)² = a² + 2ab + b²</p>
+            <div class="steps">
+              <div class="step"><div class="snum">1</div><div class="scon"><strong>Identifique a e b</strong><span>a = 3x &nbsp;&nbsp;&nbsp; b = 2</span></div></div>
+              <div class="step"><div class="snum">2</div><div class="scon"><strong>Calcule a²</strong><span>(3x)² = 9x²</span></div></div>
+              <div class="step"><div class="snum">3</div><div class="scon"><strong>Calcule 2ab</strong><span>2 × 3x × 2 = 12x</span></div></div>
+              <div class="step"><div class="snum">4</div><div class="scon"><strong>Calcule b²</strong><span>2² = 4</span></div></div>
+              <div class="step"><div class="snum">5</div><div class="scon"><strong>Junte tudo</strong><span>(3x+2)² = 9x² + 12x + 4</span></div></div>
+            </div>
+            <div class="box box-green">✅ Resposta correta: <strong>C) 9x² + 12x + 4</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="qcard" id="qc2">
+        <div class="qnum">Questão 2 · Produtos Notáveis — Área</div>
+        <div class="qtext">Observe a figura abaixo. Qual expressão representa a área sombreada (parte colorida)?</div>
+        <div style="text-align:center;margin:14px 0;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 320 320" font-family="Arial,sans-serif" style="max-width:100%;">
+            <rect x="40" y="40" width="240" height="240" fill="#b0c4de" stroke="#1a3a5c" stroke-width="2.5"/>
+            <rect x="180" y="180" width="100" height="100" fill="white" stroke="#1a3a5c" stroke-width="2.5"/>
+            <line x1="180" y1="40" x2="180" y2="180" stroke="#555" stroke-width="1.5" stroke-dasharray="6,4"/>
+            <line x1="40" y1="180" x2="180" y2="180" stroke="#555" stroke-width="1.5" stroke-dasharray="6,4"/>
+            <line x1="40" y1="22" x2="280" y2="22" stroke="#1a3a5c" stroke-width="1.5"/>
+            <text x="160" y="16" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3a5c">x + 4</text>
+            <text x="14" y="165" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a3a5c" transform="rotate(-90,14,165)">x + 4</text>
+            <text x="230" y="312" text-anchor="middle" font-size="14" font-weight="bold" fill="#c0392b">x − 1</text>
+            <text x="308" y="235" text-anchor="middle" font-size="14" font-weight="bold" fill="#c0392b" transform="rotate(-90,308,235)">x − 1</text>
+            <text x="100" y="118" text-anchor="middle" font-size="13" fill="#1a3a5c" font-weight="bold">Área</text>
+            <text x="100" y="134" text-anchor="middle" font-size="13" fill="#1a3a5c" font-weight="bold">sombreada</text>
+            <text x="230" y="237" text-anchor="middle" font-size="12" fill="#888">(retirado)</text>
+          </svg>
+        </div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(2,'A')">A) x² + 15</button>
+          <button class="opt-btn" onclick="answer(2,'B')">B) 10x + 15</button>
+          <button class="opt-btn" onclick="answer(2,'C')">C) x² + 10x</button>
+          <button class="opt-btn" onclick="answer(2,'D')">D) 10x − 15</button>
+          <button class="opt-btn" onclick="answer(2,'E')">E) x² − 15</button>
+        </div>
+        <div class="q-feedback" id="fb2">
+          <div class="feedback-badge" id="badge2"></div>
+          <div class="resolution">
+            <h4>📖 Resolução passo a passo</h4>
+            <p class="txt">Área sombreada = Área do quadrado grande − Área do quadrado pequeno</p>
+            <div class="steps">
+              <div class="step"><div class="snum">1</div><div class="scon"><strong>Área do quadrado grande</strong><span>(x+4)² = x² + 8x + 16</span></div></div>
+              <div class="step"><div class="snum">2</div><div class="scon"><strong>Área do quadrado pequeno</strong><span>(x−1)² = x² − 2x + 1</span></div></div>
+              <div class="step"><div class="snum">3</div><div class="scon"><strong>Subtraia</strong><span>(x²+8x+16) − (x²−2x+1)</span></div></div>
+              <div class="step"><div class="snum">4</div><div class="scon"><strong>Distribua o sinal de − no segundo parêntese</strong><span>x²+8x+16 − x²+2x−1</span></div></div>
+              <div class="step"><div class="snum">5</div><div class="scon"><strong>Simplifique (x² cancela)</strong><span>8x + 2x + 16 − 1 = 10x + 15</span></div></div>
+            </div>
+            <div class="box box-green">✅ Resposta correta: <strong>B) 10x + 15</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="qcard" id="qc3">
+        <div class="qnum">Questão 3 · Produtos Notáveis — Simplificação</div>
+        <div class="qtext">Qual é o resultado de (x + 5)² − (x + 2)(x − 2) após ser desenvolvida e simplificada?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(3,'A')">A) x² + 8</button>
+          <button class="opt-btn" onclick="answer(3,'B')">B) 10x + 29</button>
+          <button class="opt-btn" onclick="answer(3,'C')">C) 2x + 29</button>
+          <button class="opt-btn" onclick="answer(3,'D')">D) 10x + 21</button>
+          <button class="opt-btn" onclick="answer(3,'E')">E) x + 29</button>
+        </div>
+        <div class="q-feedback" id="fb3">
+          <div class="feedback-badge" id="badge3"></div>
+          <div class="resolution">
+            <h4>📖 Resolução passo a passo</h4>
+            <div class="steps">
+              <div class="step"><div class="snum">1</div><div class="scon"><strong>Expanda (x+5)² → quadrado da soma</strong><span>x² + 10x + 25</span></div></div>
+              <div class="step"><div class="snum">2</div><div class="scon"><strong>Expanda (x+2)(x−2) → produto da soma pela diferença</strong><span>x² − 4</span></div></div>
+              <div class="step"><div class="snum">3</div><div class="scon"><strong>Subtraia</strong><span>(x²+10x+25) − (x²−4)</span></div></div>
+              <div class="step"><div class="snum">4</div><div class="scon"><strong>Distribua o − e simplifique</strong><span>x²+10x+25 − x²+4 = 10x + 29</span></div></div>
+            </div>
+            <div class="box box-green">✅ Resposta correta: <strong>B) 10x + 29</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="qcard" id="qc4">
+        <div class="qnum">Questão 4 · Ângulos no Triângulo</div>
+        <div class="qtext">Em um triângulo, dois ângulos medem 73° e 49°. Qual é a medida do terceiro ângulo?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(4,'A')">A) 48°</button>
+          <button class="opt-btn" onclick="answer(4,'B')">B) 52°</button>
+          <button class="opt-btn" onclick="answer(4,'C')">C) 56°</button>
+          <button class="opt-btn" onclick="answer(4,'D')">D) 58°</button>
+          <button class="opt-btn" onclick="answer(4,'E')">E) 62°</button>
+        </div>
+        <div class="q-feedback" id="fb4">
+          <div class="feedback-badge" id="badge4"></div>
+          <div class="resolution">
+            <h4>📖 Resolução passo a passo</h4>
+            <p class="txt">A soma dos ângulos internos de qualquer triângulo é sempre 180°.</p>
+            <div class="steps">
+              <div class="step"><div class="snum">1</div><div class="scon"><strong>Some os ângulos conhecidos</strong><span>73° + 49° = 122°</span></div></div>
+              <div class="step"><div class="snum">2</div><div class="scon"><strong>Subtraia de 180°</strong><span>180° − 122° = 58°</span></div></div>
+            </div>
+            <div class="box box-green">✅ Resposta correta: <strong>D) 58°</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="qcard" id="qc5">
+        <div class="qnum">Questão 5 · Ângulos com expressão algébrica</div>
+        <div class="qtext">Os ângulos internos de um triângulo medem (x + 10)°, (2x + 20)° e (3x − 30)°. Qual é o valor de x?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(5,'A')">A) 25°</button>
+          <button class="opt-btn" onclick="answer(5,'B')">B) 27°</button>
+          <button class="opt-btn" onclick="answer(5,'C')">C) 30°</button>
+          <button class="opt-btn" onclick="answer(5,'D')">D) 35°</button>
+          <button class="opt-btn" onclick="answer(5,'E')">E) 40°</button>
+        </div>
+        <div class="q-feedback" id="fb5">
+          <div class="feedback-badge" id="badge5"></div>
+          <div class="resolution">
+            <h4>📖 Resolução passo a passo</h4>
+            <div class="steps">
+              <div class="step"><div class="snum">1</div><div class="scon"><strong>Some todos os ângulos e iguale a 180°</strong><span>(x+10) + (2x+20) + (3x−30) = 180</span></div></div>
+              <div class="step"><div class="snum">2</div><div class="scon"><strong>Junte os termos com x</strong><span>x + 2x + 3x = 6x</span></div></div>
+              <div class="step"><div class="snum">3</div><div class="scon"><strong>Junte os números</strong><span>10 + 20 − 30 = 0</span></div></div>
+              <div class="step"><div class="snum">4</div><div class="scon"><strong>Resolva a equação</strong><span>6x + 0 = 180 → 6x = 180 → x = 30°</span></div></div>
+              <div class="step"><div class="snum">5</div><div class="scon"><strong>Confira: substitua x=30</strong><span>(40°) + (80°) + (60°) = 180° ✓</span></div></div>
+            </div>
+            <div class="box box-green">✅ Resposta correta: <strong>C) 30°</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="qcard" id="qc6">
+        <div class="qnum">Questão 6 · Soma dos ângulos de polígono</div>
+        <div class="qtext">Qual é a soma dos ângulos internos de um heptágono (7 lados)?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(6,'A')">A) 540°</button>
+          <button class="opt-btn" onclick="answer(6,'B')">B) 620°</button>
+          <button class="opt-btn" onclick="answer(6,'C')">C) 900°</button>
+          <button class="opt-btn" onclick="answer(6,'D')">D) 1.080°</button>
+          <button class="opt-btn" onclick="answer(6,'E')">E) 1.260°</button>
+        </div>
+        <div class="q-feedback" id="fb6">
+          <div class="feedback-badge" id="badge6"></div>
+          <div class="resolution">
+            <h4>📖 Resolução passo a passo</h4>
+            <p class="txt">Usamos a fórmula: S = (n − 2) × 180°</p>
+            <div class="steps">
+              <div class="step"><div class="snum">1</div><div class="scon"><strong>Identifique n</strong><span>Heptágono → n = 7</span></div></div>
+              <div class="step"><div class="snum">2</div><div class="scon"><strong>Substitua na fórmula</strong><span>S = (7 − 2) × 180°</span></div></div>
+              <div class="step"><div class="snum">3</div><div class="scon"><strong>Calcule</strong><span>S = 5 × 180° = 900°</span></div></div>
+            </div>
+            <div class="box box-green">✅ Resposta correta: <strong>C) 900°</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="qcard" id="qc7">
+        <div class="qnum">Questão 7 · Descobrir o número de lados</div>
+        <div class="qtext">Um polígono tem soma dos ângulos internos igual a 1.080°. Quantos lados ele possui?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(7,'A')">A) 6</button>
+          <button class="opt-btn" onclick="answer(7,'B')">B) 7</button>
+          <button class="opt-btn" onclick="answer(7,'C')">C) 8</button>
+          <button class="opt-btn" onclick="answer(7,'D')">D) 9</button>
+          <button class="opt-btn" onclick="answer(7,'E')">E) 10</button>
+        </div>
+        <div class="q-feedback" id="fb7">
+          <div class="feedback-badge" id="badge7"></div>
+          <div class="resolution">
+            <h4>📖 Resolução passo a passo</h4>
+            <div class="steps">
+              <div class="step"><div class="snum">1</div><div class="scon"><strong>Monte a equação com a fórmula</strong><span>(n − 2) × 180 = 1080</span></div></div>
+              <div class="step"><div class="snum">2</div><div class="scon"><strong>Divida os dois lados por 180</strong><span>n − 2 = 1080 ÷ 180 = 6</span></div></div>
+              <div class="step"><div class="snum">3</div><div class="scon"><strong>Some 2 nos dois lados</strong><span>n = 6 + 2 = 8</span></div></div>
+            </div>
+            <div class="box box-green">✅ Resposta correta: <strong>C) 8 lados (octógono)</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="qcard" id="qc8">
+        <div class="qnum">Questão 8 · Retas Paralelas</div>
+        <div class="qtext">Duas retas paralelas são cortadas por uma transversal. Um ângulo alterno interno mede (4x − 10)° e o outro mede (2x + 30)°. Qual é o valor de x?</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(8,'A')">A) 15°</button>
+          <button class="opt-btn" onclick="answer(8,'B')">B) 18°</button>
+          <button class="opt-btn" onclick="answer(8,'C')">C) 20°</button>
+          <button class="opt-btn" onclick="answer(8,'D')">D) 22°</button>
+          <button class="opt-btn" onclick="answer(8,'E')">E) 25°</button>
+        </div>
+        <div class="q-feedback" id="fb8">
+          <div class="feedback-badge" id="badge8"></div>
+          <div class="resolution">
+            <h4>📖 Resolução passo a passo</h4>
+            <p class="txt">Ângulos <strong>alternos internos</strong> entre retas paralelas são <strong>iguais</strong>.</p>
+            <div class="steps">
+              <div class="step"><div class="snum">1</div><div class="scon"><strong>Monte a equação</strong><span>4x − 10 = 2x + 30</span></div></div>
+              <div class="step"><div class="snum">2</div><div class="scon"><strong>Passe 2x para o lado esquerdo</strong><span>4x − 2x = 30 + 10</span></div></div>
+              <div class="step"><div class="snum">3</div><div class="scon"><strong>Resolva</strong><span>2x = 40 → x = 20°</span></div></div>
+              <div class="step"><div class="snum">4</div><div class="scon"><strong>Confira: substitua x=20</strong><span>4(20)−10 = 70° &nbsp; e &nbsp; 2(20)+30 = 70° ✓</span></div></div>
+            </div>
+            <div class="box box-green">✅ Resposta correta: <strong>C) 20°</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="qcard" id="qc9">
+        <div class="qnum">Questão 9 · Fatoração — Diferença de quadrados</div>
+        <div class="qtext">Determine as soluções da equação x² − 64 = 0 usando fatoração.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(9,'A')">A) S = {8 ; 8}</button>
+          <button class="opt-btn" onclick="answer(9,'B')">B) S = {−64 ; 64}</button>
+          <button class="opt-btn" onclick="answer(9,'C')">C) S = {0 ; 8}</button>
+          <button class="opt-btn" onclick="answer(9,'D')">D) S = {−8 ; 0}</button>
+          <button class="opt-btn" onclick="answer(9,'E')">E) S = {−8 ; 8}</button>
+        </div>
+        <div class="q-feedback" id="fb9">
+          <div class="feedback-badge" id="badge9"></div>
+          <div class="resolution">
+            <h4>📖 Resolução passo a passo</h4>
+            <div class="steps">
+              <div class="step"><div class="snum">1</div><div class="scon"><strong>Reconheça a diferença de quadrados</strong><span>x² − 64 = x² − 8²</span></div></div>
+              <div class="step"><div class="snum">2</div><div class="scon"><strong>Aplique a fórmula a²−b² = (a+b)(a−b)</strong><span>(x + 8) · (x − 8) = 0</span></div></div>
+              <div class="step"><div class="snum">3</div><div class="scon"><strong>Produto zero — iguale cada fator a zero</strong><span>x + 8 = 0 → x = −8<br>x − 8 = 0 → x = 8</span></div></div>
+              <div class="step"><div class="snum">4</div><div class="scon"><strong>Confira substituindo x=8</strong><span>8² − 64 = 64 − 64 = 0 ✓</span></div></div>
+            </div>
+            <div class="box box-green">✅ Resposta correta: <strong>E) S = {−8 ; 8}</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="qcard" id="qc10">
+        <div class="qnum">Questão 10 · Fatoração — Trinômio</div>
+        <div class="qtext">Determine as soluções da equação x² + 2x − 15 = 0 usando fatoração.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="answer(10,'A')">A) S = {−5 ; 3}</button>
+          <button class="opt-btn" onclick="answer(10,'B')">B) S = {5 ; −3}</button>
+          <button class="opt-btn" onclick="answer(10,'C')">C) S = {5 ; 3}</button>
+          <button class="opt-btn" onclick="answer(10,'D')">D) S = {−5 ; −3}</button>
+          <button class="opt-btn" onclick="answer(10,'E')">E) S = {−1 ; 15}</button>
+        </div>
+        <div class="q-feedback" id="fb10">
+          <div class="feedback-badge" id="badge10"></div>
+          <div class="resolution">
+            <h4>📖 Resolução passo a passo</h4>
+            <p class="txt">Precisamos de dois números com <strong>produto = −15</strong> e <strong>soma = +2</strong>.</p>
+            <div class="steps">
+              <div class="step"><div class="snum">1</div><div class="scon"><strong>Liste pares com produto −15</strong><span>1×(−15), (−1)×15, 3×(−5), (−3)×5, 5×(−3)...</span></div></div>
+              <div class="step"><div class="snum">2</div><div class="scon"><strong>Qual par soma +2?</strong><span>5 + (−3) = 2 ✓ &nbsp;&nbsp; e &nbsp;&nbsp; 5 × (−3) = −15 ✓</span></div></div>
+              <div class="step"><div class="snum">3</div><div class="scon"><strong>Monte a forma fatorada</strong><span>(x + 5)(x − 3) = 0</span></div></div>
+              <div class="step"><div class="snum">4</div><div class="scon"><strong>Produto zero</strong><span>x + 5 = 0 → x = −5<br>x − 3 = 0 → x = 3</span></div></div>
+              <div class="step"><div class="snum">5</div><div class="scon"><strong>Confira x = −5</strong><span>(−5)² + 2(−5) − 15 = 25 − 10 − 15 = 0 ✓</span></div></div>
+            </div>
+            <div class="box box-green">✅ Resposta correta: <strong>A) S = {−5 ; 3}</strong></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /quizQuestions -->
+
+    <!-- SCORE BOARD -->
+    <div id="scoreBoard">
+      <div class="big" id="scoreMoji">🏆</div>
+      <h2 id="scoreTitle">Resultado Final</h2>
+      <div class="score-num" id="scoreNum"></div>
+      <p id="scoreMsg"></p>
+      <div class="summary-grid" id="summaryGrid"></div>
+      <button class="restart-btn" onclick="restartQuiz()">🔄 Refazer o Quiz</button>
+    </div>
+
+  </div><!-- /quiz panel -->
+
+</div><!-- /wrap -->
+
+<script>
+// ---- FLOATING SYMBOLS ----
+const syms = ['x²','a+b','180°','Δ','n−2','=0','√','∠','°','S=','·','{}','2ab','b²','90°'];
+const bg = document.getElementById('bgLayer');
+for(let i=0;i<30;i++){
+  const el=document.createElement('div');
+  el.className='sym';
+  el.textContent=syms[Math.floor(Math.random()*syms.length)];
+  el.style.left=Math.random()*100+'%';
+  el.style.fontSize=(16+Math.random()*52)+'px';
+  el.style.animationDuration=(20+Math.random()*35)+'s';
+  el.style.animationDelay=(-Math.random()*45)+'s';
+  bg.appendChild(el);
+}
+
+// ---- TABS ----
+function switchTab(id, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ---- QUIZ ----
+const correct = {1:'C',2:'B',3:'B',4:'D',5:'C',6:'C',7:'C',8:'C',9:'E',10:'A'};
+const answered = {};
+let score = 0;
+
+function answer(qn, chosen){
+  if(answered[qn]) return;
+  answered[qn] = chosen;
+
+  const card = document.getElementById('qc'+qn);
+  const btns = card.querySelectorAll('.opt-btn');
+  const fb = document.getElementById('fb'+qn);
+  const badge = document.getElementById('badge'+qn);
+  const isRight = chosen === correct[qn];
+
+  if(isRight) score++;
+
+  btns.forEach(b=>{
+    b.disabled = true;
+    const letter = b.textContent.trim()[0];
+    if(letter === correct[qn]) b.classList.add('correct');
+    else if(letter === chosen && !isRight) b.classList.add('wrong');
+  });
+
+  badge.className = 'feedback-badge ' + (isRight ? 'badge-ok' : 'badge-err');
+  badge.textContent = isRight ? '✅ Correto! Muito bem!' : '❌ Não foi dessa vez. Veja a resolução:';
+
+  fb.classList.add('show');
+
+  // Update progress
+  const done = Object.keys(answered).length;
+  document.getElementById('progBar').style.width = (done/10*100)+'%';
+
+  if(done === 10) setTimeout(showScore, 800);
+}
+
+function showScore(){
+  document.getElementById('quizQuestions').style.display='none';
+  const sb = document.getElementById('scoreBoard');
+  sb.style.display='block';
+
+  const pct = score/10*100;
+  let moji='🏆', title='Excelente!', msg='Você dominou o conteúdo! Continue praticando assim!';
+  if(pct<50){ moji='💪'; title='Continue estudando!'; msg='Revise os conteúdos das abas acima e tente novamente. Você consegue!'; }
+  else if(pct<70){ moji='📚'; title='Bom trabalho!'; msg='Você acertou mais da metade! Revise os erros com atenção e refaça o quiz.'; }
+  else if(pct<90){ moji='⭐'; title='Muito bom!'; msg='Você está quase lá! Revise as questões que errou e confira as resoluções.'; }
+
+  document.getElementById('scoreMoji').textContent = moji;
+  document.getElementById('scoreTitle').textContent = title;
+  document.getElementById('scoreNum').textContent = score + '/10 acertos (' + pct + '%)';
+  document.getElementById('scoreMsg').textContent = msg;
+
+  // Summary chips
+  const grid = document.getElementById('summaryGrid');
+  grid.innerHTML = '';
+  for(let i=1;i<=10;i++){
+    const ok = answered[i] === correct[i];
+    const chip = document.createElement('div');
+    chip.className = 's-chip ' + (ok?'ok':'err');
+    chip.textContent = 'Q'+i+' '+(ok?'✓':'✗');
+    grid.appendChild(chip);
+  }
+  sb.scrollIntoView({behavior:'smooth'});
+}
+
+function restartQuiz(){
+  Object.keys(answered).forEach(k=>delete answered[k]);
+  score=0;
+  document.getElementById('progBar').style.width='0%';
+  document.getElementById('quizQuestions').style.display='block';
+  document.getElementById('scoreBoard').style.display='none';
+  document.querySelectorAll('.opt-btn').forEach(b=>{
+    b.disabled=false;
+    b.classList.remove('correct','wrong');
+  });
+  document.querySelectorAll('.q-feedback').forEach(f=>f.classList.remove('show'));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
