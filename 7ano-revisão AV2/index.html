@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Revisão – Matemática 7º Ano</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<style>
+/* ─── TOKENS ─── */
+:root {
+  --bg: #F8FAFF;
+  --azul: #1a6fb5;
+  --azul-claro: #e3eefb;
+  --verde: #1a9e6e;
+  --verde-claro: #e2f5ed;
+  --laranja: #e07b20;
+  --laranja-claro: #fff1e2;
+  --roxo: #6d28d9;
+  --roxo-claro: #f0ebff;
+  --amarelo: #fef3c7;
+  --amarelo-borda: #d97706;
+  --vermelho: #dc2626;
+  --texto: #1e293b;
+  --cinza: #64748b;
+  --branco: #ffffff;
+  --sombra: 0 4px 20px rgba(26,111,181,0.10);
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--texto);
+  font-size: 1.08rem;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+/* ─── FUNDO FLUTUANTE ─── */
+.floats {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.float-sym {
+  position: absolute;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--azul);
+  opacity: 0.045;
+  animation: floatUp linear infinite;
+  user-select: none;
+}
+@keyframes floatUp {
+  0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.045; }
+  90%  { opacity: 0.045; }
+  100% { transform: translateY(-120px) rotate(20deg); opacity: 0; }
+}
+
+/* ─── HEADER ─── */
+.header {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(135deg, #0d47a1 0%, #1a6fb5 60%, #1a9e6e 100%);
+  color: white;
+  padding: 2.8rem 1.5rem 2.2rem;
+  text-align: center;
+}
+.header .badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 0.25rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+}
+.header h1 {
+  font-family: 'Baloo 2', cursive;
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 0.4rem;
+}
+.header p { font-size: 1rem; opacity: 0.88; font-weight: 600; }
+
+/* ─── BARRA DE PROGRESSO ─── */
+.progresso-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: white;
+  border-bottom: 2px solid var(--azul-claro);
+  padding: 0.55rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.progresso-label { font-size: 0.78rem; font-weight: 800; color: var(--cinza); white-space: nowrap; }
+.progresso-barra {
+  flex: 1;
+  height: 10px;
+  background: var(--azul-claro);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progresso-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--azul), var(--verde));
+  border-radius: 10px;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+.progresso-pct { font-size: 0.82rem; font-weight: 900; color: var(--azul); min-width: 34px; }
+
+/* ─── NAVEGAÇÃO SEÇÕES ─── */
+.nav-secoes {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0.9rem 1rem;
+  background: white;
+  border-bottom: 2px solid var(--azul-claro);
+}
+.nav-btn {
+  background: var(--azul-claro);
+  color: var(--azul);
+  border: none;
+  border-radius: 20px;
+  padding: 0.32rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: all 0.18s;
+  text-decoration: none;
+}
+.nav-btn:hover { background: var(--azul); color: white; }
+
+/* ─── CONTAINER ─── */
+.container {
+  position: relative;
+  z-index: 10;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.2rem 5rem;
+}
+
+/* ─── SEÇÃO ─── */
+.secao {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem 1.8rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--sombra);
+  border-left: 6px solid var(--azul);
+}
+.secao.verde  { border-left-color: var(--verde); }
+.secao.laranja { border-left-color: var(--laranja); }
+.secao.roxo   { border-left-color: var(--roxo); }
+
+.secao-topo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.3rem;
+}
+.secao-icone {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+.secao-titulo {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--azul);
+}
+.secao.verde  .secao-titulo { color: var(--verde); }
+.secao.laranja .secao-titulo { color: var(--laranja); }
+.secao.roxo   .secao-titulo { color: var(--roxo); }
+
+/* ─── DICA RELÂMPAGO ─── */
+.dica {
+  background: var(--amarelo);
+  border: 2px solid var(--amarelo-borda);
+  border-radius: 14px;
+  padding: 1rem 1.3rem;
+  margin: 1.1rem 0;
+  position: relative;
+}
+.dica::before {
+  content: "⚡ DICA";
+  position: absolute;
+  top: -13px;
+  left: 16px;
+  background: var(--amarelo-borda);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  padding: 2px 9px;
+  border-radius: 8px;
+}
+.dica p { font-size: 1rem; }
+
+/* ─── LEMBRETE (caderno) ─── */
+.lembrete {
+  background: #f0faf6;
+  border: 2.5px solid var(--verde);
+  border-radius: 14px;
+  padding: 1.1rem 1.4rem;
+  margin: 1.1rem 0;
+  position: relative;
+}
+.lembrete::before {
+  content: "📌 LEMBRE-SE";
+  position: absolute;
+  top: -13px;
+  left: 16px;
+  background: var(--verde);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  padding: 2px 9px;
+  border-radius: 8px;
+}
+.lembrete ul { margin-left: 1.2rem; line-height: 2.1; }
+.lembrete strong { color: #0d6b49; }
+
+/* ─── EXEMPLO ─── */
+.exemplo {
+  background: var(--azul-claro);
+  border-left: 5px solid var(--azul);
+  border-radius: 0 12px 12px 0;
+  padding: 1rem 1.3rem;
+  margin: 1rem 0;
+}
+.exemplo-titulo {
+  font-weight: 900;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--azul);
+  margin-bottom: 0.5rem;
+}
+.exemplo.verde { background: var(--verde-claro); border-color: var(--verde); }
+.exemplo.verde .exemplo-titulo { color: var(--verde); }
+.exemplo.laranja { background: var(--laranja-claro); border-color: var(--laranja); }
+.exemplo.laranja .exemplo-titulo { color: var(--laranja); }
+
+/* ─── PASSO A PASSO ─── */
+.passos { margin: 0.7rem 0; }
+.passo {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+.passo-n {
+  background: var(--azul);
+  color: white;
+  border-radius: 50%;
+  width: 1.8rem; height: 1.8rem; min-width: 1.8rem;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 0.9rem;
+  margin-top: 0.1rem;
+}
+.passo-n.v { background: var(--verde); }
+.passo-n.l { background: var(--laranja); }
+.passo-n.r { background: var(--roxo); }
+
+/* ─── FRAÇÃO ─── */
+.fr {
+  display: inline-flex; flex-direction: column;
+  align-items: center; font-weight: 800;
+  line-height: 1.05; vertical-align: middle;
+  margin: 0 0.2rem; color: var(--azul);
+}
+.fr .n { border-bottom: 2.5px solid currentColor; padding-bottom: 1px; }
+.fr .d { padding-top: 1px; }
+.fr.v { color: var(--verde); }
+.fr.r { color: var(--vermelho); }
+.fr.l { color: var(--laranja); }
+
+/* ─── TIRAS ─── */
+.tiras { display: flex; gap: 3px; flex-wrap: wrap; margin: 0.5rem 0; align-items: center; }
+.t {
+  width: 34px; height: 28px; border-radius: 6px; border: 2px solid;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 900;
+}
+.t.a { background: var(--azul); border-color: var(--azul); color: white; }
+.t.b { background: var(--verde); border-color: var(--verde); color: white; }
+.t.c { background: var(--laranja); border-color: var(--laranja); color: white; }
+.t.d { background: var(--roxo); border-color: var(--roxo); color: white; }
+.t.v { background: white; border-color: #bbb; color: #bbb; }
+
+/* ─── QUIZ ─── */
+.quiz-header {
+  background: linear-gradient(135deg, #0d47a1, #1a6fb5);
+  color: white;
+  border-radius: 20px 20px 0 0;
+  padding: 1.5rem 1.8rem;
+  text-align: center;
+}
+.quiz-header h2 { font-family: 'Baloo 2', cursive; font-size: 1.7rem; }
+.quiz-header p { opacity: 0.88; font-size: 0.95rem; margin-top: 0.3rem; }
+
+.quiz-body { background: white; border-radius: 0 0 20px 20px; padding: 0; overflow: hidden; box-shadow: var(--sombra); }
+
+/* questão quiz */
+.qz {
+  padding: 1.8rem;
+  border-bottom: 2px solid var(--azul-claro);
+  display: none;
+}
+.qz.ativa { display: block; }
+
+.qz-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--azul); color: white;
+  border-radius: 50%; width: 2.2rem; height: 2.2rem;
+  font-weight: 900; font-size: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.qz-enunciado { font-size: 1.07rem; line-height: 1.8; margin-bottom: 1.2rem; }
+.qz-enunciado strong { color: var(--azul); }
+
+/* alternativas */
+.alts { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.2rem; }
+.alt-btn {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  border: 2.5px solid #d1dff5;
+  border-radius: 12px;
+  background: #fafcff;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--texto);
+  transition: all 0.18s;
+  text-align: left;
+}
+.alt-btn:hover:not(:disabled) { border-color: var(--azul); background: var(--azul-claro); }
+.alt-btn.correta { border-color: var(--verde); background: var(--verde-claro); color: #0d6b49; }
+.alt-btn.errada  { border-color: var(--vermelho); background: #fef2f2; color: var(--vermelho); }
+.alt-btn:disabled { cursor: default; }
+
+.alt-letra {
+  background: var(--azul);
+  color: white; border-radius: 50%;
+  width: 1.7rem; height: 1.7rem; min-width: 1.7rem;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 0.85rem;
+  transition: background 0.18s;
+}
+.alt-btn.correta .alt-letra { background: var(--verde); }
+.alt-btn.errada  .alt-letra { background: var(--vermelho); }
+
+/* feedback */
+.feedback {
+  display: none;
+  border-radius: 14px;
+  padding: 1.2rem 1.4rem;
+  margin-top: 0.5rem;
+  animation: fadeIn 0.3s ease;
+}
+.feedback.visivel { display: block; }
+.feedback.acerto { background: var(--verde-claro); border: 2px solid var(--verde); }
+.feedback.erro    { background: #fef2f2;           border: 2px solid var(--vermelho); }
+.feedback-titulo  { font-weight: 900; font-size: 1rem; margin-bottom: 0.7rem; }
+.feedback.acerto .feedback-titulo { color: var(--verde); }
+.feedback.erro    .feedback-titulo { color: var(--vermelho); }
+
+/* resolução passo a passo */
+.resolucao { margin-top: 0.8rem; }
+.resolucao-titulo {
+  font-weight: 900; font-size: 0.82rem;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--cinza); margin-bottom: 0.6rem;
+}
+
+/* navegação quiz */
+.qz-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 1.8rem;
+  border-top: 2px solid var(--azul-claro);
+  background: #f8faff;
+}
+.qz-nav-btn {
+  background: var(--azul); color: white;
+  border: none; border-radius: 12px;
+  padding: 0.55rem 1.4rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem; font-weight: 800;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.qz-nav-btn:hover { background: #0d47a1; }
+.qz-nav-btn:disabled { background: #bbb; cursor: default; }
+.qz-indicador { font-size: 0.9rem; font-weight: 700; color: var(--cinza); }
+
+/* resultado final */
+.resultado {
+  display: none;
+  text-align: center;
+  padding: 2.5rem 1.8rem;
+  animation: fadeIn 0.4s ease;
+}
+.resultado.visivel { display: block; }
+.resultado-emoji { font-size: 4rem; margin-bottom: 0.8rem; }
+.resultado-titulo {
+  font-family: 'Baloo 2', cursive;
+  font-size: 1.8rem; font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+.resultado-score {
+  font-size: 3rem; font-weight: 900;
+  color: var(--azul); margin-bottom: 0.5rem;
+}
+.resultado-msg { font-size: 1rem; color: var(--cinza); margin-bottom: 1.5rem; }
+.reiniciar-btn {
+  background: var(--azul); color: white;
+  border: none; border-radius: 14px;
+  padding: 0.75rem 2rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem; font-weight: 800;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.reiniciar-btn:hover { background: #0d47a1; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* dissertativa */
+.qz-dissertativa .alts { display: none; }
+.ver-res-btn {
+  background: var(--roxo); color: white;
+  border: none; border-radius: 12px;
+  padding: 0.55rem 1.4rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem; font-weight: 800;
+  cursor: pointer; margin-bottom: 0.5rem;
+  transition: background 0.18s;
+}
+.ver-res-btn:hover { background: #5b21b6; }
+
+/* ─── RETA NUMERADA ─── */
+.reta-svg-wrap { overflow-x: auto; padding: 0.5rem 0; }
+
+/* ─── RESPONSIVO ─── */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.8rem; }
+  .secao { padding: 1.3rem 1rem; }
+  .qz { padding: 1.3rem 1rem; }
+  .qz-nav { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- FUNDO FLUTUANTE -->
+<div class="floats" id="floats"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="badge">📚 Matemática · 7º Ano · Guia de Revisão</div>
+  <h1>Revisão para a Prova</h1>
+  <p>Frações · Razão · Números Racionais</p>
+</div>
+
+<!-- BARRA DE PROGRESSO -->
+<div class="progresso-wrap">
+  <span class="progresso-label">Seu progresso</span>
+  <div class="progresso-barra"><div class="progresso-fill" id="progressoFill"></div></div>
+  <span class="progresso-pct" id="progressoPct">0%</span>
+</div>
+
+<!-- NAVEGAÇÃO -->
+<div class="nav-secoes">
+  <a href="#sec1" class="nav-btn">1 · Frações</a>
+  <a href="#sec2" class="nav-btn">2 · Razão</a>
+  <a href="#sec3" class="nav-btn">3 · Racionais</a>
+  <a href="#sec4" class="nav-btn">4 · Comparação</a>
+  <a href="#quiz" class="nav-btn" style="background:var(--azul);color:white;">🎯 Quiz</a>
+</div>
+
+<div class="container">
+
+<!-- ══════════════════════════════════════
+     SEÇÃO 1 — FRAÇÕES COMO OPERADOR
+══════════════════════════════════════ -->
+<div class="secao" id="sec1" data-secao="1">
+  <div class="secao-topo">
+    <div class="secao-icone">½</div>
+    <div class="secao-titulo">Frações como Operador</div>
+  </div>
+
+  <p>Quando um enunciado diz <strong>"colheu ³⁄₂ do que colheu no dia anterior"</strong>, a fração está funcionando como um <strong>multiplicador</strong>.</p>
+
+  <div class="lembrete">
+    <ul>
+      <li><strong>"fração DE alguma coisa"</strong> = multiplicar</li>
+      <li>Fração maior que 1 → resultado maior que o original</li>
+      <li>Fração menor que 1 → resultado menor que o original</li>
+    </ul>
+  </div>
+
+  <div class="dica">
+    <p>Se a fração for <strong>³⁄₂</strong> de 20, calcule assim:<br>
+    20 ÷ 2 = 10 → 10 × 3 = <strong>30</strong><br>
+    Ou seja: divida pelo denominador, multiplique pelo numerador.</p>
+  </div>
+
+  <div class="exemplo">
+    <div class="exemplo-titulo">📝 Exemplo resolvido</div>
+    <p>Uma padaria produziu 60 pães de manhã. À tarde produziu <strong>²⁄₃</strong> do que produziu de manhã. Quantos pães no total?</p>
+    <div class="passos" style="margin-top:0.8rem;">
+      <div class="passo"><div class="passo-n">1</div><div>Manhã = <strong>60 pães</strong></div></div>
+      <div class="passo"><div class="passo-n">2</div><div>Tarde = ²⁄₃ × 60 = 60 ÷ 3 × 2 = <strong>40 pães</strong></div></div>
+      <div class="passo"><div class="passo-n">3</div><div>Total = 60 + 40 = <strong style="color:var(--verde);">100 pães ✅</strong></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEÇÃO 2 — RAZÃO E PROPORÇÃO
+══════════════════════════════════════ -->
+<div class="secao verde" id="sec2" data-secao="2">
+  <div class="secao-topo">
+    <div class="secao-icone">⚖️</div>
+    <div class="secao-titulo">Razão e Proporção</div>
+  </div>
+
+  <p>Razão é uma <strong>comparação entre duas quantidades</strong>. Pode ser escrita como fração ou com dois pontos.</p>
+
+  <div class="lembrete">
+    <ul>
+      <li>Razão <strong>a : b</strong> = fração <strong>a/b</strong></li>
+      <li>Para encontrar o valor de 1 parte: divida o total pelo número de partes</li>
+      <li>Simplifique sempre que possível: 8:20 = 2:5</li>
+    </ul>
+  </div>
+
+  <div class="dica">
+    <p>Nos problemas de razão, o <strong>esquema de tiras</strong> é seu melhor amigo. Desenhe uma tira para cada grupo e conte as partes.</p>
+  </div>
+
+  <div class="exemplo verde">
+    <div class="exemplo-titulo">📝 Razão com 2 grupos</div>
+    <p>Numa festa: 45 salgados e 15 doces. Razão doces : salgados?</p>
+    <div class="passos" style="margin-top:0.7rem;">
+      <div class="passo"><div class="passo-n v">1</div><div>doces : salgados = 15 : 45</div></div>
+      <div class="passo"><div class="passo-n v">2</div><div>Simplifique ÷ 15 → <strong style="color:var(--verde);">1 : 3 ✅</strong></div></div>
+    </div>
+  </div>
+
+  <div class="exemplo verde">
+    <div class="exemplo-titulo">📝 Razão com 3 grupos (tiras)</div>
+    <p>Pizza dividida na razão 1:2:3, com 12 fatias. Quantas fatias para cada pessoa?</p>
+    <div style="margin:0.7rem 0;">
+      <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.3rem;">
+        <span style="font-size:0.85rem;font-weight:700;width:55px;">Ana:</span>
+        <div class="tiras"><div class="t a">🍕</div></div>
+        <span style="font-size:0.82rem;color:#888;">1 parte</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.3rem;">
+        <span style="font-size:0.85rem;font-weight:700;width:55px;">Bruno:</span>
+        <div class="tiras"><div class="t b">🍕</div><div class="t b">🍕</div></div>
+        <span style="font-size:0.82rem;color:#888;">2 partes</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;">
+        <span style="font-size:0.85rem;font-weight:700;width:55px;">Carol:</span>
+        <div class="tiras"><div class="t c">🍕</div><div class="t c">🍕</div><div class="t c">🍕</div></div>
+        <span style="font-size:0.82rem;color:#888;">3 partes</span>
+      </div>
+    </div>
+    <div class="passos">
+      <div class="passo"><div class="passo-n v">1</div><div>Total de partes = 1+2+3 = <strong>6</strong></div></div>
+      <div class="passo"><div class="passo-n v">2</div><div>1 parte = 12 ÷ 6 = <strong>2 fatias</strong></div></div>
+      <div class="passo"><div class="passo-n v">3</div><div>Ana=2 · Bruno=4 · Carol=<strong style="color:var(--verde);">6 fatias ✅</strong></div></div>
+    </div>
+  </div>
+
+  <div class="dica">
+    <p><strong>Quando você sabe o valor de uma parte:</strong><br>
+    Se 2 tartarugas = 2 partes, então 1 parte = 1 tartaruga.<br>
+    Para achar o outro grupo, multiplique pelo número de partes dele.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEÇÃO 3 — NÚMEROS RACIONAIS
+══════════════════════════════════════ -->
+<div class="secao laranja" id="sec3" data-secao="3">
+  <div class="secao-topo">
+    <div class="secao-icone">🔢</div>
+    <div class="secao-titulo">Números Racionais</div>
+  </div>
+
+  <p>Números racionais são todos os números que podem ser escritos como fração <strong>a/b</strong>, com b ≠ 0.</p>
+
+  <div class="lembrete">
+    <ul>
+      <li>Inteiros, frações, decimais e dízimas são todos racionais</li>
+      <li><strong>Fração → decimal:</strong> divide numerador pelo denominador</li>
+      <li>Para fração <strong>negativa</strong>: divide normalmente e coloca o <strong style="color:var(--vermelho);">−</strong> na frente</li>
+      <li>Dízima periódica: algarismos se repetem → use barra sobre eles</li>
+    </ul>
+  </div>
+
+  <div class="dica">
+    <p>−²⁄₃ = −(2 ÷ 3) = −0,666… = <strong>−0,6̄</strong><br>
+    Sempre ignore o sinal, faça a divisão e coloque o − no final.</p>
+  </div>
+
+  <div class="exemplo laranja">
+    <div class="exemplo-titulo">📝 Fração → Decimal</div>
+    <div style="display:flex; align-items:center; flex-wrap:wrap; gap:0.6rem; font-size:1rem; font-weight:700; margin-top:0.4rem;">
+      <span>⁵⁄₈</span><span style="color:#bbb;">→</span><span>5 ÷ 8</span><span style="color:#bbb;">→</span><span style="color:var(--verde);">0,625 ✅</span>
+    </div>
+    <div style="display:flex; align-items:center; flex-wrap:wrap; gap:0.6rem; font-size:1rem; font-weight:700; margin-top:0.5rem;">
+      <span style="color:var(--vermelho);">−³⁄₄</span><span style="color:#bbb;">→</span><span>3 ÷ 4 = 0,75</span><span style="color:#bbb;">→</span><span style="color:var(--vermelho);">−0,75 ✅</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEÇÃO 4 — COMPARAR RACIONAIS
+══════════════════════════════════════ -->
+<div class="secao roxo" id="sec4" data-secao="4">
+  <div class="secao-topo">
+    <div class="secao-icone">📏</div>
+    <div class="secao-titulo">Comparar e Ordenar Racionais</div>
+  </div>
+
+  <p>Para comparar frações diferentes, converta para decimal e use a reta numerada.</p>
+
+  <div class="lembrete">
+    <ul>
+      <li>Na reta: mais à <strong>direita</strong> = <strong>maior</strong></li>
+      <li>Todo negativo é menor que todo positivo</li>
+      <li>Entre dois negativos: mais longe do zero = <strong>menor</strong></li>
+      <li>−0,75 &lt; −0,5 → pois −0,75 está mais à esquerda</li>
+    </ul>
+  </div>
+
+  <div class="dica">
+    <p><strong>Pegadinha dos negativos:</strong> entre −¾ e −½, parece que −¾ é maior (pois 3 &gt; 1). Mas na reta, −¾ está mais à <em>esquerda</em>, então é o <strong>menor</strong>!</p>
+  </div>
+
+  <!-- reta visual -->
+  <div class="reta-svg-wrap">
+    <svg xmlns="http://www.w3.org/2000/svg" width="680" height="110" viewBox="0 0 680 110" font-family="Nunito, Arial, sans-serif">
+      <rect width="680" height="110" fill="white" rx="10"/>
+      <line x1="40" y1="58" x2="640" y2="58" stroke="#1e293b" stroke-width="4" stroke-linecap="round"/>
+      <polygon points="40,58 56,50 56,66" fill="#1e293b"/>
+      <polygon points="640,58 624,50 624,66" fill="#1e293b"/>
+      <!-- zero -->
+      <line x1="340" y1="46" x2="340" y2="70" stroke="#1e293b" stroke-width="3"/>
+      <text x="340" y="88" text-anchor="middle" font-size="15" fill="#1e293b" font-weight="bold">0</text>
+      <!-- −3/4 @ 120 -->
+      <circle cx="120" cy="58" r="9" fill="#dc2626"/>
+      <text x="120" y="36" text-anchor="middle" font-size="14" fill="#dc2626" font-weight="bold">−3</text>
+      <line x1="103" y1="40" x2="137" y2="40" stroke="#dc2626" stroke-width="2"/>
+      <text x="120" y="54" text-anchor="middle" font-size="14" fill="#dc2626" font-weight="bold">4</text>
+      <text x="120" y="88" text-anchor="middle" font-size="11" fill="#dc2626">−0,75</text>
+      <!-- −0,5 @ 190 -->
+      <circle cx="190" cy="58" r="9" fill="#e07b20"/>
+      <text x="190" y="38" text-anchor="middle" font-size="14" fill="#e07b20" font-weight="bold">−0,5</text>
+      <text x="190" y="88" text-anchor="middle" font-size="11" fill="#e07b20">= −½</text>
+      <!-- 2/5 @ 430 -->
+      <circle cx="430" cy="58" r="9" fill="#1a9e6e"/>
+      <text x="430" y="36" text-anchor="middle" font-size="14" fill="#1a9e6e" font-weight="bold">2</text>
+      <line x1="414" y1="40" x2="446" y2="40" stroke="#1a9e6e" stroke-width="2"/>
+      <text x="430" y="54" text-anchor="middle" font-size="14" fill="#1a9e6e" font-weight="bold">5</text>
+      <text x="430" y="88" text-anchor="middle" font-size="11" fill="#1a9e6e">0,4</text>
+      <!-- 1/2 @ 490 -->
+      <circle cx="490" cy="58" r="9" fill="#1a6fb5"/>
+      <text x="490" y="36" text-anchor="middle" font-size="14" fill="#1a6fb5" font-weight="bold">1</text>
+      <line x1="474" y1="40" x2="506" y2="40" stroke="#1a6fb5" stroke-width="2"/>
+      <text x="490" y="54" text-anchor="middle" font-size="14" fill="#1a6fb5" font-weight="bold">2</text>
+      <text x="490" y="88" text-anchor="middle" font-size="11" fill="#1a6fb5">0,5</text>
+      <!-- legenda -->
+      <text x="340" y="105" text-anchor="middle" font-size="11" fill="#94a3b8">menor ←————————————————→ maior</text>
+    </svg>
+  </div>
+
+  <div class="exemplo" style="margin-top:0.8rem;">
+    <div class="exemplo-titulo">📝 Ordenar do menor ao maior</div>
+    <p style="margin-bottom:0.6rem;">Números: −³⁄₄ · −0,5 · 0 · ²⁄₅ · ½</p>
+    <div class="passos">
+      <div class="passo"><div class="passo-n r" style="background:var(--roxo)">1</div><div>Converta tudo para decimal:<br>−³⁄₄=−0,75 · −0,5 · 0 · ²⁄₅=0,4 · ½=0,5</div></div>
+      <div class="passo"><div class="passo-n r" style="background:var(--roxo)">2</div><div>Ordene os decimais na reta</div></div>
+      <div class="passo"><div class="passo-n r" style="background:var(--roxo)">3</div><div><strong style="color:var(--roxo);">−³⁄₄ &lt; −0,5 &lt; 0 &lt; ²⁄₅ &lt; ½ ✅</strong></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     QUIZ
+══════════════════════════════════════ -->
+<div id="quiz">
+  <div class="quiz-header">
+    <h2>🎯 Quiz — Teste seus conhecimentos!</h2>
+    <p>6 questões · Leia com calma · Veja a resolução depois de responder</p>
+  </div>
+
+  <div class="quiz-body">
+
+    <!-- Q1 -->
+    <div class="qz ativa" id="qz1">
+      <div class="qz-num">1</div>
+      <div class="qz-enunciado">
+        Uma padaria produziu <strong>60 pães</strong> pela manhã. À tarde produziu <strong>²⁄₃</strong> do que produziu pela manhã. Quantos pães a padaria produziu no <strong>total do dia</strong>?
+      </div>
+      <div class="alts">
+        <button class="alt-btn" onclick="responder(this,'qz1',false)"><div class="alt-letra">A</div> 40 pães</button>
+        <button class="alt-btn" onclick="responder(this,'qz1',false)"><div class="alt-letra">B</div> 80 pães</button>
+        <button class="alt-btn" onclick="responder(this,'qz1',true)"><div class="alt-letra">C</div> 100 pães</button>
+        <button class="alt-btn" onclick="responder(this,'qz1',false)"><div class="alt-letra">D</div> 120 pães</button>
+      </div>
+      <div class="feedback" id="fb-qz1">
+        <div class="feedback-titulo"></div>
+        <div class="resolucao">
+          <div class="resolucao-titulo">📋 Resolução passo a passo</div>
+          <div class="passos">
+            <div class="passo"><div class="passo-n">1</div><div><strong>Manhã:</strong> 60 pães (já temos esse valor)</div></div>
+            <div class="passo"><div class="passo-n">2</div><div><strong>Tarde:</strong> "²⁄₃ do que produziu de manhã" → multiplica<br>²⁄₃ × 60 = 60 ÷ 3 × 2 = 20 × 2 = <strong>40 pães</strong></div></div>
+            <div class="passo"><div class="passo-n">3</div><div><strong>Total:</strong> 60 + 40 = <strong style="color:var(--verde);">100 pães → Alternativa C ✅</strong></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="qz" id="qz2">
+      <div class="qz-num">2</div>
+      <div class="qz-enunciado">
+        Em uma escola há <strong>200 alunos</strong>. Desses, <strong>³⁄₅</strong> participam de atividade extracurricular. Quantos alunos <strong>não participam</strong>?
+      </div>
+      <div class="alts">
+        <button class="alt-btn" onclick="responder(this,'qz2',false)"><div class="alt-letra">A</div> 60 alunos</button>
+        <button class="alt-btn" onclick="responder(this,'qz2',true)"><div class="alt-letra">B</div> 80 alunos</button>
+        <button class="alt-btn" onclick="responder(this,'qz2',false)"><div class="alt-letra">C</div> 100 alunos</button>
+        <button class="alt-btn" onclick="responder(this,'qz2',false)"><div class="alt-letra">D</div> 120 alunos</button>
+      </div>
+      <div class="feedback" id="fb-qz2">
+        <div class="feedback-titulo"></div>
+        <div class="resolucao">
+          <div class="resolucao-titulo">📋 Resolução passo a passo</div>
+          <div class="passos">
+            <div class="passo"><div class="passo-n">1</div><div><strong>Participam:</strong> ³⁄₅ × 200 = 200 ÷ 5 × 3 = 40 × 3 = <strong>120 alunos</strong></div></div>
+            <div class="passo"><div class="passo-n">2</div><div><strong>Não participam:</strong> total − participam = 200 − 120 = <strong style="color:var(--verde);">80 alunos → Alternativa B ✅</strong></div></div>
+          </div>
+          <div class="dica" style="margin-top:0.8rem;">
+            <p>A questão pede quem <strong>NÃO</strong> participa — cuidado para não dar a resposta do passo 1!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="qz" id="qz3">
+      <div class="qz-num">3</div>
+      <div class="qz-enunciado">
+        Numa turma, a razão entre meninas e meninos é <strong>3 : 2</strong>. Há <strong>12 meninas</strong>. Quantos alunos há no <strong>total</strong>?
+      </div>
+      <div class="alts">
+        <button class="alt-btn" onclick="responder(this,'qz3',false)"><div class="alt-letra">A</div> 16 alunos</button>
+        <button class="alt-btn" onclick="responder(this,'qz3',false)"><div class="alt-letra">B</div> 18 alunos</button>
+        <button class="alt-btn" onclick="responder(this,'qz3',true)"><div class="alt-letra">C</div> 20 alunos</button>
+        <button class="alt-btn" onclick="responder(this,'qz3',false)"><div class="alt-letra">D</div> 24 alunos</button>
+      </div>
+      <div class="feedback" id="fb-qz3">
+        <div class="feedback-titulo"></div>
+        <div class="resolucao">
+          <div class="resolucao-titulo">📋 Resolução passo a passo</div>
+          <div style="margin-bottom:0.7rem;">
+            <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.3rem;">
+              <span style="font-size:0.85rem;font-weight:700;width:80px;">Meninas:</span>
+              <div class="tiras"><div class="t a">👧</div><div class="t a">👧</div><div class="t a">👧</div></div>
+              <span style="font-size:0.82rem;color:#888;">3 partes = 12</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;">
+              <span style="font-size:0.85rem;font-weight:700;width:80px;">Meninos:</span>
+              <div class="tiras"><div class="t b">👦</div><div class="t b">👦</div></div>
+              <span style="font-size:0.82rem;color:#888;">2 partes = ?</span>
+            </div>
+          </div>
+          <div class="passos">
+            <div class="passo"><div class="passo-n">1</div><div>3 partes = 12 meninas → 1 parte = 12 ÷ 3 = <strong>4</strong></div></div>
+            <div class="passo"><div class="passo-n">2</div><div>Meninos = 2 × 4 = <strong>8</strong></div></div>
+            <div class="passo"><div class="passo-n">3</div><div>Total = 12 + 8 = <strong style="color:var(--verde);">20 alunos → Alternativa C ✅</strong></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="qz" id="qz4">
+      <div class="qz-num">4</div>
+      <div class="qz-enunciado">
+        Um fazendeiro divide sua terra entre 3 filhos na razão <strong>1 : 2 : 4</strong>. A fazenda tem <strong>140 hectares</strong>. Qual a área do <strong>filho do meio</strong>?
+      </div>
+      <div class="alts">
+        <button class="alt-btn" onclick="responder(this,'qz4',false)"><div class="alt-letra">A</div> 20 hectares</button>
+        <button class="alt-btn" onclick="responder(this,'qz4',true)"><div class="alt-letra">B</div> 40 hectares</button>
+        <button class="alt-btn" onclick="responder(this,'qz4',false)"><div class="alt-letra">C</div> 60 hectares</button>
+        <button class="alt-btn" onclick="responder(this,'qz4',false)"><div class="alt-letra">D</div> 80 hectares</button>
+      </div>
+      <div class="feedback" id="fb-qz4">
+        <div class="feedback-titulo"></div>
+        <div class="resolucao">
+          <div class="resolucao-titulo">📋 Resolução passo a passo</div>
+          <div class="passos">
+            <div class="passo"><div class="passo-n">1</div><div>Total de partes = 1 + 2 + 4 = <strong>7 partes</strong></div></div>
+            <div class="passo"><div class="passo-n">2</div><div>1 parte = 140 ÷ 7 = <strong>20 hectares</strong></div></div>
+            <div class="passo"><div class="passo-n">3</div><div>Filho do meio (2 partes) = 2 × 20 = <strong style="color:var(--verde);">40 hectares → Alternativa B ✅</strong></div></div>
+          </div>
+          <div style="margin-top:0.6rem; font-size:0.92rem; color:var(--cinza);">
+            Verificação: 1º=20 · 2º=40 · 3º=80 → 20+40+80 = 140 ✓
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="qz" id="qz5">
+      <div class="qz-num">5</div>
+      <div class="qz-enunciado">
+        Coloque em ordem <strong>crescente</strong> os números: &nbsp; −³⁄₄ &nbsp;·&nbsp; ½ &nbsp;·&nbsp; −0,5 &nbsp;·&nbsp; 0 &nbsp;·&nbsp; ²⁄₅
+      </div>
+      <div class="alts">
+        <button class="alt-btn" onclick="responder(this,'qz5',false)"><div class="alt-letra">A</div> −0,5 &lt; −³⁄₄ &lt; 0 &lt; ²⁄₅ &lt; ½</button>
+        <button class="alt-btn" onclick="responder(this,'qz5',true)"><div class="alt-letra">B</div> −³⁄₄ &lt; −0,5 &lt; 0 &lt; ²⁄₅ &lt; ½</button>
+        <button class="alt-btn" onclick="responder(this,'qz5',false)"><div class="alt-letra">C</div> −³⁄₄ &lt; −0,5 &lt; 0 &lt; ½ &lt; ²⁄₅</button>
+        <button class="alt-btn" onclick="responder(this,'qz5',false)"><div class="alt-letra">D</div> ½ &lt; ²⁄₅ &lt; 0 &lt; −0,5 &lt; −³⁄₄</button>
+      </div>
+      <div class="feedback" id="fb-qz5">
+        <div class="feedback-titulo"></div>
+        <div class="resolucao">
+          <div class="resolucao-titulo">📋 Resolução passo a passo</div>
+          <div class="passos">
+            <div class="passo"><div class="passo-n r" style="background:var(--roxo)">1</div><div>Converta tudo para decimal:<br>
+              −³⁄₄ = −0,75 · −0,5 = −0,5 · 0 = 0 · ²⁄₅ = 0,4 · ½ = 0,5
+            </div></div>
+            <div class="passo"><div class="passo-n r" style="background:var(--roxo)">2</div><div>Ordene: −0,75 &lt; −0,5 &lt; 0 &lt; 0,4 &lt; 0,5</div></div>
+            <div class="passo"><div class="passo-n r" style="background:var(--roxo)">3</div><div><strong style="color:var(--roxo);">−³⁄₄ &lt; −0,5 &lt; 0 &lt; ²⁄₅ &lt; ½ → Alternativa B ✅</strong></div></div>
+          </div>
+          <div class="dica" style="margin-top:0.8rem;">
+            <p>O erro mais comum é colocar −0,5 antes de −³⁄₄. Lembre: −³⁄₄ = −0,75 e −0,75 &lt; −0,5 pois está mais à esquerda na reta!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q6 — dissertativa -->
+    <div class="qz qz-dissertativa" id="qz6">
+      <div class="qz-num" style="background:var(--roxo)">6</div>
+      <div class="qz-enunciado">
+        <strong>Questão dissertativa:</strong> Ana e Bia juntaram dinheiro para comprar um presente. Ana contribuiu com <strong>³⁄₅</strong> do total. Ana colocou <strong>R$ 45,00</strong>.<br><br>
+        a) Qual foi o valor total do presente?<br>
+        b) Quanto Bia contribuiu?<br>
+        c) Qual é a razão entre a contribuição de Bia e a de Ana?
+      </div>
+      <button class="ver-res-btn" onclick="verResolutacao('qz6')">👁️ Ver resolução</button>
+      <div class="feedback" id="fb-qz6">
+        <div class="resolucao">
+          <div class="resolucao-titulo">📋 Resolução passo a passo</div>
+          <div style="margin-bottom:0.8rem;">
+            <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.3rem;">
+              <span style="font-size:0.85rem;font-weight:700;width:45px;">Ana:</span>
+              <div class="tiras"><div class="t a">💰</div><div class="t a">💰</div><div class="t a">💰</div></div>
+              <span style="font-size:0.82rem;color:#888;">3 partes = R$ 45,00</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;">
+              <span style="font-size:0.85rem;font-weight:700;width:45px;">Bia:</span>
+              <div class="tiras"><div class="t v">?</div><div class="t v">?</div></div>
+              <span style="font-size:0.82rem;color:#888;">2 partes = ?</span>
+            </div>
+          </div>
+          <div class="passos">
+            <div class="passo"><div class="passo-n">1</div><div>Ana tem ³⁄₅ do total → 3 partes = R$ 45,00<br>1 parte = 45 ÷ 3 = <strong>R$ 15,00</strong></div></div>
+            <div class="passo"><div class="passo-n">2</div><div><strong>a)</strong> Total = 5 partes × 15 = <strong style="color:var(--verde);">R$ 75,00 ✅</strong></div></div>
+            <div class="passo"><div class="passo-n">3</div><div><strong>b)</strong> Bia = 75 − 45 = <strong style="color:var(--verde);">R$ 30,00 ✅</strong><br>(ou: 2 partes × 15 = R$ 30,00)</div></div>
+            <div class="passo"><div class="passo-n">4</div><div><strong>c)</strong> Razão Bia : Ana = 30 : 45 = <strong style="color:var(--verde);">2 : 3 ✅</strong><br>(simplifica ÷ 15)</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAVEGAÇÃO QUIZ -->
+    <div class="qz-nav">
+      <button class="qz-nav-btn" id="btnAnterior" onclick="navQuiz(-1)" disabled>← Anterior</button>
+      <span class="qz-indicador" id="qzIndicador">Questão 1 de 6</span>
+      <button class="qz-nav-btn" id="btnProximo" onclick="navQuiz(1)">Próxima →</button>
+    </div>
+
+    <!-- RESULTADO FINAL -->
+    <div class="resultado" id="resultado">
+      <div class="resultado-emoji" id="resEmoji">🎉</div>
+      <div class="resultado-titulo">Quiz concluído!</div>
+      <div class="resultado-score" id="resScore">0/5</div>
+      <div class="resultado-msg" id="resMsg"></div>
+      <button class="reiniciar-btn" onclick="reiniciarQuiz()">🔄 Tentar novamente</button>
+    </div>
+
+  </div><!-- fim quiz-body -->
+</div><!-- fim quiz -->
+
+</div><!-- fim container -->
+
+<script>
+/* ─── FLOATS ─── */
+const syms = ['½','¾','⅓','÷','×','+','−','²','³','¼','⅔','%','='];
+const floatsEl = document.getElementById('floats');
+for(let i=0;i<22;i++){
+  const s = document.createElement('div');
+  s.className = 'float-sym';
+  s.textContent = syms[Math.floor(Math.random()*syms.length)];
+  s.style.left = (Math.random()*95)+'%';
+  s.style.animationDuration = (18+Math.random()*22)+'s';
+  s.style.animationDelay = (-Math.random()*20)+'s';
+  s.style.fontSize = (1.5+Math.random()*2)+'rem';
+  floatsEl.appendChild(s);
+}
+
+/* ─── PROGRESSO ─── */
+const secoes = document.querySelectorAll('[data-secao]');
+const fill = document.getElementById('progressoFill');
+const pct = document.getElementById('progressoPct');
+const observer = new IntersectionObserver((entries)=>{
+  let visiveis=0;
+  document.querySelectorAll('[data-secao]').forEach(s=>{
+    if(s.getBoundingClientRect().top < window.innerHeight*0.8) visiveis++;
+  });
+  const p = Math.min(100, Math.round((visiveis/4)*100));
+  fill.style.width = p+'%';
+  pct.textContent = p+'%';
+},{threshold:0.2});
+secoes.forEach(s=>observer.observe(s));
+
+/* ─── QUIZ ─── */
+let qAtual = 1;
+const totalQ = 6;
+let acertos = 0;
+const respondidas = {};
+
+function responder(btn, qId, correta){
+  if(respondidas[qId]) return;
+  respondidas[qId] = true;
+  const fb = document.getElementById('fb-'+qId);
+  const titulo = fb.querySelector('.feedback-titulo');
+  // desabilita todos os botões
+  btn.closest('.alts').querySelectorAll('.alt-btn').forEach(b=>{
+    b.disabled = true;
+    const isCorr = b.onclick.toString().includes('true');
+    if(isCorr) b.classList.add('correta');
+  });
+  if(correta){
+    btn.classList.remove('errada');
+    btn.classList.add('correta');
+    fb.classList.add('acerto','visivel');
+    titulo.textContent = '✅ Muito bem! Resposta correta!';
+    acertos++;
+  } else {
+    btn.classList.add('errada');
+    fb.classList.add('erro','visivel');
+    titulo.textContent = '❌ Não foi dessa vez. Veja a resolução abaixo:';
+  }
+}
+
+function verResolutacao(qId){
+  const fb = document.getElementById('fb-'+qId);
+  fb.classList.add('acerto','visivel');
+  respondidas[qId] = true;
+}
+
+function navQuiz(dir){
+  const qAnteriorEl = document.getElementById('qz'+qAtual);
+  qAtual += dir;
+  if(qAtual < 1) qAtual = 1;
+  if(qAtual > totalQ) qAtual = totalQ;
+  document.querySelectorAll('.qz').forEach(q=>q.classList.remove('ativa'));
+  const proxEl = document.getElementById('qz'+qAtual);
+  if(proxEl) proxEl.classList.add('ativa');
+  document.getElementById('qzIndicador').textContent = 'Questão '+qAtual+' de '+totalQ;
+  document.getElementById('btnAnterior').disabled = qAtual===1;
+  // se chegou na última e respondeu, mostrar resultado
+  if(qAtual===totalQ && respondidas['qz'+totalQ]){
+    document.getElementById('btnProximo').textContent = 'Ver resultado →';
+    document.getElementById('btnProximo').onclick = mostrarResultado;
+  } else if(qAtual===totalQ){
+    document.getElementById('btnProximo').disabled = true;
+    // observar quando responder última
+    const int = setInterval(()=>{
+      if(respondidas['qz'+totalQ]){
+        document.getElementById('btnProximo').disabled = false;
+        document.getElementById('btnProximo').textContent = 'Ver resultado →';
+        document.getElementById('btnProximo').onclick = mostrarResultado;
+        clearInterval(int);
+      }
+    },500);
+  } else {
+    document.getElementById('btnProximo').disabled = false;
+    document.getElementById('btnProximo').textContent = 'Próxima →';
+    document.getElementById('btnProximo').onclick = ()=>navQuiz(1);
+  }
+  proxEl.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function mostrarResultado(){
+  document.querySelectorAll('.qz').forEach(q=>q.classList.remove('ativa'));
+  const res = document.getElementById('resultado');
+  res.classList.add('visivel');
+  const score = document.getElementById('resScore');
+  const msg = document.getElementById('resMsg');
+  const emoji = document.getElementById('resEmoji');
+  score.textContent = acertos+'/5';
+  if(acertos===5){emoji.textContent='🏆'; msg.textContent='Incrível! Acertou tudo! Você está pronto para a prova!';}
+  else if(acertos>=3){emoji.textContent='⭐'; msg.textContent='Muito bem! Revise os que errou e você vai arrasar!';}
+  else{emoji.textContent='💪'; msg.textContent='Continue praticando! Releia o guia e tente novamente.';}
+  document.getElementById('qzIndicador').textContent = 'Concluído!';
+  document.getElementById('btnAnterior').disabled = true;
+  document.getElementById('btnProximo').disabled = true;
+}
+
+function reiniciarQuiz(){
+  acertos=0; qAtual=1;
+  Object.keys(respondidas).forEach(k=>delete respondidas[k]);
+  document.querySelectorAll('.qz').forEach(q=>{
+    q.classList.remove('ativa');
+    q.querySelectorAll('.alt-btn').forEach(b=>{
+      b.disabled=false;
+      b.classList.remove('correta','errada');
+    });
+    q.querySelectorAll('.feedback').forEach(f=>f.classList.remove('visivel','acerto','erro'));
+  });
+  document.getElementById('resultado').classList.remove('visivel');
+  document.getElementById('qz1').classList.add('ativa');
+  document.getElementById('qzIndicador').textContent='Questão 1 de 6';
+  document.getElementById('btnAnterior').disabled=true;
+  document.getElementById('btnProximo').disabled=false;
+  document.getElementById('btnProximo').textContent='Próxima →';
+  document.getElementById('btnProximo').onclick=()=>navQuiz(1);
+  document.getElementById('quiz').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
