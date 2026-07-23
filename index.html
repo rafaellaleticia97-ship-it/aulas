@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Círculo e Circunferência — 7º Ano</title>
+<style>
+  :root{
+    --lilas-escuro:#8874AD;
+    --lilas-principal:#A78FCB;
+    --lilas-medio:#C9B8E0;
+    --lilas-claro:#E5DBF3;
+    --lilas-bg:#FAF8FC;
+    --lilas-bg2:#F2ECFA;
+    --verde:#6FA37F;
+    --verde-bg:#EDF6EF;
+    --amarelo:#D9A566;
+    --amarelo-bg:#FBF1E4;
+    --texto:#3E325A;
+    --branco:#FFFFFF;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    font-family:'Segoe UI', Verdana, Arial, sans-serif;
+    background:linear-gradient(160deg, var(--lilas-bg) 0%, var(--lilas-bg2) 100%);
+    color:var(--texto);
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+    font-size:19px;
+    line-height:1.55;
+  }
+
+  /* ---------- símbolos flutuantes ---------- */
+  .simbolo-flutuante{
+    position:fixed;
+    font-size:3.2rem;
+    color:var(--lilas-claro);
+    opacity:0.4;
+    pointer-events:none;
+    animation:flutuar 14s ease-in-out infinite;
+    z-index:0;
+    font-weight:bold;
+  }
+  @keyframes flutuar{
+    0%,100%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-40px) rotate(12deg);}
+  }
+
+  /* ---------- cabeçalho ---------- */
+  header{
+    background:linear-gradient(120deg, var(--lilas-escuro), var(--lilas-principal));
+    color:#fff;
+    padding:28px 20px 22px;
+    text-align:center;
+    position:relative;
+    z-index:2;
+    box-shadow:0 4px 18px rgba(136,116,173,0.25);
+  }
+  header h1{
+    margin:0 0 6px;
+    font-size:2.5rem;
+    letter-spacing:0.5px;
+  }
+  header p.sub{
+    margin:0;
+    font-size:1.2rem;
+    opacity:0.95;
+  }
+  .info-pills{
+    margin-top:14px;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .pill{
+    background:rgba(255,255,255,0.2);
+    border:1px solid rgba(255,255,255,0.45);
+    padding:6px 16px;
+    border-radius:999px;
+    font-size:1rem;
+  }
+
+  /* ---------- navegação por abas ---------- */
+  nav{
+    position:sticky;
+    top:0;
+    z-index:40;
+    background:var(--branco);
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:6px;
+    padding:10px;
+    box-shadow:0 3px 10px rgba(136,116,173,0.12);
+  }
+  nav button{
+    background:var(--lilas-bg);
+    border:2px solid transparent;
+    color:var(--lilas-escuro);
+    padding:10px 16px;
+    border-radius:12px;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.2s;
+  }
+  nav button:hover{ background:var(--lilas-claro); }
+  nav button.ativo{
+    background:var(--lilas-principal);
+    color:#fff;
+    border-color:var(--lilas-escuro);
+  }
+
+  main{
+    max-width:960px;
+    margin:0 auto;
+    padding:26px 18px 60px;
+    position:relative;
+    z-index:2;
+  }
+
+  .painel{ display:none; animation:surgir 0.35s ease; }
+  .painel.ativo{ display:block; }
+  @keyframes surgir{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+
+  h2.titulo-secao{
+    color:var(--lilas-escuro);
+    font-size:1.8rem;
+    border-bottom:3px solid var(--lilas-claro);
+    padding-bottom:8px;
+    margin-top:4px;
+  }
+  h3{ color:var(--lilas-principal); font-size:1.3rem; }
+
+  .cartao{
+    background:var(--branco);
+    border-radius:16px;
+    padding:22px 24px;
+    margin:18px 0;
+    box-shadow:0 3px 14px rgba(136,116,173,0.10);
+    border:1px solid #F0EAF8;
+  }
+
+  .passo{
+    background:var(--lilas-bg);
+    border-left:5px solid var(--lilas-principal);
+    padding:12px 16px;
+    border-radius:8px;
+    margin:12px 0;
+  }
+  .passo b{ color:var(--lilas-escuro); }
+
+  .formula-box{
+    background:var(--lilas-escuro);
+    color:#fff;
+    text-align:center;
+    font-size:1.6rem;
+    padding:18px;
+    border-radius:14px;
+    margin:16px 0;
+    letter-spacing:1px;
+  }
+  .formula-box small{ display:block; font-size:0.95rem; opacity:0.85; margin-top:6px; }
+
+  .copiar{
+    background:var(--verde-bg);
+    border:2px dashed var(--verde);
+    border-radius:14px;
+    padding:18px 22px;
+    margin:20px 0;
+    position:relative;
+  }
+  .copiar .etiqueta{
+    position:absolute;
+    top:-16px;
+    left:16px;
+    background:var(--verde);
+    color:#fff;
+    padding:5px 14px;
+    border-radius:999px;
+    font-size:0.95rem;
+    font-weight:bold;
+  }
+  .copiar ul{ margin:6px 0 0 20px; padding:0; }
+  .copiar li{ margin-bottom:8px; }
+  .copiar .passo{ background:#fff; }
+
+  table{ width:100%; border-collapse:collapse; margin:14px 0; }
+  th, td{ border:1px solid var(--lilas-claro); padding:10px; text-align:center; }
+  th{ background:var(--lilas-principal); color:#fff; }
+  tr:nth-child(even){ background:var(--lilas-bg); }
+
+  svg{ display:block; margin:14px auto; max-width:100%; }
+
+  /* botões de navegação inferior */
+  .nav-inferior{
+    display:flex;
+    justify-content:space-between;
+    margin-top:24px;
+    gap:10px;
+  }
+  .nav-inferior button{
+    flex:1;
+    background:var(--lilas-principal);
+    color:#fff;
+    border:none;
+    padding:14px;
+    border-radius:12px;
+    font-size:1.05rem;
+    font-weight:bold;
+    cursor:pointer;
+  }
+  .nav-inferior button:hover{ background:var(--lilas-escuro); }
+
+  /* ---------- círculo interativo ---------- */
+  .interativo{
+    background:var(--lilas-bg2);
+    border-radius:16px;
+    padding:20px;
+    text-align:center;
+  }
+  .interativo input[type=range]{
+    width:80%;
+    max-width:340px;
+    accent-color:var(--lilas-principal);
+    margin:14px 0;
+  }
+  .medidas-pi{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:16px;
+  }
+  .medida-item{
+    background:#fff;
+    border-radius:12px;
+    padding:10px 18px;
+    min-width:110px;
+    box-shadow:0 2px 8px rgba(136,116,173,0.12);
+  }
+  .medida-item .rotulo{ font-size:0.85rem; color:var(--lilas-escuro); }
+  .medida-item .valor{ font-size:1.3rem; font-weight:bold; color:var(--texto); }
+  .razao-destaque{
+    margin-top:16px;
+    background:var(--lilas-principal);
+    color:#fff;
+    display:inline-block;
+    padding:10px 22px;
+    border-radius:999px;
+    font-size:1.15rem;
+    font-weight:bold;
+  }
+
+  @media(max-width:600px){
+    header h1{ font-size:1.7rem; }
+    body{ font-size:17px; }
+    nav button{ font-size:0.9rem; padding:8px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="simbolo-flutuante" style="top:8%; left:4%;">π</div>
+<div class="simbolo-flutuante" style="top:20%; right:6%; animation-delay:2s;">⭕</div>
+<div class="simbolo-flutuante" style="top:55%; left:2%; animation-delay:4s;">r</div>
+<div class="simbolo-flutuante" style="top:70%; right:4%; animation-delay:6s;">d</div>
+<div class="simbolo-flutuante" style="top:35%; left:48%; animation-delay:3s; font-size:2.2rem;">3,14</div>
+<div class="simbolo-flutuante" style="top:85%; left:40%; animation-delay:5s;">°</div>
+
+<header>
+  <h1>⭕ Círculo e Circunferência</h1>
+  <p class="sub">Capítulo 6 — Medições e Volume</p>
+  <div class="info-pills">
+    <span class="pill">📘 7º Ano</span>
+    <span class="pill">🗓️ 3º Bimestre</span>
+    <span class="pill">🎯 BNCC EF07MA33</span>
+  </div>
+</header>
+
+<nav>
+  <button class="aba-btn ativo" onclick="mostrarAba('inicio')">🏠 Início</button>
+  <button class="aba-btn" onclick="mostrarAba('conceito')">⭕ Círculo x Circunferência</button>
+  <button class="aba-btn" onclick="mostrarAba('pi')">🔢 Descobrindo o π</button>
+  <button class="aba-btn" onclick="mostrarAba('formulas')">📐 Fórmulas</button>
+</nav>
+
+<main>
+
+  <!-- ================= INÍCIO ================= -->
+  <section id="inicio" class="painel ativo">
+    <h2 class="titulo-secao">Bem-vindos à aula de hoje!</h2>
+
+    <div class="cartao">
+      <p>Você já reparou que, quando desenhamos um círculo com o compasso, ficamos com <b>duas coisas diferentes</b>: a linha que contorna o desenho e a região que fica por dentro dela?</p>
+      <p>Hoje vamos descobrir a diferença entre <b>círculo</b> e <b>circunferência</b>, e vamos entender de onde vem um dos números mais famosos da Matemática: o <b>π (pi)</b>.</p>
+    </div>
+
+    <div class="nav-inferior">
+      <button onclick="mostrarAba('conceito')">Vamos começar → </button>
+    </div>
+  </section>
+
+  <!-- ================= CONCEITO ================= -->
+  <section id="conceito" class="painel">
+    <h2 class="titulo-secao">⭕ Círculo x Circunferência</h2>
+
+    <div class="cartao">
+      <p>Quando usamos o compasso para desenhar uma figura circular em uma folha, criamos duas regiões distintas: a região <b>interna</b> e a região <b>externa</b>.</p>
+
+      <svg width="260" height="260" viewBox="0 0 260 260">
+        <circle cx="130" cy="130" r="90" fill="#E5DBF3" stroke="#A78FCB" stroke-width="5"/>
+        <text x="130" y="135" text-anchor="middle" font-size="20" fill="#8874AD">região interna</text>
+        <text x="130" y="30" text-anchor="middle" font-size="18" fill="#8874AD">região externa</text>
+      </svg>
+    </div>
+
+    <div class="copiar">
+      <span class="etiqueta">✏️ Copie no caderno</span>
+      <p>O contorno (a linha) de uma figura circular recebe o nome de <b>circunferência</b>. O contorno junto com a região interna recebe o nome de <b>círculo</b>.</p>
+
+      <svg width="280" height="220" viewBox="0 0 280 220">
+        <circle cx="140" cy="120" r="80" fill="none" stroke="#A78FCB" stroke-width="4"/>
+        <line x1="60" y1="120" x2="220" y2="120" stroke="#D9A566" stroke-width="4"/>
+        <line x1="140" y1="120" x2="220" y2="120" stroke="#6FA37F" stroke-width="4"/>
+        <circle cx="140" cy="120" r="4" fill="#3E325A"/>
+        <text x="180" y="112" font-size="16" fill="#4F7C5E">raio (r)</text>
+        <text x="90" y="145" font-size="16" fill="#8A6D3B">diâmetro (d)</text>
+      </svg>
+
+      <p>O círculo tem três elementos importantes:</p>
+      <ul>
+        <li><b>Raio (r):</b> é a distância do centro do círculo até qualquer ponto da circunferência.</li>
+        <li><b>Diâmetro (d):</b> é o segmento que passa pelo centro e liga dois pontos opostos da circunferência. Como ele atravessa o círculo inteiro, o diâmetro sempre vale o dobro do raio: <b>d = 2 · r</b></li>
+        <li><b>Perímetro:</b> é a medida do contorno de uma figura plana. No caso do círculo, o perímetro é o próprio comprimento da circunferência.</li>
+      </ul>
+    </div>
+
+    <div class="nav-inferior">
+      <button onclick="mostrarAba('inicio')">← Voltar</button>
+      <button onclick="mostrarAba('pi')">Descobrindo o π → </button>
+    </div>
+  </section>
+
+  <!-- ================= PI ================= -->
+  <section id="pi" class="painel">
+    <h2 class="titulo-secao">🔢 Descobrindo o valor de π</h2>
+
+    <div class="cartao">
+      <p>Matemáticos perceberam algo curioso: não importa o tamanho do círculo — pequeno como uma moeda ou enorme como uma roda gigante — se dividirmos o <b>perímetro pelo diâmetro</b>, o resultado é sempre muito próximo do mesmo número.</p>
+      <p>Esse número foi chamado de <b>π</b> (lê-se "pi"). Diferentes matemáticos, em diferentes épocas e lugares, chegaram sozinhos a valores muito próximos dele — como Arquimedes (22/7) e Tsu Chung Chi (355/113).</p>
+    </div>
+
+    <div class="cartao interativo">
+      <h3>🔴 Círculo interativo</h3>
+      <p>Arraste o controle para mudar o tamanho do círculo e observe o que acontece com o raio e o perímetro.</p>
+
+      <svg width="300" height="260" viewBox="0 0 300 260">
+        <circle id="circuloPiSvg" cx="150" cy="130" r="60" fill="#E5DBF3" stroke="#A78FCB" stroke-width="4"/>
+        <circle cx="150" cy="130" r="3" fill="#3E325A"/>
+      </svg>
+
+      <input type="range" id="controlePi" min="1" max="10" step="0.5" value="5" oninput="atualizarCirculoPi(this.value)">
+
+      <div class="medidas-pi">
+        <div class="medida-item">
+          <div class="rotulo">Raio (r)</div>
+          <div class="valor"><span id="raioPi">5,0</span> cm</div>
+        </div>
+        <div class="medida-item">
+          <div class="rotulo">Diâmetro (d)</div>
+          <div class="valor"><span id="diametroPi">10,0</span> cm</div>
+        </div>
+        <div class="medida-item">
+          <div class="rotulo">Perímetro (C)</div>
+          <div class="valor"><span id="perimetroPi">31,40</span> cm</div>
+        </div>
+      </div>
+
+      <div class="razao-destaque">C ÷ d = <span id="razaoPi">3,14</span></div>
+    </div>
+
+    <div class="copiar">
+      <span class="etiqueta">✏️ Copie no caderno</span>
+      <p>Ao dividir o perímetro de um círculo pelo seu diâmetro, sempre encontramos o mesmo número, não importa o tamanho do círculo. Esse número recebeu um nome: π (lê-se "pi").</p>
+      <div class="formula-box" style="font-size:1.3rem; padding:12px;">perímetro ÷ diâmetro = π</div>
+      <p>O valor de π está entre 3,141 e 3,142. Por isso, nos cálculos, usamos a aproximação <b>π ≈ 3,14</b>.</p>
+    </div>
+
+    <div class="nav-inferior">
+      <button onclick="mostrarAba('conceito')">← Voltar</button>
+      <button onclick="mostrarAba('formulas')">Ver as fórmulas → </button>
+    </div>
+  </section>
+
+  <!-- ================= FÓRMULAS ================= -->
+  <section id="formulas" class="painel">
+    <h2 class="titulo-secao">📐 Fórmulas do Perímetro</h2>
+
+    <div class="cartao">
+      <p>Como π = perímetro ÷ diâmetro, podemos reorganizar essa relação para calcular o perímetro de qualquer círculo, desde que conheçamos o diâmetro:</p>
+      <div class="formula-box">C = π · d</div>
+      <p>E, como o diâmetro é o dobro do raio (d = 2 · r), também podemos escrever:</p>
+      <div class="formula-box">C = 2 · π · r</div>
+      <p>Nas duas fórmulas, <b>C</b> representa o perímetro (comprimento) da circunferência.</p>
+    </div>
+
+    <div class="cartao">
+      <h3>📍 Exemplo — A roda da bicicleta</h3>
+      <p>O pneu de uma bicicleta tem diâmetro de <b>80 cm</b>. Quantos metros o ciclista anda quando a roda gira 10 voltas completas, sem escorregar?</p>
+      <div class="passo"><b>Passo 1:</b> Cada volta completa da roda corresponde a um perímetro: C = π · d</div>
+      <div class="passo"><b>Passo 2:</b> C = 3,14 · 80 = 251,2 cm em cada volta</div>
+      <div class="passo"><b>Passo 3:</b> Em 10 voltas: 251,2 · 10 = 2 512 cm</div>
+      <div class="passo"><b>Passo 4:</b> Convertendo para metros: 2 512 cm = <b>25,12 m</b></div>
+    </div>
+
+    <div class="copiar">
+      <span class="etiqueta">✏️ Copie no caderno</span>
+      <p>Vamos organizar como chegamos até a fórmula do perímetro:</p>
+      <div class="passo"><b>Passo 1:</b> Já sabemos que π é a razão entre o perímetro e o diâmetro:<br>π = perímetro ÷ diâmetro</div>
+      <div class="passo"><b>Passo 2:</b> Multiplicando os dois lados por "diâmetro", isolamos o perímetro:<br>perímetro = π · diâmetro, ou seja: <b>C = π · d</b></div>
+      <div class="passo"><b>Passo 3:</b> Como o diâmetro é o dobro do raio (d = 2 · r), substituímos:<br>C = π · (2 · r), ou seja: <b>C = 2 · π · r</b></div>
+      <div class="formula-box" style="font-size:1.2rem;">C = π · d &nbsp;&nbsp;ou&nbsp;&nbsp; C = 2 · π · r</div>
+      <p>Nas duas fórmulas, C é o perímetro. Para calcular, sempre trocamos π por sua aproximação: <b>π ≈ 3,14</b>.</p>
+    </div>
+
+    <div class="nav-inferior">
+      <button onclick="mostrarAba('pi')">← Voltar</button>
+      <button onclick="mostrarAba('inicio')">Voltar ao início 🏠</button>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // --------- navegação por abas ---------
+  function mostrarAba(id){
+    document.querySelectorAll('.painel').forEach(p => p.classList.remove('ativo'));
+    document.getElementById(id).classList.add('ativo');
+    document.querySelectorAll('.aba-btn').forEach(b => b.classList.remove('ativo'));
+    const idx = ['inicio','conceito','pi','formulas'].indexOf(id);
+    document.querySelectorAll('.aba-btn')[idx].classList.add('ativo');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // --------- círculo interativo (aba π) ---------
+  function atualizarCirculoPi(valor){
+    const r = parseFloat(valor);
+    const d = r * 2;
+    const c = 2 * 3.14 * r;
+
+    document.getElementById('raioPi').textContent = r.toFixed(1).replace('.', ',');
+    document.getElementById('diametroPi').textContent = d.toFixed(1).replace('.', ',');
+    document.getElementById('perimetroPi').textContent = c.toFixed(2).replace('.', ',');
+    document.getElementById('razaoPi').textContent = (c / d).toFixed(2).replace('.', ',');
+
+    document.getElementById('circuloPiSvg').setAttribute('r', r * 12);
+  }
+</script>
+
+</body>
+</html>
