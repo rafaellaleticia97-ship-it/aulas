@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caso Nº 2026-3B — Investigação Matemática</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Work+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-room:#10141c;
+    --bg-room-2:#171c28;
+    --folder:#eee3c4;
+    --folder-edge:#d9c89c;
+    --folder-shadow:#00000066;
+    --ink:#271d12;
+    --paper-text:#f3eee0;
+    --red:#b4342e;
+    --red-dark:#8a2723;
+    --gold:#e0ac3f;
+    --teal:#4f958c;
+    --muted:#96907c;
+    --line: rgba(243,238,224,0.14);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 8%, rgba(224,172,63,0.10), transparent 60%),
+      radial-gradient(ellipse 120% 90% at 50% 100%, var(--bg-room-2), var(--bg-room));
+    color:var(--paper-text);
+    font-family:'Work Sans', sans-serif;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* textura sutil de ruído/cortiça */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 4px 4px;
+    pointer-events:none;
+    z-index:0;
+    opacity:0.5;
+  }
+
+  /* símbolos flutuando ao fundo */
+  .glyphs{ position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none; }
+  .glyph{
+    position:absolute;
+    font-family:'IBM Plex Mono', monospace;
+    color:rgba(243,238,224,0.06);
+    font-weight:600;
+    animation: drift linear infinite;
+    user-select:none;
+  }
+  @keyframes drift{
+    0%{ transform:translateY(0) rotate(0deg); }
+    100%{ transform:translateY(-120vh) rotate(12deg); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .glyph{ animation:none; }
+  }
+
+  /* barra de progresso tipo mural com pinos e barbante */
+  .pinboard{
+    position:relative;
+    max-width:760px;
+    margin:34px auto 6px;
+    padding:0 20px;
+    z-index:2;
+  }
+  .pinline{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:relative;
+  }
+  .pinline::before{
+    content:"";
+    position:absolute;
+    left:6%; right:6%; top:50%;
+    height:2px;
+    background:var(--red);
+    opacity:0.55;
+    transform:translateY(-50%) rotate(-0.6deg);
+    z-index:0;
+  }
+  .pin{
+    position:relative; z-index:1;
+    width:34px; height:34px;
+    border-radius:50%;
+    background:var(--bg-room-2);
+    border:2px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px; color:var(--muted);
+    cursor:pointer;
+    transition:all .25s ease;
+  }
+  .pin span{ pointer-events:none; }
+  .pin.active{
+    background:var(--red);
+    border-color:var(--red);
+    color:#fff;
+    box-shadow:0 0 0 4px rgba(180,52,46,0.22);
+    transform:scale(1.08);
+  }
+  .pin.done{ border-color:var(--gold); color:var(--gold); }
+  .pin-label{
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-top:10px;
+  }
+
+  .stage{
+    position:relative;
+    z-index:2;
+    max-width:820px;
+    margin:26px auto 60px;
+    padding:0 20px;
+  }
+
+  .folder{
+    position:relative;
+    background:var(--folder);
+    color:var(--ink);
+    border-radius:6px;
+    box-shadow:0 24px 50px -18px var(--folder-shadow), 0 2px 0 rgba(0,0,0,0.15);
+    padding:46px 44px 40px;
+    min-height:420px;
+    display:none;
+    animation: rise .5s cubic-bezier(.2,.8,.2,1);
+  }
+  .folder.show{ display:block; }
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(14px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .folder::before{ /* aba da pasta */
+    content:"";
+    position:absolute; top:-16px; left:34px;
+    width:150px; height:16px;
+    background:var(--folder);
+    border-radius:6px 6px 0 0;
+  }
+  .tab{
+    position:absolute; top:-30px; left:34px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:.12em;
+    background:var(--bg-room-2);
+    color:var(--muted);
+    padding:5px 10px;
+    border-radius:4px 4px 0 0;
+    border:1px solid var(--line);
+    border-bottom:none;
+  }
+
+  .stamp{
+    position:absolute;
+    top:34px; right:38px;
+    font-family:'Special Elite', monospace;
+    font-size:13px;
+    letter-spacing:.06em;
+    color:var(--red);
+    border:2.5px solid var(--red);
+    padding:6px 12px;
+    border-radius:3px;
+    transform:rotate(7deg);
+    opacity:0.85;
+    text-transform:uppercase;
+  }
+  @media (max-width:600px){
+    .folder{ padding-top:64px; }
+    .stamp{
+      position:static;
+      display:inline-block;
+      margin:0 0 16px;
+      transform:rotate(-2deg);
+    }
+  }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--red-dark);
+    margin:0 0 10px;
+  }
+  h1.title, h2.title{
+    font-family:'Special Elite', monospace;
+    font-weight:400;
+    line-height:1.15;
+    margin:0 0 18px;
+    color:var(--ink);
+  }
+  h1.title{ font-size:44px; }
+  h2.title{ font-size:32px; }
+  .lede{ font-size:19px; line-height:1.6; color:#3a2d1b; margin:0 0 22px; max-width:60ch; }
+  .fine{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:#6b5a3d; }
+
+  .divider{
+    border:none; border-top:1px dashed #b7a877;
+    margin:26px 0;
+  }
+
+  /* seção "como funciona" - fichas de evidência */
+  .evidence-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:8px; }
+  @media(max-width:640px){ .evidence-grid{ grid-template-columns:1fr; } }
+  .evidence{
+    background:#fbf6e6;
+    border:1px solid #cdb888;
+    border-radius:4px;
+    padding:16px 18px;
+    position:relative;
+  }
+  .evidence .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--teal); font-weight:600; margin-bottom:6px; display:block;
+  }
+  .evidence h4{ margin:0 0 6px; font-size:19px; font-family:'Special Elite', monospace; font-weight:400; }
+  .evidence p{ margin:0; font-size:15px; line-height:1.5; color:#3a2d1b; }
+  .evidence .value{
+    display:inline-block; margin-top:10px;
+    font-family:'IBM Plex Mono', monospace; font-weight:600;
+    background:var(--red); color:#fff; padding:3px 10px; border-radius:3px; font-size:13px;
+  }
+
+  .liga-box{
+    background:#fbf6e6; border:1px solid #cdb888; border-radius:4px;
+    padding:22px; margin-top:12px;
+  }
+  .liga-row{ display:flex; align-items:center; gap:14px; padding:10px 0; border-bottom:1px dashed #cdb888; }
+  .liga-row:last-child{ border-bottom:none; }
+  .liga-rank{ font-family:'IBM Plex Mono', monospace; font-weight:700; color:var(--red); width:26px; }
+  .liga-name{ flex:1; font-size:16px; }
+  .liga-pts{ font-family:'IBM Plex Mono', monospace; color:var(--teal); font-weight:600; }
+
+  /* mistérios */
+  .myst-tabs{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:22px; }
+  .myst-tab{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px; letter-spacing:.04em;
+    padding:8px 14px; border-radius:20px;
+    border:1.5px solid #cdb888;
+    background:#fbf6e6; color:#5a4a2c;
+    cursor:pointer; transition:all .2s ease;
+  }
+  .myst-tab.active{ background:var(--ink); color:var(--folder); border-color:var(--ink); }
+  .myst-tab.solved::after{ content:" ✓"; color:var(--teal); }
+
+  .myst-body{ display:none; }
+  .myst-body.show{ display:block; animation: rise .35s ease; }
+  .myst-body h3{ font-family:'Special Elite', monospace; font-weight:400; font-size:24px; margin:0 0 12px; }
+  .myst-body p{ font-size:17px; line-height:1.65; color:#3a2d1b; margin:0 0 14px; }
+
+  .cipher-box{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:22px; letter-spacing:.06em;
+    background:var(--ink); color:var(--folder);
+    padding:18px 20px; border-radius:4px; text-align:center;
+    margin:14px 0;
+  }
+  .grid-svg{ display:block; margin:12px auto; }
+
+  .datatable{ width:100%; border-collapse:collapse; margin:12px 0; font-size:15px; }
+  .datatable th, .datatable td{ border:1px solid #cdb888; padding:8px 10px; text-align:center; }
+  .datatable th{ background:#e9dcb4; font-family:'IBM Plex Mono', monospace; font-size:12px; text-transform:uppercase; letter-spacing:.05em; }
+
+  .reveal-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px; letter-spacing:.08em; text-transform:uppercase;
+    background:var(--red); color:#fff; border:none;
+    padding:11px 20px; border-radius:3px; cursor:pointer;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .reveal-btn:hover{ background:var(--red-dark); transform:translateY(-1px); }
+  .answer{
+    display:none; margin-top:16px;
+    background:rgba(79,149,140,0.12);
+    border-left:4px solid var(--teal);
+    padding:14px 16px; border-radius:3px;
+  }
+  .answer.show{ display:block; animation: rise .35s ease; }
+  .answer .label{ font-family:'IBM Plex Mono', monospace; font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--teal); font-weight:700; margin-bottom:4px; }
+
+  /* fechamento */
+  .roadmap{ display:flex; flex-direction:column; gap:10px; margin:18px 0 4px; }
+  .rm-item{ display:flex; align-items:baseline; gap:12px; }
+  .rm-dot{ width:8px; height:8px; border-radius:50%; background:var(--red); flex:none; }
+  .rm-text b{ font-family:'Special Elite', monospace; font-weight:400; }
+
+  /* nav */
+  .navbar{
+    display:flex; justify-content:space-between; align-items:center;
+    max-width:820px; margin:0 auto 40px; padding:0 20px;
+  }
+  .navbtn{
+    font-family:'IBM Plex Mono', monospace; font-size:14px; letter-spacing:.05em;
+    background:transparent; color:var(--paper-text);
+    border:1.5px solid var(--line); padding:12px 22px; border-radius:4px;
+    cursor:pointer; transition:all .2s ease;
+  }
+  .navbtn:hover:not(:disabled){ border-color:var(--gold); color:var(--gold); }
+  .navbtn:disabled{ opacity:0.25; cursor:default; }
+  .navbtn.primary{ background:var(--red); border-color:var(--red); color:#fff; }
+  .navbtn.primary:hover{ background:var(--red-dark); border-color:var(--red-dark); color:#fff; }
+
+  footer.credit{
+    text-align:center; font-family:'IBM Plex Mono', monospace;
+    font-size:11px; color:var(--muted); padding-bottom:30px; letter-spacing:.06em;
+  }
+</style>
+</head>
+<body>
+
+<div class="glyphs" id="glyphs"></div>
+
+<div class="pinboard">
+  <div class="pinline" id="pinline">
+    <div class="pin" data-i="0"><span>1</span></div>
+    <div class="pin" data-i="1"><span>2</span></div>
+    <div class="pin" data-i="2"><span>3</span></div>
+    <div class="pin" data-i="3"><span>4</span></div>
+    <div class="pin" data-i="4"><span>5</span></div>
+  </div>
+  <div class="pin-label" id="pinLabel">Abertura do caso</div>
+</div>
+
+<main class="stage">
+
+  <!-- 1. CAPA -->
+  <section class="folder" data-section="0">
+    <span class="tab">CASO Nº 2026-3B</span>
+    <span class="stamp">Caso Aberto</span>
+    <p class="eyebrow">Itinerário Formativo · 1º Ano EM</p>
+    <h1 class="title">Investigação<br>Matemática</h1>
+    <p class="lede">A partir de hoje, esta turma vira uma agência de investigação. Cada time é uma divisão da agência. E cada aula, uma nova pista sobre como a Matemática resolve casos que parecem impossíveis.</p>
+    <hr class="divider">
+    <p class="fine">AULA 1 — ABERTURA DO CASO · 28/07/2026</p>
+  </section>
+
+  <!-- 2. COMO FUNCIONA -->
+  <section class="folder" data-section="1">
+    <span class="tab">DOSSIÊ DA DISCIPLINA</span>
+    <span class="stamp">Confidencial</span>
+    <p class="eyebrow">Como a investigação é avaliada</p>
+    <h2 class="title">Como funciona este bimestre</h2>
+    <p class="lede" style="font-size:17px;">A nota do bimestre vem de 4 entregas — 2 fichas e um trabalho em 2 partes. O que vale é o processo de investigação registrado em cada uma.</p>
+
+    <div class="evidence-grid">
+      <div class="evidence">
+        <span class="tag">Ficha 1 · 04/08</span>
+        <h4>Sistema Relâmpago</h4>
+        <p>Determinantes: sistema linear, resolvido em sala no Bingo dos Sistemas.</p>
+        <span class="value">20 pts</span>
+      </div>
+      <div class="evidence">
+        <span class="tag">Trabalho parte 1 · 18/08</span>
+        <h4>O Perímetro Misterioso</h4>
+        <p>Determinantes: cálculo de área de um terreno, resolvido em sala.</p>
+        <span class="value">20 pts</span>
+      </div>
+      <div class="evidence">
+        <span class="tag">Trabalho parte 2 · 01/09</span>
+        <h4>Mensagem Codificada</h4>
+        <p>Matrizes: decodificação de uma mensagem cifrada com matriz inversa.</p>
+        <span class="value">40 pts</span>
+      </div>
+      <div class="evidence">
+        <span class="tag">Ficha 2 · 29/09</span>
+        <h4>Veredito</h4>
+        <p>Identificação e justificativa de um dado fora do padrão em um conjunto de dados.</p>
+        <span class="value">20 pts</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. LIGA DA INVESTIGAÇÃO -->
+  <section class="folder" data-section="2">
+    <span class="tab">QUADRO DE DETETIVES</span>
+    <span class="stamp">Em Andamento</span>
+    <p class="eyebrow">Como vamos jogar</p>
+    <h2 class="title">A Liga da Investigação</h2>
+    <p class="lede">Formem times fixos — eles seguem com vocês até o fim do bimestre. Cada desafio resolvido em aula soma pontos pro time no ranking abaixo. É jogo, não é nota — mas todo bom detetive gosta de aparecer no topo do quadro.</p>
+
+    <div class="liga-box">
+      <div class="liga-row"><span class="liga-rank">1º</span><span class="liga-name">— aguardando o primeiro caso —</span><span class="liga-pts">0 pts</span></div>
+      <div class="liga-row"><span class="liga-rank">2º</span><span class="liga-name">— aguardando o primeiro caso —</span><span class="liga-pts">0 pts</span></div>
+      <div class="liga-row"><span class="liga-rank">3º</span><span class="liga-name">— aguardando o primeiro caso —</span><span class="liga-pts">0 pts</span></div>
+    </div>
+    <p class="fine" style="margin-top:14px;">Hoje: formem o time, escolham um nome e preencham a primeira linha do quadro (na ficha impressa).</p>
+  </section>
+
+  <!-- 4. OS 5 MISTÉRIOS -->
+  <section class="folder" data-section="3">
+    <span class="tab">EVIDÊNCIAS · ABERTURA</span>
+    <span class="stamp">Analisar</span>
+    <p class="eyebrow">Prévia das 5 unidades do bimestre</p>
+    <h2 class="title" style="margin-bottom:20px;">Os 5 Mistérios em Miniatura</h2>
+
+    <div class="myst-tabs" id="mystTabs">
+      <div class="myst-tab active" data-m="0">① Área Misteriosa</div>
+      <div class="myst-tab" data-m="1">② Mensagem Cifrada</div>
+      <div class="myst-tab" data-m="2">③ Número Estranho</div>
+      <div class="myst-tab" data-m="3">④ Será que tem a ver?</div>
+      <div class="myst-tab" data-m="4">⑤ Qual o Próximo?</div>
+    </div>
+
+    <div class="myst-body show" data-m="0">
+      <h3>① Área Misteriosa</h3>
+      <p>Sem fórmula nenhuma — só o olho e a lógica. Estimem a área deste terreno tortinho, em quadradinhos.</p>
+      <svg class="grid-svg" width="260" height="230" viewBox="0 0 260 230">
+        <g stroke="#c9b98a" stroke-width="1">
+          <line x1="20" y1="10" x2="20" y2="210"></line><line x1="55" y1="10" x2="55" y2="210"></line>
+          <line x1="90" y1="10" x2="90" y2="210"></line><line x1="125" y1="10" x2="125" y2="210"></line>
+          <line x1="160" y1="10" x2="160" y2="210"></line><line x1="195" y1="10" x2="195" y2="210"></line>
+          <line x1="230" y1="10" x2="230" y2="210"></line>
+          <line x1="20" y1="10" x2="230" y2="10"></line><line x1="20" y1="45" x2="230" y2="45"></line>
+          <line x1="20" y1="80" x2="230" y2="80"></line><line x1="20" y1="115" x2="230" y2="115"></line>
+          <line x1="20" y1="150" x2="230" y2="150"></line><line x1="20" y1="185" x2="230" y2="185"></line>
+          <line x1="20" y1="210" x2="230" y2="210"></line>
+        </g>
+        <polygon points="55,175 195,175 230,115 160,45 90,80 55,150" fill="#b4342e" fill-opacity="0.18" stroke="#271d12" stroke-width="2.5"></polygon>
+      </svg>
+      <button class="reveal-btn" onclick="toggleAnswer(0)">Revelar pista</button>
+      <div class="answer" id="ans0"><span class="label">Pista</span>Área exata (por decomposição em triângulos): 14,5 quadradinhos. Qualquer estimativa entre 13 e 16 mostra que o olho do time está afiado — o que importa é a lógica usada.</div>
+    </div>
+
+    <div class="myst-body" data-m="1">
+      <h3>② Mensagem Cifrada</h3>
+      <p>Cada letra foi trocada pela letra 3 posições depois no alfabeto (A → D, B → E...). Decifrem:</p>
+      <div class="cipher-box">D LQYHVWLJDFDR H R FDPLQKR SDUD D GHVFREHUWD</div>
+      <button class="reveal-btn" onclick="toggleAnswer(1)">Revelar pista</button>
+      <div class="answer" id="ans1"><span class="label">Pista</span>"A INVESTIGAÇÃO É O CAMINHO PARA A DESCOBERTA" — e essa frase é, literalmente, o tema do bimestre.</div>
+    </div>
+
+    <div class="myst-body" data-m="2">
+      <h3>③ O Número Estranho</h3>
+      <p>Notas de 5 alunos em um simulado: <b>6,5 — 7,0 — 6,8 — 1,2 — 7,2</b>. Um desses números não se encaixa com os demais. Qual é, e por quê?</p>
+      <button class="reveal-btn" onclick="toggleAnswer(2)">Revelar pista</button>
+      <div class="answer" id="ans2"><span class="label">Pista</span>O <b>1,2</b> destoa muito do grupo (todos entre 6,5 e 7,2). Pode ser erro de digitação, uma prova incompleta, ou um problema real pontual — isso é o que a Matemática ajuda a investigar.</div>
+    </div>
+
+    <div class="myst-body" data-m="3">
+      <h3>④ Será que tem a ver?</h3>
+      <p>Um professor de Educação Física coletou estes dados de 5 alunos. Parece haver relação entre o tamanho do pé e a nota?</p>
+      <table class="datatable">
+        <tr><th>Aluno</th><th>Pé (cm)</th><th>Nota Ed. Física</th></tr>
+        <tr><td>A</td><td>24</td><td>7,0</td></tr>
+        <tr><td>B</td><td>26</td><td>8,5</td></tr>
+        <tr><td>C</td><td>25</td><td>7,5</td></tr>
+        <tr><td>D</td><td>28</td><td>9,0</td></tr>
+        <tr><td>E</td><td>23</td><td>6,5</td></tr>
+      </table>
+      <button class="reveal-btn" onclick="toggleAnswer(3)">Revelar pista</button>
+      <div class="answer" id="ans3"><span class="label">Pista</span>Os números sobem juntos — parece correlação. Mas será que o pé <i>causa</i> a nota boa? Ou existe algo escondido por trás dos dois (idade, por exemplo)? Guardem essa dúvida — ela volta com força lá pelo fim do bimestre.</div>
+    </div>
+
+    <div class="myst-body" data-m="4">
+      <h3>⑤ Qual o Próximo?</h3>
+      <p>Observem a sequência: <b>1, 1, 2, 3, 5, 8, ___, ___</b>. Quais são os dois próximos números, e qual a regra?</p>
+      <button class="reveal-btn" onclick="toggleAnswer(4)">Revelar pista</button>
+      <div class="answer" id="ans4"><span class="label">Pista</span><b>13 e 21.</b> Cada número é a soma dos dois anteriores — é a sequência de Fibonacci, e ela aparece escondida em lugares surpreendentes da natureza.</div>
+    </div>
+  </section>
+
+  <!-- 5. FECHAMENTO -->
+  <section class="folder" data-section="4">
+    <span class="tab">PRÓXIMOS PASSOS</span>
+    <span class="stamp">Caso Continua</span>
+    <p class="eyebrow">O caso está apenas começando</p>
+    <h2 class="title">O que vem por aí</h2>
+    <div class="roadmap">
+      <div class="rm-item"><span class="rm-dot"></span><span class="rm-text"><b>04/08 e 11/08</b> — Bingo dos Sistemas: determinantes 2x2 e 3x3.</span></div>
+      <div class="rm-item"><span class="rm-dot"></span><span class="rm-text"><b>18/08</b> — Operação Perímetro Secreto começa: perícia de um terreno de verdade.</span></div>
+      <div class="rm-item"><span class="rm-dot"></span><span class="rm-text"><b>25/08 a 01/09</b> — Times trocam mensagens cifradas com matrizes.</span></div>
+      <div class="rm-item"><span class="rm-dot"></span><span class="rm-text"><b>22/09 e 29/09</b> — O caso dos termômetros da sala 12.</span></div>
+    </div>
+    <hr class="divider">
+    <p class="lede" style="font-size:17px;">Formem seu time, escolham um nome de agência e preencham a ficha desta aula. A investigação começa agora.</p>
+  </section>
+
+</main>
+
+<div class="navbar">
+  <button class="navbtn" id="prevBtn" onclick="go(-1)">← Anterior</button>
+  <button class="navbtn primary" id="nextBtn" onclick="go(1)">Próximo →</button>
+</div>
+
+<footer class="credit">ITINERÁRIO FORMATIVO · INVESTIGAÇÃO MATEMÁTICA · 1º ANO EM</footer>
+
+<script>
+  const sections = document.querySelectorAll('.folder');
+  const pins = document.querySelectorAll('.pin');
+  const labels = ["Abertura do caso","Regras da investigação","A Liga","Os 5 mistérios","Próximos passos"];
+  let current = 0;
+
+  function render(){
+    sections.forEach((s,i)=> s.classList.toggle('show', i===current));
+    pins.forEach((p,i)=>{
+      p.classList.toggle('active', i===current);
+      p.classList.toggle('done', i<current);
+    });
+    document.getElementById('pinLabel').textContent = labels[current];
+    document.getElementById('prevBtn').disabled = current===0;
+    document.getElementById('nextBtn').textContent = current===sections.length-1 ? 'Reiniciar' : 'Próximo →';
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  function go(dir){
+    if(current===sections.length-1 && dir===1){ current=0; render(); return; }
+    current = Math.min(sections.length-1, Math.max(0, current+dir));
+    render();
+  }
+  pins.forEach(p=> p.addEventListener('click', ()=>{ current = parseInt(p.dataset.i); render(); }));
+  render();
+
+  // tabs dos mistérios
+  const mTabs = document.querySelectorAll('.myst-tab');
+  const mBodies = document.querySelectorAll('.myst-body');
+  mTabs.forEach(t=> t.addEventListener('click', ()=>{
+    const m = t.dataset.m;
+    mTabs.forEach(x=>x.classList.toggle('active', x===t));
+    mBodies.forEach(b=> b.classList.toggle('show', b.dataset.m===m));
+  }));
+  function toggleAnswer(i){
+    const el = document.getElementById('ans'+i);
+    el.classList.toggle('show');
+    const tab = document.querySelector('.myst-tab[data-m="'+i+'"]');
+    if(el.classList.contains('show')) tab.classList.add('solved');
+  }
+
+  // símbolos flutuantes de fundo
+  const glyphChars = ['Σ','√','π','∆','×','÷','[ ]','%','∞','θ'];
+  const glyphsEl = document.getElementById('glyphs');
+  for(let i=0;i<16;i++){
+    const g = document.createElement('div');
+    g.className='glyph';
+    g.textContent = glyphChars[Math.floor(Math.random()*glyphChars.length)];
+    g.style.left = Math.random()*100+'%';
+    g.style.top = (100+Math.random()*20)+'%';
+    g.style.fontSize = (14+Math.random()*22)+'px';
+    g.style.animationDuration = (22+Math.random()*26)+'s';
+    g.style.animationDelay = (-Math.random()*30)+'s';
+    glyphsEl.appendChild(g);
+  }
+
+  // navegação por teclado
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='ArrowRight') go(1);
+    if(e.key==='ArrowLeft') go(-1);
+  });
+</script>
+
+</body>
+</html>
