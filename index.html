@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sequências: Descobrindo Padrões</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F6F4FC;
+    --card: #FFFFFF;
+    --indigo: #362F78;
+    --indigo-deep: #241F52;
+    --indigo-soft: #6C63B5;
+    --mint: #A9E5D0;
+    --coral: #FFB3A0;
+    --yellow: #FFDD73;
+    --sky: #A9CBFA;
+    --text: #2A2650;
+    --text-soft: #5B5686;
+    --line: #E3DEF7;
+    --radius: 18px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.65;
+    font-size:17px;
+    overflow-x:hidden;
+    position:relative;
+  }
+  h1,h2,h3,h4{font-family:'Baloo 2', sans-serif; color:var(--indigo-deep); line-height:1.25; margin:0 0 .4em 0;}
+  h1{font-size:1.9rem;}
+  h2{font-size:1.5rem;}
+  h3{font-size:1.15rem;}
+  p{margin:0 0 1em 0;}
+
+  /* floating symbols background */
+  .floaters{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
+  .floaters span{
+    position:absolute; font-family:'Baloo 2',sans-serif; font-weight:700;
+    color:var(--indigo-soft); opacity:.08; animation: drift 22s linear infinite;
+  }
+  @keyframes drift{
+    0%{transform:translateY(0) rotate(0deg);}
+    100%{transform:translateY(-120vh) rotate(25deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .floaters span{animation:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* progress bar */
+  .progress-wrap{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,244,252,.92); backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    padding:10px 14px 12px;
+  }
+  .progress-track{
+    height:8px; background:var(--line); border-radius:99px; overflow:hidden; max-width:900px; margin:0 auto;
+  }
+  .progress-fill{
+    height:100%; width:12.5%; background:linear-gradient(90deg,var(--indigo-soft),var(--indigo)); border-radius:99px;
+    transition:width .4s ease;
+  }
+  .progress-label{
+    max-width:900px; margin:6px auto 0; font-size:.82rem; color:var(--text-soft); text-align:center; font-weight:700;
+  }
+
+  .wrap{max-width:900px; margin:0 auto; padding:0 18px 90px; position:relative; z-index:1;}
+
+  nav.tabs{
+    display:flex; flex-wrap:wrap; gap:8px; justify-content:center;
+    padding:16px 0 8px;
+  }
+  nav.tabs button{
+    font-family:'Baloo 2',sans-serif; font-weight:600; font-size:.85rem;
+    border:2px solid var(--line); background:var(--card); color:var(--text-soft);
+    padding:8px 14px; border-radius:99px; cursor:pointer; transition:.2s;
+  }
+  nav.tabs button:hover{border-color:var(--indigo-soft);}
+  nav.tabs button.active{
+    background:var(--indigo); color:#fff; border-color:var(--indigo);
+  }
+  nav.tabs button:focus-visible, button:focus-visible, .choice:focus-visible{
+    outline:3px solid var(--indigo); outline-offset:2px;
+  }
+
+  section.panel{display:none; animation:fadeIn .35s ease;}
+  section.panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .card{
+    background:var(--card); border-radius:var(--radius); padding:24px;
+    margin-bottom:18px; box-shadow:0 4px 18px rgba(54,47,120,.08);
+    border:1px solid var(--line);
+  }
+  .eyebrow{
+    display:inline-block; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:.78rem;
+    letter-spacing:.03em; text-transform:uppercase; color:var(--indigo);
+    background:var(--mint); padding:4px 12px; border-radius:99px; margin-bottom:10px;
+  }
+  .dica{
+    background:#FFF7E0; border-left:5px solid var(--yellow); border-radius:10px;
+    padding:14px 16px; margin:14px 0; font-size:.95rem;
+  }
+  .dica b{color:var(--indigo-deep);}
+  .analogia{
+    background:#F0EEFC; border-left:5px solid var(--indigo-soft); border-radius:10px;
+    padding:14px 16px; margin:14px 0;
+  }
+
+  /* arrow chain */
+  .chain{
+    display:flex; align-items:center; flex-wrap:wrap; gap:6px; justify-content:center;
+    margin:20px 0; padding:14px; background:#FAF9FF; border-radius:14px;
+  }
+  .num-box{
+    font-family:'Baloo 2',sans-serif; font-weight:800; font-size:1.3rem;
+    background:var(--indigo); color:#fff; padding:10px 16px; border-radius:12px; min-width:52px; text-align:center;
+  }
+  .arrow-op{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:.85rem;
+    background:var(--coral); color:var(--indigo-deep); padding:4px 10px; border-radius:99px;
+  }
+  button.arrow-op{border:none; cursor:pointer; font-family:'Baloo 2',sans-serif;}
+  button.hidden-op{transition:.15s;}
+  button.hidden-op:hover{transform:scale(1.1);}
+  button.arrow-op.revealed{background:var(--mint); cursor:default; transform:none;}
+
+  table{width:100%; border-collapse:collapse; margin:16px 0;}
+  th,td{padding:10px 12px; text-align:center; border-bottom:1px solid var(--line);}
+  th{background:var(--indigo); color:#fff; font-family:'Baloo 2',sans-serif;}
+  tr:nth-child(even) td{background:#FAF9FF;}
+
+  .steps{list-style:none; padding:0; margin:16px 0; counter-reset:step;}
+  .steps li{
+    counter-increment:step; position:relative; padding:12px 12px 12px 52px; margin-bottom:10px;
+    background:#FAF9FF; border-radius:12px; border:1px solid var(--line);
+  }
+  .steps li::before{
+    content:counter(step); position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    width:28px; height:28px; background:var(--indigo); color:#fff; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-family:'Baloo 2',sans-serif; font-weight:700;
+  }
+
+  /* flowchart */
+  .flow{display:flex; flex-direction:column; align-items:center; gap:0; margin:20px 0;}
+  .flow-box{
+    font-family:'Baloo 2',sans-serif; font-weight:600; text-align:center; padding:12px 18px;
+    border-radius:12px; margin:4px 0; max-width:320px; border:2px solid var(--indigo);
+  }
+  .flow-start{background:var(--mint); border-radius:99px;}
+  .flow-action{background:#EDEBFB;}
+  .flow-decision{background:var(--yellow); transform:none; border-radius:12px;}
+  .flow-arrow{color:var(--indigo-soft); font-size:1.4rem; line-height:1;}
+  .flow-svg{display:block; width:100%; max-width:380px; margin:0 auto 18px;}
+  .svg-box{
+    width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+    text-align:center; font-family:'Baloo 2',sans-serif; font-weight:600; font-size:13px;
+    color:var(--indigo-deep); padding:0 6px; box-sizing:border-box; line-height:1.15;
+  }
+  .svg-decision{font-size:12.5px;}
+
+  /* figure rows (palitos / squares) */
+  .figrow{display:flex; flex-wrap:wrap; gap:14px; justify-content:center; align-items:flex-end; margin:18px 0; padding:14px; background:#FAF9FF; border-radius:14px;}
+  .fig-item{display:flex; flex-direction:column; align-items:center; gap:6px;}
+  .fig-svg{width:auto; height:70px;}
+  .stick{stroke:var(--indigo); stroke-width:3; stroke-linecap:round;}
+  .joint{fill:#E4694F;}
+  .fig-label{font-family:'Baloo 2',sans-serif; font-weight:700; font-size:.78rem; color:var(--indigo-deep); text-align:center;}
+  .sq-stick{stroke:var(--indigo); stroke-width:3; stroke-linecap:round; fill:none;}
+
+  /* algorithm box, book-style */
+  .algo-block{
+    background:#EDEBFB; border:2px solid var(--indigo-soft); border-radius:12px;
+    padding:14px 18px; margin:14px 0;
+  }
+  .algo-block p{margin:0 0 8px 0; font-size:.97rem;}
+  .algo-block p:last-child{margin-bottom:0;}
+  .algo-block b{color:var(--indigo-deep);}
+
+  /* book activities */
+  .book-activity{border-top:2px dashed var(--line); padding-top:18px; margin-top:18px;}
+  .book-activity:first-of-type{border-top:none; margin-top:6px; padding-top:0;}
+  .book-activity-head{display:flex; align-items:flex-start; gap:10px; margin-bottom:10px;}
+  .book-activity-head p{margin:0; font-weight:600; color:var(--indigo-deep);}
+  .book-activity-num{
+    flex:0 0 auto; width:30px; height:30px; border-radius:8px; background:var(--yellow);
+    color:var(--indigo-deep); font-family:'Baloo 2',sans-serif; font-weight:800;
+    display:flex; align-items:center; justify-content:center; font-size:1rem;
+  }
+  .reveal-btn{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:.85rem;
+    background:#fff; color:var(--indigo); border:2px solid var(--indigo-soft);
+    padding:7px 16px; border-radius:99px; cursor:pointer; margin:4px 0 8px;
+  }
+  .reveal-btn:hover{background:var(--indigo); color:#fff;}
+  .reveal-content{
+    background:#F0F7F2; border:2px solid #A9D8B8; border-radius:12px; padding:12px 16px; margin-bottom:6px;
+  }
+  .reveal-content.hidden{display:none;}
+  .reveal-content p{margin:0; font-weight:600; color:#2E7D53;}
+
+  /* triangular dots (atividade 7) & carpet squares (atividade 8) */
+  .tri-svg, .carpet-svg{height:70px; width:auto;}
+  .dot{fill:var(--yellow); stroke:var(--indigo); stroke-width:1.5;}
+  .carpet-rect{fill:#C98A4B; stroke:#8A5A28; stroke-width:.5;}
+
+  /* practice / quiz */
+  .question{margin-bottom:22px;}
+  .choices{display:grid; gap:8px; margin-top:10px;}
+  .choice{
+    text-align:left; font-family:'Atkinson Hyperlegible',sans-serif; font-size:1rem;
+    padding:12px 14px; border-radius:12px; border:2px solid var(--line); background:#fff;
+    cursor:pointer; transition:.15s;
+  }
+  .choice:hover{border-color:var(--indigo-soft);}
+  .choice.correct{background:#DFF6E9; border-color:#4CAF7D; font-weight:700;}
+  .choice.wrong{background:#FDE3DE; border-color:#E4694F;}
+  .feedback{margin-top:8px; font-weight:700; font-size:.92rem;}
+  .feedback.ok{color:#2E7D53;}
+  .feedback.no{color:#C1432B;}
+
+  .try-box{
+    background:#FAF9FF; border:2px dashed var(--indigo-soft); border-radius:14px; padding:16px; margin:16px 0;
+    text-align:center;
+  }
+  .try-box input{
+    font-family:'Baloo 2',sans-serif; font-size:1.1rem; text-align:center; width:90px;
+    padding:8px; border-radius:10px; border:2px solid var(--line); margin:0 6px;
+  }
+  .try-box button{
+    font-family:'Baloo 2',sans-serif; font-weight:700; background:var(--indigo); color:#fff;
+    border:none; padding:9px 18px; border-radius:99px; cursor:pointer; margin-top:8px;
+  }
+  .try-box button:hover{background:var(--indigo-deep);}
+  .result-msg{margin-top:10px; font-weight:700;}
+
+  .nav-buttons{display:flex; justify-content:space-between; gap:10px; margin-top:22px;}
+  .nav-buttons button{
+    font-family:'Baloo 2',sans-serif; font-weight:700; border:none; padding:11px 20px;
+    border-radius:99px; cursor:pointer; background:var(--indigo); color:#fff; font-size:.95rem;
+  }
+  .nav-buttons button:hover{background:var(--indigo-deep);}
+  .nav-buttons button:disabled{background:var(--line); color:var(--text-soft); cursor:default;}
+
+  .caderno{
+    background:#FFFDF5; border:1px solid #EFE4C0; border-radius:14px; padding:18px 20px;
+  }
+  .caderno h3{color:#8A6D1E;}
+  .caderno p{color:var(--text);}
+
+  ::selection{background:var(--yellow);}
+</style>
+</head>
+<body>
+
+<div class="floaters" aria-hidden="true">
+  <span style="left:5%; top:10%; font-size:2.4rem;">+5</span>
+  <span style="left:80%; top:5%; font-size:1.8rem;">T(n)</span>
+  <span style="left:15%; top:60%; font-size:2rem;">1,1,2,3</span>
+  <span style="left:70%; top:70%; font-size:2.6rem;">×3</span>
+  <span style="left:40%; top:35%; font-size:1.6rem;">→</span>
+  <span style="left:90%; top:45%; font-size:2.2rem;">?</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">Parte 1 de 8 — Início</div>
+</div>
+
+<div class="wrap">
+
+  <div style="text-align:center; padding:26px 0 6px;">
+    <h1>🔎 Sequências: Descobrindo Padrões</h1>
+    <p style="color:var(--text-soft); font-size:1rem;">Matemática · 8º ano · 3º Bimestre</p>
+  </div>
+
+  <nav class="tabs" id="tabNav">
+    <button data-tab="0" class="active">1. Início</button>
+    <button data-tab="1">2. Não recursivas (revisão)</button>
+    <button data-tab="2">3. Sequências recursivas</button>
+    <button data-tab="3">4. Algoritmo</button>
+    <button data-tab="4">5. Fluxograma</button>
+    <button data-tab="5">6. Figuras e Fibonacci</button>
+    <button data-tab="6">7. Pratique</button>
+    <button data-tab="7">8. Resumo</button>
+  </nav>
+
+  <!-- PANEL 0 - INÍCIO -->
+  <section class="panel active" data-panel="0">
+    <div class="card">
+      <span class="eyebrow">Vamos começar</span>
+      <h2>Você já é bom em achar padrões — só não sabia</h2>
+      <p>Olha essa sequência de números. Antes de tocar em qualquer coisa, tente descobrir sozinho o que liga um número ao outro — depois toque nas bolinhas rosa "?" para conferir.</p>
+      <div class="chain">
+        <div class="num-box">2</div><button type="button" class="arrow-op hidden-op" data-op="+2" onclick="revealOp(this)">?</button>
+        <div class="num-box">4</div><button type="button" class="arrow-op hidden-op" data-op="+2" onclick="revealOp(this)">?</button>
+        <div class="num-box">6</div><button type="button" class="arrow-op hidden-op" data-op="+2" onclick="revealOp(this)">?</button>
+        <div class="num-box">8</div><button type="button" class="arrow-op hidden-op" data-op="+2" onclick="revealOp(this)">?</button>
+        <div class="num-box" style="background:var(--coral); color:var(--indigo-deep);">?</div>
+      </div>
+      <div class="try-box">
+        <label for="hookInput"><b>Qual é o próximo número?</b></label><br>
+        <input type="number" id="hookInput" aria-label="sua resposta">
+        <button onclick="checkHook()">Conferir</button>
+        <div class="result-msg" id="hookResult"></div>
+      </div>
+      <p>Se você pensou <b>10</b>, parabéns: você acabou de usar, na prática, a ideia central desta aula — uma <b>sequência</b> é uma lista de números (ou figuras) que segue uma <b>regra</b>. Hoje vamos primeiro relembrar rapidinho as sequências que já conhecemos, e depois conhecer um tipo novo: as <b>sequências recursivas</b>, que dependem sempre do termo anterior.</p>
+      <div class="dica"><b>O que vamos aprender nesta aula:</b> primeiro, uma revisão rápida das sequências não recursivas (aquelas com fórmula T(n)); depois, o que muda nas sequências recursivas, que precisam do termo anterior; e por fim, três formas de descrevê-las — com setas, com um algoritmo tipo receita e com um fluxograma.</div>
+    </div>
+  </section>
+
+  <!-- PANEL: SEQUÊNCIAS RECURSIVAS (agora na posição 2) -->
+  <section class="panel" data-panel="2">
+    <div class="card">
+      <span class="eyebrow">Parte 3</span>
+      <h2>Sequência recursiva: a regra do "de um para o outro"</h2>
+      <p>Na sequência não recursiva que revisamos, dava pra pular direto pro termo que quiséssemos, só substituindo n na fórmula T(n). Agora vem uma sequência diferente — <b>nela, isso não vai funcionar.</b></p>
+      <div class="analogia"><p><b>Pense assim:</b> "recursiva" é uma palavra grande para uma ideia simples. É como subir uma escada: para saber onde fica o próximo degrau, você só precisa saber onde está o degrau atual — não precisa lembrar de todos os degraus anteriores, mas também não tem como pular direto pro degrau 50 sem passar pelos outros. Em matemática, cada termo novo nasce a partir do termo anterior, seguindo sempre a mesma regra.</p></div>
+
+      <p>Veja esta sequência:</p>
+      <div class="chain">
+        <div class="num-box">1</div>
+        <div class="num-box">2</div>
+        <div class="num-box">3</div>
+        <div class="num-box">1</div>
+        <div class="num-box">2</div>
+        <div class="num-box">3</div>
+        <div class="num-box" style="background:var(--coral); color:var(--indigo-deep);">...</div>
+      </div>
+      <p>A regra aqui é: <b>o bloco 1, 2, 3 se repete para sempre.</b> Não existe uma soma nem uma multiplicação fixa entre um termo e o outro (de 1 para 2 aumenta 1, de 2 para 3 aumenta 1, mas de 3 para 1 diminui 2) — o que existe é um <b>padrão que se repete</b>. Para saber um termo, o jeito mais seguro é continuar escrevendo o bloco até chegar na posição que a questão pede.</p>
+
+      <div class="dica"><b>A grande diferença:</b> na sequência não recursiva que revisamos, dava pra substituir n numa fórmula T(n) e achar qualquer termo direto. Aqui não dá — não existe uma fórmula simples que calcule, por exemplo, o 50º termo dessa sequência sem eu ir contando o bloco 1, 2, 3 repetidamente. É por isso que, para descrever esse tipo de sequência com precisão, vamos usar outras ferramentas nas próximas partes da aula: o <b>algoritmo</b> e o <b>fluxograma</b>.</div>
+
+      <div class="try-box">
+        <b>Agora é sua vez:</b> nessa mesma sequência (1, 2, 3, 1, 2, 3...), qual é o <b>8º termo</b>? Dica: escreva o bloco 1,2,3 quantas vezes forem precisas até contar 8 posições.
+        <br>
+        <input type="number" id="seqInput" aria-label="sua resposta">
+        <button onclick="checkSeq()">Conferir</button>
+        <div class="result-msg" id="seqResult"></div>
+      </div>
+      <div class="dica"><b>Dica para a prova:</b> quando você vir uma sequência recursiva — seja com setas mostrando uma operação fixa (como "+5"), seja repetindo um bloco de números — ela está te dizendo como construir o próximo termo a partir do(s) anterior(es). Em alguns casos (como sequências com soma ou multiplicação constante) até existe uma fórmula T(n) que a gente consegue calcular; em outros, como este, não existe uma fórmula acessível pra gente agora, e o jeito mais seguro é continuar o padrão com calma.</div>
+    </div>
+  </section>
+
+  <!-- PANEL: ALGORITMO (agora na posição 3) -->
+  <section class="panel" data-panel="3">
+    <div class="card">
+      <span class="eyebrow">Parte 4</span>
+      <h2>Algoritmo: a receita de bolo da matemática</h2>
+      <p>Vimos que, em algumas sequências recursivas, não existe uma fórmula T(n) simples pra usar — como no bloco 1, 2, 3 que se repete. Mas isso não é um problema: o <b>algoritmo</b> descreve qualquer sequência recursiva com precisão, tenha ela T(n) ou não.</p>
+      <div class="analogia"><p><b>Pense assim:</b> um algoritmo é como uma receita de cozinha. Ela tem passos numerados, na ordem certa, e se você seguir exatamente esses passos, sempre chega ao mesmo resultado. Em matemática, um algoritmo é só isso: uma lista curta de instruções para construir uma sequência.</p></div>
+
+      <p>Vamos ver como isso funciona com a sequência 6, 11, 16, 21, 26... (essa, como vimos na revisão, até tem uma fórmula T(n) — mas o algoritmo também descreve ela perfeitamente, e vai ser essencial para os casos em que T(n) não existir):</p>
+      <ol class="steps">
+        <li><b>Passo 1.</b> Escreva o valor 6.</li>
+        <li><b>Passo 2.</b> Some 5.</li>
+        <li><b>Passo 3.</b> Escreva o resultado.</li>
+        <li><b>Passo 4.</b> Retorne <u>ao passo 2</u> (não ao passo 1!).</li>
+      </ol>
+      <p>Repare que o passo 4 manda você voltar ao <b>passo 2</b> — <b>não</b> ao passo 1. Isso é importante: se voltássemos ao passo 1, o algoritmo escreveria 6 de novo, depois somaria 5 e escreveria 11, depois voltaria ao passo 1 e escreveria 6 outra vez — a sequência ficaria alternando 6, 11, 6, 11, 6, 11... e nunca passaria do 11. O que realmente acontece é diferente: como o passo 4 manda voltar ao <b>passo 2</b>, o "some 5" sempre soma ao <b>último resultado que você já escreveu</b>, e não ao valor inicial. É por isso que a sequência cresce de verdade: 6, depois 11, depois 16, e assim por diante.</p>
+
+      <p>Para não se confundir, vale a pena registrar, a cada volta, qual é o "valor guardado" no momento:</p>
+      <table>
+        <tr><th>O que fiz</th><th>Valor guardado antes</th><th>Conta</th><th>Escrevo</th></tr>
+        <tr><td>Passo 1</td><td>—</td><td>—</td><td>6</td></tr>
+        <tr><td>Passo 2 → 3 (1ª volta ao passo 2)</td><td>6</td><td>6 + 5</td><td>11</td></tr>
+        <tr><td>Passo 2 → 3 (2ª volta ao passo 2)</td><td>11</td><td>11 + 5</td><td>16</td></tr>
+        <tr><td>Passo 2 → 3 (3ª volta ao passo 2)</td><td>16</td><td>16 + 5</td><td>21</td></tr>
+      </table>
+
+      <div class="dica"><b>Como resolver uma questão de algoritmo, sem se perder:</b> pegue um papel e vá escrevendo o valor de cada passo, um debaixo do outro, exatamente na ordem que o algoritmo pede. Antes de somar de novo, confira: <b>a que passo eu estou voltando</b>? Se for "retorne ao passo 2" (ou outro passo do meio), o valor <b>não</b> reinicia — a conta continua a partir do último resultado escrito. Só reinicia se o algoritmo mandar voltar ao passo 1. Esse é o erro mais comum aqui, então vale conferir sempre.</div>
+
+      <p>Agora um exemplo um pouco diferente, para treinar a leitura com atenção:</p>
+      <ol class="steps">
+        <li><b>Passo 1.</b> Comece com o número 2.</li>
+        <li><b>Passo 2.</b> Multiplique o termo anterior por 3.</li>
+        <li><b>Passo 3.</b> Some 1 ao resultado obtido.</li>
+        <li><b>Passo 4.</b> Escreva o novo termo.</li>
+        <li><b>Passo 5.</b> Retorne ao passo 2.</li>
+      </ol>
+      <p>Vamos seguir juntos, passo a passo:</p>
+      <table>
+        <tr><th>Termo</th><th>Como calculei</th><th>Valor</th></tr>
+        <tr><td>1º</td><td>valor inicial</td><td>2</td></tr>
+        <tr><td>2º</td><td>2 × 3 + 1</td><td>7</td></tr>
+        <tr><td>3º</td><td>7 × 3 + 1</td><td>22</td></tr>
+        <tr><td>4º</td><td>22 × 3 + 1</td><td>67</td></tr>
+      </table>
+
+      <p><b>Sua vez:</b> um algoritmo diz:</p>
+      <div class="algo-block">
+        <p><b>Passo 1.</b> Comece com 7.</p>
+        <p><b>Passo 2.</b> Multiplique por 2.</p>
+        <p><b>Passo 3.</b> Escreva o resultado.</p>
+        <p><b>Passo 4.</b> Retorne ao passo 1.</p>
+      </div>
+      <div class="try-box">
+        Qual é o <b>2º termo</b> dessa sequência?
+        <br>
+        <input type="number" id="algoInput" aria-label="sua resposta">
+        <button onclick="checkAlgo()">Conferir</button>
+        <div class="result-msg" id="algoResult"></div>
+      </div>
+      <div class="dica">Repare que <b>este</b> algoritmo manda retornar ao <b>passo 1</b> — dessa vez é de propósito! Isso significa que o valor reinicia em 7 toda vez, e a sequência fica alternando: 7, 14, 7, 14, 7, 14... Compare com o exemplo anterior, que retornava ao passo 2 e não reiniciava. Ler com atenção a qual passo o algoritmo retorna muda completamente o resultado.</div>
+    </div>
+  </section>
+
+  <!-- PANEL: FLUXOGRAMA (agora na posição 4) -->
+  <section class="panel" data-panel="4">
+    <div class="card">
+      <span class="eyebrow">Parte 5</span>
+      <h2>Fluxograma: o mesmo algoritmo, agora desenhado</h2>
+      <div class="analogia"><p><b>Pense assim:</b> se o algoritmo é a receita escrita em frases, o fluxograma é a mesma receita em forma de <b>desenho com setas</b>. Ele usa formas diferentes para dizer coisas diferentes: um formato oval para começar e terminar, um retângulo para uma ação, e um losango (formato de diamante) para uma pergunta de "sim ou não".</p></div>
+
+      <p>Vamos seguir juntos o fluxograma que gera a sequência 3, 9, 27, 81...</p>
+      <div class="flow">
+        <div class="flow-box flow-start">Início</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-box flow-action">Escreva 3.</div>
+        <div class="flow-arrow">↓</div>
+      </div>
+
+      <svg viewBox="-10 0 340 310" class="flow-svg" role="img" aria-label="Fluxograma: multiplique por 3, escreva o resultado, pergunta se o resultado é 81 — se não, volta para multiplique por 3, se sim, vai para o fim.">
+        <defs>
+          <marker id="arrowhead" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L9,4.5 L0,9 Z" fill="#6C63B5"></path>
+          </marker>
+          <marker id="arrowhead-coral" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L9,4.5 L0,9 Z" fill="#E4694F"></path>
+          </marker>
+        </defs>
+
+        <!-- straight down arrows -->
+        <line x1="190" y1="54" x2="190" y2="78" stroke="#6C63B5" stroke-width="3" marker-end="url(#arrowhead)"></line>
+        <line x1="190" y1="124" x2="190" y2="148" stroke="#6C63B5" stroke-width="3" marker-end="url(#arrowhead)"></line>
+        <line x1="190" y1="234" x2="190" y2="258" stroke="#6C63B5" stroke-width="3" marker-end="url(#arrowhead)"></line>
+        <text x="204" y="250" font-family="Baloo 2, sans-serif" font-weight="700" font-size="13" fill="#2E7D53">Sim</text>
+
+        <!-- loop-back path: Não -->
+        <path d="M80,192 L28,192 L28,32 L88,32" fill="none" stroke="#E4694F" stroke-width="3" marker-end="url(#arrowhead-coral)"></path>
+        <text x="0" y="185" font-family="Baloo 2, sans-serif" font-weight="700" font-size="13" fill="#C1432B">Não</text>
+
+        <!-- Multiplique por 3 -->
+        <rect x="90" y="10" width="200" height="44" rx="10" fill="#EDEBFB" stroke="#362F78" stroke-width="2"></rect>
+        <foreignObject x="90" y="10" width="200" height="44"><div xmlns="http://www.w3.org/1999/xhtml" class="svg-box">Multiplique por 3.</div></foreignObject>
+
+        <!-- Escreva o resultado -->
+        <rect x="90" y="80" width="200" height="44" rx="10" fill="#EDEBFB" stroke="#362F78" stroke-width="2"></rect>
+        <foreignObject x="90" y="80" width="200" height="44"><div xmlns="http://www.w3.org/1999/xhtml" class="svg-box">Escreva o resultado.</div></foreignObject>
+
+        <!-- Decision diamond -->
+        <polygon points="190,150 300,192 190,234 80,192" fill="#FFDD73" stroke="#362F78" stroke-width="2"></polygon>
+        <foreignObject x="115" y="172" width="150" height="40"><div xmlns="http://www.w3.org/1999/xhtml" class="svg-box svg-decision">O resultado é 81?</div></foreignObject>
+
+        <!-- Fim -->
+        <rect x="140" y="258" width="100" height="44" rx="22" fill="#A9E5D0" stroke="#362F78" stroke-width="2"></rect>
+        <foreignObject x="140" y="258" width="100" height="44"><div xmlns="http://www.w3.org/1999/xhtml" class="svg-box">Fim</div></foreignObject>
+      </svg>
+
+      <p>Repare no losango amarelo: ele é uma pergunta. A seta <b style="color:#C1432B;">vermelha</b> mostra o caminho do <b>"não"</b>: ela sai do losango, contorna a esquerda e volta lá para cima, em "Multiplique por 3" — o processo recomeça a partir dali. A seta que segue reto para baixo mostra o caminho do <b style="color:#2E7D53;">"sim"</b>: o fluxograma segue direto até o "Fim". Vamos ver isso acontecendo na prática:</p>
+      <table>
+        <tr><th>Passagem pelo losango</th><th>Valor testado</th><th>É 81?</th><th>O que acontece</th></tr>
+        <tr><td>1ª</td><td>9</td><td>Não</td><td>Volta e multiplica de novo</td></tr>
+        <tr><td>2ª</td><td>27</td><td>Não</td><td>Volta e multiplica de novo</td></tr>
+        <tr><td>3ª</td><td>81</td><td>Sim</td><td>Fluxograma termina</td></tr>
+      </table>
+      <div class="dica"><b>Como ler qualquer fluxograma sem se perder:</b> siga as setas com o dedo, uma de cada vez, e escreva em um papel cada número que aparecer em "escreva o resultado". Só entre no losango depois de já ter o valor calculado — ele só está perguntando sobre um número que você já tem.</div>
+    </div>
+  </section>
+
+  <!-- PANEL: SEQUÊNCIAS NÃO RECURSIVAS — REVISÃO (agora na posição 1) -->
+  <section class="panel" data-panel="1">
+    <div class="card">
+      <span class="eyebrow">Parte 2 · Revisão</span>
+      <h2>Relembrando: sequências não recursivas</h2>
+      <p>Vocês já viram isso em aula: numa <b>sequência não recursiva</b>, existe uma fórmula — a <b>expressão geradora T(n)</b> — que calcula direto o valor de qualquer termo, sem precisar passar pelos termos anteriores. Vamos relembrar rapidinho antes de seguir.</p>
+      <div class="analogia"><p><b>Pense assim:</b> T(n) é uma "máquina de termos". Você entra com a <b>posição</b> que quer (o valor de n: 1º, 2º, 3º...) e ela devolve o <b>valor</b> do termo naquela posição, sem precisar saber nenhum termo anterior. É só substituir o n pelo número da posição e fazer a conta.</p></div>
+
+      <p>Exemplo: uma sequência com expressão geradora <b>T(n) = 5n + 1</b>. Vamos testar, substituindo n por cada posição:</p>
+      <table>
+        <tr><th>n</th><th>Substituindo</th><th>T(n)</th></tr>
+        <tr><td>1</td><td>5 · 1 + 1</td><td>6</td></tr>
+        <tr><td>2</td><td>5 · 2 + 1</td><td>11</td></tr>
+        <tr><td>3</td><td>5 · 3 + 1</td><td>16</td></tr>
+      </table>
+      <p>Repare: para achar o 3º termo, eu não precisei saber o 1º nem o 2º — troquei o n por 3 e resolvi a conta direto. <b>É essa a marca registrada de uma sequência não recursiva.</b></p>
+
+      <div class="dica"><b>Passo a passo para resolver qualquer T(n):</b><br>
+      1. Veja qual termo a questão está pedindo (esse número vira o "n").<br>
+      2. Troque a letra n pelo número, em todo lugar que ela aparecer.<br>
+      3. Resolva a conta seguindo a ordem: primeiro multiplicação, depois soma.</div>
+
+      <p>Vamos praticar com outra fórmula: <b>T(n) = 4n − 2</b>.</p>
+      <div class="try-box">
+        Qual é o <b>3º termo</b> dessa sequência? (substitua n por 3)
+        <br>
+        <input type="number" id="tnInput" aria-label="sua resposta">
+        <button onclick="checkTn()">Conferir</button>
+        <div class="result-msg" id="tnResult"></div>
+      </div>
+      <div class="dica">Guarde essa ideia: quando existe uma fórmula T(n) que resolve tudo de uma vez, a sequência é <b>não recursiva</b>. Já vamos ver um tipo de sequência bem diferente, em que isso não é possível.</div>
+    </div>
+  </section>
+
+  <!-- PANEL 5 - FIGURAS E FIBONACCI -->
+  <section class="panel" data-panel="5">
+    <div class="card">
+      <span class="eyebrow">Parte 6</span>
+      <h2>Padrões com figuras e a sequência de Fibonacci</h2>
+      <h3>Sequências feitas de desenhos</h3>
+      <p>Nem toda sequência é feita só de números soltos — muitas vezes ela aparece em <b>figuras que crescem</b>, como triângulos feitos de palitos de fósforo enfileirados. A estratégia para resolver é sempre a mesma: <b>contar quantos palitos cada figura tem e ver quanto ela cresceu da figura anterior para a atual.</b></p>
+
+      <div class="figrow">
+        <div class="fig-item">
+          <svg viewBox="0 0 64 82" class="fig-svg" role="img" aria-label="Figura 1: um triângulo, 3 palitos">
+            <line x1="8" y1="66" x2="32" y2="16" class="stick"></line>
+            <line x1="32" y1="16" x2="56" y2="66" class="stick"></line>
+            <line x1="8" y1="66" x2="56" y2="66" class="stick"></line>
+            <circle cx="8" cy="66" r="3" class="joint"></circle><circle cx="32" cy="16" r="3" class="joint"></circle><circle cx="56" cy="66" r="3" class="joint"></circle>
+          </svg>
+          <span class="fig-label">Figura 1 · 3 palitos</span>
+        </div>
+        <div class="fig-item">
+          <svg viewBox="0 0 88 82" class="fig-svg" role="img" aria-label="Figura 2: dois triângulos, 5 palitos">
+            <line x1="8" y1="66" x2="32" y2="16" class="stick"></line>
+            <line x1="32" y1="16" x2="56" y2="66" class="stick"></line>
+            <line x1="8" y1="66" x2="56" y2="66" class="stick"></line>
+            <line x1="56" y1="66" x2="80" y2="16" class="stick"></line>
+            <line x1="32" y1="16" x2="80" y2="16" class="stick"></line>
+            <circle cx="8" cy="66" r="3" class="joint"></circle><circle cx="32" cy="16" r="3" class="joint"></circle><circle cx="56" cy="66" r="3" class="joint"></circle><circle cx="80" cy="16" r="3" class="joint"></circle>
+          </svg>
+          <span class="fig-label">Figura 2 · 5 palitos</span>
+        </div>
+        <div class="fig-item">
+          <svg viewBox="0 0 112 82" class="fig-svg" role="img" aria-label="Figura 3: três triângulos, 7 palitos">
+            <line x1="8" y1="66" x2="32" y2="16" class="stick"></line>
+            <line x1="32" y1="16" x2="56" y2="66" class="stick"></line>
+            <line x1="8" y1="66" x2="56" y2="66" class="stick"></line>
+            <line x1="56" y1="66" x2="80" y2="16" class="stick"></line>
+            <line x1="32" y1="16" x2="80" y2="16" class="stick"></line>
+            <line x1="80" y1="16" x2="104" y2="66" class="stick"></line>
+            <line x1="56" y1="66" x2="104" y2="66" class="stick"></line>
+            <circle cx="8" cy="66" r="3" class="joint"></circle><circle cx="32" cy="16" r="3" class="joint"></circle><circle cx="56" cy="66" r="3" class="joint"></circle><circle cx="80" cy="16" r="3" class="joint"></circle><circle cx="104" cy="66" r="3" class="joint"></circle>
+          </svg>
+          <span class="fig-label">Figura 3 · 7 palitos</span>
+        </div>
+        <div class="fig-item">
+          <svg viewBox="0 0 136 82" class="fig-svg" role="img" aria-label="Figura 4: quatro triângulos, 9 palitos">
+            <line x1="8" y1="66" x2="32" y2="16" class="stick"></line>
+            <line x1="32" y1="16" x2="56" y2="66" class="stick"></line>
+            <line x1="8" y1="66" x2="56" y2="66" class="stick"></line>
+            <line x1="56" y1="66" x2="80" y2="16" class="stick"></line>
+            <line x1="32" y1="16" x2="80" y2="16" class="stick"></line>
+            <line x1="80" y1="16" x2="104" y2="66" class="stick"></line>
+            <line x1="56" y1="66" x2="104" y2="66" class="stick"></line>
+            <line x1="104" y1="66" x2="128" y2="16" class="stick"></line>
+            <line x1="80" y1="16" x2="128" y2="16" class="stick"></line>
+            <circle cx="8" cy="66" r="3" class="joint"></circle><circle cx="32" cy="16" r="3" class="joint"></circle><circle cx="56" cy="66" r="3" class="joint"></circle><circle cx="80" cy="16" r="3" class="joint"></circle><circle cx="104" cy="66" r="3" class="joint"></circle><circle cx="128" cy="16" r="3" class="joint"></circle>
+          </svg>
+          <span class="fig-label">Figura 4 · 9 palitos</span>
+        </div>
+      </div>
+
+      <table>
+        <tr><th>Figura</th><th>Nº de palitos</th><th>O que aconteceu</th></tr>
+        <tr><td>1</td><td>3</td><td>triângulo inicial</td></tr>
+        <tr><td>2</td><td>5</td><td>+2 palitos (um novo triângulo colado)</td></tr>
+        <tr><td>3</td><td>7</td><td>+2 palitos</td></tr>
+        <tr><td>4</td><td>9</td><td>+2 palitos</td></tr>
+      </table>
+      <div class="dica"><b>Dica para resolver na prova:</b> quando a questão pedir uma figura "mais lá na frente" (tipo a Figura 6, sem desenhá-la), não tente desenhar tudo. Ache primeiro <b>quanto cresce de uma figura para a outra</b> (nesse caso, +2), e depois continue a soma até chegar na figura pedida.</div>
+
+      <h3 style="margin-top:26px;">A sequência de Fibonacci</h3>
+      <p>Essa é uma das sequências mais famosas da matemática. A regra é diferente de tudo que vimos até agora: <b>cada termo é a soma dos dois termos anteriores.</b></p>
+      <div class="chain">
+        <div class="num-box">1</div>
+        <div class="num-box">1</div>
+        <div class="num-box">2</div>
+        <div class="num-box">3</div>
+        <div class="num-box">5</div>
+        <div class="num-box">8</div>
+        <div class="num-box" style="background:var(--coral); color:var(--indigo-deep);">?</div>
+      </div>
+      <p>Repare como cada termo nasce: 1+1=2, depois 1+2=3, depois 2+3=5, depois 3+5=8. Para achar o próximo, é só somar os <b>dois últimos números que você já escreveu</b>.</p>
+      <div class="try-box">
+        Qual é o próximo termo depois do 8?
+        <br>
+        <input type="number" id="fibInput" aria-label="sua resposta">
+        <button onclick="checkFib()">Conferir</button>
+        <div class="result-msg" id="fibResult"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL 6 - PRATIQUE -->
+  <section class="panel" data-panel="6">
+    <div class="card">
+      <span class="eyebrow">Parte 7</span>
+      <h2>Pratique um pouco de tudo</h2>
+      <p>Estas questões misturam os quatro jeitos de pensar sobre sequências que você aprendeu hoje. Leia com calma antes de escolher.</p>
+
+      <div class="question">
+        <p><b>1.</b> Uma sequência tem expressão geradora T(n) = 2n + 5. Qual é o 3º termo?</p>
+        <div class="choices" data-answer="1">
+          <button class="choice">9</button>
+          <button class="choice">10</button>
+          <button class="choice">11</button>
+          <button class="choice">13</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="question">
+        <p><b>2.</b> Uma sequência de figuras é feita de quadrados grudados lado a lado, com palitos de fósforo. Cada novo quadrado soma 3 palitos à figura anterior (porque um lado já é compartilhado). A Figura 1 tem 4 palitos.</p>
+        <div class="figrow">
+          <div class="fig-item">
+            <svg viewBox="0 0 50 50" class="fig-svg" role="img" aria-label="Figura 1: um quadrado, 4 palitos">
+              <rect x="10" y="10" width="30" height="30" class="sq-stick"></rect>
+            </svg>
+            <span class="fig-label">Figura 1 · 4 palitos</span>
+          </div>
+          <div class="fig-item">
+            <svg viewBox="0 0 80 50" class="fig-svg" role="img" aria-label="Figura 2: dois quadrados, 7 palitos">
+              <rect x="10" y="10" width="30" height="30" class="sq-stick"></rect>
+              <path d="M40,10 L70,10 L70,40 L40,40" class="sq-stick"></path>
+            </svg>
+            <span class="fig-label">Figura 2 · 7 palitos</span>
+          </div>
+          <div class="fig-item">
+            <svg viewBox="0 0 110 50" class="fig-svg" role="img" aria-label="Figura 3: três quadrados, 10 palitos">
+              <rect x="10" y="10" width="30" height="30" class="sq-stick"></rect>
+              <path d="M40,10 L70,10 L70,40 L40,40" class="sq-stick"></path>
+              <path d="M70,10 L100,10 L100,40 L70,40" class="sq-stick"></path>
+            </svg>
+            <span class="fig-label">Figura 3 · 10 palitos</span>
+          </div>
+        </div>
+        <p>Quantos palitos terá a Figura 5?</p>
+        <div class="choices" data-answer="2">
+          <button class="choice">12</button>
+          <button class="choice">15</button>
+          <button class="choice">16</button>
+          <button class="choice">19</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="question">
+        <p><b>3.</b> Na sequência de Fibonacci 1, 1, 2, 3, 5, 8, 13..., qual é o próximo termo depois de 13?</p>
+        <div class="choices" data-answer="2">
+          <button class="choice">18</button>
+          <button class="choice">20</button>
+          <button class="choice">21</button>
+          <button class="choice">26</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="question">
+        <p><b>4.</b> Um algoritmo diz:</p>
+        <div class="algo-block">
+          <p><b>Passo 1.</b> Comece com 5.</p>
+          <p><b>Passo 2.</b> Multiplique o termo anterior por 2.</p>
+          <p><b>Passo 3.</b> Some 1.</p>
+          <p><b>Passo 4.</b> Escreva o resultado.</p>
+          <p><b>Passo 5.</b> Retorne ao passo 2.</p>
+        </div>
+        <p>Qual é o <b>3º termo</b> dessa sequência?</p>
+        <div class="choices" data-answer="1">
+          <button class="choice">11</button>
+          <button class="choice">23</button>
+          <button class="choice">21</button>
+          <button class="choice">47</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="dica" id="scoreBox" style="display:none;"></div>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow">Direto do livro</span>
+      <h2>Agora as atividades do seu material</h2>
+      <p>As mesmas atividades 7, 8, 9 e 10 do seu livro — tente resolver primeiro no caderno, e só depois toque em "Ver resposta" para conferir.</p>
+
+      <!-- ATIVIDADE 7 -->
+      <div class="book-activity">
+        <div class="book-activity-head"><span class="book-activity-num">7</span><p>Considere a seguinte sequência de figuras:</p></div>
+        <div class="figrow" id="triRow"></div>
+        <p>Com base na sequência, faça o que se pede.</p>
+
+        <p><b>a)</b> Escreva uma sequência numérica correspondente ao número de bolas em cada figura.</p>
+        <button class="reveal-btn" onclick="toggleReveal(this)">Ver resposta</button>
+        <div class="reveal-content hidden"><p>1, 3, 6, 10, 15, ...</p></div>
+
+        <p style="margin-top:14px;"><b>b)</b> Faça um esquema com flechas mostrando como se passa de um termo para o seguinte.</p>
+        <button class="reveal-btn" onclick="toggleReveal(this)">Ver resposta</button>
+        <div class="reveal-content hidden">
+          <div class="chain">
+            <div class="num-box">1</div><span class="arrow-op">+2</span>
+            <div class="num-box">3</div><span class="arrow-op">+3</span>
+            <div class="num-box">6</div><span class="arrow-op">+4</span>
+            <div class="num-box">10</div><span class="arrow-op">+5</span>
+            <div class="num-box">15</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ATIVIDADE 8 -->
+      <div class="book-activity">
+        <div class="book-activity-head"><span class="book-activity-num">8</span><p>A seguir apresentamos uma sequência formada por quadrados. Observe:</p></div>
+        <div class="figrow" id="carpetRow"></div>
+        <p>Com base na sequência, faça o que se pede.</p>
+
+        <p><b>a)</b> Observando cada termo, descreva como a sequência é formada.</p>
+        <button class="reveal-btn" onclick="toggleReveal(this)">Ver resposta</button>
+        <div class="reveal-content hidden"><p>Dividimos o quadrado da figura 1 em 9 quadrados menores e retiramos o quadrado central. Em seguida, dividimos cada quadrado da figura 2 em 9 quadrados menores e retiramos o quadrado central. Continuamos dessa maneira.</p></div>
+
+        <p style="margin-top:14px;"><b>b)</b> Construa uma sequência numérica que dê o número de quadrados em cada figura.</p>
+        <button class="reveal-btn" onclick="toggleReveal(this)">Ver resposta</button>
+        <div class="reveal-content hidden"><p>1, 8, 64, 512, ...</p></div>
+
+        <p style="margin-top:14px;"><b>c)</b> Escreva um fluxograma que dê o número de quadrados de cada figura.</p>
+        <button class="reveal-btn" onclick="toggleReveal(this)">Ver resposta</button>
+        <div class="reveal-content hidden">
+          <svg viewBox="-10 0 220 230" class="flow-svg" style="max-width:260px;" role="img" aria-label="Fluxograma: escreva 1, multiplique por 8, escreva o resultado, e volta para multiplique por 8, sem fim, pois a sequência é infinita.">
+            <defs><marker id="ah8" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#E4694F"></path></marker></defs>
+            <rect x="30" y="6" width="140" height="40" rx="20" fill="#A9E5D0" stroke="#362F78" stroke-width="2"></rect>
+            <foreignObject x="30" y="6" width="140" height="40"><div xmlns="http://www.w3.org/1999/xhtml" class="svg-box">Início</div></foreignObject>
+            <line x1="100" y1="46" x2="100" y2="66" stroke="#6C63B5" stroke-width="3" marker-end="url(#ah8)"></line>
+            <polygon points="70,70 130,70 120,104 80,104" fill="#EDEBFB" stroke="#362F78" stroke-width="2"></polygon>
+            <foreignObject x="70" y="70" width="60" height="34"><div xmlns="http://www.w3.org/1999/xhtml" class="svg-box" style="font-size:12px;">Escreva 1.</div></foreignObject>
+            <line x1="100" y1="104" x2="100" y2="126" stroke="#6C63B5" stroke-width="3" marker-end="url(#ah8)"></line>
+            <rect x="30" y="126" width="140" height="40" rx="10" fill="#EDEBFB" stroke="#362F78" stroke-width="2"></rect>
+            <foreignObject x="30" y="126" width="140" height="40"><div xmlns="http://www.w3.org/1999/xhtml" class="svg-box">Multiplique por 8.</div></foreignObject>
+            <line x1="100" y1="166" x2="100" y2="186" stroke="#6C63B5" stroke-width="3" marker-end="url(#ah8)"></line>
+            <polygon points="65,190 135,190 122,224 78,224" fill="#EDEBFB" stroke="#362F78" stroke-width="2"></polygon>
+            <foreignObject x="65" y="190" width="70" height="34"><div xmlns="http://www.w3.org/1999/xhtml" class="svg-box" style="font-size:12px;">Escreva o resultado.</div></foreignObject>
+            <path d="M135,207 L200,207 L200,146 L170,146" fill="none" stroke="#E4694F" stroke-width="3" marker-end="url(#ah8)"></path>
+          </svg>
+          <p style="font-size:.85rem; color:var(--text-soft); text-align:center;">A sequência é infinita, então o fluxograma nunca termina — ele sempre volta para "Multiplique por 8".</p>
+        </div>
+      </div>
+
+      <!-- ATIVIDADE 9 -->
+      <div class="book-activity">
+        <div class="book-activity-head"><span class="book-activity-num">9</span><p>Uma sequência numérica é definida de acordo com o algoritmo a seguir:</p></div>
+        <div class="algo-block">
+          <p><b>Passo 1.</b> Comece com o número 7.</p>
+          <p><b>Passo 2.</b> Multiplique por 2.</p>
+          <p><b>Passo 3.</b> Escreva o resultado.</p>
+          <p><b>Passo 4.</b> Retorne ao passo 1.</p>
+        </div>
+        <p><b>Escreva os termos da sequência.</b></p>
+        <button class="reveal-btn" onclick="toggleReveal(this)">Ver resposta</button>
+        <div class="reveal-content hidden"><p>7, 14, 7, 14, 7, 14, ...</p></div>
+      </div>
+
+      <!-- ATIVIDADE 10 -->
+      <div class="book-activity">
+        <div class="book-activity-head"><span class="book-activity-num">10</span><p>O fluxograma a seguir foi utilizado para definir uma sequência numérica. Observe:</p></div>
+        <svg viewBox="-10 0 220 350" class="flow-svg" style="max-width:260px;" role="img" aria-label="Fluxograma: escreva 11, multiplique por 10, subtraia 9, escreva o resultado, volta para multiplique por 10.">
+          <defs><marker id="ah10" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#E4694F"></path></marker></defs>
+          <rect x="30" y="6" width="140" height="40" rx="20" fill="#A9E5D0" stroke="#362F78" stroke-width="2"></rect>
+          <foreignObject x="30" y="6" width="140" height="40"><div xmlns="http://www.w3.org/1999/xhtml" class="svg-box">Início</div></foreignObject>
+          <line x1="100" y1="46" x2="100" y2="66" stroke="#6C63B5" stroke-width="3" marker-end="url(#ah10)"></line>
+          <polygon points="65,70 135,70 122,104 78,104" fill="#EDEBFB" stroke="#362F78" stroke-width="2"></polygon>
+          <foreignObject x="65" y="70" width="70" height="34"><div xmlns="http://www.w3.org/1999/xhtml" class="svg-box" style="font-size:12px;">Escreva 11.</div></foreignObject>
+          <line x1="100" y1="104" x2="100" y2="126" stroke="#6C63B5" stroke-width="3" marker-end="url(#ah10)"></line>
+          <rect x="30" y="126" width="140" height="40" rx="10" fill="#EDEBFB" stroke="#362F78" stroke-width="2"></rect>
+          <foreignObject x="30" y="126" width="140" height="40"><div xmlns="http://www.w3.org/1999/xhtml" class="svg-box">Multiplique por 10.</div></foreignObject>
+          <line x1="100" y1="166" x2="100" y2="186" stroke="#6C63B5" stroke-width="3" marker-end="url(#ah10)"></line>
+          <rect x="30" y="186" width="140" height="40" rx="10" fill="#EDEBFB" stroke="#362F78" stroke-width="2"></rect>
+          <foreignObject x="30" y="186" width="140" height="40"><div xmlns="http://www.w3.org/1999/xhtml" class="svg-box">Subtraia 9.</div></foreignObject>
+          <line x1="100" y1="226" x2="100" y2="246" stroke="#6C63B5" stroke-width="3" marker-end="url(#ah10)"></line>
+          <polygon points="65,250 135,250 122,284 78,284" fill="#EDEBFB" stroke="#362F78" stroke-width="2"></polygon>
+          <foreignObject x="65" y="250" width="70" height="34"><div xmlns="http://www.w3.org/1999/xhtml" class="svg-box" style="font-size:12px;">Escreva o resultado.</div></foreignObject>
+          <path d="M135,267 L200,267 L200,146 L170,146" fill="none" stroke="#E4694F" stroke-width="3" marker-end="url(#ah10)"></path>
+        </svg>
+        <p><b>Obtenha os termos da sequência a partir do fluxograma acima.</b></p>
+        <button class="reveal-btn" onclick="toggleReveal(this)">Ver resposta</button>
+        <div class="reveal-content hidden"><p>11, 101, 1 001, ...</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL 7 - RESUMO -->
+  <section class="panel" data-panel="7">
+    <div class="card caderno">
+      <span class="eyebrow" style="background:var(--yellow);">Para o caderno</span>
+      <h2>📓 Resumo da aula</h2>
+      <p>Existem dois tipos de sequência. Numa <b>sequência não recursiva</b>, existe uma fórmula chamada <b>expressão geradora</b>, escrita como T(n), que calcula diretamente o valor de qualquer termo, sem precisar passar pelos termos anteriores. Para usá-la, substituímos a letra n pela posição do termo que queremos descobrir e resolvemos a conta, respeitando a ordem: primeiro multiplicação, depois soma ou subtração. Por exemplo, se T(n) = 5n + 1, o 3º termo é 5 vezes 3, mais 1, ou seja, 16.</p>
+      <p>Já numa <b>sequência recursiva</b>, cada termo novo é construído a partir do termo anterior, seguindo sempre a mesma regra. Em alguns casos (como sequências em que somamos ou multiplicamos sempre o mesmo valor) até é possível encontrar uma fórmula T(n). Mas em outros casos — como o bloco 1, 2, 3, 1, 2, 3... que se repete para sempre — <b>não existe uma fórmula T(n) simples</b>, e a única forma segura de achar um termo é continuar o padrão a partir do(s) termo(s) anterior(es).</p>
+      <p>Como não temos uma fórmula direta para as sequências recursivas, aprendemos duas outras formas de descrevê-las com precisão. A primeira é um <b>algoritmo</b>, que é uma lista de passos numerados, parecida com uma receita de cozinha, incluindo um passo que manda "retornar" a um passo anterior para repetir o processo quantas vezes forem necessárias. É importante prestar atenção a <b>qual passo</b> ele manda voltar: se for um passo do meio (como "retorne ao passo 2"), o valor não reinicia — a conta continua a partir do último resultado escrito; mas se o retorno for ao passo 1, o valor volta ao início, e a sequência pode até repetir os mesmos números. A segunda é um <b>fluxograma</b>, que é a mesma receita desenhada com setas, retângulos para ações e losangos para perguntas do tipo sim ou não, que decidem se o processo repete ou termina.</p>
+      <p>Também estudamos sequências recursivas formadas por <b>figuras</b>, como padrões de palitos de fósforo, em que a estratégia é descobrir quanto a figura cresce de uma etapa para a outra e continuar essa soma até chegar na figura pedida. Por fim, conhecemos a <b>sequência de Fibonacci</b> (1, 1, 2, 3, 5, 8, 13...), uma sequência recursiva famosa em que cada termo é a soma dos dois termos anteriores — outro exemplo em que não existe uma fórmula T(n) simples.</p>
+      <p><b>Ideia principal para guardar:</b> nem toda sequência tem uma fórmula T(n) fácil de achar. Quando ela existir, ótimo — use-a. Quando não existir (ou parecer complicada demais), descreva a sequência com setas, com um algoritmo ou com um fluxograma, dependendo do que a questão está pedindo.</p>
+    </div>
+  </section>
+
+  <div class="nav-buttons">
+    <button id="prevBtn" onclick="changeTab(-1)">← Voltar</button>
+    <button id="nextBtn" onclick="changeTab(1)">Avançar →</button>
+  </div>
+
+</div>
+
+<script>
+  const total = 8;
+  let current = 0;
+  const labels = ["Início","Não recursivas (revisão)","Sequências recursivas","Algoritmo","Fluxograma","Figuras e Fibonacci","Pratique","Resumo"];
+
+  function showTab(i){
+    current = Math.max(0, Math.min(total-1, i));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    document.querySelector(`.panel[data-panel="${current}"]`).classList.add('active');
+    document.querySelectorAll('#tabNav button').forEach(b=>b.classList.remove('active'));
+    document.querySelector(`#tabNav button[data-tab="${current}"]`).classList.add('active');
+    document.getElementById('progressFill').style.width = ((current+1)/total*100)+'%';
+    document.getElementById('progressLabel').textContent = `Parte ${current+1} de ${total} — ${labels[current]}`;
+    document.getElementById('prevBtn').disabled = current===0;
+    document.getElementById('nextBtn').textContent = current===total-1 ? 'Concluído ✓' : 'Avançar →';
+    document.getElementById('nextBtn').disabled = current===total-1;
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  function changeTab(delta){ showTab(current+delta); }
+  document.querySelectorAll('#tabNav button').forEach(btn=>{
+    btn.addEventListener('click', ()=> showTab(parseInt(btn.dataset.tab)));
+  });
+
+  function revealOp(btn){
+    btn.textContent = btn.dataset.op;
+    btn.classList.add('revealed');
+    btn.disabled = true;
+  }
+
+  function toggleReveal(btn){
+    const content = btn.nextElementSibling;
+    const isHidden = content.classList.contains('hidden');
+    content.classList.toggle('hidden');
+    btn.textContent = isHidden ? 'Esconder resposta' : 'Ver resposta';
+  }
+
+  // Atividade 7: bolinhas em triângulo
+  function triangleSVG(rows){
+    const spacing = 16, r = 5.5;
+    const w = rows*spacing + 10, h = rows*spacing + 6;
+    let circles = '';
+    for(let row=1; row<=rows; row++){
+      const y = 8 + (row-1)*spacing;
+      const count = row;
+      const rowWidth = (count-1)*spacing;
+      const startX = w/2 - rowWidth/2;
+      for(let c=0; c<count; c++){
+        circles += `<circle cx="${startX + c*spacing}" cy="${y}" r="${r}" class="dot"></circle>`;
+      }
+    }
+    return `<svg viewBox="0 0 ${w} ${h}" class="tri-svg">${circles}</svg>`;
+  }
+  function renderTriRow(){
+    const el = document.getElementById('triRow');
+    if(!el) return;
+    let html = '';
+    const totals = [1,3,6,10,15];
+    for(let i=0;i<5;i++){
+      html += `<div class="fig-item">${triangleSVG(i+1)}<span class="fig-label">Figura ${i+1} · ${totals[i]} bolas</span></div>`;
+    }
+    el.innerHTML = html;
+  }
+
+  // Atividade 8: tapete fractal de quadrados
+  function carpetRects(x,y,size,depth){
+    if(depth===0) return [{x,y,size}];
+    const third = size/3;
+    let rects = [];
+    for(let i=0;i<3;i++){
+      for(let j=0;j<3;j++){
+        if(i===1 && j===1) continue;
+        rects = rects.concat(carpetRects(x+i*third, y+j*third, third, depth-1));
+      }
+    }
+    return rects;
+  }
+  function carpetSVG(depth){
+    const size = 60;
+    const rects = carpetRects(2,2,size,depth);
+    let html = '';
+    rects.forEach(rc=>{ html += `<rect x="${rc.x}" y="${rc.y}" width="${rc.size}" height="${rc.size}" class="carpet-rect"></rect>`; });
+    return `<svg viewBox="0 0 ${size+4} ${size+4}" class="carpet-svg">${html}</svg>`;
+  }
+  function renderCarpetRow(){
+    const el = document.getElementById('carpetRow');
+    if(!el) return;
+    const totals = [1,8,64];
+    let html = '';
+    for(let i=0;i<3;i++){
+      html += `<div class="fig-item">${carpetSVG(i)}<span class="fig-label">Figura ${i+1} · ${totals[i]} quadrados</span></div>`;
+    }
+    el.innerHTML = html;
+  }
+  renderTriRow();
+  renderCarpetRow();
+
+  function checkHook(){
+    const v = parseInt(document.getElementById('hookInput').value);
+    const el = document.getElementById('hookResult');
+    if(v===10){ el.style.color='#2E7D53'; el.textContent='Isso mesmo! 10. Você já pensa como um matemático.'; }
+    else{ el.style.color='#C1432B'; el.textContent='Quase! Cada número aumenta 2. Depois do 8, some mais 2.'; }
+  }
+  function checkSeq(){
+    const v = parseInt(document.getElementById('seqInput').value);
+    const el = document.getElementById('seqResult');
+    if(v===2){ el.style.color='#2E7D53'; el.textContent='Isso! 1,2,3,1,2,3,1,2 — o 8º termo é 2.'; }
+    else{ el.style.color='#C1432B'; el.textContent='Escreva o bloco 1,2,3 repetidas vezes até contar 8 posições: 1,2,3,1,2,3,1,2 — qual é a 8ª?'; }
+  }
+  function checkAlgo(){
+    const v = parseInt(document.getElementById('algoInput').value);
+    const el = document.getElementById('algoResult');
+    if(v===14){ el.style.color='#2E7D53'; el.textContent='Isso! 1º termo é 7, 2º termo é 7×2=14.'; }
+    else{ el.style.color='#C1432B'; el.textContent='O 1º termo é 7. O 2º é o anterior (7) multiplicado por 2.'; }
+  }
+  function checkTn(){
+    const v = parseInt(document.getElementById('tnInput').value);
+    const el = document.getElementById('tnResult');
+    if(v===10){ el.style.color='#2E7D53'; el.textContent='Isso! 4×3−2 = 12−2 = 10.'; }
+    else{ el.style.color='#C1432B'; el.textContent='Substitua: T(3) = 4×3 − 2. Primeiro multiplique, depois subtraia.'; }
+  }
+  function checkFib(){
+    const v = parseInt(document.getElementById('fibInput').value);
+    const el = document.getElementById('fibResult');
+    if(v===13){ el.style.color='#2E7D53'; el.textContent='Isso! 5 + 8 = 13.'; }
+    else{ el.style.color='#C1432B'; el.textContent='Some os dois últimos termos: 5 + 8 = ?'; }
+  }
+
+  // quiz logic
+  document.querySelectorAll('.question .choices').forEach(group=>{
+    const answer = parseInt(group.dataset.answer);
+    const feedback = group.parentElement.querySelector('.feedback');
+    const btns = group.querySelectorAll('.choice');
+    btns.forEach((btn, idx)=>{
+      btn.addEventListener('click', ()=>{
+        if(group.dataset.answered) return;
+        group.dataset.answered = "true";
+        if(idx===answer){
+          btn.classList.add('correct');
+          feedback.textContent = "Certinho! 🎉";
+          feedback.className = "feedback ok";
+        } else {
+          btn.classList.add('wrong');
+          btns[answer].classList.add('correct');
+          feedback.textContent = "Não foi dessa vez — a certa está destacada em verde.";
+          feedback.className = "feedback no";
+        }
+        checkAllAnswered();
+      });
+    });
+  });
+  function checkAllAnswered(){
+    const groups = document.querySelectorAll('.question .choices');
+    let done = 0, correct = 0;
+    groups.forEach(g=>{
+      if(g.dataset.answered){
+        done++;
+        const idx = parseInt(g.dataset.answer);
+        if(g.querySelectorAll('.choice')[idx].classList.contains('correct') && g.dataset.answered) {
+          if(g.querySelectorAll('.choice')[idx].classList.contains('correct')){
+            // count only if the user actually got it right (correct class on the answered one without wrong sibling logic)
+          }
+        }
+      }
+    });
+    // simpler recompute
+    let score = 0, answered = 0;
+    groups.forEach(g=>{
+      if(g.dataset.answered){
+        answered++;
+        const wrongPicked = g.querySelector('.choice.wrong');
+        if(!wrongPicked) score++;
+      }
+    });
+    if(answered === groups.length){
+      const box = document.getElementById('scoreBox');
+      box.style.display = 'block';
+      box.innerHTML = `<b>Você acertou ${score} de ${groups.length}.</b> ${score===groups.length ? 'Mandou muito bem — os conceitos de hoje estão firmes!' : 'Sem problema — releia a parte da dúvida nas abas anteriores e tente de novo quando quiser.'}`;
+    }
+  }
+
+  showTab(0);
+</script>
+</body>
+</html>
