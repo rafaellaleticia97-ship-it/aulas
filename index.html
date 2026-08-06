@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grandezas, Proporcionalidade e Volume — Aula</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F4FC;
+    --indigo:#362F78;
+    --indigo-deep:#241F52;
+    --indigo-soft:#6C63B5;
+    --menta:#A9E5D0;
+    --coral:#FFB3A0;
+    --coral-dark:#E4694F;
+    --amarelo:#FFDD73;
+    --texto:#2A2650;
+    --texto-sec:#5B5686;
+    --card-border:#E3DEF7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--texto);
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    line-height:1.55;
+    padding-bottom:44px;
+    position:relative;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.baloo,.pill,.eyebrow,.num-label{font-family:'Baloo 2', sans-serif;}
+
+  /* Fundo com símbolos matemáticos flutuando */
+  #bgsymbols{
+    position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+  }
+  #bgsymbols span{
+    position:absolute; font-family:'Baloo 2', sans-serif; font-weight:700;
+    color:var(--indigo); opacity:0.08; font-size:42px;
+    animation: drift 34s linear infinite;
+  }
+  @keyframes drift{
+    0%{ transform: translateY(0) rotate(0deg); }
+    50%{ transform: translateY(-24px) rotate(8deg); }
+    100%{ transform: translateY(0) rotate(0deg); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    #bgsymbols span{ animation: none; }
+  }
+
+  /* Barra de progresso */
+  #progressbar{
+    position:sticky; top:0; z-index:50;
+    background:#fff; border-bottom:1px solid var(--card-border);
+    padding:10px 16px 8px;
+  }
+  #progresslabel{
+    font-size:13px; color:var(--texto-sec); margin-bottom:6px; font-weight:700;
+  }
+  #progresstrack{
+    background:#EFEBFB; height:8px; border-radius:8px; overflow:hidden;
+  }
+  #progressfill{
+    background:linear-gradient(90deg, var(--indigo-soft), var(--indigo));
+    height:100%; width:20%; border-radius:8px; transition: width .35s ease;
+  }
+
+  header.titlewrap{
+    position:relative; z-index:1;
+    padding:18px 16px 6px; text-align:center;
+  }
+  header.titlewrap h1{
+    font-size:22px; color:var(--indigo-deep); margin:0 0 4px; font-weight:800;
+  }
+  header.titlewrap p{
+    color:var(--texto-sec); font-size:14px; margin:0;
+  }
+
+  /* Abas em pílula */
+  #tabs{
+    position:relative; z-index:1;
+    display:flex; gap:8px; overflow-x:auto; padding:14px 16px;
+    -webkit-overflow-scrolling:touch;
+  }
+  #tabs::-webkit-scrollbar{display:none;}
+  .tab{
+    flex:0 0 auto;
+    font-family:'Baloo 2', sans-serif; font-weight:700; font-size:13px;
+    color:var(--indigo); background:#fff; border:1.5px solid var(--card-border);
+    padding:8px 14px; border-radius:999px; cursor:pointer; white-space:nowrap;
+    transition: all .2s ease;
+  }
+  .tab.active{
+    background:var(--indigo); color:#fff; border-color:var(--indigo);
+  }
+
+  main{
+    position:relative; z-index:1;
+    max-width:640px; margin:0 auto; padding:0 16px;
+  }
+  section.parte{ display:none; }
+  section.parte.active{ display:block; animation: fadein .3s ease; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .card{
+    background:#fff; border:1px solid var(--card-border); border-radius:18px;
+    padding:18px; margin-bottom:16px; box-shadow: 0 4px 16px rgba(54,47,120,0.06);
+  }
+  .eyebrow{
+    display:inline-block; font-size:12px; font-weight:700; letter-spacing:.3px;
+    padding:4px 10px; border-radius:999px; margin-bottom:10px;
+  }
+  .eyebrow.indigo{ background:#EAE7F9; color:var(--indigo); }
+  .eyebrow.revisao{ background:var(--menta); color:#0F6B4F; }
+  .eyebrow.livro{ background:var(--amarelo); color:#7A5B00; }
+  .eyebrow.pratica{ background:var(--coral); color:#8A2E1D; }
+
+  .card h2{ font-size:19px; color:var(--indigo-deep); margin:0 0 10px; }
+  .card h3{ font-size:16px; color:var(--indigo); margin:16px 0 8px; }
+  .card p{ margin:0 0 10px; font-size:15.5px; }
+
+  /* Pense assim */
+  .pense-assim{
+    background:#EEECFB; border-radius:14px; padding:14px 16px; margin:14px 0;
+  }
+  .pense-assim .tag{
+    font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--indigo);
+    font-size:14px; margin-bottom:6px; display:flex; align-items:center; gap:6px;
+  }
+
+  /* Dica */
+  .dica{
+    background:#FFFBF0; border-left:6px solid var(--amarelo); border-radius:10px;
+    padding:14px 16px; margin:14px 0;
+  }
+  .dica .tag{
+    font-family:'Baloo 2',sans-serif; font-weight:700; color:#7A5B00;
+    font-size:14px; margin-bottom:6px;
+  }
+
+  /* Algo-block */
+  .algo-block{
+    background:#F3EFFC; border:1.5px solid var(--indigo-soft); border-radius:14px;
+    padding:14px 16px; margin:14px 0;
+  }
+  .algo-block .tag{
+    font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--indigo);
+    margin-bottom:8px; font-size:14px;
+  }
+  .algo-block .passo{ margin:6px 0; font-size:15px; }
+  .algo-block .passo b{ color:var(--indigo-deep); }
+
+  /* Try box */
+  .try-box{
+    border:2px dashed var(--indigo-soft); border-radius:14px; padding:14px 16px; margin:14px 0;
+    background:#FBFAFF;
+  }
+  .try-box .tag{
+    font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--indigo);
+    margin-bottom:8px; font-size:14px;
+  }
+  .try-box input[type=text]{
+    font-family:'Atkinson Hyperlegible', sans-serif; font-size:15px;
+    padding:8px 10px; border:1.5px solid var(--card-border); border-radius:8px;
+    width:120px; margin-right:8px;
+  }
+  .try-box button{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:14px;
+    background:var(--indigo); color:#fff; border:none; border-radius:8px;
+    padding:8px 16px; cursor:pointer;
+  }
+  .try-feedback{ margin-top:10px; font-weight:700; font-size:14.5px; }
+  .try-feedback.ok{ color:#0F6B4F; }
+  .try-feedback.no{ color:#B23A24; }
+
+  /* Livro exercise block */
+  .livro-ex{
+    border:1px solid var(--card-border); border-radius:14px; padding:14px 16px; margin:14px 0;
+    background:#FDFCFF;
+  }
+  .livro-ex .enun{ font-weight:700; color:var(--indigo-deep); margin-bottom:8px; font-size:15px;}
+  .livro-ex svg{ display:block; margin:10px auto; max-width:100%; }
+  .ver-resposta-btn{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:13.5px;
+    background:#fff; color:var(--indigo); border:1.5px solid var(--indigo-soft);
+    border-radius:8px; padding:7px 14px; cursor:pointer; margin-top:6px;
+  }
+  .resposta{
+    display:none; margin-top:10px; background:#EFFBF4; border-left:5px solid var(--menta);
+    border-radius:8px; padding:10px 12px; font-size:14.5px;
+  }
+  .resposta.show{ display:block; }
+
+  table.tabela-limpa{
+    border-collapse:collapse; width:100%; margin:10px 0; font-size:14.5px;
+  }
+  table.tabela-limpa th, table.tabela-limpa td{
+    border:1px solid var(--card-border); padding:7px 10px; text-align:center;
+  }
+  table.tabela-limpa th{ background:#EEECFB; color:var(--indigo-deep); }
+
+  /* Quiz */
+  .quiz-q{
+    border:1px solid var(--card-border); border-radius:14px; padding:14px 16px; margin:14px 0;
+  }
+  .quiz-q p.enun{ font-weight:700; font-size:15.5px; color:var(--indigo-deep); margin-bottom:10px; }
+  .quiz-opt{
+    display:block; width:100%; text-align:left; font-family:'Atkinson Hyperlegible', sans-serif;
+    font-size:15px; background:#fff; border:1.5px solid var(--card-border); border-radius:10px;
+    padding:9px 12px; margin-bottom:8px; cursor:pointer;
+  }
+  .quiz-opt.correct{ background:#E6F7EE; border-color:#4CAF88; }
+  .quiz-opt.wrong{ background:#FDEAE6; border-color:var(--coral-dark); }
+  .quiz-opt:disabled{ cursor:default; }
+  .quiz-fb{ font-size:14px; margin-top:6px; font-weight:700; }
+  .quiz-fb.ok{ color:#0F6B4F; }
+  .quiz-fb.no{ color:#B23A24; }
+  #quizScore{
+    text-align:center; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:17px;
+    color:var(--indigo-deep); margin-top:14px;
+  }
+
+  footer.navfooter{
+    position:fixed; bottom:0; left:0; right:0; background:transparent;
+    z-index:50; pointer-events:none;
+    display:flex; justify-content:space-between; padding:0 10px 8px;
+  }
+  footer.navfooter button{
+    pointer-events:auto;
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:11px;
+    background:var(--indigo); color:#fff; border:none; border-radius:7px;
+    padding:4px 9px; cursor:pointer; box-shadow:0 2px 6px rgba(54,47,120,0.25);
+  }
+  footer.navfooter button:disabled{ background:#CFC9EA; cursor:default; box-shadow:none; }
+
+  .resumo p{ font-size:15.5px; margin-bottom:12px; }
+
+  em.destaque{ color:var(--coral-dark); font-style:normal; font-weight:700; }
+</style>
+</head>
+<body>
+
+<div id="bgsymbols"></div>
+
+<div id="progressbar">
+  <div id="progresslabel">Parte 1 de 5 — Revisão: Volume</div>
+  <div id="progresstrack"><div id="progressfill"></div></div>
+</div>
+
+<header class="titlewrap">
+  <h1>Grandezas, Proporcionalidade e Volume</h1>
+  <p>Uma revisão de volume e uma nova ideia: como grandezas se relacionam</p>
+</header>
+
+<nav id="tabs">
+  <div class="tab active" data-parte="1">1. Volume</div>
+  <div class="tab" data-parte="2">2. Grandezas</div>
+  <div class="tab" data-parte="3">3. Direto do livro</div>
+  <div class="tab" data-parte="4">4. Pratique</div>
+  <div class="tab" data-parte="5">5. Resumo</div>
+</nav>
+
+<main>
+
+<!-- ===================== PARTE 1 — VOLUME (REVISÃO) ===================== -->
+<section class="parte active" id="parte1">
+  <div class="card">
+    <span class="eyebrow revisao">Revisão</span>
+    <h2>Volume de blocos retangulares</h2>
+    <p>Você já aprendeu que o volume mostra quanto espaço um objeto tridimensional ocupa. Antes de praticar, vamos relembrar rapidinho como calcular.</p>
+    <div class="algo-block">
+      <div class="tag">📦 Como calcular o volume de um bloco retangular</div>
+      <div class="passo"><b>Passo 1.</b> Identifique as três medidas do bloco: comprimento (a), largura (b) e altura (h).</div>
+      <div class="passo"><b>Passo 2.</b> Multiplique as três medidas: V = a × b × h.</div>
+      <div class="passo"><b>Passo 3.</b> Escreva o resultado com a unidade cúbica certa (cm³, dm³ ou m³).</div>
+    </div>
+    <div class="dica">
+      <div class="tag">💡 Cuidado com esse erro comum</div>
+      <p style="margin:0">Ao converter <strong>dm³</strong> para <strong>cm³</strong>, muita gente multiplica só por 10, como se fosse uma medida de comprimento. Mas volume tem três dimensões, então o fator é <strong>1000</strong>: 1 dm × 1 dm × 1 dm = 10 cm × 10 cm × 10 cm = 1000 cm³.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="eyebrow livro">Direto do livro</span>
+    <h2>Atividades — Volumes e Unidades de Medida</h2>
+    <p style="font-size:13.5px;color:var(--texto-sec)">Reprodução fiel das atividades 15 a 22 do módulo 6 (páginas 11 e 12 do livro). Tente resolver antes de conferir a resposta.</p>
+
+    <div class="livro-ex">
+      <div class="enun">15. Calcule o volume dos blocos.</div>
+      <p style="margin:4px 0"><b>a)</b> Bloco com 9 dm de comprimento, 8 dm de largura e 5 dm de altura.</p>
+      <div id="svg15a"></div>
+      <button class="ver-resposta-btn" onclick="toggleResp('r15a')">Ver resposta</button>
+      <div class="resposta" id="r15a">V = 9 × 8 × 5 = <strong>360 dm³</strong></div>
+
+      <p style="margin:16px 0 4px"><b>b)</b> Bloco com 8 cm de comprimento, 1 cm de largura e 6 cm de altura.</p>
+      <div id="svg15b"></div>
+      <button class="ver-resposta-btn" onclick="toggleResp('r15b')">Ver resposta</button>
+      <div class="resposta" id="r15b">V = 8 × 1 × 6 = <strong>48 cm³</strong></div>
+
+      <p style="margin:16px 0 4px"><b>c)</b> Cubo com 0,6 m de aresta.</p>
+      <div id="svg15c"></div>
+      <button class="ver-resposta-btn" onclick="toggleResp('r15c')">Ver resposta</button>
+      <div class="resposta" id="r15c">V = 0,6 × 0,6 × 0,6 = <strong>0,216 m³</strong></div>
+    </div>
+
+    <div class="livro-ex">
+      <div class="enun">16. O volume de uma forma depende da unidade tomada para efetuá-la. A figura 1 mostra a unidade cúbica; a figura 2 mostra a forma em "escada" cujo volume será calculado.</div>
+      <div id="svg16"></div>
+      <button class="ver-resposta-btn" onclick="toggleResp('r16')">Ver resposta</button>
+      <div class="resposta" id="r16">Tomando a figura 1 como unidade de medida, a forma da direita terá <strong>18 unidades</strong>. Tomando a figura 2, terá 18 ÷ 8 = <strong>2,25 unidades</strong>.</div>
+    </div>
+
+    <div class="livro-ex">
+      <div class="enun">17. Obtenha a função que converte m³ em dm³ e complete a tabela.</div>
+      <table class="tabela-limpa">
+        <tr><th>m³</th><th>dm³</th><th>cm³</th></tr>
+        <tr><td>0,015</td><td id="t17-dm-0">?</td><td id="t17-cm-0">?</td></tr>
+        <tr><td>0,001 75</td><td id="t17-dm-1">?</td><td id="t17-cm-1">?</td></tr>
+        <tr><td>85</td><td id="t17-dm-2">?</td><td id="t17-cm-2">?</td></tr>
+        <tr><td>2,358 7</td><td id="t17-dm-3">?</td><td id="t17-cm-3">?</td></tr>
+        <tr><td>0,23</td><td id="t17-dm-4">?</td><td id="t17-cm-4">?</td></tr>
+      </table>
+      <p style="margin:8px 0 4px;font-size:14px;color:var(--texto-sec)">Função: m³ →(×1000)→ dm³ →(×1000)→ cm³.</p>
+      <button class="ver-resposta-btn" id="btn17" onclick="toggleTabela17()">Ver resposta</button>
+    </div>
+
+    <div class="livro-ex">
+      <div class="enun">18. É dado o volume do bloco retangular. Calcule a medida desconhecida x.</div>
+      <p style="margin:4px 0"><b>a)</b> Volume: 160 m³, base 5 m × 8 m, altura x.</p>
+      <button class="ver-resposta-btn" onclick="toggleResp('r18a')">Ver resposta</button>
+      <div class="resposta" id="r18a"><strong>x = 4 m</strong> (160 ÷ (5×8) = 4)</div>
+
+      <p style="margin:16px 0 4px"><b>b)</b> Volume: 346,5 dm³, base 7 dm × 9 dm, altura x.</p>
+      <button class="ver-resposta-btn" onclick="toggleResp('r18b')">Ver resposta</button>
+      <div class="resposta" id="r18b"><strong>x = 5,5 dm</strong> (346,5 ÷ (7×9) = 5,5)</div>
+
+      <p style="margin:16px 0 4px"><b>c)</b> Volume: 2 850 cm³, área da base: 114 cm², comprimento x.</p>
+      <button class="ver-resposta-btn" onclick="toggleResp('r18c')">Ver resposta</button>
+      <div class="resposta" id="r18c"><strong>x = 25 cm</strong> (2 850 ÷ 114 = 25)</div>
+    </div>
+
+    <div class="livro-ex">
+      <div class="enun">19. A figura é formada por dois blocos retangulares (decomponha a figura em dois blocos). Calcule seu volume em m³.<br>Dimensões: comprimento total 55 cm, blocos de 20 cm, 22 cm, 8 cm, 11 cm de altura/largura conforme a figura.</div>
+      <div id="svg19"></div>
+      <button class="ver-resposta-btn" onclick="toggleResp('r19')">Ver resposta</button>
+      <div class="resposta" id="r19">12 100 cm³ + 7 260 cm³ = 19 360 cm³ = <strong>0,019 36 m³</strong></div>
+    </div>
+
+    <div class="livro-ex">
+      <div class="enun">20. Sabendo que o bloco A tem o mesmo volume do bloco B, calcule o valor de x.</div>
+      <div id="svg20"></div>
+      <button class="ver-resposta-btn" onclick="toggleResp('r20')">Ver resposta</button>
+      <div class="resposta" id="r20">Volume de A = 8×12×10 = 960 cm³. Como B tem base 8×8: <strong>x = 15 cm</strong> (960 ÷ 64 = 15)</div>
+    </div>
+
+    <div class="livro-ex">
+      <div class="enun">21. O cubo A tem aresta de 6 dm. Calcule o volume do cubo B, sabendo que ele corresponde a 1/8 do volume do cubo A, e depois a medida da aresta de B.</div>
+      <div id="svg21"></div>
+      <button class="ver-resposta-btn" onclick="toggleResp('r21')">Ver resposta</button>
+      <div class="resposta" id="r21">O volume do cubo A é 216 dm³. Logo, o volume do cubo B é 216 ÷ 8 = <strong>27 dm³</strong>. Testando por tentativa, a aresta de B mede <strong>3 dm</strong> (3×3×3=27).</div>
+    </div>
+
+    <div class="livro-ex">
+      <div class="enun">22. Um bloco retangular teve sua largura, altura e comprimento dobrados. a) Calcule o volume de cada bloco (original tem 6 unidades). b) Quantas cópias do primeiro bloco são necessárias para formar o segundo?</div>
+      <button class="ver-resposta-btn" onclick="toggleResp('r22')">Ver resposta</button>
+      <div class="resposta" id="r22">Os volumes são <strong>6 e 48 unidades</strong>, respectivamente. São necessárias <strong>8 cópias</strong> do primeiro bloco para formar o segundo.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 2 — GRANDEZAS E RELAÇÕES ===================== -->
+<section class="parte" id="parte2">
+  <div class="card">
+    <span class="eyebrow indigo">Parte 2</span>
+    <h2>Para começar</h2>
+    <p>Se um chocolate custa R$ 3, você provavelmente já sabe dizer, sem nem pensar muito, quanto custam 4 chocolates. É isso mesmo: R$ 12. Você acabou de usar, na prática, uma ideia que vamos estudar agora: a relação entre grandezas.</p>
+  </div>
+
+  <div class="card">
+    <h2>O que é uma grandeza?</h2>
+    <p><strong>Grandeza</strong> é tudo aquilo que podemos medir: tempo, distância, peso, dinheiro, quantidade de gotas de um remédio, número de espirros em um resfriado... tudo isso são grandezas.</p>
+    <p>Às vezes, duas grandezas estão <em class="destaque">relacionadas</em>: quando uma muda, a outra também muda de um jeito previsível. Vamos ver como identificar isso.</p>
+
+    <div class="pense-assim">
+      <div class="tag">🌱 Pense assim</div>
+      <p style="margin:0">Imagine uma torneira aberta enchendo um balde num ritmo constante. Quanto mais <strong>tempo</strong> a torneira fica aberta, mais <strong>água</strong> entra no balde. Tempo e quantidade de água estão relacionados: um influencia o outro de um jeito que dá para calcular.</p>
+    </div>
+
+    <h3>Exemplo trabalhado: o treino de Rafael</h3>
+    <p>Rafael treina ciclismo todos os dias. No último treino, ele percorreu 28 km em 2 horas, mantendo sempre a mesma velocidade. Quantos km ele percorrerá em 5 horas?</p>
+    <table class="tabela-limpa">
+      <tr><th>Tempo (h)</th><th>Distância (km)</th></tr>
+      <tr><td>1</td><td>14</td></tr>
+      <tr><td>2</td><td>28</td></tr>
+      <tr><td>3</td><td>42</td></tr>
+      <tr><td>4</td><td>56</td></tr>
+      <tr><td>5</td><td>70</td></tr>
+    </table>
+    <p>Se Rafael percorre 28 km em 2 horas, então a cada hora ele percorre 14 km. Por isso, após 5 horas, ele terá percorrido 5 × 14 = <strong>70 km</strong>. Podemos escrever isso como a função y = 14 · x, em que x é o tempo e y é a distância percorrida.</p>
+
+    <div class="try-box">
+      <div class="tag">✏️ Agora é sua vez</div>
+      <p style="margin:0 0 8px">Uma torneira enche 5 litros por minuto, sempre no mesmo ritmo. Quantos litros ela terá despejado em 8 minutos?</p>
+      <input type="text" id="tb1" placeholder="litros">
+      <button onclick="checkTry('tb1','40','tb1fb')">Conferir</button>
+      <div class="try-feedback" id="tb1fb"></div>
+    </div>
+
+    <div class="dica">
+      <div class="tag">💡 Cuidado com essa afirmação</div>
+      <p style="margin:0">Não pense que <em>toda dupla de grandezas</em> tem uma função relacionando-as. Isso não é verdade! Já vamos ver um exemplo em que isso não acontece.</p>
+    </div>
+
+    <h3>Outro exemplo: gotas de remédio</h3>
+    <p>Um paciente recebeu um medicamento por via endovenosa. O equipamento foi calibrado para 25 gotas por minuto.</p>
+    <table class="tabela-limpa">
+      <tr><th>Tempo (min)</th><th>Gotas</th></tr>
+      <tr><td>1</td><td>25</td></tr>
+      <tr><td>2</td><td>50</td></tr>
+      <tr><td>3</td><td>75</td></tr>
+    </table>
+    <p>Aqui também existe uma função: y = 25 · x, em que x é o tempo em minutos e y é o número de gotas administradas.</p>
+  </div>
+
+  <div class="card">
+    <h3>Quando as grandezas NÃO estão relacionadas</h3>
+    <p>Cláudia está resfriada e deu 6 espirros em 1 minuto. Quantos espirros ela dará nos próximos 5 minutos?</p>
+    <p>Pode parecer tentador calcular 5 × 6 = 30 espirros, mas isso está errado! Tudo pode acontecer nos próximos 5 minutos — inclusive Cláudia tomar um remédio e parar de espirrar. Não existe uma regra fixa ligando o tempo à quantidade de espirros.</p>
+
+    <div class="dica">
+      <div class="tag">💡 Erro comum: achar que dá sempre para multiplicar</div>
+      <p style="margin:0">O erro mais comum aqui é aplicar uma "regra de três" em qualquer par de grandezas, só porque o problema menciona duas medidas. Antes de multiplicar ou dividir, pergunte-se: <strong>faz sentido lógico</strong> que uma grandeza determine a outra? Tempo e distância de um ciclista com velocidade constante: sim. Tempo e número de espirros: não.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 3 — DIRETO DO LIVRO (GRANDEZAS) ===================== -->
+<section class="parte" id="parte3">
+  <div class="card">
+    <span class="eyebrow livro">Direto do livro</span>
+    <h2>Atividades — Grandezas e Relações</h2>
+    <p style="font-size:13.5px;color:var(--texto-sec)">Reprodução fiel das atividades 1 a 5 do módulo 8 (páginas 27 e 28 do livro).</p>
+
+    <div class="livro-ex">
+      <div class="enun">1. Um trem-bala percorre 200 km em 1,5 h. Quantos quilômetros ele percorrerá em 3 horas, se mantiver a mesma velocidade?</div>
+      <button class="ver-resposta-btn" onclick="toggleResp('rl1')">Ver resposta</button>
+      <div class="resposta" id="rl1"><strong>400 km</strong></div>
+    </div>
+
+    <div class="livro-ex">
+      <div class="enun">2. As instruções do rótulo de uma garrafa de suco concentrado informam que são necessários 200 mL de suco para cada litro de água.<br>a) A quantidade de suco está relacionada com a quantidade de água? Explique.<br>b) Complete a tabela. Qual a quantidade de suco para 10 L de água?</div>
+      <table class="tabela-limpa">
+        <tr><th>Suco (L)</th><th>Água (L)</th></tr>
+        <tr><td>0,2</td><td>1</td></tr>
+        <tr><td>?</td><td>5</td></tr>
+        <tr><td>?</td><td>10</td></tr>
+      </table>
+      <button class="ver-resposta-btn" onclick="toggleResp('rl2')">Ver resposta</button>
+      <div class="resposta" id="rl2">a) Sim. Quanto mais água se põe, mais suco concentrado, na mesma proporção, deverá ser usado.<br>b) 1,0 L para 5 L de água; 2,0 L para 10 L de água. Para 10 L de água, são necessários <strong>2 L de suco</strong>.</div>
+    </div>
+
+    <div class="livro-ex">
+      <div class="enun">3. Supondo que os meios de transporte mantêm a mesma velocidade em todo o trajeto, complete as tabelas.<br><b>a)</b> Viagem de ônibus — <b>b)</b> Viagem de avião</div>
+      <table class="tabela-limpa">
+        <tr><th>Ônibus — Tempo (h)</th><th>Distância (km)</th></tr>
+        <tr><td>1</td><td>?</td></tr>
+        <tr><td>2</td><td>180</td></tr>
+        <tr><td>3</td><td>?</td></tr>
+      </table>
+      <table class="tabela-limpa">
+        <tr><th>Avião — Tempo (h)</th><th>Distância (km)</th></tr>
+        <tr><td>2</td><td>1600</td></tr>
+        <tr><td>1</td><td>?</td></tr>
+        <tr><td>0,5</td><td>?</td></tr>
+      </table>
+      <button class="ver-resposta-btn" onclick="toggleResp('rl3')">Ver resposta</button>
+      <div class="resposta" id="rl3">Ônibus: 1h → 90 km; 2h → 180 km; 3h → 270 km.<br>Avião: 2h → 1 600 km; 1h → 800 km; 0,5h → 400 km.</div>
+    </div>
+
+    <div class="livro-ex">
+      <div class="enun">4. Uma fazenda de soja: 5 máquinas colhem 12 800 sacas do grão por dia. Foram compradas mais 3 máquinas. Quantas sacas podem ser colhidas com 8 máquinas em 2 dias?</div>
+      <button class="ver-resposta-btn" onclick="toggleResp('rl4')">Ver resposta</button>
+      <div class="resposta" id="rl4">Uma máquina colhe 12 800 ÷ 5 = 2 560 sacas/dia. Com 8 máquinas em 2 dias: 8 × 2 560 × 2 = <strong>40 960 sacas</strong>.</div>
+    </div>
+
+    <div class="livro-ex">
+      <div class="enun">5. Quadrados com lado de 10 m, 20 m, 30 m e 40 m. Complete a tabela com o perímetro e a área de cada um.<br>a) Complete a tabela. b) O perímetro está relacionado com o lado? c) E a área?</div>
+      <table class="tabela-limpa">
+        <tr><th>Lado (m)</th><td>10</td><td>20</td><td>30</td><td>40</td></tr>
+        <tr><th>Perímetro (m)</th><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+        <tr><th>Área (m²)</th><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+      </table>
+      <button class="ver-resposta-btn" onclick="toggleResp('rl5')">Ver resposta</button>
+      <div class="resposta" id="rl5">Perímetro: 40, 80, 120, 160 m. Área: 100, 400, 900, 1 600 m².<br>b) Sim. O perímetro é a soma dos quatro lados, então se o lado aumenta, o perímetro também aumenta.<br>c) Sim, a área também está relacionada ao lado, mas não da mesma forma direta: quando o lado é multiplicado por uma constante, a área é multiplicada pelo quadrado dessa constante.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 4 — PRATIQUE (QUIZ) ===================== -->
+<section class="parte" id="parte4">
+  <div class="card">
+    <span class="eyebrow pratica">Pratique</span>
+    <h2>Quiz — misture o que você aprendeu</h2>
+    <div id="quizContainer"></div>
+    <div id="quizScore"></div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 5 — RESUMO ===================== -->
+<section class="parte" id="parte5">
+  <div class="card resumo">
+    <span class="eyebrow indigo">Resumo pro caderno</span>
+    <h2>O que vimos nesta aula</h2>
+    <p>Para calcular o volume de um bloco retangular, multiplicamos as três medidas: comprimento, largura e altura, e o resultado vem sempre em uma unidade cúbica, como cm³, dm³ ou m³. Ao converter entre essas unidades, é importante lembrar que o fator é sempre 1000, e não 10, porque estamos lidando com três dimensões ao mesmo tempo: por exemplo, 1 dm³ equivale a 1000 cm³.</p>
+    <p>Também aprendemos o que é uma grandeza: tudo o que pode ser medido, como tempo, distância, peso ou quantidade de dinheiro. Duas grandezas podem estar relacionadas, o que significa que conhecer o valor de uma nos ajuda a descobrir o valor da outra, como acontece com o tempo de pedalada e a distância percorrida por um ciclista em velocidade constante. Nesses casos, conseguimos escrever uma função que expressa essa relação, como y = 14 · x.</p>
+    <p>Por outro lado, nem toda dupla de grandezas está relacionada. O exemplo dos espirros de Cláudia mostrou que, mesmo envolvendo tempo, não existe uma regra que permita prever quantos espirros ela terá nos próximos minutos, porque isso depende de fatores que não seguem um padrão fixo. Por isso, antes de multiplicar ou usar uma regra de três, vale sempre parar e perguntar: essa relação realmente faz sentido lógico?</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="navfooter">
+  <button id="btnVoltar" onclick="mudarParte(-1)">← Voltar</button>
+  <button id="btnAvancar" onclick="mudarParte(1)">Avançar →</button>
+</footer>
+
+<script>
+  // Fundo com símbolos matemáticos
+  const symbols = ['π','+','÷','×','=','√','%','∑','∆'];
+  const bg = document.getElementById('bgsymbols');
+  for(let i=0;i<16;i++){
+    const s = document.createElement('span');
+    s.textContent = symbols[i % symbols.length];
+    s.style.left = (Math.random()*94)+'vw';
+    s.style.top = (Math.random()*94)+'vh';
+    s.style.fontSize = (26+Math.random()*30)+'px';
+    s.style.animationDuration = (24+Math.random()*20)+'s';
+    s.style.animationDelay = (-Math.random()*20)+'s';
+    bg.appendChild(s);
+  }
+
+  // Navegação por partes
+  const partesNomes = ["Revisão: Volume","Grandezas","Direto do livro","Pratique","Resumo"];
+  let parteAtual = 1;
+  const totalPartes = 5;
+
+  function irParaParte(n){
+    parteAtual = n;
+    document.querySelectorAll('.parte').forEach(el=>el.classList.remove('active'));
+    document.getElementById('parte'+n).classList.add('active');
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelector('.tab[data-parte="'+n+'"]').classList.add('active');
+    document.getElementById('progresslabel').textContent = 'Parte '+n+' de '+totalPartes+' — '+partesNomes[n-1];
+    document.getElementById('progressfill').style.width = (n/totalPartes*100)+'%';
+    document.getElementById('btnVoltar').disabled = (n===1);
+    document.getElementById('btnAvancar').disabled = (n===totalPartes);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  function mudarParte(delta){
+    const novo = parteAtual + delta;
+    if(novo>=1 && novo<=totalPartes) irParaParte(novo);
+  }
+  document.querySelectorAll('.tab').forEach(tab=>{
+    tab.addEventListener('click', ()=> irParaParte(parseInt(tab.dataset.parte)) );
+  });
+  irParaParte(1);
+
+  // Reveal resposta
+  function toggleResp(id){
+    document.getElementById(id).classList.toggle('show');
+  }
+
+  // Exercício 17: preencher/ocultar respostas direto na tabela
+  const respostas17 = [
+    {dm:'15', cm:'15 000'},
+    {dm:'1,75', cm:'1 750'},
+    {dm:'85 000', cm:'85 000 000'},
+    {dm:'2 358,7', cm:'2 358 700'},
+    {dm:'230', cm:'230 000'}
+  ];
+  let tabela17Visivel = false;
+  function toggleTabela17(){
+    tabela17Visivel = !tabela17Visivel;
+    respostas17.forEach((r, i)=>{
+      document.getElementById('t17-dm-'+i).textContent = tabela17Visivel ? r.dm : '?';
+      document.getElementById('t17-cm-'+i).textContent = tabela17Visivel ? r.cm : '?';
+    });
+    document.getElementById('btn17').textContent = tabela17Visivel ? 'Ocultar resposta' : 'Ver resposta';
+  }
+
+  // Try-box conferir
+  function checkTry(inputId, resposta, fbId){
+    const val = document.getElementById(inputId).value.trim().replace(',','.');
+    const fb = document.getElementById(fbId);
+    if(val === '' ){
+      fb.textContent = 'Digite um valor antes de conferir.';
+      fb.className = 'try-feedback no';
+      return;
+    }
+    if(parseFloat(val) === parseFloat(resposta)){
+      fb.textContent = 'Isso mesmo! 🎉';
+      fb.className = 'try-feedback ok';
+    } else {
+      fb.textContent = 'Quase, revê esse passo. Dica: quantos litros por minuto? Multiplique pelo tempo.';
+      fb.className = 'try-feedback no';
+    }
+  }
+
+  // ===== SVG helper: caixa retangular (não em escala) =====
+  function boxSVG(comp, larg, alt, unit){
+    return `
+    <svg viewBox="0 0 220 170" width="220" height="170">
+      <polygon points="140,140 140,60 180,30 180,110" fill="#D9D3F5" stroke="#362F78" stroke-width="1.5"/>
+      <polygon points="40,60 140,60 180,30 80,30" fill="#EAE7F9" stroke="#362F78" stroke-width="1.5"/>
+      <polygon points="40,140 140,140 140,60 40,60" fill="#F6F4FC" stroke="#362F78" stroke-width="1.5"/>
+      <text x="90" y="158" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="13" fill="#2A2650">${comp} ${unit}</text>
+      <text x="22" y="102" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="13" fill="#2A2650" transform="rotate(-90 22 102)">${alt} ${unit}</text>
+      <text x="168" y="62" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="13" fill="#2A2650">${larg} ${unit}</text>
+    </svg>`;
+  }
+  document.getElementById('svg15a').innerHTML = boxSVG('9','8','5','dm');
+  document.getElementById('svg15b').innerHTML = boxSVG('8','1','6','cm');
+  document.getElementById('svg15c').innerHTML = boxSVG('0,6','0,6','0,6','m');
+  document.getElementById('svg20').innerHTML =
+    '<div style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap">'+
+    '<div><p style="text-align:center;font-size:13px;margin:0">Bloco A</p>'+boxSVG('12','8','10','cm')+'</div>'+
+    '<div><p style="text-align:center;font-size:13px;margin:0">Bloco B</p>'+boxSVG('8','8','x','cm')+'</div>'+
+    '</div>';
+  document.getElementById('svg21').innerHTML =
+    '<div style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap">'+
+    '<div><p style="text-align:center;font-size:13px;margin:0">Cubo A</p>'+boxSVG('6','6','6','dm')+'</div>'+
+    '<div><p style="text-align:center;font-size:13px;margin:0">Cubo B</p>'+boxSVG('?','?','?','dm')+'</div>'+
+    '</div>';
+
+  // Figura 16: unidade cúbica + escada de cubos (18 unidades)
+  document.getElementById('svg16').innerHTML = `
+  <svg viewBox="0 0 260 130" width="260" height="130">
+    <text x="20" y="15" font-family="Baloo 2" font-size="12" fill="#362F78">figura 1</text>
+    <rect x="10" y="25" width="24" height="24" fill="#A9E5D0" stroke="#362F78"/>
+    <text x="80" y="15" font-family="Baloo 2" font-size="12" fill="#362F78">figura 2 (18 unidades)</text>
+    ${[0,1,2,3,4].map(col=>{
+      const heights=[1,2,3,3,2];
+      let out='';
+      for(let row=0; row<heights[col]; row++){
+        const x = 80 + col*20;
+        const y = 90 - row*20;
+        out += `<rect x="${x}" y="${y}" width="18" height="18" fill="#D9D3F5" stroke="#362F78"/>`;
+      }
+      return out;
+    }).join('')}
+  </svg>`;
+
+  // Figura 19: bloco em L (dois blocos)
+  document.getElementById('svg19').innerHTML = `
+  <svg viewBox="0 0 260 150" width="260" height="150">
+    <polygon points="40,120 40,40 100,40 100,120" fill="#EAE7F9" stroke="#362F78" stroke-width="1.5"/>
+    <text x="70" y="30" text-anchor="middle" font-size="12" font-family="Atkinson Hyperlegible" fill="#2A2650">Bloco 1 (20×20×40)</text>
+    <polygon points="100,120 100,90 220,90 220,120" fill="#F6F4FC" stroke="#362F78" stroke-width="1.5"/>
+    <text x="160" y="135" text-anchor="middle" font-size="12" font-family="Atkinson Hyperlegible" fill="#2A2650">Bloco 2 (30×20×22)</text>
+  </svg>`;
+
+  // ===== Quiz =====
+  const perguntas = [
+    {
+      enun: "1. Uma torneira enche um tanque numa taxa constante de 6 litros por minuto. Quantos litros ela despeja em 9 minutos?",
+      opts: ["15 litros","54 litros","45 litros","60 litros"],
+      correta: 1
+    },
+    {
+      enun: "2. Assinale a alternativa que apresenta duas grandezas que NÃO estão necessariamente relacionadas entre si.",
+      opts: [
+        "O número de litros de combustível usados e a distância percorrida, mantendo o mesmo consumo.",
+        "O número de horas de estudo de um aluno e a nota que ele tira na prova.",
+        "O número de horas trabalhadas e o salário recebido, com valor de hora fixo.",
+        "O número de convidados de uma festa e a quantidade de bolo, mantendo a quantidade por pessoa."
+      ],
+      correta: 1
+    },
+    {
+      enun: "3. Calcule o volume de uma caixa retangular que tem 4 m de comprimento, 2 m de largura e 3 m de altura.",
+      opts: ["9 m³","24 m³","19 m³","29 m³"],
+      correta: 1
+    },
+    {
+      enun: "4. Um bloco retangular tem volume de 180 dm³. Sabendo que seu comprimento é 6 dm e sua largura é 5 dm, qual é a altura?",
+      opts: ["6 dm","30 dm","11 dm","19 dm"],
+      correta: 0
+    },
+    {
+      enun: "5. Um reservatório mede 3 m de comprimento, 2 m de largura e 1,5 m de altura. Calcule o volume em dm³.",
+      opts: ["9 dm³","900 dm³","9 000 dm³","90 000 dm³"],
+      correta: 2
+    },
+    {
+      enun: "6. Uma receita usa 3 ovos para cada 2 xícaras de farinha. Usando 9 ovos e mantendo a proporção, quantas xícaras de farinha são necessárias?",
+      opts: ["4 xícaras","6 xícaras","12 xícaras","3 xícaras"],
+      correta: 1
+    }
+  ];
+  let acertos = 0;
+  let respondidas = 0;
+  const quizContainer = document.getElementById('quizContainer');
+  perguntas.forEach((p, idx)=>{
+    const div = document.createElement('div');
+    div.className = 'quiz-q';
+    let html = `<p class="enun">${p.enun}</p>`;
+    p.opts.forEach((op, oi)=>{
+      html += `<button class="quiz-opt" onclick="responder(${idx},${oi},this)">${String.fromCharCode(65+oi)}) ${op}</button>`;
+    });
+    html += `<div class="quiz-fb" id="qfb${idx}"></div>`;
+    div.innerHTML = html;
+    quizContainer.appendChild(div);
+  });
+  function responder(qidx, oidx, btnEl){
+    const p = perguntas[qidx];
+    const parent = btnEl.parentElement;
+    const buttons = parent.querySelectorAll('.quiz-opt');
+    if(buttons[0].disabled) return; // já respondida
+    buttons.forEach((b,i)=>{
+      b.disabled = true;
+      if(i===p.correta) b.classList.add('correct');
+      if(i===oidx && i!==p.correta) b.classList.add('wrong');
+    });
+    const fb = document.getElementById('qfb'+qidx);
+    respondidas++;
+    if(oidx === p.correta){
+      acertos++;
+      fb.textContent = 'Isso mesmo! 🎉';
+      fb.className = 'quiz-fb ok';
+    } else {
+      fb.textContent = 'Quase, revê esse passo. A resposta certa está marcada em verde.';
+      fb.className = 'quiz-fb no';
+    }
+    if(respondidas === perguntas.length){
+      document.getElementById('quizScore').textContent = `Você acertou ${acertos} de ${perguntas.length} questões!`;
+    }
+  }
+</script>
+
+</body>
+</html>
