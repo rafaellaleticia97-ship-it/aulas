@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisão para a AV1 — 7º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F4FC;
+    --indigo:#362F78;
+    --indigo-deep:#241F52;
+    --indigo-soft:#6C63B5;
+    --menta:#A9E5D0;
+    --coral:#FFB3A0;
+    --coral-dark:#E4694F;
+    --amarelo:#FFDD73;
+    --texto:#2A2650;
+    --texto-sec:#5B5686;
+    --card-border:#E3DEF7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--texto);
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    line-height:1.55;
+    padding-bottom:44px;
+    position:relative;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.eyebrow{font-family:'Baloo 2', sans-serif;}
+
+  #bgsymbols{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+  #bgsymbols span{
+    position:absolute; font-family:'Baloo 2', sans-serif; font-weight:700;
+    color:var(--indigo); opacity:0.08; font-size:42px;
+    animation: drift 34s linear infinite;
+  }
+  @keyframes drift{
+    0%{ transform: translateY(0) rotate(0deg); }
+    50%{ transform: translateY(-24px) rotate(8deg); }
+    100%{ transform: translateY(0) rotate(0deg); }
+  }
+  @media (prefers-reduced-motion: reduce){ #bgsymbols span{ animation: none; } }
+
+  #progressbar{
+    position:sticky; top:0; z-index:50;
+    background:#fff; border-bottom:1px solid var(--card-border);
+    padding:10px 16px 8px;
+  }
+  #progresslabel{ font-size:13px; color:var(--texto-sec); margin-bottom:6px; font-weight:700; }
+  #progresstrack{ background:#EFEBFB; height:8px; border-radius:8px; overflow:hidden; }
+  #progressfill{ background:linear-gradient(90deg, var(--indigo-soft), var(--indigo)); height:100%; width:14%; border-radius:8px; transition: width .35s ease; }
+
+  header.titlewrap{ position:relative; z-index:1; padding:18px 16px 6px; text-align:center; }
+  header.titlewrap h1{ font-size:21px; color:var(--indigo-deep); margin:0 0 4px; font-weight:800; }
+  header.titlewrap p{ color:var(--texto-sec); font-size:14px; margin:0; }
+
+  #tabs{
+    position:relative; z-index:1;
+    display:flex; gap:8px; overflow-x:auto; padding:14px 16px;
+    -webkit-overflow-scrolling:touch;
+  }
+  #tabs::-webkit-scrollbar{display:none;}
+  .tab{
+    flex:0 0 auto;
+    font-family:'Baloo 2', sans-serif; font-weight:700; font-size:12.5px;
+    color:var(--indigo); background:#fff; border:1.5px solid var(--card-border);
+    padding:7px 12px; border-radius:999px; cursor:pointer; white-space:nowrap;
+    transition: all .2s ease;
+  }
+  .tab.active{ background:var(--indigo); color:#fff; border-color:var(--indigo); }
+
+  main{ position:relative; z-index:1; max-width:640px; margin:0 auto; padding:0 16px; }
+  section.parte{ display:none; }
+  section.parte.active{ display:block; animation: fadein .3s ease; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .card{
+    background:#fff; border:1px solid var(--card-border); border-radius:18px;
+    padding:18px; margin-bottom:16px; box-shadow: 0 4px 16px rgba(54,47,120,0.06);
+  }
+  .eyebrow{
+    display:inline-block; font-size:12px; font-weight:700; letter-spacing:.3px;
+    padding:4px 10px; border-radius:999px; margin-bottom:10px;
+  }
+  .eyebrow.indigo{ background:#EAE7F9; color:var(--indigo); }
+  .eyebrow.pratica{ background:var(--coral); color:#8A2E1D; }
+
+  .card h2{ font-size:19px; color:var(--indigo-deep); margin:0 0 10px; }
+  .card h3{ font-size:16px; color:var(--indigo); margin:16px 0 8px; }
+  .card p{ margin:0 0 10px; font-size:15.5px; }
+
+  .pense-assim{ background:#EEECFB; border-radius:14px; padding:14px 16px; margin:14px 0; }
+  .pense-assim .tag{ font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--indigo); font-size:14px; margin-bottom:6px; }
+
+  .dica{ background:#FFFBF0; border-left:6px solid var(--amarelo); border-radius:10px; padding:14px 16px; margin:14px 0; }
+  .dica .tag{ font-family:'Baloo 2',sans-serif; font-weight:700; color:#7A5B00; font-size:14px; margin-bottom:6px; }
+
+  .algo-block{ background:#F3EFFC; border:1.5px solid var(--indigo-soft); border-radius:14px; padding:14px 16px; margin:14px 0; }
+  .algo-block .tag{ font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--indigo); margin-bottom:8px; font-size:14px; }
+  .algo-block .passo{ margin:6px 0; font-size:15px; }
+  .algo-block .passo b{ color:var(--indigo-deep); }
+
+  .try-box{ border:2px dashed var(--indigo-soft); border-radius:14px; padding:14px 16px; margin:14px 0; background:#FBFAFF; }
+  .try-box .tag{ font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--indigo); margin-bottom:8px; font-size:14px; }
+  .try-box input[type=text]{
+    font-family:'Atkinson Hyperlegible', sans-serif; font-size:15px;
+    padding:8px 10px; border:1.5px solid var(--card-border); border-radius:8px;
+    width:120px; margin-right:8px;
+  }
+  .try-box button{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:14px;
+    background:var(--indigo); color:#fff; border:none; border-radius:8px;
+    padding:8px 16px; cursor:pointer;
+  }
+  .try-feedback{ margin-top:10px; font-weight:700; font-size:14.5px; }
+  .try-feedback.ok{ color:#0F6B4F; }
+  .try-feedback.no{ color:#B23A24; }
+
+  table.tabela-limpa{ border-collapse:collapse; width:100%; margin:10px 0; font-size:14.5px; }
+  table.tabela-limpa th, table.tabela-limpa td{ border:1px solid var(--card-border); padding:7px 10px; text-align:center; }
+  table.tabela-limpa th{ background:#EEECFB; color:var(--indigo-deep); }
+
+  .quiz-q{ border:1px solid var(--card-border); border-radius:14px; padding:14px 16px; margin:14px 0; }
+  .quiz-q p.enun{ font-weight:700; font-size:15.5px; color:var(--indigo-deep); margin-bottom:10px; }
+  .quiz-opt{
+    display:block; width:100%; text-align:left; font-family:'Atkinson Hyperlegible', sans-serif;
+    font-size:15px; background:#fff; border:1.5px solid var(--card-border); border-radius:10px;
+    padding:9px 12px; margin-bottom:8px; cursor:pointer;
+  }
+  .quiz-opt.correct{ background:#E6F7EE; border-color:#4CAF88; }
+  .quiz-opt.wrong{ background:#FDEAE6; border-color:var(--coral-dark); }
+  .quiz-opt:disabled{ cursor:default; }
+  .quiz-fb{ font-size:14px; margin-top:6px; font-weight:700; }
+  .quiz-fb.ok{ color:#0F6B4F; }
+  .quiz-fb.no{ color:#B23A24; }
+  .quiz-explic{
+    display:none; margin-top:10px; background:#F3EFFC; border-left:5px solid var(--indigo-soft);
+    border-radius:8px; padding:10px 12px; font-size:14.5px;
+  }
+  .quiz-explic.show{ display:block; }
+  .quiz-explic .tag{ font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--indigo); margin-bottom:4px; display:block; }
+  #quizScore{ text-align:center; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:17px; color:var(--indigo-deep); margin-top:14px; }
+
+  footer.navfooter{
+    position:fixed; bottom:0; left:0; right:0; background:transparent;
+    z-index:50; pointer-events:none;
+    display:flex; justify-content:space-between; padding:0 10px 8px;
+  }
+  footer.navfooter button{
+    pointer-events:auto;
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:11px;
+    background:var(--indigo); color:#fff; border:none; border-radius:7px;
+    padding:4px 9px; cursor:pointer; box-shadow:0 2px 6px rgba(54,47,120,0.25);
+  }
+  footer.navfooter button:disabled{ background:#CFC9EA; cursor:default; box-shadow:none; }
+
+  .resumo p{ font-size:15.5px; margin-bottom:12px; }
+  em.destaque{ color:var(--coral-dark); font-style:normal; font-weight:700; }
+  svg.diagrama{ display:block; margin:10px auto; max-width:100%; }
+</style>
+</head>
+<body>
+
+<div id="bgsymbols"></div>
+
+<div id="progressbar">
+  <div id="progresslabel">Parte 1 de 7 — Taxa constante</div>
+  <div id="progresstrack"><div id="progressfill"></div></div>
+</div>
+
+<header class="titlewrap">
+  <h1>Revisão para a AV1</h1>
+  <p>Relembrando tudo o que vai cair na prova</p>
+</header>
+
+<nav id="tabs">
+  <div class="tab active" data-parte="1">1. Taxa</div>
+  <div class="tab" data-parte="2">2. Grandezas</div>
+  <div class="tab" data-parte="3">3. Círculo</div>
+  <div class="tab" data-parte="4">4. Volume</div>
+  <div class="tab" data-parte="5">5. Voltas</div>
+  <div class="tab" data-parte="6">6. Quiz</div>
+  <div class="tab" data-parte="7">7. Resumo</div>
+</nav>
+
+<main>
+
+<!-- PARTE 1 — TAXA CONSTANTE -->
+<section class="parte active" id="parte1">
+  <div class="card">
+    <span class="eyebrow indigo">Parte 1</span>
+    <h2>Taxa constante</h2>
+    <p>Quando alguma coisa acontece sempre no mesmo ritmo, dizemos que ela segue uma <strong>taxa constante</strong>. Para descobrir quanto vai acontecer em um tempo diferente, basta multiplicar essa taxa pelo novo tempo.</p>
+
+    <div class="pense-assim">
+      <div class="tag">🌱 Pense assim</div>
+      <p style="margin:0">Se uma torneira enche sempre 4 litros por minuto, você não precisa adivinhar quanto vai encher em 10 minutos: é só multiplicar 4 por 10. O ritmo não muda, então a conta também não muda de jeito.</p>
+    </div>
+
+    <h3>Exemplo trabalhado</h3>
+    <p>Uma fotocopiadora, mantendo sempre o mesmo ritmo, imprime 12 cópias por minuto. Quantas cópias ela imprimirá em 5 minutos?</p>
+    <table class="tabela-limpa">
+      <tr><th>Tempo (min)</th><th>Cópias</th></tr>
+      <tr><td>1</td><td>12</td></tr>
+      <tr><td>2</td><td>24</td></tr>
+      <tr><td>5</td><td>60</td></tr>
+    </table>
+    <p>Como o ritmo é sempre o mesmo, multiplicamos a taxa pelo tempo: 12 × 5 = <strong>60 cópias</strong>.</p>
+
+    <div class="dica">
+      <div class="tag">💡 Cuidado com essa pegadinha</div>
+      <p style="margin:0">Nessas questões, geralmente uma das alternativas erradas é o resultado de somar em vez de multiplicar (por exemplo, 12 + 5 = 17). Sempre confira: a grandeza está mesmo em um ritmo constante? Se sim, é multiplicação.</p>
+    </div>
+
+    <div class="try-box">
+      <div class="tag">✏️ Agora é sua vez</div>
+      <p style="margin:0 0 8px">Uma máquina de costura, num ritmo constante, faz 15 pontos por segundo. Quantos pontos ela faz em 4 segundos?</p>
+      <input type="text" id="tb1" placeholder="pontos">
+      <button onclick="checkTry('tb1','60','tb1fb')">Conferir</button>
+      <div class="try-feedback" id="tb1fb"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTE 2 — GRANDEZAS -->
+<section class="parte" id="parte2">
+  <div class="card">
+    <span class="eyebrow indigo">Parte 2</span>
+    <h2>Grandezas relacionadas x não relacionadas</h2>
+    <p>Duas grandezas estão <em class="destaque">relacionadas</em> quando existe uma regra fixa ligando uma à outra: conhecendo uma, dá para calcular a outra com certeza. Quando não existe essa regra fixa, dizemos que elas <em class="destaque">não estão necessariamente relacionadas</em>.</p>
+
+    <h3>Exemplo de grandezas relacionadas</h3>
+    <p>A quantidade de metros de tecido comprados e o valor pago, mantendo o preço por metro sempre igual. Se 1 metro custa R$ 8, comprar 3 metros custa exatamente 3 × 8 = R$ 24. Não tem surpresa: dá pra calcular com certeza.</p>
+
+    <h3>Exemplo de grandezas não relacionadas</h3>
+    <p>O número de horas que uma pessoa dorme e a nota que ela tira numa prova de matemática. Dormir bem pode ajudar, mas não existe uma fórmula que garanta a nota — depende de estudo, atenção, sorte na hora da prova e muitos outros fatores.</p>
+
+    <div class="pense-assim">
+      <div class="tag">🌱 Pense assim</div>
+      <p style="margin:0">Pergunte-se sempre: "se eu souber o valor de uma, tenho certeza absoluta do valor da outra?" Se a resposta for sim, elas estão relacionadas. Se a resposta for "depende", elas não estão necessariamente relacionadas.</p>
+    </div>
+
+    <div class="dica">
+      <div class="tag">💡 Erro comum</div>
+      <p style="margin:0">Não confunda "parece ter a ver" com "está relacionada". Muita coisa na vida real "parece" influenciar outra, mas só chamamos de grandezas relacionadas quando existe uma regra matemática fixa entre elas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PARTE 3 — CÍRCULO E SEMICÍRCULO -->
+<section class="parte" id="parte3">
+  <div class="card">
+    <span class="eyebrow indigo">Parte 3</span>
+    <h2>Perímetro do círculo</h2>
+    <p>O perímetro de um círculo (o contorno da circunferência) segue sempre a mesma regra: é aproximadamente 3,14 vezes o diâmetro.</p>
+    <div class="algo-block">
+      <div class="tag">🔵 Fórmula do perímetro do círculo</div>
+      <div class="passo"><b>C = π × d</b>, em que C é o perímetro, d é o diâmetro e π ≈ 3,14.</div>
+    </div>
+
+    <h3>Exemplo trabalhado (do diâmetro para o perímetro)</h3>
+    <p>Calcule o perímetro de um círculo com 20 cm de diâmetro, usando 3,14 para π.</p>
+    <p>C = 3,14 × 20 = <strong>62,8 cm</strong>.</p>
+
+    <h3>Exemplo trabalhado (do perímetro para o diâmetro)</h3>
+    <p>Um círculo tem perímetro de 62,8 cm. Qual é o seu diâmetro, usando 3,14 para π?</p>
+    <p>Como C = π × d, então d = C ÷ π = 62,8 ÷ 3,14 = <strong>20 cm</strong>.</p>
+
+    <div class="dica">
+      <div class="tag">💡 Cuidado</div>
+      <p style="margin:0">Confira sempre se o problema deu o <strong>diâmetro</strong> ou o <strong>raio</strong>. Se for o raio, lembre-se de que o diâmetro é o dobro do raio (d = 2 × r) antes de usar a fórmula.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Perímetro do semicírculo</h2>
+    <p>Um semicírculo é metade de um círculo. O contorno dele tem duas partes: a parte curva (metade da circunferência) e a parte reta (o diâmetro).</p>
+    <svg class="diagrama" viewBox="0 0 220 130" width="220" height="130">
+      <path d="M 30 100 A 80 80 0 0 1 190 100" fill="none" stroke="#362F78" stroke-width="3"/>
+      <line x1="30" y1="100" x2="190" y2="100" stroke="#E4694F" stroke-width="3"/>
+      <circle cx="30" cy="100" r="4" fill="#362F78"/>
+      <circle cx="190" cy="100" r="4" fill="#362F78"/>
+      <text x="110" y="45" text-anchor="middle" font-size="12" font-family="Atkinson Hyperlegible" fill="#2A2650">parte curva</text>
+      <text x="110" y="120" text-anchor="middle" font-size="12" font-family="Atkinson Hyperlegible" fill="#E4694F">parte reta (diâmetro)</text>
+    </svg>
+    <div class="algo-block">
+      <div class="tag">🔵 Fórmula do perímetro do semicírculo</div>
+      <div class="passo"><b>Passo 1.</b> Calcule a circunferência inteira: C = π × d.</div>
+      <div class="passo"><b>Passo 2.</b> Divida por 2 para achar a parte curva.</div>
+      <div class="passo"><b>Passo 3.</b> Some o diâmetro (a parte reta): perímetro = (π × d ÷ 2) + d.</div>
+    </div>
+    <h3>Exemplo trabalhado</h3>
+    <p>Uma quadra tem o formato de um semicírculo com 10 m de diâmetro. Qual é o perímetro total, usando 3,14 para π?</p>
+    <p>Parte curva: (3,14 × 10) ÷ 2 = 15,7 m. Somando o diâmetro: 15,7 + 10 = <strong>25,7 m</strong>.</p>
+
+    <div class="dica">
+      <div class="tag">💡 O erro mais comum aqui</div>
+      <p style="margin:0">Muita gente calcula só a parte curva (15,7 m neste exemplo) e esquece de somar o diâmetro. Mas o perímetro é o contorno <strong>inteiro</strong> da figura, então a parte reta também entra na conta!</p>
+    </div>
+  </div>
+</section>
+
+<!-- PARTE 4 — VOLUME -->
+<section class="parte" id="parte4">
+  <div class="card">
+    <span class="eyebrow indigo">Parte 4</span>
+    <h2>Volume de blocos retangulares</h2>
+    <div class="algo-block">
+      <div class="tag">📦 Fórmula do volume</div>
+      <div class="passo"><b>V = comprimento × largura × altura</b></div>
+    </div>
+
+    <h3>Exemplo 1: calcular o volume direto</h3>
+    <p>Um bloco tem 6 m de comprimento, 4 m de largura e 3 m de altura. V = 6 × 4 × 3 = <strong>72 m³</strong>.</p>
+
+    <h3>Exemplo 2: descobrir uma medida desconhecida</h3>
+    <p>Um bloco tem volume de 240 dm³, comprimento 8 dm e largura 6 dm. Qual é a altura?</p>
+    <p>Altura = V ÷ (comprimento × largura) = 240 ÷ (8 × 6) = 240 ÷ 48 = <strong>5 dm</strong>.</p>
+
+    <div class="dica">
+      <div class="tag">💡 Cuidado na conversão de unidades</div>
+      <p style="margin:0">Ao converter m³ para dm³, o fator é <strong>1000</strong>, não 10 — porque o volume tem três dimensões: 1 m × 1 m × 1 m = 10 dm × 10 dm × 10 dm = 1000 dm³.</p>
+    </div>
+
+    <h3>Exemplo 3: figuras em L (dois blocos juntos)</h3>
+    <p>Quando a figura não é um bloco simples, dividimos ela em dois (ou mais) blocos retangulares, calculamos o volume de cada um separadamente e somamos os resultados.</p>
+    <svg class="diagrama" viewBox="0 0 260 150" width="260" height="150">
+      <polygon points="40,120 40,40 100,40 100,120" fill="#EAE7F9" stroke="#362F78" stroke-width="1.5"/>
+      <text x="70" y="30" text-anchor="middle" font-size="12" font-family="Atkinson Hyperlegible" fill="#2A2650">Bloco 1</text>
+      <polygon points="100,120 100,90 220,90 220,120" fill="#F6F4FC" stroke="#362F78" stroke-width="1.5"/>
+      <text x="160" y="135" text-anchor="middle" font-size="12" font-family="Atkinson Hyperlegible" fill="#2A2650">Bloco 2</text>
+    </svg>
+
+    <div class="try-box">
+      <div class="tag">✏️ Agora é sua vez</div>
+      <p style="margin:0 0 8px">Um bloco tem volume de 150 cm³, comprimento 10 cm e largura 5 cm. Qual é a altura, em cm?</p>
+      <input type="text" id="tb2" placeholder="cm">
+      <button onclick="checkTry('tb2','3','tb2fb')">Conferir</button>
+      <div class="try-feedback" id="tb2fb"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTE 5 — VOLTAS -->
+<section class="parte" id="parte5">
+  <div class="card">
+    <span class="eyebrow indigo">Parte 5</span>
+    <h2>Voltas completas e circunferência</h2>
+    <p>Quando um objeto circular gira várias voltas, um ponto na borda dele percorre, em cada volta, uma distância igual ao <strong>perímetro do círculo</strong>. Para saber a distância total, multiplicamos o perímetro pelo número de voltas.</p>
+
+    <div class="algo-block">
+      <div class="tag">🔵 Passo a passo</div>
+      <div class="passo"><b>Passo 1.</b> Calcule o perímetro de uma volta: C = π × d.</div>
+      <div class="passo"><b>Passo 2.</b> Multiplique pelo número de voltas.</div>
+    </div>
+
+    <h3>Exemplo trabalhado</h3>
+    <p>Uma roda de bicicleta tem 60 cm de diâmetro e dá 10 voltas completas. Qual é a distância percorrida por um ponto na borda? Use 3,14 para π.</p>
+    <p>Perímetro de uma volta: C = 3,14 × 60 = 188,4 cm.<br>Distância total: 188,4 × 10 = <strong>1884 cm</strong>.</p>
+
+    <div class="dica">
+      <div class="tag">💡 Cuidado</div>
+      <p style="margin:0">Não esqueça o último passo: calcular o perímetro é só a distância de <strong>uma</strong> volta. Se o problema fala em várias voltas, é preciso multiplicar pelo número de voltas para achar a distância total.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PARTE 6 — QUIZ -->
+<section class="parte" id="parte6">
+  <div class="card">
+    <span class="eyebrow pratica">Pratique</span>
+    <h2>Quiz — 10 questões estilo AV1</h2>
+    <div id="quizContainer"></div>
+    <div id="quizScore"></div>
+  </div>
+</section>
+
+<!-- PARTE 7 — RESUMO -->
+<section class="parte" id="parte7">
+  <div class="card resumo">
+    <span class="eyebrow indigo">Resumo pro caderno</span>
+    <h2>O que vimos nesta revisão</h2>
+    <p>Quando alguma coisa acontece num ritmo constante, para saber quanto acontecerá em outro tempo basta multiplicar a taxa pelo novo tempo, como em 12 cópias por minuto vezes 5 minutos, que dá 60 cópias. Duas grandezas estão relacionadas quando existe uma regra fixa ligando uma à outra, de modo que conhecendo uma conseguimos calcular a outra com certeza; quando essa regra não existe, como no caso de horas de sono e nota de prova, dizemos que elas não estão necessariamente relacionadas.</p>
+    <p>Para calcular o perímetro de um círculo, usamos C = π × d, sendo π aproximadamente igual a 3,14. Quando a figura é um semicírculo, o perímetro tem duas partes: a parte curva, que é metade da circunferência, e a parte reta, que é o próprio diâmetro — e é importante lembrar de somar as duas partes, e não calcular só a curva. Quando um objeto circular dá várias voltas, a distância total percorrida por um ponto da borda é o perímetro de uma volta multiplicado pelo número de voltas.</p>
+    <p>Para calcular o volume de um bloco retangular, multiplicamos comprimento, largura e altura, sempre expressando o resultado em uma unidade cúbica. Ao converter de m³ para dm³, ou de dm³ para cm³, o fator é sempre 1000, porque o volume tem três dimensões. Quando a figura não é um bloco simples, como as formas em L, dividimos ela em dois ou mais blocos, calculamos o volume de cada um separadamente e depois somamos tudo para achar o volume total.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="navfooter">
+  <button id="btnVoltar" onclick="mudarParte(-1)">← Voltar</button>
+  <button id="btnAvancar" onclick="mudarParte(1)">Avançar →</button>
+</footer>
+
+<script>
+  const symbols = ['π','+','÷','×','=','√','%','∑','∆'];
+  const bg = document.getElementById('bgsymbols');
+  for(let i=0;i<16;i++){
+    const s = document.createElement('span');
+    s.textContent = symbols[i % symbols.length];
+    s.style.left = (Math.random()*94)+'vw';
+    s.style.top = (Math.random()*94)+'vh';
+    s.style.fontSize = (26+Math.random()*30)+'px';
+    s.style.animationDuration = (24+Math.random()*20)+'s';
+    s.style.animationDelay = (-Math.random()*20)+'s';
+    bg.appendChild(s);
+  }
+
+  const partesNomes = ["Taxa constante","Grandezas","Perímetro do círculo","Volume","Voltas","Quiz","Resumo"];
+  let parteAtual = 1;
+  const totalPartes = 7;
+
+  function irParaParte(n){
+    parteAtual = n;
+    document.querySelectorAll('.parte').forEach(el=>el.classList.remove('active'));
+    document.getElementById('parte'+n).classList.add('active');
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelector('.tab[data-parte="'+n+'"]').classList.add('active');
+    document.getElementById('progresslabel').textContent = 'Parte '+n+' de '+totalPartes+' — '+partesNomes[n-1];
+    document.getElementById('progressfill').style.width = (n/totalPartes*100)+'%';
+    document.getElementById('btnVoltar').disabled = (n===1);
+    document.getElementById('btnAvancar').disabled = (n===totalPartes);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  function mudarParte(delta){
+    const novo = parteAtual + delta;
+    if(novo>=1 && novo<=totalPartes) irParaParte(novo);
+  }
+  document.querySelectorAll('.tab').forEach(tab=>{
+    tab.addEventListener('click', ()=> irParaParte(parseInt(tab.dataset.parte)) );
+  });
+  irParaParte(1);
+
+  function checkTry(inputId, resposta, fbId){
+    const val = document.getElementById(inputId).value.trim().replace(',','.');
+    const fb = document.getElementById(fbId);
+    if(val === ''){
+      fb.textContent = 'Digite um valor antes de conferir.';
+      fb.className = 'try-feedback no';
+      return;
+    }
+    if(parseFloat(val) === parseFloat(resposta)){
+      fb.textContent = 'Isso mesmo! 🎉';
+      fb.className = 'try-feedback ok';
+    } else {
+      fb.textContent = 'Quase, revê esse passo.';
+      fb.className = 'try-feedback no';
+    }
+  }
+
+  // ===== Quiz =====
+  const perguntas = [
+    {
+      enun: "1. Uma padaria, mantendo sempre o mesmo ritmo, produz 9 pães por minuto. Quantos pães ela produzirá em 7 minutos?",
+      opts: ["16 pães","63 pães","56 pães","72 pães"],
+      correta: 1,
+      explicacao: "Como o ritmo é constante, multiplicamos a taxa pelo tempo: 9 × 7 = 63 pães."
+    },
+    {
+      enun: "2. Assinale a alternativa em que duas grandezas NÃO estão necessariamente relacionadas entre si.",
+      opts: [
+        "A quantidade de metros de tecido comprado e o valor pago, mantendo o preço por metro fixo.",
+        "O número de horas que uma pessoa dorme e a nota que tira numa prova de matemática.",
+        "O número de exemplares de um cartaz impresso e a quantidade de tinta usada.",
+        "O número de convidados de uma festa e a quantidade de refrigerante, mantendo a quantidade por pessoa."
+      ],
+      correta: 1,
+      explicacao: "Dormir mais horas pode ajudar, mas não existe uma regra fixa que garanta a nota — ela depende de vários outros fatores. Já nas outras alternativas existe uma proporção fixa (preço por metro, tinta por cartaz, refrigerante por convidado) ligando as duas grandezas."
+    },
+    {
+      enun: "3. Usando 3,14 como aproximação para π, calcule o perímetro de um círculo com 20 cm de diâmetro.",
+      opts: ["31,4 cm","62,8 cm","20 cm","125,6 cm"],
+      correta: 1,
+      explicacao: "C = π × d = 3,14 × 20 = 62,8 cm."
+    },
+    {
+      enun: "4. O perímetro de um círculo mede 37,68 cm. Usando 3,14 para π, qual é o diâmetro aproximado desse círculo?",
+      opts: ["6 cm","12 cm","18,84 cm","118,32 cm"],
+      correta: 1,
+      explicacao: "Como C = π × d, temos d = C ÷ π = 37,68 ÷ 3,14 = 12 cm."
+    },
+    {
+      enun: "5. Uma quadra tem o formato de um semicírculo com 10 m de diâmetro. Qual é o perímetro total dessa quadra? Use 3,14 para π.",
+      opts: ["15,7 m","25,7 m","31,4 m","20 m"],
+      correta: 1,
+      explicacao: "Parte curva: (3,14 × 10) ÷ 2 = 15,7 m. Somando a parte reta (o diâmetro): 15,7 + 10 = 25,7 m. Repare que só a parte curva (15,7 m) não é o perímetro completo."
+    },
+    {
+      enun: "6. Calcule o volume de um bloco retangular que tem 6 m de comprimento, 4 m de largura e 3 m de altura.",
+      opts: ["13 m³","72 m³","18 m³","70 m³"],
+      correta: 1,
+      explicacao: "V = comprimento × largura × altura = 6 × 4 × 3 = 72 m³."
+    },
+    {
+      enun: "7. Um bloco retangular tem volume de 240 dm³. Sabendo que seu comprimento é 8 dm e sua largura é 6 dm, qual é a altura desse bloco?",
+      opts: ["5 dm","48 dm","14 dm","26 dm"],
+      correta: 0,
+      explicacao: "Altura = V ÷ (comprimento × largura) = 240 ÷ (8 × 6) = 240 ÷ 48 = 5 dm."
+    },
+    {
+      enun: "8. Um aquário mede 1,5 m de comprimento, 1 m de largura e 0,8 m de altura. Calcule o volume desse aquário em decímetros cúbicos (dm³).",
+      opts: ["1,2 dm³","120 dm³","1200 dm³","12000 dm³"],
+      correta: 2,
+      explicacao: "Volume em m³: 1,5 × 1 × 0,8 = 1,2 m³. Convertendo para dm³ (fator 1000, pois são 3 dimensões): 1,2 × 1000 = 1200 dm³."
+    },
+    {
+      enun: "9. Uma peça em formato de L é formada por dois blocos retangulares. Bloco 1 mede 10×10×30 cm e Bloco 2 mede 25×10×10 cm. Qual é o volume total da peça?",
+      opts: ["3000 cm³","2500 cm³","5500 cm³","7500 cm³"],
+      correta: 2,
+      explicacao: "Bloco 1: 10 × 10 × 30 = 3000 cm³. Bloco 2: 25 × 10 × 10 = 2500 cm³. Total: 3000 + 2500 = 5500 cm³."
+    },
+    {
+      enun: "10. Uma roda de bicicleta tem 60 cm de diâmetro. Se ela dá 20 voltas completas, qual é a distância percorrida por um ponto da borda? Use 3,14 para π.",
+      opts: ["188,4 cm","1200 cm","3768 cm","376,8 cm"],
+      correta: 2,
+      explicacao: "Perímetro de uma volta: C = π × d = 3,14 × 60 = 188,4 cm. Distância total: 188,4 × 20 = 3768 cm."
+    }
+  ];
+  let acertos = 0;
+  let respondidas = 0;
+  const quizContainer = document.getElementById('quizContainer');
+  perguntas.forEach((p, idx)=>{
+    const div = document.createElement('div');
+    div.className = 'quiz-q';
+    let html = `<p class="enun">${p.enun}</p>`;
+    p.opts.forEach((op, oi)=>{
+      html += `<button class="quiz-opt" onclick="responder(${idx},${oi},this)">${String.fromCharCode(65+oi)}) ${op}</button>`;
+    });
+    html += `<div class="quiz-fb" id="qfb${idx}"></div>`;
+    html += `<div class="quiz-explic" id="qex${idx}"><span class="tag">📝 Passo a passo</span>${p.explicacao}</div>`;
+    div.innerHTML = html;
+    quizContainer.appendChild(div);
+  });
+  function responder(qidx, oidx, btnEl){
+    const p = perguntas[qidx];
+    const parent = btnEl.parentElement;
+    const buttons = parent.querySelectorAll('.quiz-opt');
+    if(buttons[0].disabled) return;
+    buttons.forEach((b,i)=>{
+      b.disabled = true;
+      if(i===p.correta) b.classList.add('correct');
+      if(i===oidx && i!==p.correta) b.classList.add('wrong');
+    });
+    const fb = document.getElementById('qfb'+qidx);
+    respondidas++;
+    if(oidx === p.correta){
+      acertos++;
+      fb.textContent = 'Isso mesmo! 🎉';
+      fb.className = 'quiz-fb ok';
+    } else {
+      fb.textContent = 'Quase, revê esse passo. A resposta certa está marcada em verde.';
+      fb.className = 'quiz-fb no';
+    }
+    document.getElementById('qex'+qidx).classList.add('show');
+    if(respondidas === perguntas.length){
+      document.getElementById('quizScore').textContent = `Você acertou ${acertos} de ${perguntas.length} questões!`;
+    }
+  }
+</script>
+
+</body>
+</html>
+
