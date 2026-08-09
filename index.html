@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisão para a AV1 — Sequências e Proporcionalidade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F4FC;
+    --indigo:#362F78;
+    --indigo-deep:#241F52;
+    --indigo-soft:#6C63B5;
+    --mint:#A9E5D0;
+    --coral:#FFB3A0;
+    --coral-dark:#E4694F;
+    --yellow:#FFDD73;
+    --text:#2A2650;
+    --text-sec:#5B5686;
+    --border:#E3DEF7;
+    --font-display:'Baloo 2', sans-serif;
+    --font-body:'Atkinson Hyperlegible', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    font-size:17px;
+    line-height:1.55;
+    position:relative;
+    min-height:100vh;
+    padding-bottom:34px;
+  }
+  h1,h2,h3,.font-display{font-family:var(--font-display);}
+  p{margin:0 0 10px 0;}
+
+  .bg-symbols{position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none;}
+  .bg-symbols span{position:absolute; font-family:var(--font-display); font-weight:700; color:var(--indigo); opacity:0.08; animation:float 22s ease-in-out infinite;}
+  @keyframes float{0%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-30px) rotate(8deg);}100%{transform:translateY(0) rotate(0deg);}}
+  @media (prefers-reduced-motion: reduce){.bg-symbols span{animation:none;}}
+
+  .progress-wrap{position:sticky; top:0; z-index:20; background:rgba(246,244,252,0.96); backdrop-filter:blur(4px); padding:10px 16px 8px 16px; border-bottom:1px solid var(--border);}
+  .progress-label{font-family:var(--font-display); font-weight:700; font-size:13px; color:var(--indigo); margin-bottom:6px; text-align:center;}
+  .progress-track{width:100%; height:8px; background:#E3DEF7; border-radius:999px; overflow:hidden;}
+  .progress-fill{height:100%; background:linear-gradient(90deg, var(--indigo-soft), var(--indigo)); border-radius:999px; transition:width .35s ease;}
+
+  .tabs-wrap{position:relative; z-index:10; padding:14px 10px 4px 10px; text-align:center;}
+  .tabs-title{font-family:var(--font-display); font-weight:800; font-size:20px; color:var(--indigo-deep); margin:6px 0 12px 0; padding:0 8px;}
+  .tabs-sub{font-size:13px; color:var(--text-sec); margin:-8px 0 12px 0;}
+  .tabs{display:flex; gap:5px; overflow-x:auto; padding:2px 6px 8px 6px; scrollbar-width:thin;}
+  .tab-pill{flex:0 0 auto; font-family:var(--font-body); font-weight:700; font-size:11px; color:var(--indigo); background:#fff; border:1px solid var(--border); border-radius:999px; padding:4px 9px; cursor:pointer; white-space:nowrap; transition:background .2s, color .2s, border-color .2s;}
+  .tab-pill.active{background:var(--indigo); color:#fff; border-color:var(--indigo);}
+
+  main{position:relative; z-index:5; max-width:640px; margin:0 auto; padding:6px 16px 20px 16px;}
+  .parte{display:none;}
+  .parte.active{display:block; animation:fadein .3s ease;}
+  @keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+  @media (prefers-reduced-motion: reduce){.parte.active{animation:none;}}
+
+  .card{background:#fff; border:1px solid var(--border); border-radius:18px; padding:20px 18px; margin-bottom:18px; box-shadow:0 4px 18px rgba(54,47,120,0.07);}
+  .eyebrow{display:inline-block; font-family:var(--font-display); font-weight:700; font-size:12px; letter-spacing:0.03em; color:var(--indigo); background:#EFECFB; border-radius:999px; padding:4px 12px; margin-bottom:10px;}
+  .eyebrow.quiz{background:var(--coral); color:var(--indigo-deep);}
+  h2.titulo{font-size:21px; font-weight:700; color:var(--indigo-deep); margin:0 0 10px 0;}
+  h3.subtitulo{font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--indigo); margin:16px 0 8px 0;}
+
+  /* lembrete relâmpago */
+  .lembrete{background:#EDEBFA; border-radius:14px; padding:13px 15px; margin:12px 0;}
+  .lembrete .rotulo{font-family:var(--font-display); font-weight:700; font-size:13px; color:var(--indigo); margin-bottom:5px;}
+  .lembrete ul{margin:0; padding-left:20px;}
+  .lembrete li{margin-bottom:4px;}
+
+  /* atenção / erro comum */
+  .atencao{background:#FFFAEE; border-left:6px solid var(--yellow); border-radius:10px; padding:11px 13px; margin:12px 0;}
+  .atencao .rotulo{font-family:var(--font-display); font-weight:700; font-size:13px; color:#8a6d1a; margin-bottom:4px; display:flex; align-items:center; gap:6px;}
+
+  /* algo-block */
+  .algo-block{background:#F1EEFC; border:1.5px solid var(--indigo-soft); border-radius:14px; padding:13px 16px; margin:12px 0;}
+  .algo-block p{margin:0 0 5px 0;}
+  .algo-block p:last-child{margin-bottom:0;}
+
+  table.tabela{width:100%; border-collapse:collapse; margin:10px 0; font-size:14.5px;}
+  table.tabela th, table.tabela td{border:1px solid var(--border); padding:6px 7px; text-align:center;}
+  table.tabela th{background:#EFECFB; color:var(--indigo-deep); font-family:var(--font-display); font-weight:600;}
+
+  svg.diagrama{max-width:100%; height:auto; display:block; margin:0 auto;}
+  .grafico-wrap{background:#FBFAFF; border:1px solid var(--border); border-radius:16px; padding:12px 8px 8px 8px; margin:12px 0;}
+  .grafico-legenda{text-align:center; font-size:12px; color:var(--text-sec); margin-top:2px;}
+  .mini-graficos{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:12px 0;}
+  .mini-grafico-item{text-align:center; width:120px;}
+  .mini-grafico-item .rotulo-mini{font-size:11.5px; color:var(--text-sec); margin-top:4px;}
+
+  /* quiz */
+  .quiz-q{margin-bottom:22px; padding-bottom:18px; border-bottom:1px solid var(--border);}
+  .quiz-q:last-child{border-bottom:none;}
+  .quiz-numero{font-family:var(--font-display); font-weight:800; color:var(--coral-dark); font-size:14px; margin-bottom:2px;}
+  .quiz-enunciado{font-weight:700; margin-bottom:10px; color:var(--indigo-deep);}
+  .quiz-opcoes{display:flex; flex-direction:column; gap:8px;}
+  .quiz-opt{text-align:left; background:#fff; border:1.5px solid var(--border); border-radius:12px; padding:10px 13px; font-family:var(--font-body); font-size:15px; cursor:pointer; color:var(--text);}
+  .quiz-opt:hover{border-color:var(--indigo-soft);}
+  .quiz-opt.correct{background:#E3F6EC; border-color:#5cb582; font-weight:700;}
+  .quiz-opt.wrong{background:#FDEBE7; border-color:var(--coral-dark);}
+  .quiz-opt.disabled{cursor:default; pointer-events:none;}
+  .quiz-feedback{margin-top:8px; font-size:14px; font-weight:700;}
+  .quiz-feedback.ok{color:#1f7a4d;}
+  .quiz-feedback.no{color:#a13a24;}
+  .score-box{position:sticky; top:66px; z-index:8; background:var(--indigo); color:#fff; font-family:var(--font-display); font-weight:700; font-size:14px; border-radius:999px; padding:8px 16px; text-align:center; width:fit-content; margin:0 auto 16px auto;}
+
+  .resolucao{display:none; margin-top:12px; background:#FFF3F0; border-left:6px solid var(--coral-dark); border-radius:10px; padding:12px 14px; font-size:15px;}
+  .resolucao.show{display:block; animation:fadein .3s ease;}
+  .resolucao .rotulo{font-family:var(--font-display); font-weight:700; font-size:13.5px; color:var(--coral-dark); margin-bottom:6px;}
+  .resolucao ol{margin:0; padding-left:20px;}
+  .resolucao li{margin-bottom:4px;}
+  .resolucao .resp-final{font-weight:700; color:var(--indigo-deep); margin-top:6px; margin-bottom:0;}
+
+  strong{color:var(--indigo-deep);}
+
+  /* botões flutuantes de navegação */
+  .nav-btn{position:fixed; bottom:10px; z-index:20; font-family:var(--font-display); font-weight:700; font-size:11px; background:var(--indigo); color:#fff; border:none; border-radius:999px; padding:4px 9px; cursor:pointer; box-shadow:0 2px 8px rgba(54,47,120,0.28); opacity:0.9;}
+  .nav-btn:hover{opacity:1;}
+  .nav-btn:disabled{background:#CFC9EA; cursor:default; box-shadow:none; opacity:0.6;}
+  #btnVoltar{left:10px;}
+  #btnAvancar{right:10px;}
+
+  /* ============ TELA GRANDE (TV 42") ============ */
+  @media (min-width: 900px){
+    body{font-size:20px; padding-bottom:44px;}
+    .tabs-title{font-size:30px; margin:10px 0 16px 0;}
+    .tabs-sub{font-size:15px;}
+    .tabs{gap:8px; padding:2px 8px 12px 8px;}
+    .tab-pill{font-size:15px; padding:8px 16px; border-width:1.5px;}
+    main{max-width:980px; padding:10px 28px 30px 28px;}
+    .card{padding:32px 38px; border-radius:22px;}
+    .eyebrow{font-size:14px; padding:6px 16px;}
+    h2.titulo{font-size:29px;}
+    h3.subtitulo{font-size:21px; margin:20px 0 10px 0;}
+    .lembrete, .atencao, .algo-block, .resolucao{padding:18px 22px; border-radius:16px; font-size:19px;}
+    .lembrete .rotulo, .atencao .rotulo, .resolucao .rotulo{font-size:16px;}
+    table.tabela{font-size:18px;}
+    table.tabela th, table.tabela td{padding:10px 12px;}
+    .quiz-enunciado{font-size:19px;}
+    .quiz-opt{font-size:18px; padding:14px 18px;}
+    .quiz-feedback{font-size:16px;}
+    .score-box{font-size:16px; padding:10px 20px; top:78px;}
+    svg.diagrama{max-width:420px;}
+    .mini-grafico-item{width:150px;}
+    .progress-label{font-size:15px;}
+    .progress-track{height:10px;}
+    .nav-btn{font-size:15px; padding:7px 15px; bottom:16px;}
+    #btnVoltar{left:16px;}
+    #btnAvancar{right:16px;}
+  }
+  @media (min-width: 1500px){
+    body{font-size:23px;}
+    main{max-width:1180px;}
+    .tabs-title{font-size:36px;}
+    h2.titulo{font-size:33px;}
+    h3.subtitulo{font-size:24px;}
+    .card{padding:38px 48px;}
+    svg.diagrama{max-width:480px;}
+    .quiz-opt{font-size:20px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-symbols" aria-hidden="true">
+  <span style="top:6%; left:8%; font-size:38px; animation-delay:0s;">T(n)</span>
+  <span style="top:14%; left:80%; font-size:26px; animation-delay:2s;">÷</span>
+  <span style="top:32%; left:20%; font-size:26px; animation-delay:4s;">×</span>
+  <span style="top:48%; left:85%; font-size:30px; animation-delay:1s;">k</span>
+  <span style="top:62%; left:10%; font-size:28px; animation-delay:3s;">1,1,2,3</span>
+  <span style="top:75%; left:65%; font-size:28px; animation-delay:5s;">=</span>
+  <span style="top:88%; left:30%; font-size:30px; animation-delay:2.5s;">+5</span>
+  <span style="top:20%; left:50%; font-size:24px; animation-delay:6s;">?</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label" id="progressLabel">Parte 1 de 5 — Sequências (T(n))</div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:20%;"></div></div>
+</div>
+
+<div class="tabs-wrap">
+  <h1 class="tabs-title">Revisão para a AV1</h1>
+  <div class="tabs-sub">Sequências, recursivas, Fibonacci e proporcionalidade</div>
+  <div class="tabs" id="tabsRow">
+    <button class="tab-pill active" data-idx="0">1. T(n)</button>
+    <button class="tab-pill" data-idx="1">2. Recursivas</button>
+    <button class="tab-pill" data-idx="2">3. Figuras & Fibonacci</button>
+    <button class="tab-pill" data-idx="3">4. Proporcionalidade</button>
+    <button class="tab-pill" data-idx="4">5. Quiz AV1</button>
+  </div>
+</div>
+
+<main>
+
+<!-- ===================== PARTE 1 ===================== -->
+<section class="parte active" data-idx="0">
+  <div class="card">
+    <span class="eyebrow">Parte 1</span>
+    <h2 class="titulo">Sequências não recursivas — T(n)</h2>
+
+    <p>Uma sequência é uma lista de números que segue uma regra. Em muitas sequências, existe uma fórmula que calcula qualquer termo direto — sem precisar escrever todos os termos anteriores até chegar lá. Essa fórmula se chama <strong>expressão geradora</strong>, e é escrita como <strong>T(n)</strong>.</p>
+    <p>Pense em T(n) como uma máquina: você entra com a <strong>posição</strong> que quer saber (o valor de n) e ela devolve o <strong>termo</strong> que está naquela posição. Por exemplo, T(1) é o 1º termo, T(2) é o 2º termo, e assim por diante.</p>
+
+    <div class="lembrete">
+      <div class="rotulo">⚡ Lembrete rápido</div>
+      <ul>
+        <li><strong>T(n)</strong> é uma fórmula que calcula qualquer termo <strong>direto</strong>, sem passar pelos anteriores.</li>
+        <li>Passo a passo: troque a letra <strong>n</strong> pelo número da posição pedida → resolva <strong>multiplicação antes da soma/subtração</strong>.</li>
+      </ul>
+    </div>
+
+    <h3 class="subtitulo">Mini-exemplo</h3>
+    <p>T(n) = 5n + 1. Qual é o 3º termo?</p>
+    <p>Como a questão pede o <strong>3º termo</strong>, isso quer dizer que n = 3. Basta substituir o n da fórmula pelo número 3, e resolver a conta com calma, na ordem certa: primeiro a multiplicação, depois a soma.</p>
+    <table class="tabela">
+      <tr><th>n</th><th>Substituindo</th><th>T(n)</th></tr>
+      <tr><td>3</td><td>5 · 3 + 1</td><td>16</td></tr>
+    </table>
+    <p>Repare que 5 · 3 = 15, e depois somamos 1, dando 16. Esse é o 3º termo dessa sequência — e o mesmo caminho funciona para achar qualquer outro termo, por mais distante que ele esteja.</p>
+
+    <div class="atencao">
+      <div class="rotulo">⚠️ Erro comum</div>
+      <p>Fazer a conta na ordem errada. Sempre <strong>multiplique primeiro</strong>, depois some ou subtraia.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 2 ===================== -->
+<section class="parte" data-idx="1">
+  <div class="card">
+    <span class="eyebrow">Parte 2</span>
+    <h2 class="titulo">Sequências recursivas: algoritmo e fluxograma</h2>
+
+    <p>Nem toda sequência tem uma fórmula T(n) fácil de usar. Em algumas sequências, cada termo novo só existe porque depende do termo <strong>anterior</strong> — não dá para pular direto para um termo distante sem passar pelos que vêm antes dele. Chamamos essas sequências de <strong>recursivas</strong>.</p>
+    <p>Para descrever uma sequência recursiva com precisão, usamos duas ferramentas: o <strong>algoritmo</strong>, que é uma lista de instruções numeradas (como uma receita de cozinha), e o <strong>fluxograma</strong>, que é essa mesma receita desenhada com setas e caixinhas.</p>
+
+    <div class="lembrete">
+      <div class="rotulo">⚡ Lembrete rápido</div>
+      <ul>
+        <li>Numa sequência <strong>recursiva</strong>, cada termo nasce do termo <strong>anterior</strong> — não dá pra pular direto para um termo distante.</li>
+        <li><strong>Algoritmo:</strong> lista de passos numerados, como uma receita.</li>
+        <li><strong>Fluxograma:</strong> a mesma receita desenhada — oval (início/fim), retângulo (ação), losango (decisão sim/não).</li>
+      </ul>
+    </div>
+
+    <p>No fluxograma, cada formato de caixinha tem um significado fixo, e isso ajuda a não se perder no meio do processo: o <strong>oval</strong> marca onde o processo começa ou termina; o <strong>retângulo</strong> representa uma ação, como calcular ou escrever um valor; e o <strong>losango</strong> é sempre uma pergunta de "sim ou não", que decide se o processo continua ou para.</p>
+
+    <div class="atencao">
+      <div class="rotulo">⚠️ O erro mais comum da prova</div>
+      <p>Confira sempre <strong>a qual passo</strong> o algoritmo manda voltar. Se for "retorne ao passo 2" (ou outro passo do meio), o valor <strong>não reinicia</strong> — a conta continua do último resultado escrito. Só reinicia se for <strong>"retorne ao passo 1"</strong>.</p>
+    </div>
+
+    <p>Esse detalhe muda tudo: se o algoritmo manda voltar a um passo do meio, o "último resultado" fica guardado e a conta segue crescendo a partir dele. Mas se manda voltar ao passo 1, é como se você apertasse um botão de "reiniciar" — o valor volta ao começo, e a sequência pode ficar repetindo os mesmos números para sempre.</p>
+
+    <h3 class="subtitulo">Fluxograma — esquema geral</h3>
+    <p>Veja como esse "vai e volta" aparece desenhado. A seta vermelha, saindo do losango com a resposta "não", é o caminho que faz o processo se repetir — ela sempre volta para uma caixinha de ação, nunca para o início.</p>
+    <div class="grafico-wrap">
+    <svg class="diagrama" viewBox="0 0 260 380" width="260" height="380">
+      <defs>
+        <marker id="seta-fluxo" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+          <path d="M0,0 L7,3.5 L0,7 z" fill="#362F78"/>
+        </marker>
+        <marker id="seta-nao" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+          <path d="M0,0 L7,3.5 L0,7 z" fill="#E4694F"/>
+        </marker>
+      </defs>
+      <!-- início -->
+      <ellipse cx="130" cy="26" rx="55" ry="20" fill="#EFECFB" stroke="#362F78" stroke-width="1.5"/>
+      <text x="130" y="31" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="13" fill="#241F52">Início</text>
+      <line x1="130" y1="46" x2="130" y2="64" stroke="#362F78" stroke-width="1.5" marker-end="url(#seta-fluxo)"/>
+      <!-- retângulo 1 -->
+      <rect x="45" y="66" width="170" height="38" rx="6" fill="#fff" stroke="#362F78" stroke-width="1.5"/>
+      <text x="130" y="90" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="12" fill="#2A2650">Escreva o valor inicial</text>
+      <line x1="130" y1="104" x2="130" y2="122" stroke="#362F78" stroke-width="1.5" marker-end="url(#seta-fluxo)"/>
+      <!-- retângulo 2 -->
+      <rect x="35" y="124" width="190" height="38" rx="6" fill="#fff" stroke="#362F78" stroke-width="1.5"/>
+      <text x="130" y="148" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="12" fill="#2A2650">Calcule o próximo termo</text>
+      <line x1="130" y1="162" x2="130" y2="184" stroke="#362F78" stroke-width="1.5" marker-end="url(#seta-fluxo)"/>
+      <!-- losango -->
+      <polygon points="130,186 200,231 130,276 60,231" fill="#FFFAEE" stroke="#362F78" stroke-width="1.5"/>
+      <text x="130" y="224" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="11" fill="#2A2650">Já chegou no</text>
+      <text x="130" y="239" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="11" fill="#2A2650">termo pedido?</text>
+      <!-- sim -->
+      <line x1="130" y1="276" x2="130" y2="326" stroke="#362F78" stroke-width="1.5" marker-end="url(#seta-fluxo)"/>
+      <text x="140" y="300" font-family="Baloo 2" font-weight="700" font-size="11" fill="#362F78">SIM</text>
+      <!-- fim -->
+      <ellipse cx="130" cy="350" rx="50" ry="20" fill="#EFECFB" stroke="#362F78" stroke-width="1.5"/>
+      <text x="130" y="355" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="13" fill="#241F52">Fim</text>
+      <!-- não (volta) -->
+      <path d="M 200,231 C 240,231 245,145 225,145" fill="none" stroke="#E4694F" stroke-width="1.5" marker-end="url(#seta-nao)"/>
+      <text x="205" y="196" font-family="Baloo 2" font-weight="700" font-size="11" fill="#E4694F">NÃO</text>
+    </svg>
+    <div class="grafico-legenda">Estrutura típica: repete até a condição de parada ser "sim"</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 3 ===================== -->
+<section class="parte" data-idx="2">
+  <div class="card">
+    <span class="eyebrow">Parte 3</span>
+    <h2 class="titulo">Figuras que crescem e Fibonacci</h2>
+
+    <p>Nem toda sequência é feita só de números soltos — muitas vezes ela aparece em <strong>figuras que crescem</strong>, como desenhos feitos de palitos de fósforo, quadradinhos ou bolinhas. A estratégia para resolver é sempre a mesma: contar quantas peças cada figura tem, e ver quanto ela cresceu da figura anterior para a atual.</p>
+    <p>Quando a questão pede uma figura "mais lá na frente" (como a Figura 8, sem desenhá-la), não vale a pena desenhar tudo. É mais rápido achar primeiro <strong>quanto a figura cresce a cada passo</strong>, e depois continuar somando esse valor até chegar na figura pedida.</p>
+
+    <div class="lembrete">
+      <div class="rotulo">⚡ Lembrete rápido</div>
+      <ul>
+        <li><strong>Figuras que crescem:</strong> ache quanto aumenta de uma figura para a próxima, e continue somando esse valor até chegar na figura pedida.</li>
+        <li><strong>Fibonacci:</strong> cada termo é a <strong>soma dos dois termos anteriores</strong>.</li>
+      </ul>
+    </div>
+
+    <p>A sequência de Fibonacci é um tipo especial de sequência recursiva, e uma das mais famosas da Matemática. Nela, cada termo novo não vem de somar sempre o mesmo número — ele nasce da soma dos <strong>dois</strong> termos que vieram logo antes dele. Repare como cada número da tabela abaixo nasce dos dois anteriores: 1+1=2, depois 1+2=3, depois 2+3=5, e assim por diante.</p>
+
+    <table class="tabela">
+      <tr><th>Termo</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+      <tr><th>Fibonacci</th><td>1</td><td>1</td><td>2</td><td>3</td><td>5</td><td>8</td></tr>
+    </table>
+    <p>Para achar o próximo termo depois do 8, basta somar os dois últimos números que já foram escritos: 5 + 8 = 13.</p>
+
+    <div class="atencao">
+      <div class="rotulo">⚠️ Erro comum</div>
+      <p>Somar só o último termo, esquecendo o penúltimo. Sempre some os <strong>dois últimos números que você já escreveu</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 4 ===================== -->
+<section class="parte" data-idx="3">
+  <div class="card">
+    <span class="eyebrow">Parte 4</span>
+    <h2 class="titulo">Proporcionalidade direta e inversa</h2>
+
+    <p>Quando duas grandezas estão relacionadas, existem alguns jeitos diferentes de elas se comportarem. Nos dois casos mais importantes, uma grandeza "responde" à outra seguindo uma regra fixa: na <strong>direta</strong>, as duas crescem juntas na mesma proporção; na <strong>inversa</strong>, uma cresce enquanto a outra diminui, também numa proporção fixa.</p>
+    <p>O jeito seguro de descobrir qual é qual não é só olhar se uma grandeza sobe quando a outra sobe (ou desce). É preciso testar com números: numa relação direta, a <strong>razão</strong> entre as duas grandezas (uma dividida pela outra) dá sempre o mesmo resultado. Numa relação inversa, é o <strong>produto</strong> entre elas (uma multiplicada pela outra) que dá sempre o mesmo resultado.</p>
+
+    <div class="lembrete">
+      <div class="rotulo">⚡ Lembrete rápido</div>
+      <ul>
+        <li><strong>Direta:</strong> y = k · x → a razão (y ÷ x) é sempre a mesma → gráfico é uma <strong>reta pela origem</strong>.</li>
+        <li><strong>Inversa:</strong> y = k ÷ x → o produto (x · y) é sempre o mesmo → gráfico é uma <strong>hipérbole</strong>.</li>
+      </ul>
+    </div>
+
+    <p>Essa diferença também aparece no desenho do gráfico. Numa relação direta, como y = k·x, quando x vale 0, y também vale 0 — por isso o gráfico é sempre uma reta que passa bem no ponto de origem. Já numa relação inversa, como y = k÷x, x nunca pode valer 0 (não existe divisão por zero), então a curva se aproxima dos eixos mas nunca chega a tocá-los — essa curva tem um nome: hipérbole.</p>
+
+    <div class="mini-graficos">
+      <div class="mini-grafico-item">
+        <svg class="diagrama" viewBox="0 0 120 100" width="120" height="100">
+          <line x1="20" y1="80" x2="105" y2="80" stroke="#5B5686" stroke-width="1.5"/>
+          <line x1="20" y1="80" x2="20" y2="10" stroke="#5B5686" stroke-width="1.5"/>
+          <line x1="20" y1="80" x2="95" y2="15" stroke="#362F78" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <div class="rotulo-mini">Direta: reta pela origem</div>
+      </div>
+      <div class="mini-grafico-item">
+        <svg class="diagrama" viewBox="0 0 120 100" width="120" height="100">
+          <line x1="20" y1="80" x2="105" y2="80" stroke="#5B5686" stroke-width="1.5"/>
+          <line x1="20" y1="80" x2="20" y2="10" stroke="#5B5686" stroke-width="1.5"/>
+          <path d="M 27,15 C 35,40 45,55 60,63 C 75,69 85,73 98,76" fill="none" stroke="#362F78" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <div class="rotulo-mini">Inversa: hipérbole</div>
+      </div>
+    </div>
+
+    <p>Um cuidado importante: existem relações em que as duas grandezas crescem juntas, mas <strong>não</strong> são diretamente proporcionais — como a área de um quadrado (A = x²) ou o volume de um cubo (V = a³). Nesses casos, x (ou a) está elevado a uma potência, e isso faz a razão entre as grandezas mudar a cada linha da tabela, em vez de ficar constante. É por isso que o teste da razão (ou do produto) é sempre mais confiável do que só "olhar" se uma grandeza sobe junto com a outra.</p>
+
+    <div class="atencao">
+      <div class="rotulo">⚠️ Erro comum</div>
+      <p>Relações com expoente — como área (A = x²) ou volume (V = a³) — <strong>não são diretamente proporcionais</strong>, mesmo que as duas grandezas cresçam juntas. Teste sempre: a razão y÷x precisa dar o mesmo número em toda linha da tabela.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 5 — QUIZ ===================== -->
+<section class="parte" data-idx="4">
+  <div class="card">
+    <span class="eyebrow quiz">Parte 5 · Quiz</span>
+    <h2 class="titulo">10 questões no estilo da AV1</h2>
+
+    <div class="score-box" id="scoreBox">Acertos: 0 de 10</div>
+
+    <!-- Q1 -->
+    <div class="quiz-q" data-answered="false">
+      <div class="quiz-numero">1</div>
+      <div class="quiz-enunciado">Qual é o quinto termo da sequência dada pela expressão geradora T(n) = 4n − 1?</div>
+      <div class="quiz-opcoes">
+        <button class="quiz-opt" data-correct="false">a) 15</button>
+        <button class="quiz-opt" data-correct="false">b) 16</button>
+        <button class="quiz-opt" data-correct="true">c) 19</button>
+        <button class="quiz-opt" data-correct="false">d) 20</button>
+        <button class="quiz-opt" data-correct="false">e) 21</button>
+      </div>
+      <div class="quiz-feedback"></div>
+      <div class="resolucao">
+        <div class="rotulo">🧩 Passo a passo</div>
+        <ol>
+          <li>A questão pede o termo de ordem n = 5.</li>
+          <li>Troque n por 5 na fórmula: T(5) = 4·5 − 1.</li>
+          <li>Resolva a multiplicação primeiro: 4·5 = 20.</li>
+          <li>Depois a subtração: 20 − 1 = 19.</li>
+        </ol>
+        <p class="resp-final">Resposta: T(5) = 19.</p>
+        <p>Erro comum: fazer a conta na ordem errada — 4×(5−1) = 16 (opção b).</p>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-q" data-answered="false">
+      <div class="quiz-numero">2</div>
+      <div class="quiz-enunciado">Uma sequência de figuras é feita de quadrados unidos lado a lado com palitos de fósforo. A Figura 1 tem 4 palitos, e cada novo quadrado soma 3 palitos (porque um lado já é compartilhado). Quantos palitos terá a Figura 8?</div>
+      <div class="quiz-opcoes">
+        <button class="quiz-opt" data-correct="false">a) 22</button>
+        <button class="quiz-opt" data-correct="false">b) 24</button>
+        <button class="quiz-opt" data-correct="true">c) 25</button>
+        <button class="quiz-opt" data-correct="false">d) 28</button>
+        <button class="quiz-opt" data-correct="false">e) 31</button>
+      </div>
+      <div class="quiz-feedback"></div>
+      <div class="resolucao">
+        <div class="rotulo">🧩 Passo a passo</div>
+        <ol>
+          <li>O crescimento entre figuras é constante: +3 palitos a cada nova figura.</li>
+          <li>Da Figura 1 até a Figura 8 há 7 "saltos" (8 − 1 = 7).</li>
+          <li>Some o incremento 7 vezes: 4 + 3×7 = 4 + 21.</li>
+        </ol>
+        <p class="resp-final">Resposta: 25 palitos.</p>
+        <p>Erro comum: multiplicar por 8 em vez de 7, esquecendo que a Figura 1 já é o ponto de partida — dá 4+24=28 (opção d).</p>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-q" data-answered="false">
+      <div class="quiz-numero">3</div>
+      <div class="quiz-enunciado">Observe a sequência: 2, 2, 4, 6, 10, 16, ... Qual é o próximo termo?</div>
+      <div class="quiz-opcoes">
+        <button class="quiz-opt" data-correct="false">a) 18</button>
+        <button class="quiz-opt" data-correct="false">b) 22</button>
+        <button class="quiz-opt" data-correct="false">c) 24</button>
+        <button class="quiz-opt" data-correct="true">d) 26</button>
+        <button class="quiz-opt" data-correct="false">e) 32</button>
+      </div>
+      <div class="quiz-feedback"></div>
+      <div class="resolucao">
+        <div class="rotulo">🧩 Passo a passo</div>
+        <ol>
+          <li>Confirme a regra: cada termo é a soma dos dois anteriores (2+2=4; 2+4=6; 4+6=10; 6+10=16).</li>
+          <li>Aplique a mesma regra aos dois últimos termos: 10 + 16.</li>
+        </ol>
+        <p class="resp-final">Resposta: 26.</p>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-q" data-answered="false">
+      <div class="quiz-numero">4</div>
+      <div class="quiz-enunciado">Marque a alternativa correta sobre os gráficos de proporcionalidade direta e inversa:</div>
+      <div class="quiz-opcoes">
+        <button class="quiz-opt" data-correct="false">a) A inversa gera uma reta pela origem; a direta gera uma parábola.</button>
+        <button class="quiz-opt" data-correct="false">b) Ambas geram retas paralelas.</button>
+        <button class="quiz-opt" data-correct="false">c) A direta gera uma hipérbole; a inversa, uma reta pela origem.</button>
+        <button class="quiz-opt" data-correct="true">d) A direta gera uma reta que passa pela origem; a inversa gera uma curva (hipérbole) que nunca toca os eixos.</button>
+        <button class="quiz-opt" data-correct="false">e) Nenhuma das duas gera um gráfico contínuo.</button>
+      </div>
+      <div class="quiz-feedback"></div>
+      <div class="resolucao">
+        <div class="rotulo">🧩 Passo a passo</div>
+        <ol>
+          <li>Direta: y = k·x. Quando x = 0, y também é 0 → a reta sempre passa pela origem.</li>
+          <li>Inversa: y = k÷x. Como x nunca pode ser 0, a curva nunca toca os eixos → é a hipérbole.</li>
+        </ol>
+        <p class="resp-final">Resposta: alternativa d.</p>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-q" data-answered="false">
+      <div class="quiz-numero">5</div>
+      <div class="quiz-enunciado">Considere cubos de aresta a, cujo volume é dado por V = a³. Sobre a relação entre a e V, é correto afirmar que:</div>
+      <div class="quiz-opcoes">
+        <button class="quiz-opt" data-correct="false">a) É diretamente proporcional, pois quando a aumenta, V também aumenta.</button>
+        <button class="quiz-opt" data-correct="true">b) Não é diretamente proporcional, pois a razão V/a não é constante — a relação não é linear.</button>
+        <button class="quiz-opt" data-correct="false">c) É inversamente proporcional, pois V cresce mais rápido que a.</button>
+        <button class="quiz-opt" data-correct="false">d) É diretamente proporcional, pois V = a³ é uma equação.</button>
+        <button class="quiz-opt" data-correct="false">e) Não existe relação matemática entre a e V.</button>
+      </div>
+      <div class="quiz-feedback"></div>
+      <div class="resolucao">
+        <div class="rotulo">🧩 Passo a passo</div>
+        <ol>
+          <li>Teste de verdade: a razão V÷a precisa dar sempre o mesmo número para ser diretamente proporcional.</li>
+          <li>a=1 → V=1 → V/a=1. a=2 → V=8 → V/a=4. a=3 → V=27 → V/a=9.</li>
+          <li>A razão muda a cada linha (1, 4, 9...) — não é constante.</li>
+        </ol>
+        <p class="resp-final">Resposta: alternativa b. (a está elevado ao cubo — relação não linear.)</p>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-q" data-answered="false">
+      <div class="quiz-numero">6</div>
+      <div class="quiz-enunciado">Um tanque é abastecido por uma bomba com vazão constante. Após 4 horas, há 60 litros de água nele. Mantendo essa vazão, quantos litros haverá após 9 horas?</div>
+      <div class="quiz-opcoes">
+        <button class="quiz-opt" data-correct="false">a) 65 litros</button>
+        <button class="quiz-opt" data-correct="false">b) 69 litros</button>
+        <button class="quiz-opt" data-correct="false">c) 120 litros</button>
+        <button class="quiz-opt" data-correct="true">d) 135 litros</button>
+        <button class="quiz-opt" data-correct="false">e) 540 litros</button>
+      </div>
+      <div class="quiz-feedback"></div>
+      <div class="resolucao">
+        <div class="rotulo">🧩 Passo a passo</div>
+        <ol>
+          <li>Ache a vazão por hora: 60 ÷ 4 = 15 litros por hora.</li>
+          <li>Aplique essa vazão para 9 horas: 15 × 9 = 135.</li>
+        </ol>
+        <p class="resp-final">Resposta: 135 litros.</p>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="quiz-q" data-answered="false">
+      <div class="quiz-numero">7</div>
+      <div class="quiz-enunciado">Para revisar um texto, 3 revisores levam 10 dias, todos no mesmo ritmo. Quantos dias levariam 5 revisores para revisar o mesmo texto, nesse ritmo?</div>
+      <div class="quiz-opcoes">
+        <button class="quiz-opt" data-correct="false">a) 2 dias</button>
+        <button class="quiz-opt" data-correct="false">b) 5 dias</button>
+        <button class="quiz-opt" data-correct="true">c) 6 dias</button>
+        <button class="quiz-opt" data-correct="false">d) 15 dias</button>
+        <button class="quiz-opt" data-correct="false">e) 50 dias</button>
+      </div>
+      <div class="quiz-feedback"></div>
+      <div class="resolucao">
+        <div class="rotulo">🧩 Passo a passo</div>
+        <ol>
+          <li>É proporcionalidade inversa: calcule o "trabalho total" — 3 × 10 = 30 (revisor-dias).</li>
+          <li>Divida pelo novo número de revisores: 30 ÷ 5 = 6.</li>
+        </ol>
+        <p class="resp-final">Resposta: 6 dias.</p>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="quiz-q" data-answered="false">
+      <div class="quiz-numero">8</div>
+      <div class="quiz-enunciado">Uma sequência numérica é definida pelo algoritmo:<br>
+        Passo 1. Comece com o número 4.<br>
+        Passo 2. Some 5 ao termo anterior.<br>
+        Passo 3. Multiplique o resultado por 2.<br>
+        Passo 4. Escreva o novo termo.<br>
+        Passo 5. Se o termo obtido for o quarto termo, pare. Caso contrário, retorne ao Passo 2.<br>
+        Qual é o quarto termo dessa sequência?</div>
+      <div class="quiz-opcoes">
+        <button class="quiz-opt" data-correct="false">a) 38</button>
+        <button class="quiz-opt" data-correct="false">b) 46</button>
+        <button class="quiz-opt" data-correct="false">c) 67</button>
+        <button class="quiz-opt" data-correct="true">d) 102</button>
+        <button class="quiz-opt" data-correct="false">e) 214</button>
+      </div>
+      <div class="quiz-feedback"></div>
+      <div class="resolucao">
+        <div class="rotulo">🧩 Passo a passo</div>
+        <ol>
+          <li>1º termo = 4 (valor inicial).</li>
+          <li>2º termo: (4+5)×2 = 18.</li>
+          <li>O passo 5 manda voltar ao <strong>passo 2</strong> — o valor não reinicia! 3º termo: (18+5)×2 = 46.</li>
+          <li>4º termo: (46+5)×2 = 102.</li>
+        </ol>
+        <p class="resp-final">Resposta: 102.</p>
+        <p>Erro comum: parar um passo cedo demais e responder 46 (opção b), ou inverter a ordem das operações e responder 67 (opção c).</p>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="quiz-q" data-answered="false">
+      <div class="quiz-numero">9</div>
+      <div class="quiz-enunciado">O fluxograma abaixo descreve um algoritmo para gerar os termos de uma sequência recursiva de 2ª ordem:</div>
+      <div class="grafico-wrap">
+        <svg class="diagrama" viewBox="0 0 260 400" width="260" height="400">
+          <defs>
+            <marker id="seta-q9" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+              <path d="M0,0 L7,3.5 L0,7 z" fill="#362F78"/>
+            </marker>
+            <marker id="seta-q9-nao" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+              <path d="M0,0 L7,3.5 L0,7 z" fill="#E4694F"/>
+            </marker>
+          </defs>
+          <ellipse cx="130" cy="24" rx="50" ry="18" fill="#EFECFB" stroke="#362F78" stroke-width="1.5"/>
+          <text x="130" y="29" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="12" fill="#241F52">Início</text>
+          <line x1="130" y1="42" x2="130" y2="60" stroke="#362F78" stroke-width="1.5" marker-end="url(#seta-q9)"/>
+          <rect x="30" y="62" width="200" height="40" rx="6" fill="#fff" stroke="#362F78" stroke-width="1.5"/>
+          <text x="130" y="80" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="10.5" fill="#2A2650">Escreva 1º termo = 2</text>
+          <text x="130" y="94" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="10.5" fill="#2A2650">e 2º termo = 5</text>
+          <line x1="130" y1="102" x2="130" y2="120" stroke="#362F78" stroke-width="1.5" marker-end="url(#seta-q9)"/>
+          <rect x="15" y="122" width="230" height="46" rx="6" fill="#fff" stroke="#362F78" stroke-width="1.5"/>
+          <text x="130" y="141" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="10" fill="#2A2650">próximo termo = termo anterior</text>
+          <text x="130" y="155" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="10" fill="#2A2650">+ termo anterior ao anterior</text>
+          <line x1="130" y1="168" x2="130" y2="186" stroke="#362F78" stroke-width="1.5" marker-end="url(#seta-q9)"/>
+          <rect x="55" y="188" width="150" height="34" rx="6" fill="#fff" stroke="#362F78" stroke-width="1.5"/>
+          <text x="130" y="209" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="11" fill="#2A2650">Escreva o próximo termo</text>
+          <line x1="130" y1="222" x2="130" y2="240" stroke="#362F78" stroke-width="1.5" marker-end="url(#seta-q9)"/>
+          <polygon points="130,242 205,287 130,332 55,287" fill="#FFFAEE" stroke="#362F78" stroke-width="1.5"/>
+          <text x="130" y="280" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="10.5" fill="#2A2650">Já escreveu o</text>
+          <text x="130" y="295" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="10.5" fill="#2A2650">6º termo?</text>
+          <line x1="130" y1="332" x2="130" y2="352" stroke="#362F78" stroke-width="1.5" marker-end="url(#seta-q9)"/>
+          <text x="140" y="346" font-family="Baloo 2" font-weight="700" font-size="11" fill="#362F78">SIM</text>
+          <ellipse cx="130" cy="376" rx="45" ry="18" fill="#EFECFB" stroke="#362F78" stroke-width="1.5"/>
+          <text x="130" y="381" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="12" fill="#241F52">Fim</text>
+          <path d="M 205,287 C 245,287 250,150 225,150" fill="none" stroke="#E4694F" stroke-width="1.5" marker-end="url(#seta-q9-nao)"/>
+          <text x="208" y="240" font-family="Baloo 2" font-weight="700" font-size="11" fill="#E4694F">NÃO</text>
+        </svg>
+        <div class="grafico-legenda">Sequência recursiva de 2ª ordem, semelhante à Fibonacci</div>
+      </div>
+      <div class="quiz-enunciado">Qual é o sexto termo dessa sequência?</div>
+      <div class="quiz-opcoes">
+        <button class="quiz-opt" data-correct="false">a) 19</button>
+        <button class="quiz-opt" data-correct="false">b) 24</button>
+        <button class="quiz-opt" data-correct="false">c) 29</button>
+        <button class="quiz-opt" data-correct="true">d) 31</button>
+        <button class="quiz-opt" data-correct="false">e) 36</button>
+      </div>
+      <div class="quiz-feedback"></div>
+      <div class="resolucao">
+        <div class="rotulo">🧩 Passo a passo</div>
+        <ol>
+          <li>1º termo = 2. 2º termo = 5.</li>
+          <li>3º termo = 5 + 2 = 7.</li>
+          <li>4º termo = 7 + 5 = 12.</li>
+          <li>5º termo = 12 + 7 = 19.</li>
+          <li>6º termo = 19 + 12 = 31.</li>
+        </ol>
+        <p class="resp-final">Resposta: 31.</p>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="quiz-q" data-answered="false">
+      <div class="quiz-numero">10</div>
+      <div class="quiz-enunciado">Uma impressora 3D, trabalhando em ritmo constante, produz 84 peças em determinado período de tempo. Se 6 impressoras idênticas, com esse mesmo ritmo, forem usadas ao mesmo tempo, quantas peças serão produzidas ao todo?</div>
+      <div class="quiz-opcoes">
+        <button class="quiz-opt" data-correct="false">a) 90 peças</button>
+        <button class="quiz-opt" data-correct="false">b) 168 peças</button>
+        <button class="quiz-opt" data-correct="false">c) 420 peças</button>
+        <button class="quiz-opt" data-correct="true">d) 504 peças</button>
+        <button class="quiz-opt" data-correct="false">e) 588 peças</button>
+      </div>
+      <div class="quiz-feedback"></div>
+      <div class="resolucao">
+        <div class="rotulo">🧩 Passo a passo</div>
+        <ol>
+          <li>1 impressora produz 84 peças nesse período.</li>
+          <li>É proporcionalidade direta: mais impressoras, mais peças, no mesmo tempo.</li>
+          <li>Multiplique por 6: 84 × 6 = 504.</li>
+        </ol>
+        <p class="resp-final">Resposta: 504 peças.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<button class="nav-btn" id="btnVoltar" onclick="mudarParte(-1)">← Voltar</button>
+<button class="nav-btn" id="btnAvancar" onclick="mudarParte(1)">Avançar →</button>
+
+<script>
+  var nomesPartes = ["Sequências (T(n))","Recursivas","Figuras & Fibonacci","Proporcionalidade","Quiz AV1"];
+  var totalPartes = nomesPartes.length;
+  var parteAtual = 0;
+
+  function irParaParte(idx){
+    parteAtual = idx;
+    document.querySelectorAll('.parte').forEach(function(p){
+      p.classList.toggle('active', parseInt(p.getAttribute('data-idx')) === idx);
+    });
+    document.querySelectorAll('.tab-pill').forEach(function(t){
+      t.classList.toggle('active', parseInt(t.getAttribute('data-idx')) === idx);
+    });
+    var pct = ((idx+1)/totalPartes*100).toFixed(1);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = 'Parte ' + (idx+1) + ' de ' + totalPartes + ' — ' + nomesPartes[idx];
+    document.getElementById('btnVoltar').disabled = (idx === 0);
+    document.getElementById('btnAvancar').disabled = (idx === totalPartes-1);
+    window.scrollTo({top:0, behavior:'auto'});
+  }
+  function mudarParte(delta){
+    var novo = parteAtual + delta;
+    if(novo < 0) novo = 0;
+    if(novo > totalPartes-1) novo = totalPartes-1;
+    irParaParte(novo);
+  }
+  document.querySelectorAll('.tab-pill').forEach(function(tab){
+    tab.addEventListener('click', function(){ irParaParte(parseInt(tab.getAttribute('data-idx'))); });
+  });
+  irParaParte(0);
+
+  /* quiz */
+  var acertosQuiz = 0;
+  document.querySelectorAll('.quiz-q').forEach(function(q){
+    var opts = q.querySelectorAll('.quiz-opt');
+    var fb = q.querySelector('.quiz-feedback');
+    var res = q.querySelector('.resolucao');
+    opts.forEach(function(opt){
+      opt.addEventListener('click', function(){
+        if(q.getAttribute('data-answered') === 'true') return;
+        q.setAttribute('data-answered','true');
+        var acertou = opt.getAttribute('data-correct') === 'true';
+        opts.forEach(function(o){
+          o.classList.add('disabled');
+          if(o.getAttribute('data-correct') === 'true'){ o.classList.add('correct'); }
+        });
+        if(!acertou){ opt.classList.add('wrong'); }
+        fb.classList.remove('ok','no');
+        if(acertou){
+          fb.textContent = '✓ Certo!';
+          fb.classList.add('ok');
+          acertosQuiz++;
+        } else {
+          fb.textContent = '✗ Quase — a certa está destacada em verde. Veja o passo a passo abaixo.';
+          fb.classList.add('no');
+        }
+        if(res){ res.classList.add('show'); }
+        atualizarPlacar();
+      });
+    });
+  });
+  function atualizarPlacar(){
+    var box = document.getElementById('scoreBox');
+    if(box) box.textContent = 'Acertos: ' + acertosQuiz + ' de 10';
+  }
+</script>
+
+</body>
+</html>
