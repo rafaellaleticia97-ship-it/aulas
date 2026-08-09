@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Correção — Proporcionalidade (Questões 11 a 15)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F4FC;
+    --indigo:#362F78;
+    --indigo-deep:#241F52;
+    --indigo-soft:#6C63B5;
+    --mint:#A9E5D0;
+    --coral:#FFB3A0;
+    --coral-dark:#E4694F;
+    --yellow:#FFDD73;
+    --text:#2A2650;
+    --text-sec:#5B5686;
+    --border:#E3DEF7;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    font-size:15px;
+    line-height:1.55;
+    padding-top:64px;
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.baloo{font-family:'Baloo 2', sans-serif;}
+
+  /* ---------- fundo com símbolos matemáticos ---------- */
+  .bg-symbols{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .bg-symbols span{
+    position:absolute;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    color:var(--indigo);
+    opacity:0.08;
+    animation:drift 22s ease-in-out infinite;
+  }
+  @keyframes drift{
+    0%{transform:translate(0,0) rotate(0deg);}
+    50%{transform:translate(14px,-18px) rotate(8deg);}
+    100%{transform:translate(0,0) rotate(0deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bg-symbols span{animation:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ---------- barra de progresso ---------- */
+  .progress-wrap{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:20;
+    background:#fff;
+    border-bottom:1px solid var(--border);
+    padding:8px 14px 6px;
+  }
+  .progress-track{
+    height:6px;
+    background:var(--border);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    width:14.2857%;
+    background:linear-gradient(90deg,var(--indigo-soft),var(--indigo));
+    border-radius:6px;
+    transition:width .35s ease;
+  }
+  .progress-label{
+    font-size:11px;
+    color:var(--text-sec);
+    margin-top:4px;
+    font-weight:700;
+    letter-spacing:.2px;
+  }
+
+  /* ---------- cabeçalho e abas ---------- */
+  header{
+    position:relative;
+    z-index:1;
+    padding:18px 16px 8px;
+    text-align:center;
+  }
+  header h1{
+    font-size:20px;
+    font-weight:800;
+    color:var(--indigo-deep);
+    margin:0 0 3px;
+  }
+  header p.subtitle{
+    margin:0 0 14px;
+    color:var(--text-sec);
+    font-size:12.5px;
+  }
+  .tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    justify-content:center;
+    padding:0 4px;
+  }
+  .tab{
+    font-family:'Baloo 2', sans-serif;
+    font-size:11px;
+    font-weight:700;
+    color:var(--indigo);
+    background:#fff;
+    border:1px solid var(--border);
+    padding:4px 9px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .2s ease;
+  }
+  .tab.active{
+    background:var(--indigo);
+    color:#fff;
+    border-color:var(--indigo);
+  }
+
+  main{
+    position:relative;
+    z-index:1;
+    max-width:760px;
+    margin:0 auto;
+    padding:10px 14px 90px;
+  }
+  .parte{display:none;}
+  .parte.active{display:block; animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  /* ---------- cartão de seção ---------- */
+  .card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:18px 16px;
+    margin-bottom:16px;
+    box-shadow:0 4px 18px rgba(54,47,120,0.06);
+  }
+  .eyebrow{
+    display:inline-block;
+    font-family:'Baloo 2', sans-serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.3px;
+    color:var(--indigo-deep);
+    background:var(--mint);
+    padding:3px 10px;
+    border-radius:999px;
+    margin-bottom:10px;
+  }
+  .eyebrow.coral{background:var(--coral); color:var(--indigo-deep);}
+  .eyebrow.yellow{background:var(--yellow); color:var(--indigo-deep);}
+  .card h2{
+    font-size:17px;
+    color:var(--indigo-deep);
+    margin:0 0 8px;
+    font-weight:700;
+  }
+  .card h3{
+    font-size:14.5px;
+    color:var(--indigo);
+    margin:14px 0 6px;
+    font-weight:700;
+  }
+  .card p{margin:0 0 10px;}
+  .enunciado{
+    background:#FAF9FE;
+    border-left:4px solid var(--indigo-soft);
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:14px;
+    color:var(--text);
+    margin-bottom:12px;
+  }
+  .enunciado b{color:var(--indigo-deep);}
+
+  /* ---------- caixa pense assim ---------- */
+  .pense-assim{
+    background:#EEECFA;
+    border-radius:14px;
+    padding:12px 14px;
+    margin:12px 0;
+  }
+  .pense-assim .rotulo{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:12.5px;
+    color:var(--indigo);
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom:5px;
+  }
+
+  /* ---------- caixa dica ---------- */
+  .dica{
+    background:#FFF9EA;
+    border-left:5px solid var(--yellow);
+    border-radius:10px;
+    padding:12px 14px;
+    margin:12px 0;
+  }
+  .dica .rotulo{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:12.5px;
+    color:#8A6A00;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom:5px;
+  }
+
+  /* ---------- algo-block ---------- */
+  .algo-block{
+    background:#F4F2FC;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px 14px;
+    margin:10px 0;
+  }
+  .algo-block .passo{
+    display:block;
+    margin-bottom:7px;
+    font-size:14px;
+  }
+  .algo-block .passo:last-child{margin-bottom:0;}
+  .algo-block .passo b{color:var(--indigo-deep);}
+  .algo-block .resultado{
+    margin-top:8px;
+    padding-top:8px;
+    border-top:1px dashed var(--border);
+    font-weight:700;
+    color:var(--indigo-deep);
+    font-size:14.5px;
+  }
+
+  /* ---------- tabela ---------- */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:10px 0;
+    font-size:13.5px;
+  }
+  th,td{
+    border:1px solid var(--border);
+    padding:6px 8px;
+    text-align:center;
+  }
+  th{
+    background:var(--indigo);
+    color:#fff;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:600;
+  }
+  td{background:#fff;}
+  td.destaque{background:#EAF8F2; font-weight:700; color:var(--indigo-deep);}
+
+  /* ---------- svg wrapper ---------- */
+  .svg-wrap{
+    text-align:center;
+    margin:12px 0;
+    overflow-x:auto;
+  }
+  .svg-wrap svg{max-width:100%; height:auto;}
+  .svg-caption{
+    font-size:11.5px;
+    color:var(--text-sec);
+    text-align:center;
+    margin-top:-4px;
+    margin-bottom:10px;
+  }
+
+  /* ---------- resumo pro caderno ---------- */
+  .resumo{
+    background:#fff;
+    border:2px dashed var(--mint);
+    border-radius:16px;
+    padding:16px;
+  }
+  .resumo p{font-size:14.5px;}
+
+  /* ---------- navegação rodapé ---------- */
+  .nav-footer{
+    position:fixed;
+    bottom:14px;
+    left:0; right:0;
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    z-index:20;
+    pointer-events:none;
+  }
+  .nav-footer button{
+    pointer-events:auto;
+    font-family:'Baloo 2', sans-serif;
+    font-size:11px;
+    font-weight:700;
+    color:var(--indigo);
+    background:#fff;
+    border:1px solid var(--border);
+    padding:4px 9px;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow:0 3px 10px rgba(54,47,120,0.12);
+  }
+  .nav-footer button:disabled{opacity:.35; cursor:default;}
+  .nav-footer button.primary{background:var(--indigo); color:#fff; border-color:var(--indigo);}
+
+  /* ---------- TV breakpoints ---------- */
+  @media (min-width:900px){
+    body{font-size:17px; padding-top:74px;}
+    header h1{font-size:27px;}
+    header p.subtitle{font-size:14.5px;}
+    .tab{font-size:13px; padding:5px 12px;}
+    main{max-width:980px; padding:16px 24px 110px;}
+    .card{padding:26px 30px; border-radius:20px;}
+    .card h2{font-size:22px;}
+    .card h3{font-size:18px;}
+    .enunciado{font-size:16px; padding:14px 16px;}
+    .pense-assim, .dica, .algo-block{padding:16px 18px;}
+    .pense-assim .rotulo, .dica .rotulo{font-size:14px;}
+    .algo-block .passo{font-size:16px;}
+    table{font-size:15px;}
+    .nav-footer button{font-size:13px; padding:6px 13px;}
+    .resumo p{font-size:16.5px;}
+  }
+  @media (min-width:1500px){
+    body{font-size:19px;}
+    header h1{font-size:33px;}
+    header p.subtitle{font-size:16px;}
+    main{max-width:1200px;}
+    .card{padding:32px 38px;}
+    .card h2{font-size:26px;}
+    .card h3{font-size:21px;}
+    .enunciado{font-size:18px;}
+    .algo-block .passo{font-size:18px;}
+    table{font-size:17px;}
+    .resumo p{font-size:19px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-symbols">
+  <span style="top:8%; left:6%; font-size:38px;">÷</span>
+  <span style="top:20%; left:80%; font-size:46px; animation-delay:2s;">%</span>
+  <span style="top:38%; left:15%; font-size:30px; animation-delay:4s;">∝</span>
+  <span style="top:55%; left:70%; font-size:42px; animation-delay:1s;">=</span>
+  <span style="top:70%; left:30%; font-size:34px; animation-delay:3s;">k</span>
+  <span style="top:85%; left:60%; font-size:40px; animation-delay:5s;">×</span>
+  <span style="top:12%; left:45%; font-size:28px; animation-delay:6s;">y</span>
+  <span style="top:65%; left:5%; font-size:32px; animation-delay:2.5s;">x</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">Parte 1 de 7 — Revisão</div>
+</div>
+
+<header>
+  <h1>Correção comentada — Questões 11 a 15</h1>
+  <p class="subtitle">Proporcionalidade direta e inversa · Livro, p. 142-143</p>
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-parte="1">Revisão</div>
+    <div class="tab" data-parte="2">Q11</div>
+    <div class="tab" data-parte="3">Q12</div>
+    <div class="tab" data-parte="4">Q13</div>
+    <div class="tab" data-parte="5">Q14</div>
+    <div class="tab" data-parte="6">Q15</div>
+    <div class="tab" data-parte="7">Caderno</div>
+  </div>
+</header>
+
+<main>
+
+<!-- ========================= PARTE 1 ========================= -->
+<section class="parte active" data-parte="1">
+  <div class="card">
+    <span class="eyebrow">Antes de começar</span>
+    <h2>Direta ou inversa? Relembrando as duas ideias</h2>
+    <p>As cinco questões que vamos corrigir usam proporcionalidade direta ou proporcionalidade inversa. Antes de entrar em cada uma, vale ter as duas ideias bem claras na cabeça — assim fica mais fácil identificar qual delas está em jogo em cada situação.</p>
+
+    <div class="pense-assim">
+      <div class="rotulo">💡 Pense assim — Direta</div>
+      <p>Quando você compra mais lápis, paga mais: se um valor aumenta, o outro aumenta na mesma proporção. A razão entre eles é sempre a mesma constante <b>k</b>. A sentença tem esse formato: <b>y = k · x</b>, e o gráfico é sempre uma reta que passa pela origem (0,0).</p>
+    </div>
+
+    <div class="pense-assim">
+      <div class="rotulo">💡 Pense assim — Inversa</div>
+      <p>Quando mais pessoas dividem uma pizza, cada uma come menos: se um valor aumenta, o outro diminui. Mas o <b>produto</b> entre eles continua sempre igual. A sentença tem esse formato: <b>y = k / x</b>.</p>
+    </div>
+
+    <table>
+      <tr><th>Direta</th><th>Inversa</th></tr>
+      <tr><td>y = k · x</td><td>y = k / x</td></tr>
+      <tr><td>y/x é sempre igual a k</td><td>x · y é sempre igual a k</td></tr>
+      <tr><td>Gráfico: reta pela origem</td><td>Gráfico: curva (nunca reta)</td></tr>
+    </table>
+
+    <div class="dica">
+      <div class="rotulo">⚠️ Dica importante</div>
+      <p>Nem toda reta representa proporcionalidade direta — só quando ela passa exatamente pela origem (0,0). Uma reta que corta o eixo y em outro ponto é uma função do 1º grau, mas <b>não</b> é proporcionalidade direta. Isso aparece bem na Questão 13, então guarde essa ideia.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= PARTE 2 — Q11 ========================= -->
+<section class="parte" data-parte="2">
+  <div class="card">
+    <span class="eyebrow coral">Direto do livro — Questão 11</span>
+    <h2>Planta baixa e escala</h2>
+    <div class="enunciado">
+      A planta de uma casa está na escala <b>1:120</b> — cada 1 cm no papel corresponde a 120 cm na casa real. Chamando de <b>x</b> a medida na planta (em cm) e de <b>y</b> a medida real (em cm), resolva os itens a seguir.
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 340 240" xmlns="http://www.w3.org/2000/svg">
+        <rect x="40" y="20" width="100" height="100" fill="#EAF8F2" stroke="#362F78" stroke-width="2"/>
+        <rect x="40" y="120" width="100" height="80" fill="#FFF3EC" stroke="#362F78" stroke-width="2"/>
+        <rect x="140" y="100" width="140" height="100" fill="#EEECFA" stroke="#362F78" stroke-width="2"/>
+        <text x="90" y="75" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="13" fill="#241F52">cozinha</text>
+        <text x="90" y="165" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="13" fill="#241F52">banheiro</text>
+        <text x="210" y="155" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="13" fill="#241F52">dormitório</text>
+        <!-- medidas -->
+        <line x1="40" y1="10" x2="280" y2="10" stroke="#E4694F" stroke-width="1.5"/>
+        <text x="160" y="8" text-anchor="middle" font-size="11" fill="#E4694F" font-weight="700">7,5 cm</text>
+        <line x1="30" y1="20" x2="30" y2="120" stroke="#E4694F" stroke-width="1.5"/>
+        <text x="27" y="72" text-anchor="end" font-size="11" fill="#E4694F" font-weight="700">2,5 cm</text>
+        <line x1="140" y1="90" x2="280" y2="90" stroke="#E4694F" stroke-width="1.5"/>
+        <text x="210" y="86" text-anchor="middle" font-size="11" fill="#E4694F" font-weight="700">4 cm</text>
+        <line x1="292" y1="20" x2="292" y2="200" stroke="#E4694F" stroke-width="1.5"/>
+        <text x="296" y="112" font-size="11" fill="#E4694F" font-weight="700">5 cm</text>
+      </svg>
+    </div>
+    <p class="svg-caption">Representação simplificada da planta, com as medidas do enunciado.</p>
+
+    <h3>a) Sentença algébrica de x para y</h3>
+    <div class="algo-block">
+      <span class="passo"><b>Passo 1.</b> A escala diz que 1 cm na planta vale 120 cm na realidade.</span>
+      <span class="passo"><b>Passo 2.</b> Para transformar qualquer medida x da planta em medida real y, multiplicamos x por 120.</span>
+      <div class="resultado">y = 120 · x</div>
+    </div>
+    <div class="dica">
+      <div class="rotulo">⚠️ Dica</div>
+      <p>Essa é uma proporcionalidade direta clássica: dobrando x, y também dobra. É por isso que o gráfico dela é uma reta passando pela origem — veja a seguir.</p>
+    </div>
+
+    <h3>b) Tabela e gráfico</h3>
+    <table>
+      <tr><th>x (cm)</th><th>y (cm)</th></tr>
+      <tr><td>0,5</td><td class="destaque">60</td></tr>
+      <tr><td>1,5</td><td class="destaque">180</td></tr>
+      <tr><td>2</td><td class="destaque">240</td></tr>
+      <tr><td>2,25</td><td class="destaque">270</td></tr>
+      <tr><td>2,75</td><td class="destaque">330</td></tr>
+    </table>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg">
+        <!-- grid: x de 0 a 3 (passo 0,5) · y de 0 a 360 (passo 60) -->
+        <g stroke="#E3DEF7" stroke-width="1">
+          <line x1="60" y1="92" x2="60" y2="260"/><line x1="100" y1="92" x2="100" y2="260"/>
+          <line x1="140" y1="92" x2="140" y2="260"/><line x1="180" y1="92" x2="180" y2="260"/>
+          <line x1="220" y1="92" x2="220" y2="260"/><line x1="260" y1="92" x2="260" y2="260"/>
+          <line x1="300" y1="92" x2="300" y2="260"/>
+          <line x1="60" y1="260" x2="300" y2="260"/><line x1="60" y1="232" x2="300" y2="232"/>
+          <line x1="60" y1="204" x2="300" y2="204"/><line x1="60" y1="176" x2="300" y2="176"/>
+          <line x1="60" y1="148" x2="300" y2="148"/><line x1="60" y1="120" x2="300" y2="120"/>
+          <line x1="60" y1="92" x2="300" y2="92"/>
+        </g>
+        <!-- eixos -->
+        <line x1="55" y1="260" x2="312" y2="260" stroke="#362F78" stroke-width="2"/>
+        <polygon points="312,260 304,256 304,264" fill="#362F78"/>
+        <line x1="60" y1="265" x2="60" y2="82" stroke="#362F78" stroke-width="2"/>
+        <polygon points="60,82 56,90 64,90" fill="#362F78"/>
+        <text x="316" y="264" font-size="11" fill="#362F78" font-weight="700">x (cm)</text>
+        <text x="30" y="86" font-size="11" fill="#362F78" font-weight="700">y (cm)</text>
+        <!-- x labels -->
+        <text x="60" y="274" text-anchor="middle" font-size="10" fill="#5B5686">0</text>
+        <text x="100" y="274" text-anchor="middle" font-size="10" fill="#5B5686">0,5</text>
+        <text x="140" y="274" text-anchor="middle" font-size="10" fill="#5B5686">1</text>
+        <text x="180" y="274" text-anchor="middle" font-size="10" fill="#5B5686">1,5</text>
+        <text x="220" y="274" text-anchor="middle" font-size="10" fill="#5B5686">2</text>
+        <text x="260" y="274" text-anchor="middle" font-size="10" fill="#5B5686">2,5</text>
+        <text x="300" y="274" text-anchor="middle" font-size="10" fill="#5B5686">3</text>
+        <!-- y labels -->
+        <text x="52" y="264" text-anchor="end" font-size="10" fill="#5B5686">0</text>
+        <text x="52" y="236" text-anchor="end" font-size="10" fill="#5B5686">60</text>
+        <text x="52" y="208" text-anchor="end" font-size="10" fill="#5B5686">120</text>
+        <text x="52" y="180" text-anchor="end" font-size="10" fill="#5B5686">180</text>
+        <text x="52" y="152" text-anchor="end" font-size="10" fill="#5B5686">240</text>
+        <text x="52" y="124" text-anchor="end" font-size="10" fill="#5B5686">300</text>
+        <text x="52" y="96" text-anchor="end" font-size="10" fill="#5B5686">360</text>
+        <!-- reta y = 120x : de (0,0) a (3,360) -->
+        <line x1="60" y1="260" x2="300" y2="92" stroke="#6C63B5" stroke-width="2.5"/>
+        <!-- pontos -->
+        <circle cx="100" cy="232" r="5" fill="#E4694F" stroke="#fff" stroke-width="2"/>
+        <circle cx="180" cy="176" r="5" fill="#E4694F" stroke="#fff" stroke-width="2"/>
+        <circle cx="220" cy="148" r="5" fill="#E4694F" stroke="#fff" stroke-width="2"/>
+        <circle cx="240" cy="134" r="5" fill="#E4694F" stroke="#fff" stroke-width="2"/>
+        <circle cx="280" cy="106" r="5" fill="#E4694F" stroke="#fff" stroke-width="2"/>
+      </svg>
+    </div>
+    <p class="svg-caption">Todos os pontos ficam sobre uma reta que passa pela origem — confirmação visual de que x e y são diretamente proporcionais.</p>
+
+    <h3>c) Área real do dormitório</h3>
+    <div class="algo-block">
+      <span class="passo"><b>Passo 1.</b> Na planta, o dormitório mede 4 cm por 2,5 cm.</span>
+      <span class="passo"><b>Passo 2.</b> Convertendo para a medida real (× 120): 4 × 120 = 480 cm = 4,8 m, e 2,5 × 120 = 300 cm = 3 m.</span>
+      <span class="passo"><b>Passo 3.</b> Área = 4,8 × 3.</span>
+      <div class="resultado">Área real do dormitório = 14,4 m²</div>
+    </div>
+
+    <h3>d) Dimensões do banheiro</h3>
+    <div class="algo-block">
+      <span class="passo"><b>Passo 1.</b> O comprimento do banheiro na planta é 2,5 cm, que corresponde a 2,5 × 120 = 300 cm = 3 m na realidade.</span>
+      <span class="passo"><b>Passo 2.</b> A área do banheiro é 5,4 m². Largura = área ÷ comprimento = 5,4 ÷ 3.</span>
+      <div class="resultado">Largura do banheiro = 1,8 m</div>
+    </div>
+    <div class="dica">
+      <div class="rotulo">⚠️ Erro comum</div>
+      <p>Não dá para dividir a área (em m²) pelo comprimento em centímetros — as unidades precisam estar iguais antes de qualquer conta. Sempre converta tudo para a mesma unidade primeiro, e só depois multiplique ou divida.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= PARTE 3 — Q12 ========================= -->
+<section class="parte" data-parte="3">
+  <div class="card">
+    <span class="eyebrow coral">Direto do livro — Questão 12</span>
+    <h2>Passeio de bicicleta</h2>
+    <div class="enunciado">
+      Mantendo velocidade constante de 3 km/h, Cássia levou 2 h para percorrer certa distância.
+    </div>
+
+    <h3>a) Distância percorrida</h3>
+    <div class="algo-block">
+      <span class="passo"><b>Passo 1.</b> Distância = velocidade × tempo.</span>
+      <span class="passo"><b>Passo 2.</b> Distância = 3 × 2.</span>
+      <div class="resultado">Distância = 6 km</div>
+    </div>
+
+    <h3>b) Tabela com velocidades diferentes</h3>
+    <p>Como a distância do trajeto (6 km) não muda, quanto maior a velocidade, menor o tempo necessário:</p>
+    <table>
+      <tr><th>v (km/h)</th><th>t (h)</th></tr>
+      <tr><td>2</td><td class="destaque">3</td></tr>
+      <tr><td>3</td><td class="destaque">2</td></tr>
+      <tr><td>4</td><td class="destaque">1,5</td></tr>
+      <tr><td>6</td><td class="destaque">1</td></tr>
+      <tr><td>8</td><td class="destaque">0,75</td></tr>
+    </table>
+    <div class="pense-assim">
+      <div class="rotulo">💡 Pense assim</div>
+      <p>Repare que <b>v × t</b> dá sempre 6 nessa tabela (2×3, 3×2, 4×1,5...). Quando o produto entre duas grandezas fica constante desse jeito, elas são inversamente proporcionais — uma sobe, a outra desce, na mesma proporção.</p>
+    </div>
+    <p>Por isso, essas grandezas são <b>inversamente proporcionais</b>.</p>
+
+    <h3>c) Sentença algébrica</h3>
+    <div class="algo-block">
+      <span class="passo"><b>Passo 1.</b> Como v e t são inversamente proporcionais, v · t = k.</span>
+      <span class="passo"><b>Passo 2.</b> Usando qualquer par da tabela, por exemplo v=3 e t=2: k = 3 × 2 = 6.</span>
+      <div class="resultado">t = 6 / v</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= PARTE 4 — Q13 ========================= -->
+<section class="parte" data-parte="4">
+  <div class="card">
+    <span class="eyebrow coral">Direto do livro — Questão 13</span>
+    <h2>Gráfico e o cuidado com a proporcionalidade</h2>
+    <div class="enunciado">
+      O gráfico a seguir relaciona as grandezas <b>v</b> (m/s) e <b>t</b> (s) numa função do 1º grau.
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#E3DEF7" stroke-width="1">
+          <line x1="55" y1="86" x2="55" y2="240"/><line x1="90" y1="86" x2="90" y2="240"/>
+          <line x1="125" y1="86" x2="125" y2="240"/><line x1="160" y1="86" x2="160" y2="240"/>
+          <line x1="195" y1="86" x2="195" y2="240"/><line x1="230" y1="86" x2="230" y2="240"/>
+          <line x1="265" y1="86" x2="265" y2="240"/>
+          <line x1="55" y1="240" x2="265" y2="240"/><line x1="55" y1="218" x2="265" y2="218"/>
+          <line x1="55" y1="196" x2="265" y2="196"/><line x1="55" y1="174" x2="265" y2="174"/>
+          <line x1="55" y1="152" x2="265" y2="152"/><line x1="55" y1="130" x2="265" y2="130"/>
+          <line x1="55" y1="108" x2="265" y2="108"/><line x1="55" y1="86" x2="265" y2="86"/>
+        </g>
+        <line x1="50" y1="240" x2="278" y2="240" stroke="#362F78" stroke-width="2"/>
+        <polygon points="278,240 270,236 270,244" fill="#362F78"/>
+        <line x1="55" y1="245" x2="55" y2="78" stroke="#362F78" stroke-width="2"/>
+        <polygon points="55,78 51,86 59,86" fill="#362F78"/>
+        <text x="282" y="244" font-size="11" fill="#362F78" font-weight="700">t (s)</text>
+        <text x="30" y="82" font-size="11" fill="#362F78" font-weight="700">v (m/s)</text>
+        <text x="55" y="254" text-anchor="middle" font-size="10" fill="#5B5686">0</text>
+        <text x="90" y="254" text-anchor="middle" font-size="10" fill="#5B5686">1</text>
+        <text x="125" y="254" text-anchor="middle" font-size="10" fill="#5B5686">2</text>
+        <text x="160" y="254" text-anchor="middle" font-size="10" fill="#5B5686">3</text>
+        <text x="195" y="254" text-anchor="middle" font-size="10" fill="#5B5686">4</text>
+        <text x="230" y="254" text-anchor="middle" font-size="10" fill="#5B5686">5</text>
+        <text x="265" y="254" text-anchor="middle" font-size="10" fill="#5B5686">6</text>
+        <text x="47" y="244" text-anchor="end" font-size="10" fill="#5B5686">0</text>
+        <text x="47" y="200" text-anchor="end" font-size="10" fill="#5B5686">4</text>
+        <text x="47" y="156" text-anchor="end" font-size="10" fill="#5B5686">8</text>
+        <text x="47" y="112" text-anchor="end" font-size="10" fill="#5B5686">12</text>
+        <line x1="90" y1="196" x2="230" y2="108" stroke="#6C63B5" stroke-width="2.5"/>
+        <circle cx="90" cy="196" r="5" fill="#E4694F" stroke="#fff" stroke-width="2"/>
+        <circle cx="125" cy="174" r="5" fill="#E4694F" stroke="#fff" stroke-width="2"/>
+        <circle cx="160" cy="152" r="5" fill="#E4694F" stroke="#fff" stroke-width="2"/>
+        <circle cx="195" cy="130" r="5" fill="#E4694F" stroke="#fff" stroke-width="2"/>
+        <circle cx="230" cy="108" r="5" fill="#E4694F" stroke="#fff" stroke-width="2"/>
+      </svg>
+    </div>
+    <p class="svg-caption">Gráfico do livro, usado para completar a tabela abaixo.</p>
+
+    <h3>a) Completando a tabela</h3>
+    <div class="algo-block">
+      <span class="passo"><b>Passo 1.</b> Para cada valor de t no eixo horizontal, leia o valor de v correspondente na reta.</span>
+      <span class="passo"><b>Passo 2.</b> Marque os pontos: (1,4), (2,6), (3,8), (4,10) e (5,12).</span>
+    </div>
+    <table>
+      <tr><th>t (s)</th><th>v (m/s)</th></tr>
+      <tr><td>1</td><td class="destaque">4</td></tr>
+      <tr><td>2</td><td class="destaque">6</td></tr>
+      <tr><td>3</td><td class="destaque">8</td></tr>
+      <tr><td>4</td><td class="destaque">10</td></tr>
+      <tr><td>5</td><td class="destaque">12</td></tr>
+    </table>
+
+    <h3>b) t e v são diretamente proporcionais?</h3>
+    <div class="dica">
+      <div class="rotulo">⚠️ Cuidado — esse é o erro mais comum aqui</div>
+      <p>Como o gráfico é uma reta crescente, é tentador dizer "sim, são diretamente proporcionais". Mas isso só é verdade se a reta passar pela <b>origem</b> — e aqui não passa.</p>
+    </div>
+    <div class="algo-block">
+      <span class="passo"><b>Passo 1.</b> Em proporcionalidade direta, dobrar t deveria dobrar v.</span>
+      <span class="passo"><b>Passo 2.</b> Dobrando t de 2 para 4, v deveria ir de 6 para 12 — mas na tabela v vai de 6 para 10.</span>
+      <span class="passo"><b>Passo 3.</b> Triplicando t de 1 para 3, v deveria ir de 4 para 12 — mas v vai de 4 para 8.</span>
+      <div class="resultado">Não. t e v não são diretamente proporcionais.</div>
+    </div>
+
+    <h3>c) Sentença algébrica</h3>
+    <div class="algo-block">
+      <span class="passo"><b>Passo 1.</b> A cada 1 segundo a mais, v aumenta 2 unidades — esse 2 é o coeficiente que multiplica t.</span>
+      <span class="passo"><b>Passo 2.</b> Quando t = 0 (extrapolando a reta até o eixo v), v = 2 — esse é o termo que se soma.</span>
+      <div class="resultado">v = 2t + 2</div>
+    </div>
+    <div class="dica">
+      <div class="rotulo">⚠️ Dica</div>
+      <p>Toda proporcionalidade direta é uma função do 1º grau, mas nem toda função do 1º grau é proporcionalidade direta — só quando o termo que se soma (aqui, o +2) é igual a zero. É exatamente esse +2 que tira v = 2t + 2 da proporcionalidade direta.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= PARTE 5 — Q14 ========================= -->
+<section class="parte" data-parte="5">
+  <div class="card">
+    <span class="eyebrow coral">Direto do livro — Questão 14</span>
+    <h2>Antebraço e mão</h2>
+    <div class="enunciado">
+      O comprimento <b>A</b> do antebraço (do pulso ao cotovelo) é diretamente proporcional ao comprimento <b>M</b> da mão (do pulso à ponta do dedo médio).
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 320 110" xmlns="http://www.w3.org/2000/svg">
+        <line x1="30" y1="60" x2="180" y2="60" stroke="#362F78" stroke-width="4" stroke-linecap="round"/>
+        <line x1="180" y1="60" x2="280" y2="60" stroke="#6C63B5" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="30" cy="60" r="6" fill="#E4694F"/>
+        <circle cx="180" cy="60" r="6" fill="#FFDD73" stroke="#241F52" stroke-width="1.5"/>
+        <circle cx="280" cy="60" r="6" fill="#A9E5D0" stroke="#241F52" stroke-width="1.5"/>
+        <text x="30" y="90" text-anchor="middle" font-size="11" fill="#5B5686">cotovelo</text>
+        <text x="180" y="90" text-anchor="middle" font-size="11" fill="#5B5686">pulso</text>
+        <text x="280" y="90" text-anchor="middle" font-size="11" fill="#5B5686">dedo médio</text>
+        <text x="105" y="40" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="15" fill="#362F78">A</text>
+        <text x="230" y="40" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="15" fill="#6C63B5">M</text>
+      </svg>
+    </div>
+    <p class="svg-caption">A = comprimento do antebraço · M = comprimento da mão.</p>
+
+    <h3>a) Sentença algébrica</h3>
+    <div class="algo-block">
+      <span class="passo"><b>Passo 1.</b> Como A e M são diretamente proporcionais, A = k · M.</span>
+      <span class="passo"><b>Passo 2.</b> Usando os valores dados (A = 27,5 cm, M = 17 cm): 27,5 = k · 17.</span>
+      <span class="passo"><b>Passo 3.</b> Isolando k: k = 27,5 ÷ 17 ≈ 1,618.</span>
+      <div class="resultado">A = 1,618 · M</div>
+    </div>
+    <div class="pense-assim">
+      <div class="rotulo">💡 Pense assim</div>
+      <p>1,618 é uma aproximação do número áureo (φ), uma proporção que aparece com frequência em medidas do corpo humano — não é coincidência, é um padrão bem documentado em anatomia e arte.</p>
+    </div>
+
+    <h3>b) Medida da mão para antebraço de 25,4 cm</h3>
+    <div class="algo-block">
+      <span class="passo"><b>Passo 1.</b> Substitua A = 25,4 na sentença: 25,4 = 1,618 · M.</span>
+      <span class="passo"><b>Passo 2.</b> Isolando M: M = 25,4 ÷ 1,618.</span>
+      <div class="resultado">M ≈ 15,7 cm</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= PARTE 6 — Q15 ========================= -->
+<section class="parte" data-parte="6">
+  <div class="card">
+    <span class="eyebrow coral">Direto do livro — Questão 15</span>
+    <h2>Viga e peso suportado</h2>
+    <div class="enunciado">
+      O peso <b>M</b> que uma viga horizontal pode suportar é inversamente proporcional ao seu comprimento <b>L</b>.
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+        <rect x="100" y="45" width="100" height="55" fill="#EEECFA" stroke="#362F78" stroke-width="1.5"/>
+        <line x1="100" y1="62" x2="200" y2="62" stroke="#362F78" stroke-width="1"/>
+        <line x1="100" y1="79" x2="200" y2="79" stroke="#362F78" stroke-width="1"/>
+        <line x1="133" y1="45" x2="133" y2="100" stroke="#362F78" stroke-width="1"/>
+        <line x1="166" y1="45" x2="166" y2="100" stroke="#362F78" stroke-width="1"/>
+        <text x="150" y="76" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="14" fill="#241F52">M</text>
+        <rect x="60" y="100" width="180" height="12" fill="#6C63B5"/>
+        <polygon points="75,112 90,112 82,128" fill="#241F52"/>
+        <polygon points="210,112 225,112 217,128" fill="#241F52"/>
+        <line x1="55" y1="140" x2="245" y2="140" stroke="#E4694F" stroke-width="2"/>
+        <polygon points="55,140 63,135 63,145" fill="#E4694F"/>
+        <polygon points="245,140 237,135 237,145" fill="#E4694F"/>
+        <text x="150" y="133" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="13" fill="#E4694F">L</text>
+      </svg>
+    </div>
+    <p class="svg-caption">M = peso suportado · L = comprimento da viga.</p>
+
+    <div class="algo-block">
+      <span class="passo"><b>Passo 1.</b> Como M e L são inversamente proporcionais, M = k / L.</span>
+      <span class="passo"><b>Passo 2.</b> Usando a viga de 6 m que suporta 750 kg: 750 = k / 6, logo k = 750 × 6 = 4500.</span>
+      <span class="passo"><b>Passo 3.</b> Sentença geral: M = 4500 / L.</span>
+      <span class="passo"><b>Passo 4.</b> Para L = 10 m: M = 4500 ÷ 10.</span>
+      <div class="resultado">M = 450 kg</div>
+    </div>
+    <div class="dica">
+      <div class="rotulo">⚠️ Cuidado com a direção</div>
+      <p>Repare que a viga mais comprida (10 m) suporta <b>menos</b> peso do que a mais curta (6 m) — 450 kg contra 750 kg. Isso pode parecer estranho à primeira vista, mas é exatamente a marca da proporcionalidade inversa: quando uma grandeza cresce, a outra diminui.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= PARTE 7 — Resumo ========================= -->
+<section class="parte" data-parte="7">
+  <div class="card">
+    <h2>Resumo — Proporcionalidade direta e inversa</h2>
+    <div class="resumo">
+      <p>Nas questões 11 a 15, revisamos como reconhecer e trabalhar com proporcionalidade direta e inversa em situações bem diferentes: uma planta baixa, um passeio de bicicleta, um gráfico, medidas do corpo humano e o peso suportado por uma viga. Em todos os casos diretamente proporcionais — a escala da planta (y = 120x) e a relação entre antebraço e mão (A = 1,618M) — o segredo foi montar y = k · x a partir de um par de valores conhecido, encontrar k, e então usar essa sentença para responder ao restante do problema. O gráfico dessas relações é sempre uma reta que passa pela origem (0,0).</p>
+      <p>Já nos casos inversamente proporcionais — a velocidade e o tempo da Cássia (t = 6/v) e o comprimento da viga e o peso que ela suporta (M = 4500/L) — a lógica muda: em vez de uma razão constante, é o <b>produto</b> entre as duas grandezas que fica constante. Por isso, quando uma aumenta, a outra diminui, e o gráfico nunca é uma reta.</p>
+      <p>A questão 13 trouxe um cuidado especial: nem toda reta crescente representa proporcionalidade direta. A sentença v = 2t + 2 é uma função do 1º grau, mas só seria proporcionalidade direta se o termo +2 não existisse. Esse é o tipo de detalhe que costuma pegar quem olha só para o formato do gráfico sem checar se ele passa pela origem — por isso vale sempre conferir: dobrando o valor de x, o valor de y também dobra? Se sim, é direta. Se não, é apenas uma reta comum.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="nav-footer">
+  <button id="btnVoltar">← Voltar</button>
+  <button id="btnAvancar" class="primary">Avançar →</button>
+</div>
+
+<script>
+  const nomes = ["Revisão","Questão 11","Questão 12","Questão 13","Questão 14","Questão 15","Caderno"];
+  const total = 7;
+  let atual = 1;
+
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+  const tabs = document.querySelectorAll('.tab');
+  const partes = document.querySelectorAll('.parte');
+  const btnVoltar = document.getElementById('btnVoltar');
+  const btnAvancar = document.getElementById('btnAvancar');
+
+  function irPara(n){
+    atual = Math.min(Math.max(n,1), total);
+    partes.forEach(p => p.classList.toggle('active', parseInt(p.dataset.parte) === atual));
+    tabs.forEach(t => t.classList.toggle('active', parseInt(t.dataset.parte) === atual));
+    fill.style.width = (atual/total*100) + '%';
+    label.textContent = 'Parte ' + atual + ' de ' + total + ' — ' + nomes[atual-1];
+    btnVoltar.disabled = atual === 1;
+    btnAvancar.disabled = atual === total;
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => irPara(parseInt(t.dataset.parte))));
+  btnVoltar.addEventListener('click', () => irPara(atual-1));
+  btnAvancar.addEventListener('click', () => irPara(atual+1));
+
+  irPara(1);
+</script>
+
+</body>
+</html>
