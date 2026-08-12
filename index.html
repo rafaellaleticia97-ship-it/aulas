@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grandezas Diretamente Proporcionais — 7º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F4FC;
+    --indigo:#362F78;
+    --indigo-deep:#241F52;
+    --indigo-soft:#6C63B5;
+    --mint:#A9E5D0;
+    --coral:#FFB3A0;
+    --coral-dark:#E4694F;
+    --yellow:#FFDD73;
+    --text:#2A2650;
+    --text2:#5B5686;
+    --card:#FFFFFF;
+    --border:#E3DEF7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    font-size:20px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:70px;
+    position:relative;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.eyebrow,.numlabel,.pill,.tab{font-family:'Baloo 2', sans-serif;}
+
+  /* Background floating symbols */
+  .bgsym{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .bgsym span{
+    position:absolute;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    color:var(--indigo);
+    opacity:0.08;
+    animation:drift 26s ease-in-out infinite;
+  }
+  @keyframes drift{
+    0%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-22px) rotate(8deg);}
+    100%{transform:translateY(0) rotate(0deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bgsym span{animation:none;}
+  }
+
+  .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 16px;}
+
+  /* Progress bar */
+  .progress-wrap{
+    position:sticky;top:0;z-index:50;
+    background:rgba(246,244,252,0.95);
+    backdrop-filter:blur(4px);
+    padding:10px 16px 8px;
+    border-bottom:1px solid var(--border);
+  }
+  .progress-label{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    color:var(--indigo);
+    max-width:900px;margin:0 auto 6px;
+  }
+  .progress-track{
+    max-width:900px;margin:0 auto;
+    height:8px;background:var(--border);border-radius:20px;overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;background:linear-gradient(90deg,var(--indigo-soft),var(--indigo));
+    border-radius:20px;transition:width .4s ease;
+  }
+
+  header{text-align:center;padding:22px 0 10px;}
+  header h1{
+    font-size:26px;font-weight:800;color:var(--indigo-deep);margin:0 0 4px;
+  }
+  header p.sub{color:var(--text2);margin:0;font-size:16px;}
+
+  /* Tabs */
+  .tabs{
+    display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+    padding:14px 0 6px;
+  }
+  .tab{
+    font-size:12px;font-weight:600;
+    padding:5px 11px;border-radius:20px;
+    background:#fff;border:1px solid var(--border);
+    color:var(--text2);cursor:pointer;
+    transition:all .2s ease;
+    white-space:nowrap;
+  }
+  .tab.active{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+  .tab:hover:not(.active){border-color:var(--indigo-soft);}
+
+  main{padding:6px 0 30px;}
+  section.part{display:none;animation:fadeIn .3s ease;}
+  section.part.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 4px 18px rgba(54,47,120,0.06);
+  }
+  .eyebrow{
+    display:inline-block;font-size:12px;font-weight:700;
+    color:var(--indigo);background:#EDEAFB;
+    padding:3px 10px;border-radius:20px;margin-bottom:10px;
+  }
+  .eyebrow.coral{color:#9C3A26;background:#FFE3DB;}
+  .eyebrow.mint{color:#1E6B54;background:#E1F6EE;}
+  .eyebrow.yellow{color:#8A6A05;background:#FFF3D1;}
+
+  h2.card-title{font-size:22px;font-weight:700;color:var(--indigo-deep);margin:0 0 10px;}
+  h3.subtitle{font-size:18px;font-weight:700;color:var(--indigo);margin:18px 0 8px;}
+
+  p{margin:0 0 12px;}
+
+  /* Copie no caderno */
+  .copiar{
+    background:#F2FBF7;
+    border:2px dashed #4FAE86;
+    border-radius:14px;
+    padding:16px;
+    margin:16px 0;
+  }
+  .copiar .eyebrow{background:#DCF3E8;color:#1E6B54;}
+
+  /* Pense assim */
+  .pense{
+    background:#EFEDFA;
+    border-radius:14px;
+    padding:16px;
+    margin:16px 0;
+    border-left:5px solid var(--indigo-soft);
+  }
+  .pense .eyebrow{background:#DAD5F5;color:var(--indigo-deep);}
+
+  /* Dica */
+  .dica{
+    background:#FFFAEC;
+    border-left:6px solid var(--yellow);
+    border-radius:10px;
+    padding:16px;
+    margin:16px 0;
+  }
+  .dica .eyebrow{background:#FFF0BE;color:#8A6A05;}
+
+  /* Exemplo resolvido box */
+  .exemplo{
+    background:#FCFBFF;
+    border:2px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin:16px 0;
+  }
+  .exemplo .eyebrow{background:#FFE9CF;color:#8A5A05;}
+  .exemplo .enunciado{font-weight:700;color:var(--indigo-deep);margin-bottom:10px;}
+  .resposta{
+    background:#F2FBF7;
+    border-left:5px solid #4FAE86;
+    border-radius:0 10px 10px 0;
+    padding:10px 14px;
+    margin-top:10px;
+    color:#1E6B54;
+    font-weight:700;
+  }
+
+  /* Algo block */
+  .algo{
+    background:#F2EFFB;
+    border:1.5px solid var(--indigo-soft);
+    border-radius:12px;
+    padding:14px 16px;
+    margin:14px 0;
+  }
+  .algo p{margin:0 0 8px;}
+  .algo p:last-child{margin-bottom:0;}
+  .algo strong.passo{color:var(--indigo-deep);}
+
+  /* Chain / corrente */
+  .chain-row{display:flex;align-items:center;gap:8px;margin:10px 0;flex-wrap:nowrap;overflow-x:auto;padding:4px 0;}
+  .chain-label{font-size:13px;color:var(--text2);font-weight:700;min-width:96px;flex-shrink:0;}
+  .chain-box{
+    background:var(--indigo);color:#fff;font-family:'Baloo 2',sans-serif;font-weight:700;
+    padding:9px 14px;border-radius:12px;min-width:52px;text-align:center;flex-shrink:0;font-size:16px;
+  }
+  .chain-op{
+    background:var(--coral);color:#7A2A1A;font-family:'Baloo 2',sans-serif;font-weight:700;
+    padding:5px 11px;border-radius:20px;font-size:13px;flex-shrink:0;white-space:nowrap;
+  }
+  .chain-arrow{color:var(--indigo-soft);font-weight:700;flex-shrink:0;}
+
+  /* Tables */
+  table{
+    width:100%;border-collapse:collapse;margin:14px 0;
+    font-size:17px;
+  }
+  th,td{
+    padding:10px 8px;text-align:center;border-bottom:1px solid var(--border);
+  }
+  th{
+    background:var(--indigo);color:#fff;font-family:'Baloo 2',sans-serif;font-weight:600;
+    font-size:14px;
+  }
+  tr:nth-child(even) td{background:#FAF9FE;}
+  td.hi{color:var(--indigo-deep);font-weight:700;}
+
+  /* Try box */
+  .tryb{
+    border:2px dashed var(--indigo-soft);
+    border-radius:14px;padding:16px;margin:16px 0;
+    background:#FCFBFF;
+  }
+  .tryb input{
+    font-family:'Atkinson Hyperlegible',sans-serif;
+    font-size:18px;padding:8px 12px;border-radius:10px;
+    border:2px solid var(--border);width:120px;margin-right:8px;
+  }
+  .tryb button{
+    font-family:'Baloo 2',sans-serif;font-weight:700;font-size:15px;
+    background:var(--indigo);color:#fff;border:none;
+    padding:9px 18px;border-radius:10px;cursor:pointer;
+  }
+  .tryb button:hover{background:var(--indigo-deep);}
+  .feedback{margin-top:10px;font-weight:700;font-size:16px;padding:8px 12px;border-radius:10px;display:none;}
+  .feedback.ok{display:block;background:#E1F6EE;color:#1E6B54;}
+  .feedback.bad{display:block;background:#FFE3DB;color:#9C3A26;}
+
+  /* SVG graph */
+  .graph-wrap{text-align:center;margin:16px 0;}
+  .graph-wrap svg{max-width:100%;height:auto;}
+
+  /* Nav footer */
+  .navfooter{
+    position:fixed;bottom:0;left:0;right:0;
+    background:rgba(246,244,252,0.97);
+    border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;
+    padding:6px 14px;z-index:50;
+    backdrop-filter:blur(4px);
+  }
+  .navbtn{
+    font-family:'Baloo 2',sans-serif;font-weight:700;font-size:11px;
+    padding:4px 9px;border-radius:20px;
+    background:#fff;border:1px solid var(--border);color:var(--indigo);
+    cursor:pointer;
+  }
+  .navbtn:hover:not(:disabled){border-color:var(--indigo-soft);}
+  .navbtn:disabled{opacity:0.35;cursor:default;}
+  .navcenter{font-size:11px;color:var(--text2);font-family:'Baloo 2',sans-serif;}
+
+  strong{color:var(--indigo-deep);}
+
+  @media (min-width:900px){
+    body{font-size:21px;}
+    header h1{font-size:32px;}
+    .card{padding:28px;}
+    h2.card-title{font-size:26px;}
+    .tab{font-size:13px;padding:6px 14px;}
+    table{font-size:18px;}
+  }
+  @media (min-width:1500px){
+    body{font-size:23px;}
+    .wrap{max-width:1150px;}
+    header h1{font-size:38px;}
+    .card{padding:34px;}
+    h2.card-title{font-size:30px;}
+    .graph-wrap svg{max-width:600px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bgsym" id="bgsym"></div>
+
+<div class="progress-wrap">
+  <div class="progress-label" id="progressLabel">Parte 1 de 10 — Início</div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+</div>
+
+<div class="wrap">
+  <header>
+    <h1>Grandezas Diretamente Proporcionais</h1>
+    <p class="sub">7º ano · Matemática</p>
+  </header>
+
+  <div class="tabs" id="tabs"></div>
+
+  <main>
+
+    <!-- PARTE 1 -->
+    <section class="part active" data-name="Início">
+      <div class="card">
+        <span class="eyebrow coral">Para começar</span>
+        <h2 class="card-title">Você já sabe resolver isso</h2>
+        <p>Imagine que <strong>1 chocolate custa R$ 3</strong>.</p>
+        <p>Quanto custam <strong>3 chocolates</strong>?</p>
+        <div class="tryb">
+          <input type="number" id="ganchoInput" placeholder="R$">
+          <button onclick="checarGancho()">Conferir</button>
+          <div class="feedback" id="ganchoFeedback"></div>
+        </div>
+        <p>Você provavelmente pensou "3 × 3 = 9" quase sem esforço. Se eu comprasse <strong>5 chocolates</strong>, você multiplicaria por 5. Se comprasse o dobro de chocolates, pagaria o dobro.</p>
+        <div class="pense">
+          <span class="eyebrow">Pense assim</span>
+          <p style="margin:0;">Essa ideia — "se uma coisa dobra, a outra também dobra" — é exatamente o coração do que vamos estudar hoje: <strong>grandezas diretamente proporcionais</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTE 2 -->
+    <section class="part" data-name="O que é">
+      <div class="card">
+        <span class="eyebrow">Parte 2</span>
+        <h2 class="card-title">O que são grandezas diretamente proporcionais?</h2>
+        <p>Duas grandezas são diretamente proporcionais quando uma depende da outra <strong>sempre na mesma razão</strong>. Se uma aumenta, a outra aumenta na mesma proporção. Se uma diminui, a outra diminui também.</p>
+
+        <div class="copiar">
+          <span class="eyebrow">Copie no caderno</span>
+          <p style="margin:0;"><strong>Grandezas diretamente proporcionais:</strong> são duas grandezas x e y tais que, ao dividir y por x em qualquer linha de uma tabela de valores correspondentes, o resultado é sempre o mesmo número. Esse número é chamado de <strong>constante de proporcionalidade</strong>.</p>
+        </div>
+
+        <h3 class="subtitle">O teste prático</h3>
+        <p>Para descobrir se duas grandezas são diretamente proporcionais, existe um teste simples: divida sempre <strong>y ÷ x</strong> (valor da segunda grandeza dividido pela primeira) em cada linha da tabela.</p>
+        <p>Se o resultado for <strong>sempre o mesmo número</strong>, elas são diretamente proporcionais. Se o resultado mudar de linha para linha, não são.</p>
+        <div class="dica">
+          <span class="eyebrow yellow">Dica</span>
+          <p style="margin:0;">Cuidado: "as duas grandezas aumentam juntas" não é o mesmo que "são diretamente proporcionais". Muita coisa aumenta junto sem manter a mesma razão — é por isso que o teste da divisão é obrigatório, nunca "no olho".</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTE 3 -->
+    <section class="part" data-name="Fotocopiadora">
+      <div class="card">
+        <span class="eyebrow mint">Exemplo</span>
+        <h2 class="card-title">A fotocopiadora</h2>
+        <p>Uma fotocopiadora imprime <strong>45 páginas em 3 minutos</strong>, sempre no mesmo ritmo.</p>
+
+        <h3 class="subtitle">Passo 1 — Descubra o ritmo por minuto</h3>
+        <p>45 ÷ 3 = <strong>15 páginas por minuto</strong></p>
+
+        <h3 class="subtitle">Passo 2 — Monte a tabela completa</h3>
+        <table>
+          <tr><th>Tempo (min)</th><th>Páginas</th><th>Conta</th></tr>
+          <tr><td>1</td><td class="hi">15</td><td>1 × 15</td></tr>
+          <tr><td>3</td><td class="hi">45</td><td>3 × 15</td></tr>
+          <tr><td>6</td><td class="hi">90</td><td>6 × 15</td></tr>
+          <tr><td>9</td><td class="hi">135</td><td>9 × 15</td></tr>
+        </table>
+
+        <h3 class="subtitle">Passo 3 — Faça o teste da divisão em cada linha</h3>
+        <p>45 ÷ 3 = 15 &nbsp;&nbsp; 90 ÷ 6 = 15 &nbsp;&nbsp; 135 ÷ 9 = 15 → <strong>sempre 15!</strong> Por isso, tempo e páginas são diretamente proporcionais.</p>
+
+        <div class="pense">
+          <span class="eyebrow">Pense assim</span>
+          <p style="margin:0;">É como uma torneira aberta num ritmo constante: não importa por quanto tempo você espera, a água sempre enche o balde no mesmo ritmo por minuto. Esse "ritmo fixo" é a constante de proporcionalidade.</p>
+        </div>
+
+        <h3 class="subtitle">Passo 4 — Escreva como função</h3>
+        <p>x = tempo (minutos) &nbsp;&nbsp; y = número de páginas</p>
+        <p style="text-align:center;font-size:24px;font-weight:800;color:var(--indigo-deep);font-family:'Baloo 2',sans-serif;">y = 15 · x</p>
+        <p>O <strong>15</strong> é a constante de proporcionalidade: é quanto y vale para cada unidade de x.</p>
+
+        <h3 class="subtitle">Passo 5 — O gráfico</h3>
+        <div class="graph-wrap">
+          <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#362F78"/>
+              </marker>
+            </defs>
+            <!-- grid -->
+            <g stroke="#E3DEF7" stroke-width="1">
+              <line x1="40" y1="238.3" x2="370" y2="238.3"/>
+              <line x1="40" y1="196.7" x2="370" y2="196.7"/>
+              <line x1="40" y1="155" x2="370" y2="155"/>
+              <line x1="40" y1="113.3" x2="370" y2="113.3"/>
+              <line x1="40" y1="71.7" x2="370" y2="71.7"/>
+              <line x1="40" y1="30" x2="370" y2="30"/>
+              <line x1="106" y1="30" x2="106" y2="280"/>
+              <line x1="172" y1="30" x2="172" y2="280"/>
+              <line x1="238" y1="30" x2="238" y2="280"/>
+              <line x1="304" y1="30" x2="304" y2="280"/>
+              <line x1="370" y1="30" x2="370" y2="280"/>
+            </g>
+            <!-- axes -->
+            <line x1="40" y1="280" x2="385" y2="280" stroke="#362F78" stroke-width="2" marker-end="url(#arrow)"/>
+            <line x1="40" y1="280" x2="40" y2="18" stroke="#362F78" stroke-width="2" marker-end="url(#arrow)"/>
+            <!-- axis labels -->
+            <text x="392" y="285" font-size="12" fill="#5B5686" font-family="Baloo 2">tempo</text>
+            <text x="10" y="22" font-size="12" fill="#5B5686" font-family="Baloo 2">páginas</text>
+            <text x="106" y="296" font-size="11" fill="#5B5686" text-anchor="middle">2</text>
+            <text x="172" y="296" font-size="11" fill="#5B5686" text-anchor="middle">4</text>
+            <text x="238" y="296" font-size="11" fill="#5B5686" text-anchor="middle">6</text>
+            <text x="304" y="296" font-size="11" fill="#5B5686" text-anchor="middle">8</text>
+            <text x="370" y="296" font-size="11" fill="#5B5686" text-anchor="middle">10</text>
+            <text x="30" y="242" font-size="11" fill="#5B5686" text-anchor="end">25</text>
+            <text x="30" y="200.7" font-size="11" fill="#5B5686" text-anchor="end">50</text>
+            <text x="30" y="159" font-size="11" fill="#5B5686" text-anchor="end">75</text>
+            <text x="30" y="117.3" font-size="11" fill="#5B5686" text-anchor="end">100</text>
+            <text x="30" y="75.7" font-size="11" fill="#5B5686" text-anchor="end">125</text>
+            <text x="30" y="34" font-size="11" fill="#5B5686" text-anchor="end">150</text>
+            <!-- line through points -->
+            <line x1="40" y1="280" x2="337" y2="55" stroke="#6C63B5" stroke-width="2" stroke-dasharray="5,4"/>
+            <!-- data points -->
+            <circle cx="73" cy="255" r="7" fill="#FFB3A0" stroke="#fff" stroke-width="2.5"/>
+            <circle cx="139" cy="205" r="7" fill="#FFB3A0" stroke="#fff" stroke-width="2.5"/>
+            <circle cx="238" cy="130" r="7" fill="#FFB3A0" stroke="#fff" stroke-width="2.5"/>
+            <circle cx="337" cy="55" r="7" fill="#FFB3A0" stroke="#fff" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <p>Os pontos formam uma <strong>reta que passa pela origem</strong> (0,0) — essa é a marca registrada de proporcionalidade direta.</p>
+      </div>
+    </section>
+
+    <!-- PARTE 4 -->
+    <section class="part" data-name="Contraexemplo">
+      <div class="card">
+        <span class="eyebrow coral">Contraexemplo</span>
+        <h2 class="card-title">Quando NÃO é diretamente proporcional</h2>
+        <p>Nem toda relação entre duas grandezas é proporcional. Por isso sempre fazemos o teste da divisão antes de afirmar que é diretamente proporcional.</p>
+
+        <h3 class="subtitle">Idade e altura</h3>
+        <table>
+          <tr><th>Idade (anos)</th><th>Altura (cm)</th></tr>
+          <tr><td>2</td><td>85</td></tr>
+          <tr><td>4</td><td>100</td></tr>
+          <tr><td>8</td><td>130</td></tr>
+          <tr><td>16</td><td>170</td></tr>
+        </table>
+        <p>Teste da divisão: 85 ÷ 2 = 42,5 &nbsp; 100 ÷ 4 = 25 &nbsp; 130 ÷ 8 = 16,25 &nbsp; 170 ÷ 16 = 10,625</p>
+        <p><strong>Resultados diferentes em cada linha!</strong> Isso mostra que idade e altura não são diretamente proporcionais.</p>
+
+        <div class="pense">
+          <span class="eyebrow">Pense assim</span>
+          <p style="margin:0;">Uma pessoa não cresce sempre na mesma proporção ao longo da vida — cresce rápido quando bebê, mais devagar depois. Não existe um número fixo que, multiplicado pela idade, sempre dê a altura certa.</p>
+        </div>
+
+        <h3 class="subtitle">Gols de um jogador em cada jogo</h3>
+        <table>
+          <tr><th>Jogo</th><th>Gols</th></tr>
+          <tr><td>1</td><td>2</td></tr>
+          <tr><td>2</td><td>0</td></tr>
+          <tr><td>3</td><td>3</td></tr>
+          <tr><td>4</td><td>1</td></tr>
+        </table>
+        <p>Não existe relação fixa: um jogador pode fazer mais gols num jogo e menos no outro, sem seguir uma proporção com o número do jogo.</p>
+
+        <div class="dica">
+          <span class="eyebrow yellow">Dica — erro comum</span>
+          <p style="margin:0;">Muita gente olha uma tabela onde os dois números crescem (como idade e altura) e já conclui "é proporcional!". <strong>Sempre faça a conta y ÷ x em pelo menos duas linhas</strong> antes de decidir. Se dois resultados diferentes já aparecerem, pode parar: não é diretamente proporcional.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTE 5 (NOVA) - Esquema/corrente -->
+    <section class="part" data-name="Esquema">
+      <div class="card">
+        <span class="eyebrow yellow">Exemplo resolvido</span>
+        <h2 class="card-title">Usando um esquema para calcular</h2>
+        <p>Quando duas grandezas são diretamente proporcionais, dá para usar um esquema de ÷ e × para descobrir qualquer valor novo, sem precisar montar a tabela toda.</p>
+
+        <div class="exemplo">
+          <p class="enunciado">Um pintor usa 6 latas de tinta para pintar 90 m² de parede, sempre na mesma proporção. Quantos m² ele consegue pintar com 9 latas?</p>
+
+          <p>Como as latas têm o mesmo rendimento, se aumentarmos o número de latas, a área pintada aumenta na mesma proporção. Podemos usar um esquema para facilitar os cálculos: primeiro dividimos para achar quanto rende <strong>1 lata</strong>, depois multiplicamos para achar o valor de <strong>9 latas</strong>.</p>
+
+          <div class="chain-row">
+            <span class="chain-label">latas</span>
+            <div class="chain-box">6</div>
+            <span class="chain-arrow">→</span>
+            <span class="chain-op">÷6</span>
+            <span class="chain-arrow">→</span>
+            <div class="chain-box">1</div>
+            <span class="chain-arrow">→</span>
+            <span class="chain-op">×9</span>
+            <span class="chain-arrow">→</span>
+            <div class="chain-box">9</div>
+          </div>
+          <div class="chain-row">
+            <span class="chain-label">área (m²)</span>
+            <div class="chain-box">90</div>
+            <span class="chain-arrow">→</span>
+            <span class="chain-op">÷6</span>
+            <span class="chain-arrow">→</span>
+            <div class="chain-box">15</div>
+            <span class="chain-arrow">→</span>
+            <span class="chain-op">×9</span>
+            <span class="chain-arrow">→</span>
+            <div class="chain-box">135</div>
+          </div>
+
+          <div class="resposta">Por meio do esquema, descobrimos que 1 lata pinta 15 m², e que 9 latas pintam 9 · 15 = 135 m².</div>
+        </div>
+
+        <div class="pense">
+          <span class="eyebrow">Pense assim</span>
+          <p style="margin:0;">O esquema faz o mesmo trabalho do teste y ÷ x: primeiro "desmonta" a proporção até chegar em 1 unidade, depois "remonta" para o valor que você quer. É a mesma ideia da fotocopiadora, só que organizada em setas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTE 6 (NOVA) - Cuidado com a reta -->
+    <section class="part" data-name="Cuidado com a reta">
+      <div class="card">
+        <span class="eyebrow yellow">Exemplo resolvido</span>
+        <h2 class="card-title">Cuidado: nem toda reta passa pela origem</h2>
+        <p>Você viu que o gráfico de uma grandeza diretamente proporcional é sempre uma reta. Mas atenção: <strong>nem toda reta representa proporcionalidade direta</strong>. Veja este exemplo.</p>
+
+        <div class="exemplo">
+          <p class="enunciado">Um aplicativo de corrida cobra uma taxa fixa de R$4,00 mais R$2,00 por quilômetro rodado. Complete a tabela e diga se a distância (x) e o preço (y) são diretamente proporcionais.</p>
+
+          <table>
+            <tr><th>Distância (km)</th><th>Preço (R$)</th></tr>
+            <tr><td>1</td><td class="hi">6</td></tr>
+            <tr><td>2</td><td class="hi">8</td></tr>
+            <tr><td>3</td><td class="hi">10</td></tr>
+            <tr><td>4</td><td class="hi">12</td></tr>
+            <tr><td>5</td><td class="hi">14</td></tr>
+          </table>
+
+          <p>Teste da divisão: 6 ÷ 1 = 6 &nbsp;&nbsp; 8 ÷ 2 = 4 &nbsp;&nbsp; 10 ÷ 3 = 3,33... &nbsp;&nbsp; 14 ÷ 5 = 2,8</p>
+
+          <div class="resposta">Os resultados são diferentes em cada linha — não é diretamente proporcional, mesmo a distância e o preço aumentando juntos.</div>
+        </div>
+
+        <div class="graph-wrap">
+          <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#362F78"/>
+              </marker>
+            </defs>
+            <g stroke="#E3DEF7" stroke-width="1">
+              <line x1="40" y1="238" x2="370" y2="238"/>
+              <line x1="40" y1="196" x2="370" y2="196"/>
+              <line x1="40" y1="154" x2="370" y2="154"/>
+              <line x1="40" y1="112" x2="370" y2="112"/>
+              <line x1="40" y1="70" x2="370" y2="70"/>
+              <line x1="106" y1="30" x2="106" y2="280"/>
+              <line x1="172" y1="30" x2="172" y2="280"/>
+              <line x1="238" y1="30" x2="238" y2="280"/>
+              <line x1="304" y1="30" x2="304" y2="280"/>
+              <line x1="370" y1="30" x2="370" y2="280"/>
+            </g>
+            <line x1="40" y1="280" x2="385" y2="280" stroke="#362F78" stroke-width="2" marker-end="url(#arrow2)"/>
+            <line x1="40" y1="280" x2="40" y2="18" stroke="#362F78" stroke-width="2" marker-end="url(#arrow2)"/>
+            <text x="392" y="285" font-size="12" fill="#5B5686" font-family="Baloo 2">km</text>
+            <text x="6" y="22" font-size="12" fill="#5B5686" font-family="Baloo 2">R$</text>
+            <text x="106" y="296" font-size="11" fill="#5B5686" text-anchor="middle">2</text>
+            <text x="172" y="296" font-size="11" fill="#5B5686" text-anchor="middle">4</text>
+            <text x="238" y="296" font-size="11" fill="#5B5686" text-anchor="middle">6</text>
+            <text x="304" y="296" font-size="11" fill="#5B5686" text-anchor="middle">8</text>
+            <text x="30" y="242" font-size="11" fill="#5B5686" text-anchor="end">4</text>
+            <text x="30" y="200" font-size="11" fill="#5B5686" text-anchor="end">8</text>
+            <text x="30" y="158" font-size="11" fill="#5B5686" text-anchor="end">12</text>
+            <text x="30" y="116" font-size="11" fill="#5B5686" text-anchor="end">16</text>
+            <text x="30" y="74" font-size="11" fill="#5B5686" text-anchor="end">20</text>
+            <!-- reference dashed line from origin for comparison -->
+            <line x1="40" y1="280" x2="180" y2="70" stroke="#C9C3EA" stroke-width="1.5" stroke-dasharray="3,4"/>
+            <!-- actual line: starts at (0,4)->y=196 on axis, through points -->
+            <line x1="40" y1="196" x2="205" y2="70" stroke="#6C63B5" stroke-width="2.5"/>
+            <circle cx="40" cy="196" r="5" fill="#fff" stroke="#6C63B5" stroke-width="2"/>
+            <circle cx="73" cy="175" r="7" fill="#FFB3A0" stroke="#fff" stroke-width="2.5"/>
+            <circle cx="106" cy="154" r="7" fill="#FFB3A0" stroke="#fff" stroke-width="2.5"/>
+            <circle cx="139" cy="133" r="7" fill="#FFB3A0" stroke="#fff" stroke-width="2.5"/>
+            <circle cx="172" cy="112" r="7" fill="#FFB3A0" stroke="#fff" stroke-width="2.5"/>
+            <circle cx="205" cy="91" r="7" fill="#FFB3A0" stroke="#fff" stroke-width="2.5"/>
+            <text x="46" y="212" font-size="10" fill="#9C3A26">começa em R$4</text>
+          </svg>
+        </div>
+
+        <div class="dica">
+          <span class="eyebrow yellow">Dica — erro comum</span>
+          <p style="margin:0;">Repare que os pontos formam uma reta — mas essa reta <strong>não passa pela origem</strong> (quando x = 0 km, o preço já é R$4,00, não R$0,00). Toda grandeza diretamente proporcional forma uma reta, mas <strong>nem toda reta é proporcionalidade direta</strong>. O jeito seguro de confirmar é sempre o teste y ÷ x, nunca só olhar se o gráfico "parece" uma reta.</p>
+        </div>
+
+        <p>A função desse exemplo é y = 2x + 4 (e não y = k · x), por isso não representa proporcionalidade direta.</p>
+      </div>
+    </section>
+
+    <!-- PARTE 7 (NOVA) - Proporção com total -->
+    <section class="part" data-name="Proporção com total">
+      <div class="card">
+        <span class="eyebrow yellow">Exemplo resolvido</span>
+        <h2 class="card-title">Proporção envolvendo um total</h2>
+
+        <div class="exemplo">
+          <p class="enunciado">Em uma horta escolar, o número de pés de tomate está para o número de pés de alface em uma proporção de 5 para 2.</p>
+
+          <h3 class="subtitle" style="margin-top:6px;">a) O que significa essa proporção de 5 para 2?</h3>
+          <div class="resposta">A cada 5 pés de tomate plantados, há 2 pés de alface.</div>
+
+          <h3 class="subtitle">b) Se nessa horta houvesse 40 pés de alface, quantos seriam os pés de tomate?</h3>
+          <p>Como a razão tomate : alface é sempre 5 : 2, precisamos descobrir por quanto o "2" foi multiplicado para virar 40: 40 ÷ 2 = 20. Multiplicamos o "5" pelo mesmo número: 5 × 20 = 100.</p>
+          <div class="resposta">Seriam 100 pés de tomate.</div>
+
+          <h3 class="subtitle">c) Se ao todo na horta houvesse 700 plantas entre tomate e alface, quantas seriam de cada tipo? <span style="font-weight:400;">(Dica: elabore uma tabela usando a proporção de 5 para 2.)</span></h3>
+          <table>
+            <tr><th>Tomate</th><th>Alface</th><th>Total</th></tr>
+            <tr><td>5</td><td>2</td><td>7</td></tr>
+            <tr><td>50</td><td>20</td><td>70</td></tr>
+            <tr><td>500</td><td>200</td><td class="hi">700</td></tr>
+          </table>
+          <p>Cada "grupo" de 5 + 2 = 7 plantas se repete até chegar em 700: 700 ÷ 7 = 100 grupos. Então: tomate = 5 × 100 = 500, e alface = 2 × 100 = 200.</p>
+          <div class="resposta">Seriam 500 pés de tomate e 200 pés de alface.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTE 8 (NOVA) - Taxa e conversão de tempo -->
+    <section class="part" data-name="Taxa e conversão">
+      <div class="card">
+        <span class="eyebrow yellow">Exemplo resolvido</span>
+        <h2 class="card-title">Taxas constantes e conversão de tempo</h2>
+
+        <div class="exemplo">
+          <p class="enunciado">O coração de um beija-flor bate, em média, 1 200 vezes por minuto, e a cada batida bombeia cerca de 0,5 mL de sangue. Com base nesses dados, responda:</p>
+
+          <h3 class="subtitle" style="margin-top:6px;">a) Quantas vezes o coração do beija-flor bate em 1 hora?</h3>
+          <p>1 hora tem 60 minutos, então: 1 200 × 60 = 72 000</p>
+          <div class="resposta">72 000 batidas.</div>
+
+          <h3 class="subtitle">b) Em 1 segundo, quantas vezes o coração bate?</h3>
+          <p>1 minuto tem 60 segundos, então: 1 200 ÷ 60 = 20</p>
+          <div class="resposta">20 batidas.</div>
+
+          <h3 class="subtitle">c) Quantos mL de sangue esse coração bombeia em 1 minuto?</h3>
+          <p>Cada batida bombeia 0,5 mL, e há 1 200 batidas por minuto: 1 200 × 0,5 = 600</p>
+          <div class="resposta">600 mL de sangue por minuto.</div>
+        </div>
+
+        <div class="pense">
+          <span class="eyebrow">Pense assim</span>
+          <p style="margin:0;">Toda vez que você troca de unidade de tempo (segundo, minuto, hora) mantendo a mesma taxa, está usando proporcionalidade direta: multiplica para "aumentar" a unidade, divide para "diminuir" a unidade.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTE 9 -->
+    <section class="part" data-name="Resumo">
+      <div class="card">
+        <span class="eyebrow">Parte 9</span>
+        <h2 class="card-title">Quadro-resumo</h2>
+        <table>
+          <tr><th>Situação</th><th>Diretamente proporcional?</th><th>Por quê</th></tr>
+          <tr><td>Fotocopiadora (tempo e páginas)</td><td class="hi">Sim</td><td>y ÷ x é sempre igual</td></tr>
+          <tr><td>Idade e altura</td><td>Não</td><td>y ÷ x muda a cada linha</td></tr>
+          <tr><td>Jogos e gols marcados</td><td>Não</td><td>não existe razão fixa</td></tr>
+          <tr><td>Latas de tinta e área pintada</td><td class="hi">Sim</td><td>y ÷ x é sempre igual (15)</td></tr>
+          <tr><td>App de corrida (km e preço)</td><td>Não</td><td>forma reta, mas não passa pela origem</td></tr>
+        </table>
+        <div class="copiar">
+          <span class="eyebrow">Copie no caderno</span>
+          <p style="margin:0;">Divida y por x em cada linha da tabela. Se der sempre o mesmo número, é diretamente proporcional. Formar uma reta no gráfico não é suficiente — a reta precisa passar pela origem (0,0).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTE 10 -->
+    <section class="part" data-name="Resumo pro caderno">
+      <div class="card">
+        <span class="eyebrow mint">Para fechar</span>
+        <h2 class="card-title">Resumo pro caderno</h2>
+        <p>Duas grandezas são diretamente proporcionais quando uma depende da outra sempre na mesma razão: se uma aumenta, a outra aumenta na mesma proporção, e se uma diminui, a outra também diminui. Para descobrir se isso acontece, usamos o teste da divisão: em cada linha da tabela, calculamos y ÷ x. Se o resultado for sempre o mesmo número, as grandezas são diretamente proporcionais, e esse número é chamado de constante de proporcionalidade. Vimos isso na fotocopiadora, que imprime sempre 15 páginas por minuto, e também no esquema das latas de tinta, em que dividimos para achar o valor de 1 lata e multiplicamos para achar o valor de 9 latas. No gráfico, a proporcionalidade direta aparece como uma reta que passa pela origem (0,0), mas é preciso tomar cuidado: nem toda reta passa pela origem, como no exemplo do aplicativo de corrida, que cobra uma taxa fixa mais um valor por quilômetro — ali os pontos também formam uma reta, mas ela começa em R$4,00 quando a distância é zero, então não é proporcionalidade direta. Já a idade e a altura de uma pessoa não são diretamente proporcionais, porque o resultado da divisão altura ÷ idade muda em cada linha da tabela — as pessoas não crescem sempre no mesmo ritmo. Vimos ainda que proporções do tipo "5 para 2" servem para descobrir quantidades dentro de um total, dividindo o total pela soma das partes da razão, e que taxas constantes (como batidas do coração por minuto) também são exemplos de proporcionalidade direta, bastando multiplicar ou dividir para trocar de unidade de tempo. Por isso, nunca basta olhar se as duas grandezas "aumentam juntas" ou se o gráfico parece uma reta — é preciso sempre fazer o teste da divisão antes de afirmar que existe proporcionalidade direta.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="navfooter">
+  <button class="navbtn" id="btnBack" onclick="mudarParte(-1)">← Voltar</button>
+  <span class="navcenter" id="navCenter"></span>
+  <button class="navbtn" id="btnNext" onclick="mudarParte(1)">Avançar →</button>
+</div>
+
+<script>
+  // background symbols
+  const symbols = ['%','÷','×','+','=','∝','y=kx','x','y'];
+  const bg = document.getElementById('bgsym');
+  for(let i=0;i<14;i++){
+    const s = document.createElement('span');
+    s.textContent = symbols[i % symbols.length];
+    s.style.left = Math.random()*95+'%';
+    s.style.top = Math.random()*95+'%';
+    s.style.fontSize = (18+Math.random()*30)+'px';
+    s.style.animationDelay = (Math.random()*10)+'s';
+    s.style.animationDuration = (20+Math.random()*14)+'s';
+    bg.appendChild(s);
+  }
+
+  const parts = document.querySelectorAll('section.part');
+  const names = Array.from(parts).map(p=>p.dataset.name);
+  const tabsEl = document.getElementById('tabs');
+  let current = 0;
+
+  names.forEach((n,i)=>{
+    const t = document.createElement('div');
+    t.className = 'tab' + (i===0?' active':'');
+    t.textContent = n;
+    t.onclick = () => irPara(i);
+    tabsEl.appendChild(t);
+  });
+
+  function irPara(i){
+    current = i;
+    parts.forEach((p,idx)=>p.classList.toggle('active', idx===i));
+    document.querySelectorAll('.tab').forEach((t,idx)=>t.classList.toggle('active', idx===i));
+    document.getElementById('progressLabel').textContent = `Parte ${i+1} de ${parts.length} — ${names[i]}`;
+    document.getElementById('progressFill').style.width = ((i+1)/parts.length*100)+'%';
+    document.getElementById('btnBack').disabled = i===0;
+    document.getElementById('btnNext').disabled = i===parts.length-1;
+    document.getElementById('navCenter').textContent = (i+1)+' / '+parts.length;
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function mudarParte(delta){
+    const novo = current + delta;
+    if(novo>=0 && novo<parts.length) irPara(novo);
+  }
+
+  irPara(0);
+
+  // gancho try-box
+  function checarGancho(){
+    const v = document.getElementById('ganchoInput').value;
+    const fb = document.getElementById('ganchoFeedback');
+    fb.className = 'feedback';
+    if(v === '' || isNaN(v)){
+      fb.classList.add('bad');
+      fb.textContent = 'Digite um número no campo acima.';
+      return;
+    }
+    if(parseFloat(v) === 9){
+      fb.classList.add('ok');
+      fb.textContent = 'Isso mesmo! 3 × 3 = R$ 9. Você já usou a ideia de proporcionalidade direta sem nem perceber.';
+    } else {
+      fb.classList.add('bad');
+      fb.textContent = 'Quase — revê essa conta. Se 1 chocolate custa R$3, quanto custam 3?';
+    }
+  }
+</script>
+</body>
+</html>
