@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Área do Círculo — Aula 8º Ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F4FC;
+    --indigo:#362F78;
+    --indigo-deep:#241F52;
+    --indigo-soft:#6C63B5;
+    --mint:#A9E5D0;
+    --coral:#FFB3A0;
+    --coral-dark:#E4694F;
+    --yellow:#FFDD73;
+    --text:#2A2650;
+    --text-sec:#5B5686;
+    --border:#E3DEF7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    font-size:15px;
+    line-height:1.55;
+    position:relative;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.baloo,.eyebrow,.tab-pill,.nav-pill,.progress-label,.chip,.step-label{
+    font-family:'Baloo 2', sans-serif;
+  }
+
+  /* ---------- floating background symbols ---------- */
+  .bg-symbols{
+    position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+  }
+  .bg-symbols span{
+    position:absolute;
+    color:var(--indigo-soft);
+    opacity:0.08;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    animation:drift 26s ease-in-out infinite;
+  }
+  @keyframes drift{
+    0%{transform:translate(0,0) rotate(0deg);}
+    50%{transform:translate(14px,-22px) rotate(8deg);}
+    100%{transform:translate(0,0) rotate(0deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bg-symbols span{animation:none;}
+  }
+
+  /* ---------- layout ---------- */
+  .page-container{
+    position:relative; z-index:1;
+    max-width:860px;
+    margin:0 auto;
+    padding:14px 16px 90px;
+  }
+  .lesson-title{
+    text-align:center;
+    color:var(--indigo-deep);
+    font-size:22px;
+    font-weight:800;
+    margin:10px 0 12px;
+  }
+
+  /* ---------- sticky progress bar ---------- */
+  .progress-bar{
+    position:sticky; top:0; z-index:20;
+    background:rgba(246,244,252,0.96);
+    backdrop-filter:blur(3px);
+    padding:8px 16px 6px;
+    border-bottom:1px solid var(--border);
+  }
+  .progress-track{
+    background:#E7E3F6;
+    border-radius:20px;
+    height:8px;
+    overflow:hidden;
+    max-width:860px;
+    margin:0 auto;
+  }
+  .progress-fill{
+    background:linear-gradient(90deg, var(--indigo-soft), var(--indigo));
+    height:100%;
+    width:14.28%;
+    border-radius:20px;
+    transition:width .35s ease;
+  }
+  .progress-label{
+    max-width:860px;
+    margin:5px auto 0;
+    font-size:11.5px;
+    color:var(--text-sec);
+    font-weight:600;
+  }
+
+  /* ---------- tab pills ---------- */
+  .tabs{
+    display:flex; flex-wrap:wrap; gap:6px;
+    justify-content:center;
+    margin:6px 0 16px;
+  }
+  .tab-pill{
+    font-size:11px;
+    padding:4px 9px;
+    border-radius:20px;
+    border:1px solid var(--border);
+    background:#fff;
+    color:var(--text-sec);
+    cursor:pointer;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .tab-pill.active{
+    background:var(--indigo);
+    border-color:var(--indigo);
+    color:#fff;
+  }
+
+  /* ---------- section / card ---------- */
+  .part{display:none;}
+  .part.active{display:block; animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  .card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:18px 16px;
+    box-shadow:0 4px 18px rgba(54,47,120,0.07);
+    margin-bottom:16px;
+  }
+  .eyebrow{
+    display:inline-block;
+    font-size:11px;
+    font-weight:700;
+    color:#fff;
+    background:var(--coral-dark);
+    padding:3px 10px;
+    border-radius:20px;
+    margin-bottom:10px;
+    letter-spacing:.3px;
+  }
+  .eyebrow.mint{background:#3E9E80;}
+  .eyebrow.indigo{background:var(--indigo);}
+  h2.section-title{
+    font-size:18px;
+    color:var(--indigo-deep);
+    margin:0 0 10px;
+    font-weight:800;
+  }
+  p{margin:0 0 10px;}
+
+  /* ---------- copie no caderno ---------- */
+  .copie{
+    border:2px dashed #4CAF7D;
+    background:#F3FBF7;
+    border-radius:14px;
+    padding:12px 14px;
+    margin:14px 0;
+  }
+  .copie .copie-label{
+    font-weight:700;
+    color:#2E8A63;
+    font-size:11.5px;
+    margin-bottom:6px;
+    display:block;
+  }
+
+  /* ---------- pense assim ---------- */
+  .pense{
+    background:#EDEBFA;
+    border-radius:14px;
+    padding:12px 14px;
+    margin:14px 0;
+    border:1px solid #DAD5F2;
+  }
+  .pense .tag{
+    font-weight:700;
+    color:var(--indigo);
+    font-size:12.5px;
+    margin-bottom:5px;
+    display:block;
+  }
+
+  /* ---------- dica ---------- */
+  .dica{
+    background:#FFF8E8;
+    border-left:6px solid var(--yellow);
+    border-radius:10px;
+    padding:12px 14px;
+    margin:14px 0;
+  }
+  .dica .tag{
+    font-weight:700;
+    color:#8A6D00;
+    font-size:12.5px;
+    margin-bottom:5px;
+    display:block;
+  }
+
+  /* ---------- worked example blocks ---------- */
+  .step{
+    background:#FAF9FE;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px 12px;
+    margin:8px 0;
+  }
+  .step-label{
+    color:var(--coral-dark);
+    font-weight:700;
+    font-size:12.5px;
+  }
+  .formula-box{
+    background:#FFF3E0;
+    border-radius:12px;
+    padding:12px 14px;
+    text-align:center;
+    font-size:16px;
+    font-weight:700;
+    color:var(--indigo-deep);
+    margin:10px 0;
+  }
+  table.calc-table{
+    width:100%;
+    border-collapse:collapse;
+    margin:10px 0;
+    font-size:13.5px;
+  }
+  table.calc-table th, table.calc-table td{
+    border:1px solid var(--border);
+    padding:7px 8px;
+    text-align:center;
+  }
+  table.calc-table th{
+    background:var(--indigo);
+    color:#fff;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:600;
+  }
+
+  /* ---------- try box ---------- */
+  .try-box{
+    border:2px dashed var(--indigo-soft);
+    border-radius:14px;
+    padding:14px;
+    margin:14px 0;
+    background:#FCFBFF;
+  }
+  .try-box .try-title{
+    font-weight:700;
+    color:var(--indigo);
+    margin-bottom:8px;
+    display:block;
+    font-size:13.5px;
+  }
+  .try-row{
+    display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+  }
+  .try-row input{
+    flex:1;
+    min-width:110px;
+    padding:8px 10px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    font-size:14px;
+    font-family:'Atkinson Hyperlegible', sans-serif;
+  }
+  .try-row button{
+    background:var(--indigo);
+    color:#fff;
+    border:none;
+    padding:8px 16px;
+    border-radius:10px;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:600;
+    cursor:pointer;
+    font-size:13.5px;
+  }
+  .try-row button:hover{background:var(--indigo-deep);}
+  .feedback{
+    margin-top:10px;
+    font-size:13.5px;
+    font-weight:600;
+    border-radius:10px;
+    padding:8px 10px;
+    display:none;
+  }
+  .feedback.ok{display:block; background:#E4F7EE; color:#227050;}
+  .feedback.no{display:block; background:#FDECEA; color:#B23A2E;}
+
+  /* ---------- svg figures ---------- */
+  .video-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--indigo);
+    color:#fff;
+    text-decoration:none;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    padding:10px 16px;
+    border-radius:12px;
+    margin:6px 0 14px;
+  }
+  .video-link:hover{background:var(--indigo-deep);}
+  .figure-row{
+    display:flex; gap:16px; justify-content:center; align-items:center;
+    flex-wrap:wrap; margin:14px 0;
+  }
+  .figure-row svg{max-width:100%; height:auto;}
+  .figure-caption{
+    text-align:center; font-size:12px; color:var(--text-sec); margin-top:4px;
+  }
+  .arrow-between{
+    font-size:22px; color:var(--coral-dark); font-weight:700;
+  }
+
+  /* ---------- nav buttons ---------- */
+  .nav-buttons{
+    position:fixed;
+    bottom:14px; left:0; right:0;
+    display:flex; justify-content:space-between;
+    max-width:860px; margin:0 auto;
+    padding:0 16px;
+    pointer-events:none;
+    z-index:15;
+  }
+  .nav-pill{
+    pointer-events:auto;
+    background:#fff;
+    border:1px solid var(--border);
+    color:var(--indigo);
+    font-family:'Baloo 2', sans-serif;
+    font-weight:600;
+    font-size:11px;
+    padding:4px 9px;
+    border-radius:20px;
+    box-shadow:0 3px 10px rgba(54,47,120,0.14);
+    cursor:pointer;
+  }
+  .nav-pill:disabled{opacity:0.35; cursor:default;}
+
+  .resumo p{font-size:14.5px;}
+
+  /* ---------- responsive: classroom TV ---------- */
+  @media (min-width:900px){
+    body{font-size:17px;}
+    .lesson-title{font-size:28px;}
+    h2.section-title{font-size:22px;}
+    .card{padding:26px 30px; border-radius:20px;}
+    .tab-pill{font-size:13px; padding:6px 14px;}
+    .nav-pill{font-size:13px; padding:6px 14px;}
+    .formula-box{font-size:20px; padding:16px 20px;}
+    .progress-label{font-size:13px;}
+    table.calc-table{font-size:16px;}
+    .try-row input, .try-row button{font-size:16px;}
+    .video-link{font-size:16px; padding:12px 20px;}
+  }
+  @media (min-width:1500px){
+    body{font-size:20px;}
+    .lesson-title{font-size:36px;}
+    h2.section-title{font-size:27px;}
+    .card{padding:34px 42px;}
+    .tab-pill{font-size:15px; padding:7px 16px;}
+    .nav-pill{font-size:15px; padding:8px 18px;}
+    .formula-box{font-size:26px; padding:20px 26px;}
+    .page-container{max-width:1180px;}
+    .progress-track, .progress-label, .tabs{max-width:1180px;}
+    table.calc-table{font-size:19px;}
+    .video-link{font-size:18px; padding:14px 24px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-symbols" aria-hidden="true">
+  <span style="top:6%; left:8%; font-size:40px;">π</span>
+  <span style="top:18%; left:80%; font-size:32px;">r²</span>
+  <span style="top:40%; left:4%; font-size:36px;">÷</span>
+  <span style="top:60%; left:88%; font-size:44px;">○</span>
+  <span style="top:75%; left:15%; font-size:30px;">3,14</span>
+  <span style="top:85%; left:70%; font-size:34px;">=</span>
+  <span style="top:30%; left:50%; font-size:28px;">×</span>
+  <span style="top:52%; left:60%; font-size:30px;">2πr</span>
+</div>
+
+<header class="progress-bar">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">Parte 1 de 7 — Vamos pensar</div>
+</header>
+
+<div class="page-container">
+  <h1 class="lesson-title">Área do Círculo</h1>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab-pill active" data-part="1">1. Vamos pensar</button>
+    <button class="tab-pill" data-part="2">2. Revisão</button>
+    <button class="tab-pill" data-part="3">3. Área do círculo</button>
+    <button class="tab-pill" data-part="4">4. Exemplo</button>
+    <button class="tab-pill" data-part="5">5. Curiosidade</button>
+    <button class="tab-pill" data-part="6">6. Sua vez</button>
+    <button class="tab-pill" data-part="7">7. Resumo</button>
+  </nav>
+
+  <main>
+
+    <!-- PARTE 1 -->
+    <section class="part active" id="part-1" data-title="Vamos pensar">
+      <div class="card">
+        <span class="eyebrow">Parte 1</span>
+        <h2 class="section-title">Antes de calcular, observe</h2>
+        <p>Imagine duas tampas redondas: uma menor, outra maior. Sem usar régua, sem fazer conta nenhuma — só olhando — você já consegue dizer qual delas tem mais "espaço" dentro, mais superfície.</p>
+
+        <div class="figure-row">
+          <svg width="120" height="140" viewBox="0 0 120 140">
+            <circle cx="60" cy="70" r="35" fill="#FFB3A0" stroke="#E4694F" stroke-width="2"/>
+            <text x="60" y="122" text-anchor="middle" font-family="Baloo 2" font-size="12" fill="#5B5686">tampa A</text>
+          </svg>
+          <svg width="160" height="180" viewBox="0 0 160 180">
+            <circle cx="80" cy="85" r="60" fill="#A9E5D0" stroke="#3E9E80" stroke-width="2"/>
+            <text x="80" y="160" text-anchor="middle" font-family="Baloo 2" font-size="12" fill="#5B5686">tampa B</text>
+          </svg>
+        </div>
+        <p>Provavelmente você disse "a tampa B, óbvio, ela é maior". E você está certo — sua intuição já enxerga a ideia de <strong>área</strong>: quanto espaço uma superfície plana ocupa.</p>
+        <p>O que ainda falta é uma forma de <strong>medir</strong> essa diferença com exatidão, em centímetros quadrados, metros quadrados etc. É exatamente isso que você vai aprender nesta aula.</p>
+      </div>
+    </section>
+
+    <!-- PARTE 2 -->
+    <section class="part" id="part-2" data-title="Revisão">
+      <div class="card">
+        <span class="eyebrow mint">Revisão</span>
+        <h2 class="section-title">O que você já sabe sobre círculos</h2>
+        <p>No 7º ano você estudou a <strong>circunferência</strong> (a borda, o contorno do círculo) e descobriu uma relação surpreendente: se você dividir o perímetro de qualquer círculo pelo seu diâmetro, sempre obtém o mesmo número.</p>
+
+        <div class="figure-row">
+          <svg width="180" height="140" viewBox="0 0 180 140">
+            <circle cx="70" cy="65" r="50" fill="none" stroke="#362F78" stroke-width="2" stroke-dasharray="4 3"/>
+            <line x1="20" y1="65" x2="120" y2="65" stroke="#E4694F" stroke-width="2"/>
+            <text x="70" y="58" text-anchor="middle" font-family="Baloo 2" font-size="13" fill="#E4694F">D</text>
+            <text x="70" y="128" text-anchor="middle" font-family="Baloo 2" font-size="12" fill="#5B5686">perímetro P (a borda)</text>
+          </svg>
+        </div>
+
+        <p>Esse número é o <strong>π</strong> (lê-se "pi"), aproximadamente <strong>3,14</strong>. Chamando o raio de r (lembrando que o diâmetro D = 2r), a relação fica assim:</p>
+
+        <div class="formula-box">P = 2 · π · r</div>
+
+        <div class="copie">
+          <span class="copie-label">Copie no caderno</span>
+          <p style="margin:0;"><strong>π (pi)</strong> é o número que você obtém ao dividir o perímetro de qualquer círculo pelo seu diâmetro. Esse valor é sempre o mesmo, não importa o tamanho do círculo, e vale aproximadamente 3,14. O <strong>perímetro</strong> de um círculo de raio r é dado por P = 2 · π · r.</p>
+        </div>
+
+        <p>Guarde bem essa fórmula do perímetro — ela vai ser a peça-chave para entendermos, na próxima parte, de onde vem a fórmula da <strong>área</strong>.</p>
+      </div>
+    </section>
+
+    <!-- PARTE 3 -->
+    <section class="part" id="part-3" data-title="Área do círculo">
+      <div class="card">
+        <span class="eyebrow indigo">Parte 3</span>
+        <h2 class="section-title">Da borda para o miolo: a área</h2>
+        <p>Enquanto o <strong>perímetro</strong> mede a borda do círculo, a <strong>área</strong> mede toda a superfície plana que ele ocupa por dentro — é o "tanto de espaço" que a tampa B tinha a mais que a tampa A, lá na Parte 1.</p>
+
+        <div class="copie">
+          <span class="copie-label">Copie no caderno</span>
+          <p style="margin:0;"><strong>Área do círculo</strong> é a medida da superfície plana ocupada por ele, expressa em unidades quadradas (cm², m², km² etc.).</p>
+        </div>
+
+        <div class="pense">
+          <span class="tag">Pense assim</span>
+          <p style="margin:0;">Imagine descascar uma laranja em gomos bem fininhos e depois deitar todos os gomos lado a lado, alternando um de cabeça para cima e o próximo de cabeça para baixo. Você forma uma faixa quase retangular — e quanto mais fino for cada gomo, mais parecida com um retângulo perfeito essa faixa fica.</p>
+        </div>
+
+        <p>É exatamente essa ideia que os matemáticos usam para descobrir a fórmula da área. Veja o círculo sendo dividido em fatias e depois "desenrolado":</p>
+
+        <div class="figure-row">
+          <svg id="wedgeCircle" width="170" height="170" viewBox="0 0 170 170"></svg>
+          <span class="arrow-between">→</span>
+          <svg id="unrolledStrip" width="220" height="170" viewBox="0 0 220 170"></svg>
+        </div>
+        <p class="figure-caption">O círculo fatiado (raio r) vira uma faixa ondulada. Quanto mais fatias, mais essa faixa se parece com um retângulo de base π·r e altura r.</p>
+
+        <div class="step">
+          <span class="step-label">Passo 1.</span> A "base" dessa faixa corresponde a metade do perímetro do círculo, ou seja, π · r.
+        </div>
+        <div class="step">
+          <span class="step-label">Passo 2.</span> A "altura" da faixa é o próprio raio, r.
+        </div>
+        <div class="step">
+          <span class="step-label">Passo 3.</span> Área de um retângulo = base × altura. Então: A = (π · r) × r
+        </div>
+
+        <div class="formula-box">A = π · r²</div>
+
+        <p>Repare: essa construção com fatias é só uma forma de <em>visualizar de onde vem</em> a fórmula. O resultado A = π · r² é exato, não é uma aproximação — funciona para qualquer círculo, de qualquer tamanho.</p>
+
+        <p>Veja essa mesma ideia em vídeo, com uma animação bem parecida com a que acabamos de fazer:</p>
+        <a class="video-link" href="https://www.youtube.com/watch?v=l6kFz0dQA5I" target="_blank" rel="noopener">
+          ▶ Assistir: Demonstração da área do círculo
+        </a>
+      </div>
+    </section>
+
+    <!-- PARTE 4 -->
+    <section class="part" id="part-4" data-title="Exemplo">
+      <div class="card">
+        <span class="eyebrow">Parte 4</span>
+        <h2 class="section-title">Exemplo resolvido: duas pizzas</h2>
+        <p>Uma pizzaria vende dois tamanhos: a pizza <strong>média</strong>, com 30 cm de diâmetro, e a pizza <strong>família</strong>, com 44 cm de diâmetro. Quanto de área a mais você ganha ao escolher a família?</p>
+
+        <div class="step">
+          <span class="step-label">Passo 1. Encontrar o raio de cada pizza</span><br>
+          Raio da média: 30 ÷ 2 = 15 cm<br>
+          Raio da família: 44 ÷ 2 = 22 cm
+        </div>
+
+        <div class="step">
+          <span class="step-label">Passo 2. Aplicar a fórmula A = π · r² (usando π ≈ 3,14)</span><br>
+          Pizza média: A = 3,14 × 15² = 3,14 × 225 = <strong>706,5 cm²</strong><br>
+          Pizza família: A = 3,14 × 22² = 3,14 × 484 = <strong>1 519,76 cm²</strong>
+        </div>
+
+        <table class="calc-table">
+          <tr><th>Pizza</th><th>Diâmetro</th><th>Raio</th><th>Área</th></tr>
+          <tr><td>Média</td><td>30 cm</td><td>15 cm</td><td>706,5 cm²</td></tr>
+          <tr><td>Família</td><td>44 cm</td><td>22 cm</td><td>1 519,76 cm²</td></tr>
+        </table>
+
+        <div class="step">
+          <span class="step-label">Passo 3. Comparar</span><br>
+          1 519,76 − 706,5 = <strong>813,26 cm² a mais</strong> na pizza família — mais que o dobro da área da pizza média!
+        </div>
+
+        <div class="dica">
+          <span class="tag">Dica — cuidado aqui</span>
+          <p style="margin:0;">O erro mais comum é elevar ao quadrado o <strong>diâmetro</strong> em vez do <strong>raio</strong>. A fórmula A = π · r² só funciona com o raio. Se o problema te der o diâmetro, o primeiro passo é <em>sempre</em> dividi-lo por 2 antes de elevar ao quadrado.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTE 5 -->
+    <section class="part" id="part-5" data-title="Curiosidade">
+      <div class="card">
+        <span class="eyebrow mint">Curiosidade</span>
+        <h2 class="section-title">Um número que a humanidade caça há séculos</h2>
+        <p>O valor de π tem infinitas casas decimais e nunca se repete em um padrão — por isso, ao longo da história, diferentes povos criaram frações para se aproximar dele:</p>
+
+        <table class="calc-table">
+          <tr><th>Aproximação</th><th>Quem / quando</th><th>Valor decimal</th></tr>
+          <tr><td>22/7</td><td>Arquimedes, 240 a.C.</td><td>≈ 3,142857</td></tr>
+          <tr><td>377/120</td><td>Ptolomeu, 150 d.C.</td><td>≈ 3,141666</td></tr>
+          <tr><td>355/113</td><td>Tsu Chung Chi, 480 d.C.</td><td>≈ 3,141592</td></tr>
+        </table>
+
+        <p>Hoje sabemos que π ≈ 3,14159265... e computadores já calcularam trilhões de casas decimais dele. Para os cálculos do dia a dia, porém, <strong>3,14</strong> já é uma aproximação mais do que suficiente.</p>
+
+        <div class="pense">
+          <span class="tag">Pense assim</span>
+          <p style="margin:0;">Quanto mais casas decimais de π você usa, mais preciso fica o resultado — mas para medir uma pizza ou um jardim redondo, essa precisão extra não faz diferença nenhuma na prática.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTE 6 -->
+    <section class="part" id="part-6" data-title="Sua vez">
+      <div class="card">
+        <span class="eyebrow indigo">Parte 6</span>
+        <h2 class="section-title">Agora é sua vez</h2>
+        <p>Pratique o que você aprendeu. Use π ≈ 3,14.</p>
+
+        <div class="try-box">
+          <span class="try-title">1. Um círculo tem raio de 5 cm. Qual é a sua área?</span>
+          <div class="try-row">
+            <input type="text" id="try1" placeholder="Digite o valor em cm²">
+            <button onclick="checkTry1()">Conferir</button>
+          </div>
+          <div class="feedback" id="fb1"></div>
+        </div>
+
+        <div class="try-box">
+          <span class="try-title">2. Um círculo tem diâmetro de 18 cm. Qual é a sua área?</span>
+          <div class="try-row">
+            <input type="text" id="try2" placeholder="Digite o valor em cm²">
+            <button onclick="checkTry2()">Conferir</button>
+          </div>
+          <div class="feedback" id="fb2"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTE 7 -->
+    <section class="part" id="part-7" data-title="Resumo pro caderno">
+      <div class="card resumo">
+        <span class="eyebrow">Resumo pro caderno</span>
+        <h2 class="section-title">O que você aprendeu hoje</h2>
+        <p>Todo círculo tem um perímetro, que mede a sua borda, e uma área, que mede a superfície que ele ocupa por dentro. Você já conhecia a fórmula do perímetro, P = 2 · π · r, e hoje descobriu de onde vem a fórmula da área. A ideia é imaginar o círculo cortado em fatias bem finas e organizado como uma faixa quase retangular, cuja base mede π · r e cuja altura é o próprio raio r. Como a área de um retângulo é base vezes altura, chegamos à fórmula A = π · r², que é exata para qualquer círculo.</p>
+        <p>Para calcular a área de um círculo na prática, o primeiro passo é sempre garantir que você está trabalhando com o raio, e não com o diâmetro — se o problema fornecer o diâmetro, divida-o por 2 antes de qualquer outra coisa. Depois, basta elevar o raio ao quadrado e multiplicar por π (aproximadamente 3,14). O resultado sempre vem em unidades quadradas, como cm² ou m², porque estamos medindo uma superfície, e não um comprimento.</p>
+        <p>Vale lembrar também que π é um número que representa sempre a mesma razão entre o perímetro e o diâmetro de qualquer círculo, e que ao longo da história diferentes matemáticos criaram frações para se aproximar dele, como 22/7 ou 355/113. No dia a dia, usar π ≈ 3,14 já garante uma boa precisão para os seus cálculos.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="nav-buttons">
+    <button class="nav-pill" id="btnBack">← Voltar</button>
+    <button class="nav-pill" id="btnNext">Avançar →</button>
+  </div>
+</div>
+
+<script>
+  const totalParts = 7;
+  let current = 1;
+  const tabs = document.querySelectorAll('.tab-pill');
+  const parts = document.querySelectorAll('.part');
+  const progressFill = document.getElementById('progressFill');
+  const progressLabel = document.getElementById('progressLabel');
+  const btnBack = document.getElementById('btnBack');
+  const btnNext = document.getElementById('btnNext');
+
+  function goTo(n){
+    current = n;
+    tabs.forEach(t => t.classList.toggle('active', parseInt(t.dataset.part) === n));
+    parts.forEach(p => p.classList.toggle('active', p.id === 'part-' + n));
+    progressFill.style.width = (n / totalParts * 100) + '%';
+    const title = document.getElementById('part-' + n).dataset.title;
+    progressLabel.textContent = 'Parte ' + n + ' de ' + totalParts + ' — ' + title;
+    btnBack.disabled = (n === 1);
+    btnNext.disabled = (n === totalParts);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => goTo(parseInt(t.dataset.part))));
+  btnBack.addEventListener('click', () => { if(current > 1) goTo(current - 1); });
+  btnNext.addEventListener('click', () => { if(current < totalParts) goTo(current + 1); });
+
+  goTo(1);
+
+  // ---------- try-box checks ----------
+  function parseNum(v){
+    return parseFloat(v.replace(',', '.').replace(/[^\d.\-]/g, ''));
+  }
+  function checkTry1(){
+    const val = parseNum(document.getElementById('try1').value || '');
+    const fb = document.getElementById('fb1');
+    const correct = 3.14 * 25; // 78.5
+    if(isNaN(val)){
+      fb.className = 'feedback no'; fb.textContent = 'Digite um número para conferirmos juntos.'; return;
+    }
+    if(Math.abs(val - correct) < 1){
+      fb.className = 'feedback ok'; fb.textContent = 'Isso aí! A = 3,14 × 5² = 3,14 × 25 = 78,5 cm².';
+    } else {
+      fb.className = 'feedback no'; fb.textContent = 'Quase, revê esse passo: primeiro eleve o raio ao quadrado (5² = 25), depois multiplique por 3,14.';
+    }
+  }
+  function checkTry2(){
+    const val = parseNum(document.getElementById('try2').value || '');
+    const fb = document.getElementById('fb2');
+    const correct = 3.14 * 81; // raio 9, 254.34
+    if(isNaN(val)){
+      fb.className = 'feedback no'; fb.textContent = 'Digite um número para conferirmos juntos.'; return;
+    }
+    if(Math.abs(val - correct) < 1){
+      fb.className = 'feedback ok'; fb.textContent = 'Isso aí! Raio = 18 ÷ 2 = 9 cm. A = 3,14 × 9² = 3,14 × 81 = 254,34 cm².';
+    } else {
+      fb.className = 'feedback no'; fb.textContent = 'Quase, revê esse passo: 18 cm é o diâmetro. Primeiro divida por 2 para achar o raio (9 cm), só depois eleve ao quadrado e multiplique por 3,14.';
+    }
+  }
+
+  // ---------- draw wedge circle + unrolled strip ----------
+  (function drawFigures(){
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const n = 32;
+    const colorA = '#A9E5D0', colorB = '#FFB3A0';
+
+    // wedge circle
+    const wc = document.getElementById('wedgeCircle');
+    const cx = 85, cy = 85, r = 65;
+    for(let i=0;i<n;i++){
+      const a0 = (i/n) * 2*Math.PI - Math.PI/2;
+      const a1 = ((i+1)/n) * 2*Math.PI - Math.PI/2;
+      const x0 = cx + r*Math.cos(a0), y0 = cy + r*Math.sin(a0);
+      const x1 = cx + r*Math.cos(a1), y1 = cy + r*Math.sin(a1);
+      const path = document.createElementNS(svgNS, 'path');
+      path.setAttribute('d', `M${cx},${cy} L${x0},${y0} A${r},${r} 0 0 1 ${x1},${y1} Z`);
+      path.setAttribute('fill', i % 2 === 0 ? colorA : colorB);
+      path.setAttribute('stroke', '#fff');
+      path.setAttribute('stroke-width', '1');
+      wc.appendChild(path);
+    }
+    const rLabel = document.createElementNS(svgNS, 'text');
+    rLabel.setAttribute('x', cx); rLabel.setAttribute('y', cy - r/2);
+    rLabel.setAttribute('text-anchor','middle');
+    rLabel.setAttribute('font-family','Baloo 2'); rLabel.setAttribute('font-size','14');
+    rLabel.setAttribute('fill', '#362F78'); rLabel.textContent = 'r';
+    wc.appendChild(rLabel);
+
+    // unrolled zigzag strip
+    const us = document.getElementById('unrolledStrip');
+    const stripW = 190, stripH = 95, offX = 12, offY = 38;
+    const bw = stripW / n;
+    for(let i=0;i<n;i++){
+      const x0 = offX + i*bw, x1 = offX + (i+1)*bw, xm = (x0+x1)/2;
+      const poly = document.createElementNS(svgNS,'polygon');
+      let pts;
+      if(i % 2 === 0){
+        pts = `${x0},${offY+stripH} ${x1},${offY+stripH} ${xm},${offY}`;
+      } else {
+        pts = `${x0},${offY} ${x1},${offY} ${xm},${offY+stripH}`;
+      }
+      poly.setAttribute('points', pts);
+      poly.setAttribute('fill', i % 2 === 0 ? colorA : colorB);
+      poly.setAttribute('stroke', '#fff');
+      poly.setAttribute('stroke-width', '0.75');
+      us.appendChild(poly);
+    }
+    // base label (πr)
+    const baseArrow = document.createElementNS(svgNS,'line');
+    baseArrow.setAttribute('x1', offX); baseArrow.setAttribute('x2', offX+stripW);
+    baseArrow.setAttribute('y1', offY+stripH+12); baseArrow.setAttribute('y2', offY+stripH+12);
+    baseArrow.setAttribute('stroke', '#E4694F'); baseArrow.setAttribute('stroke-width','1.5');
+    us.appendChild(baseArrow);
+    const baseLabel = document.createElementNS(svgNS,'text');
+    baseLabel.setAttribute('x', offX+stripW/2); baseLabel.setAttribute('y', offY+stripH+28);
+    baseLabel.setAttribute('text-anchor','middle');
+    baseLabel.setAttribute('font-family','Baloo 2'); baseLabel.setAttribute('font-size','13');
+    baseLabel.setAttribute('fill','#E4694F'); baseLabel.textContent = 'base ≈ π · r';
+    us.appendChild(baseLabel);
+    // height label
+    const hLabel = document.createElementNS(svgNS,'text');
+    hLabel.setAttribute('x', offX+stripW+6); hLabel.setAttribute('y', offY+stripH/2);
+    hLabel.setAttribute('font-family','Baloo 2'); hLabel.setAttribute('font-size','13');
+    hLabel.setAttribute('fill','#362F78'); hLabel.textContent = 'r';
+    us.appendChild(hLabel);
+  })();
+</script>
+</body>
+</html>
