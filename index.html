@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cálculo de Áreas — Paralelogramo, Decomposição e Círculo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F4FC;
+    --indigo:#362F78;
+    --indigo-deep:#241F52;
+    --indigo-soft:#6C63B5;
+    --mint:#A9E5D0;
+    --coral:#FFB3A0;
+    --coral-dark:#E4694F;
+    --yellow:#FFDD73;
+    --text:#2A2650;
+    --text-2:#5B5686;
+    --card:#FFFFFF;
+    --border:#E3DEF7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    font-size:15px;
+    line-height:1.55;
+    position:relative;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.baloo{font-family:'Baloo 2', sans-serif;}
+  h2{font-size:1.25rem;color:var(--indigo-deep);margin:0 0 12px;font-weight:700;}
+  h3{font-size:1.02rem;color:var(--indigo);margin:18px 0 8px;font-weight:600;}
+  p{margin:0 0 10px;}
+
+  /* ---------- fundo decorativo ---------- */
+  #bgSymbols{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  #bgSymbols span{
+    position:absolute;font-family:'Baloo 2',sans-serif;color:var(--indigo);
+    opacity:0.08;font-size:2.4rem;animation:drift 26s linear infinite;
+  }
+  @keyframes drift{
+    0%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-22px) rotate(8deg);}
+    100%{transform:translateY(0) rotate(0deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    #bgSymbols span{animation:none;}
+  }
+
+  /* ---------- topo fixo ---------- */
+  #topBar{position:sticky;top:0;z-index:50;background:rgba(246,244,252,0.92);backdrop-filter:blur(6px);padding:8px 10px 6px;border-bottom:1px solid var(--border);}
+  #progressTrack{width:100%;height:6px;background:var(--border);border-radius:6px;overflow:hidden;margin-bottom:8px;}
+  #progressFill{height:100%;background:linear-gradient(90deg,var(--indigo-soft),var(--indigo));width:12.5%;transition:width .35s ease;border-radius:6px;}
+  #progressLabel{font-size:11px;color:var(--text-2);text-align:center;margin-bottom:8px;font-weight:700;letter-spacing:.2px;}
+  .tabs{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;}
+  .tab-pill{
+    font-family:'Baloo 2',sans-serif;font-size:11px;font-weight:600;padding:4px 9px;
+    border-radius:999px;background:#fff;border:1px solid var(--border);color:var(--text-2);
+    cursor:pointer;white-space:nowrap;transition:all .2s ease;
+  }
+  .tab-pill.active{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+  .tab-pill:hover{border-color:var(--indigo-soft);}
+
+  main{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:14px 14px 90px;}
+
+  .part{display:none;}
+  .part.active{display:block;animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:18px;
+    padding:16px 16px 18px;margin-bottom:14px;box-shadow:0 6px 18px rgba(54,47,120,0.06);
+  }
+  .eyebrow{
+    display:inline-block;font-family:'Baloo 2',sans-serif;font-size:11px;font-weight:700;
+    color:var(--indigo);background:#EDEAFB;padding:3px 10px;border-radius:999px;margin-bottom:10px;
+    letter-spacing:.3px;
+  }
+  .eyebrow.mint{background:#E2F7EF;color:#1E7A5C;}
+  .eyebrow.coral{background:#FFEAE4;color:var(--coral-dark);}
+
+  .pense-assim{
+    background:#EEECFB;border-radius:14px;padding:12px 14px;margin:12px 0;
+    border-left:5px solid var(--indigo-soft);
+  }
+  .pense-assim .lbl{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--indigo);font-size:.92rem;margin-bottom:4px;}
+
+  .dica{
+    background:#FFF8E4;border-radius:14px;padding:12px 14px;margin:12px 0;
+    border-left:6px solid var(--yellow);
+  }
+  .dica .lbl{font-family:'Baloo 2',sans-serif;font-weight:700;color:#8A6A00;font-size:.92rem;margin-bottom:4px;}
+
+  .caderno{
+    background:#fff;border:2px dashed #8FD6B8;border-radius:14px;padding:12px 14px;margin:12px 0;
+  }
+  .caderno .lbl{font-family:'Baloo 2',sans-serif;font-weight:700;color:#1E7A5C;font-size:.88rem;margin-bottom:4px;}
+
+  .algo-block{
+    background:#F1EDFC;border:1px solid #D9CFF5;border-radius:14px;padding:12px 14px;margin:12px 0;
+  }
+  .algo-block .passo{margin-bottom:8px;}
+  .algo-block .passo:last-child{margin-bottom:0;}
+  .algo-block b{color:var(--indigo);}
+
+  .exemplo-box{background:#FBF9FF;border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin:12px 0;}
+
+  figure{margin:10px 0;text-align:center;}
+  figcaption{font-size:12px;color:var(--text-2);margin-top:4px;}
+  svg{max-width:100%;height:auto;}
+
+  .try-box{
+    border:2px dashed var(--indigo-soft);border-radius:14px;padding:14px;margin:14px 0;background:#FCFBFF;
+  }
+  .try-box .lbl{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--indigo);margin-bottom:8px;}
+  .try-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .try-row input{
+    flex:1;min-width:110px;padding:8px 10px;border-radius:10px;border:1px solid var(--border);
+    font-family:'Atkinson Hyperlegible';font-size:14px;
+  }
+  .btn{
+    font-family:'Baloo 2',sans-serif;font-weight:700;font-size:13px;background:var(--indigo);color:#fff;
+    border:none;padding:8px 16px;border-radius:10px;cursor:pointer;transition:background .2s;
+  }
+  .btn:hover{background:var(--indigo-deep);}
+  .btn.secondary{background:#fff;color:var(--indigo);border:1px solid var(--indigo-soft);}
+  .feedback{margin-top:8px;font-size:13.5px;font-weight:700;padding:8px 10px;border-radius:10px;display:none;}
+  .feedback.ok{display:block;background:#E2F7EF;color:#1E7A5C;}
+  .feedback.err{display:block;background:#FFEAE4;color:#B4442E;}
+
+  .quiz-q{margin-bottom:20px;}
+  .quiz-q .enun{font-weight:700;color:var(--indigo-deep);margin-bottom:8px;}
+  .opt{
+    display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--border);
+    border-radius:12px;padding:9px 12px;margin-bottom:7px;cursor:pointer;font-family:'Atkinson Hyperlegible';
+    font-size:14px;color:var(--text);transition:all .15s;
+  }
+  .opt:hover{border-color:var(--indigo-soft);}
+  .opt.correct{background:#E2F7EF;border-color:#4CAF8C;font-weight:700;}
+  .opt.wrong{background:#FFEAE4;border-color:var(--coral-dark);}
+  .opt.disabled{pointer-events:none;}
+  .explic{display:none;background:#F1EDFC;border-radius:12px;padding:10px 12px;margin-top:6px;font-size:13.5px;}
+  .explic.show{display:block;}
+  #scoreBox{
+    background:linear-gradient(135deg,var(--indigo),var(--indigo-soft));color:#fff;border-radius:16px;
+    padding:14px 16px;text-align:center;margin-bottom:16px;font-family:'Baloo 2',sans-serif;
+  }
+  #scoreBox .num{font-size:2rem;font-weight:800;}
+
+  .livro-q{border-top:1px dashed var(--border);padding-top:14px;margin-top:14px;}
+  .livro-q:first-child{border-top:none;margin-top:0;padding-top:0;}
+  .livro-tag{font-size:11px;color:var(--text-2);font-weight:700;}
+  .resposta-escondida{display:none;background:#E2F7EF;border-radius:10px;padding:10px 12px;margin-top:8px;font-weight:700;color:#1E7A5C;}
+  .resposta-escondida.show{display:block;}
+
+  table.grade{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px;}
+  table.grade th,table.grade td{border:1px solid var(--border);padding:6px 8px;text-align:center;}
+  table.grade th{background:#EEECFB;color:var(--indigo);}
+
+  nav#navFooter{
+    position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(246,244,252,0.95);
+    backdrop-filter:blur(6px);border-top:1px solid var(--border);padding:8px 14px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  nav#navFooter button{
+    font-family:'Baloo 2',sans-serif;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;
+    border:1px solid var(--indigo-soft);background:#fff;color:var(--indigo);cursor:pointer;
+  }
+  nav#navFooter button:disabled{opacity:0.35;cursor:default;}
+  nav#navFooter span{font-size:11px;color:var(--text-2);font-weight:700;}
+
+  .resumo p{font-size:14.5px;}
+
+  @media (min-width:900px){
+    body{font-size:16px;}
+    main{max-width:920px;padding:20px 20px 100px;}
+    h2{font-size:1.55rem;}
+    h3{font-size:1.2rem;}
+    .tab-pill{font-size:13px;padding:6px 14px;}
+    #progressLabel{font-size:13px;}
+    .card{padding:24px 26px 26px;border-radius:20px;}
+    #bgSymbols span{font-size:3.4rem;}
+  }
+  @media (min-width:1500px){
+    body{font-size:19px;}
+    main{max-width:1180px;padding:26px 26px 120px;}
+    h2{font-size:2rem;}
+    h3{font-size:1.5rem;}
+    .tab-pill{font-size:16px;padding:7px 18px;}
+    .card{padding:32px 36px 36px;border-radius:22px;}
+    .btn{font-size:16px;padding:10px 22px;}
+    .opt{font-size:17px;padding:12px 16px;}
+    #bgSymbols span{font-size:4.2rem;}
+  }
+</style>
+</head>
+<body>
+
+<div id="bgSymbols"></div>
+
+<div id="topBar">
+  <div id="progressTrack"><div id="progressFill"></div></div>
+  <div id="progressLabel">Parte 1 de 8 — Vamos pensar</div>
+  <div class="tabs" id="tabs"></div>
+</div>
+
+<main>
+  <h1 style="text-align:center;font-size:1.15rem;color:var(--indigo-deep);margin:4px 0 14px;">Cálculo de Áreas: Paralelogramo, Decomposição e Círculo</h1>
+
+  <!-- PARTE 1 — GANCHO -->
+  <section class="part active" data-part="1">
+    <div class="card">
+      <span class="eyebrow">Parte 1 · Vamos pensar</span>
+      <h2>Dois planos, qual cobre mais terreno?</h2>
+      <p>Uma fazenda quer irrigar um terreno quadrado de 50 m por 50 m. Duas ideias estão na mesa:</p>
+      <p><b>Plano 1:</b> instalar 1 irrigador central de longo alcance, que rega uma área circular.</p>
+      <p><b>Plano 2:</b> instalar 4 irrigadores menores, um em cada quarto do terreno, cada um regando sua própria área circular.</p>
+      <figure>
+        <svg viewBox="0 0 260 130" width="100%" style="max-width:420px;">
+          <rect x="10" y="10" width="110" height="110" fill="none" stroke="var(--indigo-soft)" stroke-width="2"/>
+          <circle cx="65" cy="65" r="55" fill="var(--mint)" opacity="0.6"/>
+          <text x="65" y="128" text-anchor="middle" font-family="Baloo 2" font-size="11" fill="#5B5686">Plano 1</text>
+          <rect x="150" y="10" width="110" height="110" fill="none" stroke="var(--indigo-soft)" stroke-width="2"/>
+          <circle cx="177.5" cy="37.5" r="27.5" fill="var(--coral)" opacity="0.6"/>
+          <circle cx="232.5" cy="37.5" r="27.5" fill="var(--coral)" opacity="0.6"/>
+          <circle cx="177.5" cy="92.5" r="27.5" fill="var(--coral)" opacity="0.6"/>
+          <circle cx="232.5" cy="92.5" r="27.5" fill="var(--coral)" opacity="0.6"/>
+          <text x="205" y="128" text-anchor="middle" font-family="Baloo 2" font-size="11" fill="#5B5686">Plano 2</text>
+        </svg>
+      </figure>
+      <p>Antes de calcular qualquer coisa: qual é o seu palpite?</p>
+      <div class="try-row">
+        <button class="btn secondary" onclick="palpite(this,'Plano 1 cobre mais')">Plano 1 cobre mais</button>
+        <button class="btn secondary" onclick="palpite(this,'Plano 2 cobre mais')">Plano 2 cobre mais</button>
+        <button class="btn secondary" onclick="palpite(this,'As duas são iguais')">As duas cobrem igual</button>
+      </div>
+      <div class="feedback" id="fbPalpite"></div>
+      <p style="margin-top:10px;font-size:13.5px;color:var(--text-2);">Guarde seu palpite — vamos descobrir a resposta certinha lá na Parte 5, quando estudarmos área do círculo.</p>
+    </div>
+  </section>
+
+  <!-- PARTE 2 — REVISÃO -->
+  <section class="part" data-part="2">
+    <div class="card">
+      <span class="eyebrow mint">Parte 2 · Revisão</span>
+      <h2>O que você já sabe: retângulo e triângulo</h2>
+      <p>Você já viu essas duas fórmulas. Vamos relembrar rapidinho, porque elas vão ser a base para tudo que vem a seguir.</p>
+      <div class="exemplo-box">
+        <p><b>Retângulo:</b> A = base × altura</p>
+        <svg viewBox="0 0 140 90" width="160">
+          <rect x="20" y="15" width="90" height="50" fill="none" stroke="var(--indigo)" stroke-width="2"/>
+          <text x="65" y="80" text-anchor="middle" font-size="11" fill="#5B5686">base</text>
+          <text x="10" y="42" text-anchor="middle" font-size="11" fill="#5B5686" transform="rotate(-90 10 42)">altura</text>
+        </svg>
+        <p><b>Triângulo:</b> A = (base × altura) ÷ 2</p>
+        <svg viewBox="0 0 140 90" width="160">
+          <polygon points="20,65 110,65 65,15" fill="none" stroke="var(--coral-dark)" stroke-width="2"/>
+          <line x1="65" y1="15" x2="65" y2="65" stroke="var(--indigo-soft)" stroke-width="1.5" stroke-dasharray="3,3"/>
+          <text x="65" y="80" text-anchor="middle" font-size="11" fill="#5B5686">base</text>
+        </svg>
+      </div>
+      <p>Repare que o triângulo é "metade" do retângulo que o contém — por isso a fórmula divide por 2.</p>
+      <div class="try-box">
+        <div class="lbl">Agora é sua vez</div>
+        <p>Um retângulo tem base 8 cm e altura 5 cm. Um triângulo tem base 6 cm e altura 4 cm. Qual figura tem a maior área?</p>
+        <div class="try-row">
+          <input type="text" id="tryA" placeholder="Ex: retângulo, 40 cm²">
+          <button class="btn" onclick="checkTry('tryA','fbA',['retangulo','retângulo'])">Conferir</button>
+        </div>
+        <div class="feedback" id="fbA"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 3 — PARALELOGRAMO -->
+  <section class="part" data-part="3">
+    <div class="card">
+      <span class="eyebrow">Parte 3 · Conceito novo</span>
+      <h2>Área do paralelogramo</h2>
+      <p>Um paralelogramo é um quadrilátero com os lados opostos paralelos — pense num retângulo "empurrado de lado". A base continua embaixo, mas os lados ficam inclinados.</p>
+      <div class="pense-assim">
+        <div class="lbl">💡 Pense assim</div>
+        <p>Imagine uma pilha de livros bem alinhada (um retângulo) e depois empurre o topo da pilha para o lado, sem tirar nem colocar livro nenhum. A forma muda, ficou inclinada — mas a quantidade de livros (a área) é exatamente a mesma. É por isso que a altura do paralelogramo <b>não</b> é o lado inclinado, e sim a distância reta entre a base e o topo.</p>
+      </div>
+      <div class="caderno">
+        <div class="lbl">📗 Copie no caderno</div>
+        <p>Área do paralelogramo: <b>A = b · h</b>, onde <i>b</i> é a base e <i>h</i> é a altura — a distância perpendicular (reta, em ângulo de 90°) entre a base e o lado oposto.</p>
+      </div>
+      <h3>Exemplo passo a passo</h3>
+      <p>Um terreno tem o formato de um paralelogramo. Um produtor quer plantar milho nele, e cada saco de semente cobre 25 m² de terra. Quantos sacos ele precisa comprar?</p>
+      <figure>
+        <svg viewBox="0 0 220 140" width="100%" style="max-width:280px;">
+          <polygon points="30,120 150,120 190,20 70,20" fill="#EEECFB" stroke="var(--indigo)" stroke-width="2"/>
+          <line x1="70" y1="20" x2="70" y2="120" stroke="var(--coral-dark)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="90" y="135" text-anchor="middle" font-size="12" fill="#5B5686">b = 35 m</text>
+          <text x="55" y="72" text-anchor="middle" font-size="12" fill="var(--coral-dark)" transform="rotate(-90 55 72)">h = 56 m</text>
+        </svg>
+        <figcaption>Terreno em forma de paralelogramo</figcaption>
+      </figure>
+      <div class="algo-block">
+        <div class="passo"><b>Passo 1.</b> Identificar base e altura: b = 35 m, h = 56 m.</div>
+        <div class="passo"><b>Passo 2.</b> Aplicar a fórmula: A = b · h = 35 · 56 = 1 960 m².</div>
+        <div class="passo"><b>Passo 3.</b> Dividir pela área de 1 saco: 1 960 ÷ 25 = 78,4.</div>
+        <div class="passo"><b>Passo 4.</b> Como não existe "0,4 saco", arredondar para cima: são necessários <b>79 sacos</b>.</div>
+      </div>
+      <div class="dica">
+        <div class="lbl">⚠️ Dica</div>
+        <p>O erro mais comum aqui é multiplicar a base pelo <b>lado inclinado</b> em vez da altura. Sempre confira: a altura é a linha tracejada, em ângulo reto com a base — nunca o lado "torto" do paralelogramo (a menos que ele mesmo seja perpendicular à base, como neste exemplo).</p>
+      </div>
+      <div class="try-box">
+        <div class="lbl">Agora é sua vez</div>
+        <p>Um paralelogramo tem base 20 m e altura 15 m. Qual é a sua área?</p>
+        <div class="try-row">
+          <input type="text" id="tryB" placeholder="Resposta em m²">
+          <button class="btn" onclick="checkTry('tryB','fbB',['300'])">Conferir</button>
+        </div>
+        <div class="feedback" id="fbB"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 4 — DECOMPOSIÇÃO -->
+  <section class="part" data-part="4">
+    <div class="card">
+      <span class="eyebrow">Parte 4 · Conceito novo</span>
+      <h2>Decompondo figuras irregulares</h2>
+      <p>Nem toda figura é um retângulo, triângulo ou paralelogramo "pronto". Quando a figura é irregular, podemos <b>decompô-la</b>: dividir em pedaços menores que a gente já sabe calcular, e depois somar tudo.</p>
+      <div class="pense-assim">
+        <div class="lbl">💡 Pense assim</div>
+        <p>É como cortar um pedaço de bolo com formato estranho em fatias mais simples — um pedaço quadrado aqui, um triangular ali. Você calcula cada fatia separadamente e depois soma para saber o bolo inteiro.</p>
+      </div>
+      <div class="caderno">
+        <div class="lbl">📗 Copie no caderno</div>
+        <p>Área total = soma das áreas das partes em que a figura foi dividida. Não importa como você decompõe a figura — se a divisão estiver correta, o resultado final é sempre o mesmo.</p>
+      </div>
+      <h3>Exemplo passo a passo</h3>
+      <p>Veja esta figura irregular. Podemos dividi-la em um retângulo e um triângulo:</p>
+      <figure>
+        <svg viewBox="0 0 220 170" width="100%" style="max-width:260px;">
+          <polygon points="20,40 100,40 100,120 180,120 180,160 20,160" fill="#EEECFB" stroke="var(--indigo)" stroke-width="2"/>
+          <line x1="20" y1="120" x2="180" y2="120" stroke="var(--coral-dark)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="100" y1="40" x2="100" y2="160" stroke="var(--coral-dark)" stroke-width="1.5" stroke-dasharray="4,3" opacity="0"/>
+          <rect x="20" y="120" width="160" height="40" fill="var(--mint)" opacity="0.55"/>
+          <polygon points="20,40 100,40 100,120 20,120" fill="var(--coral)" opacity="0.5"/>
+          <text x="60" y="85" text-anchor="middle" font-size="11" fill="#5B5686">4 cm</text>
+          <text x="6" y="82" text-anchor="middle" font-size="11" fill="#5B5686" transform="rotate(-90 6 82)">2 cm</text>
+          <text x="100" y="145" text-anchor="middle" font-size="11" fill="#5B5686">4 cm</text>
+          <text x="8" y="142" text-anchor="middle" font-size="11" fill="#5B5686" transform="rotate(-90 8 142)">2 cm</text>
+        </svg>
+        <figcaption>Figura irregular decomposta em 1 retângulo (menta) + 1 triângulo (coral)</figcaption>
+      </figure>
+      <div class="algo-block">
+        <div class="passo"><b>Passo 1.</b> Área do retângulo: 4 × 2 = 8 cm².</div>
+        <div class="passo"><b>Passo 2.</b> Área do triângulo: (4 × 2) ÷ 2 = 4 cm².</div>
+        <div class="passo"><b>Passo 3.</b> Somar as partes: 8 + 4 = <b>12 cm²</b>.</div>
+      </div>
+      <div class="dica">
+        <div class="lbl">⚠️ Dica</div>
+        <p>O erro mais comum é esquecer de somar alguma parte, ou contar a mesma região duas vezes. Sempre confira: as partes decompostas precisam cobrir a figura original exatamente, sem sobrar espaço vazio e sem se sobrepor.</p>
+      </div>
+      <div class="try-box">
+        <div class="lbl">Agora é sua vez</div>
+        <p>Uma figura foi decomposta em um retângulo de 5 cm × 3 cm e um triângulo de base 5 cm e altura 4 cm. Qual é a área total da figura?</p>
+        <div class="try-row">
+          <input type="text" id="tryC" placeholder="Resposta em cm²">
+          <button class="btn" onclick="checkTry('tryC','fbC',['25'])">Conferir</button>
+        </div>
+        <div class="feedback" id="fbC"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 5 — CÍRCULO -->
+  <section class="part" data-part="5">
+    <div class="card">
+      <span class="eyebrow">Parte 5 · Conceito novo</span>
+      <h2>Área do círculo</h2>
+      <p>Para o círculo usamos uma fórmula diferente, que envolve o número π (pi), um valor que vamos aproximar por <b>3,14</b>.</p>
+      <div class="caderno">
+        <div class="lbl">📗 Copie no caderno</div>
+        <p>Área do círculo: <b>A = π · r²</b>, onde <i>r</i> é o raio (a distância do centro até a borda). Usamos π ≈ 3,14, salvo indicação em contrário.</p>
+      </div>
+      <div class="dica">
+        <div class="lbl">⚠️ Dica</div>
+        <p>Cuidado para não confundir <b>raio</b> com <b>diâmetro</b>. O diâmetro é o dobro do raio. Se o problema der o diâmetro, divida por 2 antes de aplicar a fórmula — usar o diâmetro no lugar de r faz a área sair 4 vezes maior do que deveria.</p>
+      </div>
+      <h3>Exemplo passo a passo — resolvendo o gancho da Parte 1</h3>
+      <p>Lembra dos dois planos de irrigação? Agora temos ferramenta para comparar de verdade.</p>
+      <div class="algo-block">
+        <div class="passo"><b>Plano 1</b> — 1 irrigador, raio 25 m: A = π · 25² = 3,14 · 625 = <b>1 962,5 m²</b>.</div>
+        <div class="passo"><b>Plano 2</b> — 4 irrigadores, raio 12,5 m cada: cada círculo tem A = π · 12,5² = 3,14 · 156,25 = 490,625 m². Multiplicando por 4: 4 × 490,625 = <b>1 962,5 m²</b>.</div>
+      </div>
+      <p><b>As duas áreas são exatamente iguais!</b> Faz sentido: o raio do círculo grande é o dobro do raio de cada círculo pequeno, e — como você pode conferir depois com álgebra — 4 círculos de raio r/2 cobrem sempre a mesma área que 1 círculo de raio r.</p>
+      <div class="try-box">
+        <div class="lbl">Agora é sua vez</div>
+        <p>Qual é a área de um círculo de raio 10 m? (use π ≈ 3,14)</p>
+        <div class="try-row">
+          <input type="text" id="tryD" placeholder="Resposta em m²">
+          <button class="btn" onclick="checkTry('tryD','fbD',['314'])">Conferir</button>
+        </div>
+        <div class="feedback" id="fbD"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 6 — QUIZ -->
+  <section class="part" data-part="6">
+    <div class="card">
+      <span class="eyebrow coral">Parte 6 · Pratique</span>
+      <h2>Quiz: paralelogramo, decomposição e círculo</h2>
+      <div id="scoreBox"><div class="num" id="scoreNum">0/5</div><div>acertos</div></div>
+
+      <div class="quiz-q" data-q="1">
+        <div class="enun">1. Um paralelogramo tem base 40 cm e altura 15 cm. Qual é a sua área?</div>
+        <button class="opt" data-correct="false">300 cm²</button>
+        <button class="opt" data-correct="true">600 cm²</button>
+        <button class="opt" data-correct="false">55 cm²</button>
+        <button class="opt" data-correct="false">800 cm²</button>
+        <div class="explic">A = b · h = 40 · 15 = 600 cm². (300 cm² seria se você tivesse dividido por 2, como no triângulo — mas o paralelogramo não divide por 2.)</div>
+      </div>
+
+      <div class="quiz-q" data-q="2">
+        <div class="enun">2. Um retângulo de 8 cm × 4 cm tem um triângulo branco recortado na base, com base 4 cm e altura 4 cm. Qual é a área da região colorida (retângulo menos o triângulo)?</div>
+        <button class="opt" data-correct="false">32 cm²</button>
+        <button class="opt" data-correct="true">24 cm²</button>
+        <button class="opt" data-correct="false">16 cm²</button>
+        <button class="opt" data-correct="false">28 cm²</button>
+        <div class="explic">Área do retângulo: 8 × 4 = 32 cm². Área do triângulo: (4 × 4) ÷ 2 = 8 cm². Área colorida: 32 − 8 = 24 cm².</div>
+      </div>
+
+      <div class="quiz-q" data-q="3">
+        <div class="enun">3. Qual é a área de um círculo de raio 6 cm? (π ≈ 3,14)</div>
+        <button class="opt" data-correct="true">113,04 cm²</button>
+        <button class="opt" data-correct="false">37,68 cm²</button>
+        <button class="opt" data-correct="false">18,84 cm²</button>
+        <button class="opt" data-correct="false">56,52 cm²</button>
+        <div class="explic">A = π · r² = 3,14 · 6² = 3,14 · 36 = 113,04 cm². (37,68 seria 2·π·r, a fórmula do perímetro do círculo — não da área.)</div>
+      </div>
+
+      <div class="quiz-q" data-q="4">
+        <div class="enun">4. Um quadrado de lado 10 cm tem um círculo branco de raio 3 cm recortado no centro. Qual é a área da região colorida?</div>
+        <button class="opt" data-correct="true">71,74 cm²</button>
+        <button class="opt" data-correct="false">100 cm²</button>
+        <button class="opt" data-correct="false">28,26 cm²</button>
+        <button class="opt" data-correct="false">65,74 cm²</button>
+        <div class="explic">Área do quadrado: 10 × 10 = 100 cm². Área do círculo: 3,14 × 3² = 28,26 cm². Área colorida: 100 − 28,26 = 71,74 cm².</div>
+      </div>
+
+      <div class="quiz-q" data-q="5">
+        <div class="enun">5. Um terreno em forma de paralelogramo tem base 48 m e altura 25 m. Cada saco de adubo cobre 20 m². Quantos sacos são necessários para cobrir o terreno todo?</div>
+        <button class="opt" data-correct="true">60 sacos</button>
+        <button class="opt" data-correct="false">58 sacos</button>
+        <button class="opt" data-correct="false">1 200 sacos</button>
+        <button class="opt" data-correct="false">24 sacos</button>
+        <div class="explic">Área: A = 48 · 25 = 1 200 m². Sacos necessários: 1 200 ÷ 20 = 60 sacos (divisão exata, sem precisar arredondar).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 7 — DIRETO DO LIVRO -->
+  <section class="part" data-part="7">
+    <div class="card">
+      <span class="eyebrow mint">Parte 7 · Direto do livro</span>
+      <h2>Atividades do material didático</h2>
+
+      <div class="livro-q">
+        <div class="livro-tag">Atividade 7</div>
+        <p>Qual é a área do terreno da figura a seguir?</p>
+        <figure>
+          <svg viewBox="0 0 260 200" width="100%" style="max-width:280px;">
+            <defs>
+              <marker id="setaLivro" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 Z" fill="var(--coral-dark)"/>
+              </marker>
+            </defs>
+            <rect x="0" y="0" width="260" height="200" fill="#F6F4FC"/>
+            <rect x="0" y="122" width="260" height="28" fill="#C7C4D6"/>
+            <rect x="152" y="0" width="28" height="200" fill="#C7C4D6"/>
+            <rect x="8" y="24" width="34" height="28" rx="3" fill="#D8D3F0" stroke="var(--indigo-soft)"/>
+            <rect x="196" y="10" width="30" height="26" rx="3" fill="#D8D3F0" stroke="var(--indigo-soft)"/>
+            <polygon points="42,122 152,122 194,38 92,38" fill="var(--mint)" stroke="var(--indigo)" stroke-width="2"/>
+            <line x1="92" y1="38" x2="42" y2="122" stroke="var(--coral-dark)" stroke-width="2" marker-start="url(#setaLivro)" marker-end="url(#setaLivro)"/>
+            <text x="58" y="84" text-anchor="middle" font-size="12" fill="var(--coral-dark)" transform="rotate(-58 58 84)">13 m</text>
+            <line x1="152" y1="122" x2="194" y2="38" stroke="var(--coral-dark)" stroke-width="2" marker-start="url(#setaLivro)" marker-end="url(#setaLivro)"/>
+            <text x="182" y="84" text-anchor="middle" font-size="12" fill="var(--coral-dark)" transform="rotate(-63 182 84)">29 m</text>
+          </svg>
+          <figcaption>Terreno verde entre duas ruas</figcaption>
+        </figure>
+        <button class="btn secondary" onclick="revelar('r7')">Ver resposta</button>
+        <div class="resposta-escondida" id="r7">A = 377 m²</div>
+      </div>
+
+      <div class="livro-q">
+        <div class="livro-tag">Atividade 9 a)</div>
+        <p>Calcule a área da região colorida da figura.</p>
+        <figure>
+          <svg viewBox="0 0 220 110" width="100%" style="max-width:260px;">
+            <rect x="20" y="20" width="160" height="70" fill="#FFEAE4" stroke="var(--indigo)" stroke-width="2"/>
+            <polygon points="20,90 60,90 20,20" fill="#fff" stroke="var(--indigo)" stroke-width="1.5"/>
+            <text x="100" y="12" text-anchor="middle" font-size="11" fill="#5B5686">7 cm</text>
+            <text x="196" y="58" text-anchor="middle" font-size="11" fill="#5B5686">3 cm</text>
+            <text x="40" y="104" text-anchor="middle" font-size="11" fill="#5B5686">3 cm</text>
+          </svg>
+        </figure>
+        <button class="btn secondary" onclick="revelar('r9a')">Ver resposta</button>
+        <div class="resposta-escondida" id="r9a">A = 16,5 cm²</div>
+      </div>
+
+      <div class="livro-q">
+        <div class="livro-tag">Atividade 9 b)</div>
+        <p>Calcule a área da região colorida da figura.</p>
+        <figure>
+          <svg viewBox="0 0 220 130" width="100%" style="max-width:260px;">
+            <polygon points="110,15 20,115 200,115" fill="none" stroke="var(--indigo)" stroke-width="2"/>
+            <polygon points="110,70 70,115 150,115" fill="#FFEAE4" stroke="var(--indigo)" stroke-width="1.5"/>
+            <text x="110" y="8" text-anchor="middle" font-size="11" fill="#5B5686">5 cm</text>
+            <text x="55" y="125" text-anchor="middle" font-size="11" fill="#5B5686">6 cm</text>
+            <text x="110" y="128" text-anchor="middle" font-size="11" fill="#5B5686">4 cm</text>
+            <text x="130" y="95" text-anchor="middle" font-size="11" fill="#5B5686">2 cm</text>
+          </svg>
+        </figure>
+        <button class="btn secondary" onclick="revelar('r9b')">Ver resposta</button>
+        <div class="resposta-escondida" id="r9b">A = 7 cm²</div>
+      </div>
+
+      <div class="livro-q">
+        <div class="livro-tag">Atividade 11</div>
+        <p>Três semicírculos de mesmo raio foram desenhados sobre o diâmetro do círculo grande, como mostrado na figura. Se a área do círculo grande é 36π cm², qual é a área da região colorida?</p>
+        <figure>
+          <svg viewBox="0 0 200 140" width="100%" style="max-width:220px;">
+            <circle cx="100" cy="70" r="60" fill="#EEECFB" stroke="var(--indigo)" stroke-width="2"/>
+            <path d="M 40 70 A 30 30 0 0 1 100 70 A 30 30 0 0 1 160 70" fill="#fff" stroke="var(--indigo)" stroke-width="1.5"/>
+            <path d="M 40 70 A 60 60 0 0 0 160 70" fill="var(--coral)" opacity="0.55" stroke="var(--indigo)" stroke-width="1.5"/>
+            <line x1="40" y1="70" x2="160" y2="70" stroke="var(--indigo)" stroke-width="1.5"/>
+          </svg>
+        </figure>
+        <button class="btn secondary" onclick="revelar('r11')">Ver resposta</button>
+        <div class="resposta-escondida" id="r11">A = 54,95 cm²</div>
+      </div>
+
+      <div class="livro-q">
+        <div class="livro-tag">Atividade 13 c)</div>
+        <p>Calcule a área da região colorida.</p>
+        <figure>
+          <svg viewBox="0 0 220 150" width="100%" style="max-width:260px;">
+            <rect x="20" y="20" width="180" height="110" fill="#EEECFB" stroke="var(--indigo)" stroke-width="2"/>
+            <circle cx="80" cy="75" r="35" fill="#fff" stroke="var(--indigo)" stroke-width="1.5"/>
+            <line x1="80" y1="75" x2="80" y2="40" stroke="var(--indigo-soft)" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <text x="70" y="60" font-size="11" fill="#5B5686">4</text>
+            <polygon points="160,130 200,130 200,90" fill="#fff" stroke="var(--indigo)" stroke-width="1.5"/>
+            <text x="10" y="80" text-anchor="middle" font-size="11" fill="#5B5686" transform="rotate(-90 10 80)">10</text>
+            <text x="110" y="12" text-anchor="middle" font-size="11" fill="#5B5686">15</text>
+            <text x="205" y="112" text-anchor="middle" font-size="11" fill="#5B5686">6</text>
+            <text x="180" y="145" text-anchor="middle" font-size="11" fill="#5B5686">5</text>
+          </svg>
+        </figure>
+        <button class="btn secondary" onclick="revelar('r13c')">Ver resposta</button>
+        <div class="resposta-escondida" id="r13c">A = 84,76</div>
+      </div>
+
+      <div class="livro-q">
+        <div class="livro-tag">Atividade 13 d)</div>
+        <p>Calcule a área da região colorida.</p>
+        <figure>
+          <svg viewBox="0 0 240 130" width="100%" style="max-width:280px;">
+            <polygon points="30,110 170,110 210,20 70,20" fill="#FFEAE4" stroke="var(--indigo)" stroke-width="2"/>
+            <circle cx="95" cy="70" r="24" fill="#fff" stroke="var(--indigo)" stroke-width="1.5"/>
+            <circle cx="155" cy="70" r="24" fill="#fff" stroke="var(--indigo)" stroke-width="1.5"/>
+            <text x="95" y="55" font-size="10" fill="#5B5686">5</text>
+            <text x="155" y="55" font-size="10" fill="#5B5686">5</text>
+            <text x="100" y="123" text-anchor="middle" font-size="11" fill="#5B5686">49</text>
+            <text x="220" y="70" text-anchor="middle" font-size="11" fill="#5B5686" transform="rotate(-90 220 70)">24</text>
+          </svg>
+        </figure>
+        <button class="btn secondary" onclick="revelar('r13d')">Ver resposta</button>
+        <div class="resposta-escondida" id="r13d">A = 1 019</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 8 — RESUMO -->
+  <section class="part" data-part="8">
+    <div class="card resumo">
+      <span class="eyebrow">Parte 8 · Resumo pro caderno</span>
+      <h2>O que vimos nessa aula</h2>
+      <p>Nessa aula aprendemos a calcular a área de figuras que vão além do retângulo e do triângulo. Para o paralelogramo, usamos A = b · h, multiplicando a base pela altura — que é sempre a distância perpendicular entre a base e o lado oposto, nunca o lado inclinado (a menos que ele próprio seja perpendicular à base). Vimos isso no exemplo do terreno de 35 m por 56 m, onde a área deu 1 960 m², e por isso o produtor precisou de 79 sacos de semente, arredondando para cima já que sacos não se dividem.</p>
+      <p>Depois aprendemos que, quando uma figura é irregular e não tem uma fórmula pronta, podemos decompô-la: dividir em pedaços mais simples (retângulos, triângulos) e somar as áreas de cada parte. O resultado final não muda, não importa como você decida dividir a figura, desde que a divisão cubra tudo sem sobrar nem se sobrepor.</p>
+      <p>Por fim, vimos a área do círculo, A = π · r², usando π ≈ 3,14. Essa fórmula resolveu o mistério da Parte 1: um irrigador de raio 25 m cobre exatamente a mesma área que quatro irrigadores de raio 12,5 m — os dois planos cobrem 1 962,5 m², nem mais, nem menos. E vimos também um cuidado importante: nunca usar o diâmetro no lugar do raio na fórmula, porque isso multiplicaria a área por 4 sem motivo.</p>
+    </div>
+  </section>
+</main>
+
+<nav id="navFooter">
+  <button id="btnBack" onclick="changePart(currentPart-1)">← Voltar</button>
+  <span id="navLabel">1 / 8</span>
+  <button id="btnNext" onclick="changePart(currentPart+1)">Avançar →</button>
+</nav>
+
+<script>
+  // fundo com símbolos flutuando
+  const symbols = ['π','∑','√','∞','+','×','÷','=','∆','°'];
+  const bg = document.getElementById('bgSymbols');
+  for(let i=0;i<14;i++){
+    const s = document.createElement('span');
+    s.textContent = symbols[i % symbols.length];
+    s.style.left = (Math.random()*94)+'%';
+    s.style.top = (Math.random()*94)+'%';
+    s.style.animationDelay = (Math.random()*8)+'s';
+    s.style.animationDuration = (18+Math.random()*14)+'s';
+    bg.appendChild(s);
+  }
+
+  const partNames = ['Vamos pensar','Revisão','Paralelogramo','Decomposição','Círculo','Pratique','Direto do livro','Resumo'];
+  const tabsEl = document.getElementById('tabs');
+  partNames.forEach((name,i)=>{
+    const pill = document.createElement('button');
+    pill.className = 'tab-pill'+(i===0?' active':'');
+    pill.textContent = (i+1)+'. '+name;
+    pill.onclick = ()=>changePart(i+1);
+    pill.id = 'tab-'+(i+1);
+    tabsEl.appendChild(pill);
+  });
+
+  let currentPart = 1;
+  const totalParts = 8;
+
+  function changePart(n){
+    if(n<1 || n>totalParts) return;
+    document.querySelector('.part.active').classList.remove('active');
+    document.querySelector('.part[data-part="'+n+'"]').classList.add('active');
+    document.getElementById('tab-'+currentPart).classList.remove('active');
+    document.getElementById('tab-'+n).classList.add('active');
+    currentPart = n;
+    document.getElementById('progressFill').style.width = (n/totalParts*100)+'%';
+    document.getElementById('progressLabel').textContent = 'Parte '+n+' de '+totalParts+' — '+partNames[n-1];
+    document.getElementById('navLabel').textContent = n+' / '+totalParts;
+    document.getElementById('btnBack').disabled = (n===1);
+    document.getElementById('btnNext').disabled = (n===totalParts);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.getElementById('btnBack').disabled = true;
+
+  function palpite(btn,texto){
+    document.querySelectorAll('#fbPalpite').forEach(()=>{});
+    const fb = document.getElementById('fbPalpite');
+    fb.className = 'feedback ok';
+    fb.textContent = 'Anotado: "'+texto+'". Vamos ver se você acertou mais pra frente!';
+  }
+
+  function checkTry(inputId,fbId,validAnswers){
+    const val = document.getElementById(inputId).value.trim().toLowerCase().replace(',', '.');
+    const fb = document.getElementById(fbId);
+    const isCorrect = validAnswers.some(v => val.includes(v.toLowerCase()));
+    if(isCorrect){
+      fb.className='feedback ok';
+      fb.textContent='Isso aí! Resposta certa. 🎉';
+    } else {
+      fb.className='feedback err';
+      fb.textContent='Quase — revê esse cálculo com calma e tenta de novo.';
+    }
+  }
+
+  function revelar(id){
+    document.getElementById(id).classList.add('show');
+  }
+
+  // Quiz
+  let score = 0;
+  document.querySelectorAll('.quiz-q').forEach(q=>{
+    const opts = q.querySelectorAll('.opt');
+    opts.forEach(opt=>{
+      opt.addEventListener('click',()=>{
+        if(opt.classList.contains('disabled')) return;
+        const correct = opt.dataset.correct === 'true';
+        opts.forEach(o=>o.classList.add('disabled'));
+        if(correct){
+          opt.classList.add('correct');
+          score++;
+          document.getElementById('scoreNum').textContent = score+'/5';
+        } else {
+          opt.classList.add('wrong');
+          q.querySelector('.opt[data-correct="true"]').classList.add('correct');
+        }
+        q.querySelector('.explic').classList.add('show');
+      });
+    });
+  });
+</script>
+</body>
+</html>
+
