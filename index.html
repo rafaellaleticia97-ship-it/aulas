@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisão: Equações do 2º Grau</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F4FC;
+    --indigo:#362F78;
+    --indigo-deep:#241F52;
+    --indigo-soft:#6C63B5;
+    --indigo-pale:#EDEAFB;
+    --mint:#A9E5D0;
+    --coral:#FFB3A0;
+    --coral-dark:#E4694F;
+    --yellow:#FFDD73;
+    --text:#2A2650;
+    --text-soft:#5B5686;
+    --card-border:#E3DEF7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    color:var(--text);
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.baloo,.eyebrow,.tab,.step-num{
+    font-family:'Baloo 2', sans-serif;
+  }
+
+  /* ---------- floating background symbols ---------- */
+  #bgSymbols{
+    position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+  }
+  #bgSymbols span{
+    position:absolute; color:var(--indigo-soft); opacity:0.08;
+    font-family:'Baloo 2', sans-serif; font-weight:700;
+    animation: drift 30s linear infinite;
+  }
+  @keyframes drift{
+    0%{ transform: translateY(0) rotate(0deg); }
+    50%{ transform: translateY(-24px) rotate(8deg); }
+    100%{ transform: translateY(0) rotate(0deg); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    #bgSymbols span{ animation:none; }
+  }
+
+  /* ---------- header (não fixo, aparece só uma vez no topo) ---------- */
+  header{
+    text-align:center; padding:22px 16px 8px; position:relative; z-index:1;
+  }
+  header h1{
+    font-size:22px; color:var(--indigo-deep); margin:0 0 4px; font-weight:800;
+  }
+  header p{
+    font-size:13.5px; color:var(--text-soft); margin:0;
+  }
+
+  /* ---------- índice de navegação rápida (não fixo, uma linha só) ---------- */
+  #indice{
+    display:flex; flex-wrap:wrap; gap:6px; justify-content:center;
+    padding:12px 10px 4px; position:relative; z-index:1;
+  }
+  #indice a{
+    font-size:11px; font-weight:600; padding:4px 9px;
+    border-radius:999px; border:1px solid var(--card-border);
+    background:#fff; color:var(--text-soft); text-decoration:none;
+    white-space:nowrap;
+  }
+  #indice a:hover{ background:var(--indigo); color:#fff; border-color:var(--indigo); }
+
+  main{
+    max-width:760px; margin:0 auto; padding:6px 16px 60px;
+    position:relative; z-index:1;
+  }
+
+  .section{ scroll-margin-top:16px; }
+
+  .card{
+    background:#fff; border:1px solid var(--card-border); border-radius:18px;
+    padding:18px 18px 20px; margin:20px 0; box-shadow:0 4px 18px rgba(54,47,120,0.06);
+  }
+  .eyebrow{
+    display:inline-block; font-size:11px; font-weight:700; letter-spacing:.03em;
+    padding:3px 10px; border-radius:999px; margin-bottom:10px;
+    background:var(--mint); color:var(--indigo-deep);
+  }
+  .eyebrow.coral{ background:var(--coral); }
+  .eyebrow.yellow{ background:var(--yellow); }
+  .card h2{
+    font-size:18px; color:var(--indigo-deep); margin:0 0 10px; font-weight:700;
+  }
+  .card h3{
+    font-size:15px; color:var(--indigo); margin:16px 0 8px; font-weight:700;
+  }
+  .card p{ font-size:14.5px; line-height:1.6; margin:0 0 10px; }
+
+  /* ---------- pense assim ---------- */
+  .pense{
+    background:var(--indigo-pale); border-radius:14px; padding:14px 16px; margin:14px 0;
+  }
+  .pense .tag{ font-weight:700; color:var(--indigo); font-size:13px; margin-bottom:6px; display:block;}
+
+  /* ---------- dica ---------- */
+  .dica{
+    background:#FFF8E6; border-left:6px solid var(--yellow); border-radius:10px;
+    padding:12px 16px; margin:14px 0;
+  }
+  .dica .tag{ font-weight:700; color:#8a6a00; font-size:13px; margin-bottom:6px; display:block;}
+
+  /* ---------- copie no caderno ---------- */
+  .copie{
+    border:2px dashed #7FCBA9; border-radius:14px; padding:14px 16px; margin:14px 0;
+    background:#F3FBF8;
+  }
+  .copie .tag{ font-weight:700; color:#1F7A56; font-size:13px; margin-bottom:6px; display:block;}
+
+  /* ---------- definição rápida (binômio / trinômio) ---------- */
+  .defbox{
+    display:flex; gap:12px; flex-wrap:wrap; margin:14px 0;
+  }
+  .defbox .item{
+    flex:1; min-width:200px; background:#fff; border:1.5px solid var(--card-border);
+    border-radius:12px; padding:12px 14px;
+  }
+  .defbox .item .nome{ font-family:'Baloo 2'; font-weight:700; color:var(--indigo); font-size:14px; display:block; margin-bottom:4px; }
+  .defbox .item .exemplo{
+    display:block; margin-top:6px; font-family:'Baloo 2'; font-weight:600; color:var(--indigo-deep);
+    background:var(--indigo-pale); border-radius:8px; padding:5px 8px; text-align:center; font-size:14px;
+  }
+
+  /* ---------- algo-block ---------- */
+  .algo{
+    background:#F3F1FC; border:1px solid #D8D2F2; border-radius:14px; padding:14px 16px; margin:14px 0;
+  }
+  .algo .passo{ font-size:14px; margin:6px 0; }
+  .algo .passo b{ color:var(--indigo); }
+
+  /* ---------- try box ---------- */
+  .trybox{
+    border:2px dashed var(--indigo-soft); border-radius:14px; padding:14px 16px; margin:14px 0;
+  }
+  .trybox input{
+    font-family:'Atkinson Hyperlegible', sans-serif; font-size:14px;
+    padding:8px 10px; border-radius:8px; border:1px solid var(--card-border);
+    width:140px; margin-right:8px;
+  }
+  .trybox button, .btn{
+    font-family:'Baloo 2', sans-serif; font-weight:600; font-size:13px;
+    background:var(--indigo); color:#fff; border:none; border-radius:10px;
+    padding:8px 16px; cursor:pointer; transition:background .2s;
+  }
+  .trybox button:hover, .btn:hover{ background:var(--indigo-deep); }
+  .feedback{ margin-top:10px; font-size:13.5px; font-weight:600; padding:8px 12px; border-radius:8px; display:none; }
+  .feedback.ok{ background:#E3F7EE; color:#1F7A56; display:block; }
+  .feedback.bad{ background:#FDEAE6; color:#B2452F; display:block; }
+
+  /* ---------- chain ---------- */
+  .chain{ display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin:14px 0; }
+  .chain .box{
+    background:var(--indigo); color:#fff; font-family:'Baloo 2'; font-weight:700;
+    padding:10px 14px; border-radius:10px; font-size:15px;
+  }
+  .chain .pill{
+    background:var(--coral); color:#fff; font-family:'Baloo 2'; font-weight:700;
+    padding:5px 12px; border-radius:999px; font-size:13px;
+  }
+
+  /* ---------- quiz / direto do livro ---------- */
+  .exercicio{
+    border:1px solid var(--card-border); border-radius:14px; padding:14px 16px; margin:14px 0;
+    background:#FDFCFF;
+  }
+  .exercicio .numero{ font-family:'Baloo 2'; font-weight:800; color:var(--indigo); font-size:16px; }
+  .exercicio .enunciado{ font-size:14.5px; margin:8px 0 10px; }
+  .resposta{
+    display:none; background:var(--indigo-pale); border-radius:10px; padding:12px 14px; margin-top:10px; font-size:14px;
+  }
+  .resposta.show{ display:block; }
+  .ver-resp{
+    font-family:'Baloo 2'; font-weight:600; font-size:12.5px;
+    background:#fff; border:1.5px solid var(--indigo); color:var(--indigo);
+    border-radius:999px; padding:6px 14px; cursor:pointer;
+  }
+  .ver-resp:hover{ background:var(--indigo); color:#fff; }
+
+  table.tab-passo{ width:100%; border-collapse:collapse; margin:10px 0; font-size:13.5px; }
+  table.tab-passo td, table.tab-passo th{
+    border:1px solid var(--card-border); padding:7px 9px; text-align:left;
+  }
+  table.tab-passo th{ background:var(--indigo-pale); color:var(--indigo-deep); font-family:'Baloo 2'; }
+
+  svg text{ font-family:'Baloo 2', sans-serif; }
+
+  /* ---------- fórmula de Bhaskara em fração real ---------- */
+  .formula-wrap{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    flex-wrap:wrap; margin:16px 0; font-family:'Baloo 2', sans-serif;
+    color:var(--indigo); font-weight:700;
+  }
+  .formula-wrap .eq{ font-size:20px; }
+  .frac{ display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; line-height:1.15; }
+  .frac .num{ padding:0 6px 3px; border-bottom:2.5px solid var(--indigo); }
+  .frac .den{ padding:4px 6px 0; }
+  .num-line{ display:flex; align-items:flex-end; gap:2px; white-space:nowrap; }
+  .sqrt{ display:inline-flex; align-items:flex-start; }
+  .sqrt .radical{ font-size:1.25em; line-height:1; margin-right:1px; transform:translateY(-1px); }
+  .sqrt .radicand{ border-top:2.5px solid var(--indigo); padding:0 4px; }
+  .formula-wrap .size-lg{ font-size:20px; }
+
+  /* ---------- resolução visual passo a passo (Direto do livro) ---------- */
+  .resolucao{ display:flex; flex-direction:column; gap:7px; margin-top:4px; }
+  .resolucao .linha{ font-size:14px; line-height:1.5; }
+  .formula-wrap.sm{ justify-content:flex-start; gap:6px; margin:6px 0; font-size:15px; }
+  .frac.sm .num{ padding:0 4px 2px; border-bottom-width:1.5px; font-size:14px; }
+  .frac.sm .den{ padding:2px 4px 0; font-size:14px; }
+  .sqrt.sm .radical{ font-size:1.05em; }
+  .sqrt.sm .radicand{ border-top-width:1.5px; padding:0 3px; font-size:14px; }
+  .raizes-branch{ display:flex; align-items:center; gap:10px; margin:2px 0; }
+  .raizes-branch .seta{ font-size:20px; color:var(--indigo); font-weight:700; font-family:'Baloo 2'; }
+  .branch-lines{
+    border-left:3px solid var(--indigo-soft); padding-left:10px;
+    display:flex; flex-direction:column; gap:5px;
+    font-family:'Baloo 2'; font-weight:700; color:var(--indigo); font-size:14px;
+  }
+  .resp-final{
+    margin-top:4px; padding:7px 12px; background:#fff; border:1.5px solid var(--indigo);
+    border-radius:9px; display:inline-block; font-weight:700; color:var(--indigo);
+    font-family:'Baloo 2'; font-size:14.5px;
+  }
+
+  hr.divisor{
+    border:none; border-top:2px dashed var(--card-border); margin:8px 0; max-width:760px; margin-left:auto; margin-right:auto;
+  }
+
+  @media (min-width:900px){
+    header h1{ font-size:28px; }
+    header p{ font-size:15.5px; }
+    main{ max-width:880px; padding-top:10px; }
+    .card{ padding:26px 30px 28px; }
+    .card h2{ font-size:22px; }
+    .card p{ font-size:16px; }
+    #indice a{ font-size:12.5px; padding:5px 12px; }
+  }
+  @media (min-width:1500px){
+    header h1{ font-size:34px; }
+    header p{ font-size:17px; }
+    main{ max-width:1080px; }
+    .card{ padding:34px 40px 36px; }
+    .card h2{ font-size:27px; }
+    .card h3{ font-size:19px; }
+    .card p, .exercicio .enunciado, .defbox .item{ font-size:18px; line-height:1.7; }
+    .pense, .dica, .copie, .algo, .trybox{ padding:20px 24px; }
+    #indice a{ font-size:14px; padding:6px 14px; }
+    table.tab-passo{ font-size:16px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="bgSymbols"></div>
+
+<header>
+  <h1>Revisão: Equações do 2º Grau</h1>
+  <p>Antes de começar função de 2º grau, vamos relembrar o essencial.</p>
+</header>
+
+<nav id="indice">
+  <a href="#p1">1. Ponto de partida</a>
+  <a href="#p2">2. Revisão</a>
+  <a href="#p3">3. Equação do 2º grau</a>
+  <a href="#p4">4. Fatoração</a>
+  <a href="#p5">5. Bhaskara</a>
+  <a href="#p6">6. Procedimento</a>
+  <a href="#p7">7. Discriminante</a>
+  <a href="#p8">8. Direto do livro</a>
+  <a href="#p9">9. Resumo</a>
+</nav>
+
+<main>
+
+  <!-- PARTE 1 - GANCHO -->
+  <section class="section" id="p1">
+    <div class="card">
+      <span class="eyebrow">Parte 1 · Ponto de partida</span>
+      <h2>Vamos pensar juntos</h2>
+      <p>Responda essa pergunta antes de qualquer explicação. Você provavelmente já sabe fazer isso de cabeça.</p>
+      <div class="trybox">
+        <p style="margin-bottom:10px;"><b>Quais dois números, multiplicados, dão 6, e somados, dão 5?</b></p>
+        <input type="text" id="hookInput" placeholder="ex: 1 e 6">
+        <button onclick="checkHook()">Conferir</button>
+        <div class="feedback" id="hookFeedback"></div>
+      </div>
+      <p>Esses dois números são exatamente a chave para resolver equações do 2º grau por fatoração — e é exatamente o que vamos revisar hoje.</p>
+    </div>
+  </section>
+
+  <!-- PARTE 2 - REVISÃO FATORAÇÃO -->
+  <section class="section" id="p2">
+    <div class="card">
+      <span class="eyebrow">Parte 2 · Revisão</span>
+      <h2>Fatoração de trinômios</h2>
+
+      <p>Antes de revisar a fatoração, vale lembrar dois nomes que vamos usar bastante hoje: binômio e trinômio.</p>
+      <div class="defbox">
+        <div class="item">
+          <span class="nome">Binômio</span>
+          Uma expressão algébrica com <b>dois termos</b>, separados por + ou −.
+          <span class="exemplo">(x + 2)</span>
+        </div>
+        <div class="item">
+          <span class="nome">Trinômio</span>
+          Uma expressão algébrica com <b>três termos</b>.
+          <span class="exemplo">x² + 5x + 6</span>
+        </div>
+      </div>
+      <p>Fatorar um trinômio é justamente reescrevê-lo como um <b>produto de dois binômios</b> — ou seja, trocar três termos somados por duas expressões multiplicadas, que dão o mesmo resultado.</p>
+
+      <p>Você já viu isso antes. Para um trinômio no formato <b>x² + bx + c</b>, o segredo é achar dois números que:</p>
+      <div class="chain">
+        <div class="box">multiplicados</div>
+        <div class="pill">= c</div>
+      </div>
+      <div class="chain">
+        <div class="box">somados</div>
+        <div class="pill">= b</div>
+      </div>
+      <p><b>Exemplo rápido:</b> em x² + 5x + 6, procuramos dois números que multiplicados dão 6 e somados dão 5. São o 2 e o 3. Por isso escrevemos o trinômio como produto de dois binômios:</p>
+      <p style="text-align:center; font-family:'Baloo 2'; font-weight:700; color:var(--indigo); font-size:17px;">
+        x² + 5x + 6 &nbsp;=&nbsp; (x + 2)(x + 3)
+      </p>
+    </div>
+  </section>
+
+  <!-- PARTE 3 - CONCEITO NOVO -->
+  <section class="section" id="p3">
+    <div class="card">
+      <span class="eyebrow coral">Parte 3 · Conceito novo</span>
+      <h2>O que é uma equação do 2º grau</h2>
+      <p>Uma equação do 2º grau é qualquer equação que pode ser escrita nesta forma:</p>
+      <p style="text-align:center; font-family:'Baloo 2'; font-weight:700; color:var(--indigo); font-size:18px;">
+        a·x² + b·x + c = 0
+      </p>
+      <p>com a, b e c números reais e <b>a diferente de zero</b> (se a fosse zero, o x² desapareceria e não seria mais do 2º grau).</p>
+      <p>As <b>raízes</b> são os valores de x que tornam essa igualdade verdadeira.</p>
+      <div class="pense">
+        <span class="tag">💡 Pense assim</span>
+        <p style="margin:0 0 10px;">Se você desenhar o gráfico de y = ax² + bx + c, vai ver uma curva (parábola). As raízes são exatamente os pontos onde essa curva toca o eixo x — porque é ali que y vale 0.</p>
+        <svg viewBox="0 0 300 300" width="100%" style="max-width:300px; display:block; margin:0 auto;">
+          <!-- grade e eixo x numerado -->
+          <line x1="15" y1="130" x2="285" y2="130" stroke="#5B5686" stroke-width="1.5"/>
+          <polygon points="285,130 276,126 276,134" fill="#5B5686"/>
+          <text x="289" y="134" font-size="11" fill="#5B5686">x</text>
+          <g font-size="10.5" fill="#5B5686" text-anchor="middle">
+            <line x1="30" y1="126" x2="30" y2="134" stroke="#5B5686"/><text x="30" y="146">−3</text>
+            <line x1="70" y1="126" x2="70" y2="134" stroke="#5B5686"/><text x="70" y="146">−2</text>
+            <line x1="110" y1="126" x2="110" y2="134" stroke="#5B5686"/><text x="110" y="146">−1</text>
+            <line x1="190" y1="126" x2="190" y2="134" stroke="#5B5686"/><text x="190" y="146">1</text>
+            <line x1="230" y1="126" x2="230" y2="134" stroke="#5B5686"/><text x="230" y="146">2</text>
+            <line x1="270" y1="126" x2="270" y2="134" stroke="#5B5686"/><text x="270" y="146">3</text>
+          </g>
+          <!-- eixo y numerado -->
+          <line x1="150" y1="270" x2="150" y2="20" stroke="#5B5686" stroke-width="1.5"/>
+          <polygon points="150,20 146,29 154,29" fill="#5B5686"/>
+          <text x="156" y="24" font-size="11" fill="#5B5686">y</text>
+          <g font-size="10.5" fill="#5B5686" text-anchor="end">
+            <line x1="146" y1="90" x2="154" y2="90" stroke="#5B5686"/><text x="141" y="94">1</text>
+            <line x1="146" y1="170" x2="154" y2="170" stroke="#5B5686"/><text x="141" y="174">−1</text>
+            <line x1="146" y1="210" x2="154" y2="210" stroke="#5B5686"/><text x="141" y="214">−2</text>
+            <line x1="146" y1="250" x2="154" y2="250" stroke="#5B5686"/><text x="141" y="254">−3</text>
+          </g>
+          <!-- parábola y = x² − 3 (raízes exatas em ±√3, vértice em (0,−3)) -->
+          <path d="M62.0,56.4 L70.0,90.0 L78.0,120.4 L86.0,147.6 L94.0,171.6 L102.0,192.4 L110.0,210.0 L118.0,224.4 L126.0,235.6 L134.0,243.6 L142.0,248.4 L150.0,250.0 L158.0,248.4 L166.0,243.6 L174.0,235.6 L182.0,224.4 L190.0,210.0 L198.0,192.4 L206.0,171.6 L214.0,147.6 L222.0,120.4 L230.0,90.0 L238.0,56.4" fill="none" stroke="#362F78" stroke-width="2.5"/>
+          <!-- vértice -->
+          <circle cx="150" cy="250" r="4.5" fill="#6C63B5" stroke="#fff" stroke-width="1.5"/>
+          <text x="150" y="266" text-anchor="middle" font-size="11" fill="#6C63B5" font-weight="700">V</text>
+          <!-- raízes -->
+          <circle cx="80.7" cy="130" r="4.5" fill="#E4694F" stroke="#fff" stroke-width="1.5"/>
+          <circle cx="219.3" cy="130" r="4.5" fill="#E4694F" stroke="#fff" stroke-width="1.5"/>
+          <text x="80.7" y="118" text-anchor="middle" font-size="11" fill="#E4694F" font-weight="700">raiz</text>
+          <text x="219.3" y="118" text-anchor="middle" font-size="11" fill="#E4694F" font-weight="700">raiz</text>
+        </svg>
+        <p style="margin:8px 0 0; font-size:12.5px; text-align:center; color:var(--text-soft);">Exemplo: y = x² − 3. Os pontos em coral são as raízes (onde a curva toca o eixo x) e o ponto em roxo é o vértice (V).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 4 - RESOLUÇÃO POR FATORAÇÃO -->
+  <section class="section" id="p4">
+    <div class="card">
+      <span class="eyebrow">Parte 4 · Por fatoração</span>
+      <h2>Resolvendo por fatoração</h2>
+      <p>Quando a equação é fatorável, resolvê-la fica simples: se um produto de dois fatores dá zero, pelo menos um dos fatores tem que ser zero.</p>
+      <div class="pense">
+        <span class="tag">💡 Pense assim</span>
+        <p style="margin:0;">Se você multiplica dois números e o resultado é zero, um deles obrigatoriamente é zero — não existe outro jeito. É essa ideia que usamos aqui.</p>
+      </div>
+      <h3>Exemplo passo a passo</h3>
+      <p>Vamos resolver x² − 7x + 12 = 0.</p>
+      <table class="tab-passo">
+        <tr><th>Passo</th><th>O que fazemos</th></tr>
+        <tr><td>1</td><td>Procurar dois números que multiplicados dão 12 e somados dão −7 → são −3 e −4</td></tr>
+        <tr><td>2</td><td>Fatorar: (x − 3)(x − 4) = 0</td></tr>
+        <tr><td>3</td><td>Cada fator pode ser zero: x − 3 = 0 ou x − 4 = 0</td></tr>
+        <tr><td>4</td><td>Resolver cada um: x = 3 ou x = 4</td></tr>
+      </table>
+      <div class="dica">
+        <span class="tag">⚠️ Dica</span>
+        <p style="margin:0;">Sempre confira as duas condições ao mesmo tempo: o produto E a soma. Um número pode "bater" no produto mas não na soma — e aí não é a fatoração certa.</p>
+      </div>
+      <div class="trybox">
+        <p style="margin-bottom:10px;"><b>Agora é sua vez:</b> resolva x² − 6x + 8 = 0 por fatoração.</p>
+        <input type="text" id="p4Input" placeholder="ex: x=1 ou x=7">
+        <button onclick="checkP4()">Conferir</button>
+        <div class="feedback" id="p4Feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 5 - BHASKARA -->
+  <section class="section" id="p5">
+    <div class="card">
+      <span class="eyebrow coral">Parte 5 · Fórmula de Bhaskara</span>
+      <h2>Quando a fatoração não é óbvia</h2>
+      <p>Nem toda equação é fácil de fatorar de cabeça. Para esses casos, existe uma fórmula que sempre funciona:</p>
+      <div class="formula-wrap">
+        <span class="size-lg">x&nbsp;=</span>
+        <div class="frac">
+          <div class="num">
+            <div class="num-line">
+              <span>−b&nbsp;±</span>
+              <span class="sqrt"><span class="radical">√</span><span class="radicand">b²&nbsp;−&nbsp;4ac</span></span>
+            </div>
+          </div>
+          <div class="den">2a</div>
+        </div>
+      </div>
+      <div class="pense">
+        <span class="tag">💡 Pense assim</span>
+        <p style="margin:0;">A fórmula de Bhaskara é como uma receita: você sempre identifica a, b e c, calcula Δ, e depois substitui tudo. Ela funciona para qualquer equação do 2º grau, mesmo as que não dá para fatorar de cabeça.</p>
+      </div>
+      <h3>Exemplo passo a passo</h3>
+      <p>Vamos resolver 3x² − 5x + 2 = 0.</p>
+      <table class="tab-passo">
+        <tr><th>Passo</th><th>Cálculo</th></tr>
+        <tr><td>1. Identificar</td><td>a = 3, b = −5, c = 2</td></tr>
+        <tr><td>2. Calcular Δ</td><td>Δ = (−5)² − 4·3·2 = 25 − 24 = 1</td></tr>
+        <tr><td>3. Aplicar a fórmula</td><td>x = (5 ± √1) / 6 = (5 ± 1) / 6</td></tr>
+        <tr><td>4. Duas raízes</td><td>x = 6/6 = 1 &nbsp;ou&nbsp; x = 4/6 = 1/3</td></tr>
+      </table>
+      <div class="dica">
+        <span class="tag">⚠️ Dica</span>
+        <p style="margin:0;">O erro mais comum é esquecer o sinal de b. Se b = −5, então −b = 5, não −5. Escreva esse sinal com calma antes de substituir. E não esqueça o ± : ele te dá duas respostas, não uma só.</p>
+      </div>
+      <div class="trybox">
+        <p style="margin-bottom:10px;"><b>Agora é sua vez:</b> resolva x² − 3x − 4 = 0 usando Bhaskara.</p>
+        <input type="text" id="p5Input" placeholder="ex: x=1 ou x=7">
+        <button onclick="checkP5()">Conferir</button>
+        <div class="feedback" id="p5Feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 6 - ALGO-BLOCK -->
+  <section class="section" id="p6">
+    <div class="card">
+      <span class="eyebrow yellow">Parte 6 · Procedimento</span>
+      <h2>O caminho completo, passo a passo</h2>
+      <div class="algo">
+        <div class="passo"><b>Passo 1.</b> Identifique a, b e c na equação ax² + bx + c = 0.</div>
+        <div class="passo"><b>Passo 2.</b> Calcule Δ = b² − 4ac.</div>
+        <div class="passo"><b>Passo 3.</b> Verifique o sinal de Δ.</div>
+        <div class="passo"><b>Passo 4.</b> Se Δ ≥ 0, aplique x = (−b ± √Δ) / 2a. Se Δ &lt; 0, não há raízes reais.</div>
+      </div>
+      <div class="dica" style="margin-top:16px;">
+        <span class="tag">⚠️ Dica</span>
+        <p style="margin:0;">Δ = 0 <b>não</b> significa que não há solução — significa que existe uma raiz real (repetida). Só Δ &lt; 0 é que não tem raiz real.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 7 - DISCRIMINANTE -->
+  <section class="section" id="p7">
+    <div class="card">
+      <span class="eyebrow">Parte 7 · Discriminante</span>
+      <h2>O que Δ conta sobre a equação</h2>
+      <p>Antes mesmo de terminar a conta, o valor de Δ já revela quantas raízes reais a equação tem — e o que acontece com a parábola no gráfico.</p>
+
+      <table class="tab-passo">
+        <tr><th>Sinal de Δ</th><th>Raízes reais</th><th>Parábola e o eixo x</th></tr>
+        <tr><td>Δ &gt; 0</td><td>duas raízes diferentes</td><td>cruza o eixo x em 2 pontos</td></tr>
+        <tr><td>Δ = 0</td><td>uma raiz (dupla)</td><td>toca o eixo x em 1 ponto</td></tr>
+        <tr><td>Δ &lt; 0</td><td>nenhuma raiz real</td><td>não toca o eixo x</td></tr>
+      </table>
+
+      <svg viewBox="0 0 330 130" width="100%" style="max-width:420px; display:block; margin:14px auto;">
+        <!-- as três parábolas abrem para cima (a > 0); só muda a altura do vértice em relação à reta (eixo x) -->
+        <!-- Δ > 0: vértice abaixo da reta → curva cruza em 2 pontos -->
+        <g transform="translate(0,0)">
+          <line x1="0" y1="90" x2="100" y2="90" stroke="#5B5686" stroke-width="1"/>
+          <path d="M4.5,45.4 L9.1,59.9 L13.6,72.8 L18.2,84.2 L22.7,94.1 L27.3,102.5 L31.8,109.3 L36.4,114.7 L40.9,118.5 L45.5,120.7 L50.0,121.5 L54.6,120.7 L59.1,118.5 L63.7,114.7 L68.2,109.3 L72.8,102.5 L77.3,94.1 L81.9,84.2 L86.4,72.8 L91.0,59.9 L95.5,45.4" fill="none" stroke="#362F78" stroke-width="2"/>
+          <circle cx="20.7" cy="90" r="3.2" fill="#E4694F" stroke="#fff" stroke-width="1"/>
+          <circle cx="79.3" cy="90" r="3.2" fill="#E4694F" stroke="#fff" stroke-width="1"/>
+          <text x="50" y="112" text-anchor="middle" font-size="10" fill="#5B5686" font-weight="700">Δ &gt; 0</text>
+        </g>
+        <!-- Δ = 0: vértice exatamente sobre a reta → curva toca em 1 ponto -->
+        <g transform="translate(115,0)">
+          <line x1="0" y1="90" x2="100" y2="90" stroke="#5B5686" stroke-width="1"/>
+          <path d="M4.5,13.9 L9.1,28.4 L13.6,41.3 L18.2,52.7 L22.7,62.6 L27.3,71.0 L31.8,77.8 L36.4,83.2 L40.9,87.0 L45.5,89.2 L50.0,90.0 L54.6,89.2 L59.1,87.0 L63.7,83.2 L68.2,77.8 L72.8,71.0 L77.3,62.6 L81.9,52.7 L86.4,41.3 L91.0,28.4 L95.5,13.9" fill="none" stroke="#362F78" stroke-width="2"/>
+          <circle cx="50" cy="90" r="3.2" fill="#E4694F" stroke="#fff" stroke-width="1"/>
+          <text x="50" y="112" text-anchor="middle" font-size="10" fill="#5B5686" font-weight="700">Δ = 0</text>
+        </g>
+        <!-- Δ < 0: vértice acima da reta → curva nunca toca -->
+        <g transform="translate(230,0)">
+          <line x1="0" y1="90" x2="100" y2="90" stroke="#5B5686" stroke-width="1"/>
+          <path d="M15.0,18.0 L18.5,26.6 L22.0,34.2 L25.5,40.9 L29.0,46.8 L32.5,51.7 L36.0,55.8 L39.5,59.0 L43.0,61.2 L46.5,62.6 L50.0,63.0 L53.5,62.6 L57.0,61.2 L60.5,59.0 L64.0,55.8 L67.5,51.8 L71.0,46.8 L74.5,41.0 L78.0,34.2 L81.5,26.6 L85.0,18.0" fill="none" stroke="#362F78" stroke-width="2"/>
+          <text x="50" y="112" text-anchor="middle" font-size="10" fill="#5B5686" font-weight="700">Δ &lt; 0</text>
+        </g>
+      </svg>
+
+      <div class="pense">
+        <span class="tag">💡 Pense assim</span>
+        <p style="margin:0;">Calcular Δ antes de resolver tudo é como espiar o resultado da corrida antes dela terminar: você já sabe se vai ter 2 raízes, 1 raiz ou nenhuma — sem gastar tempo com a fórmula toda.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PARTE 8 - DIRETO DO LIVRO -->
+  <section class="section" id="p8">
+    <div class="card">
+      <span class="eyebrow coral">Parte 8 · Direto do livro</span>
+      <h2>Ficha de revisão — Educação Adventista</h2>
+      <p>Agora resolva as 5 questões da sua ficha. Depois de tentar, clique em "Ver resposta" para conferir.</p>
+
+      <div class="exercicio">
+        <span class="numero">1.</span>
+        <div class="enunciado">Resolva por fatoração: x² − 5x + 6 = 0</div>
+        <button class="ver-resp" onclick="toggleResp('r1')">Ver resposta</button>
+        <div class="resposta" id="r1">
+          <div class="resolucao">
+            <div class="linha">Procuramos dois números que multiplicados dão 6 e somados dão −5: são <b>−2</b> e <b>−3</b>.</div>
+            <div class="linha">(x − 2)(x − 3) = 0</div>
+            <div class="resp-final">x = 2 ou x = 3</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercicio">
+        <span class="numero">2.</span>
+        <div class="enunciado">Resolva usando Bhaskara: 2x² − 7x + 3 = 0</div>
+        <button class="ver-resp" onclick="toggleResp('r2')">Ver resposta</button>
+        <div class="resposta" id="r2">
+          <div class="resolucao">
+            <div class="linha">a = 2, b = −7, c = 3</div>
+            <div class="linha">Δ = b² − 4ac</div>
+            <div class="linha">Δ = (−7)² − 4(2)(3)</div>
+            <div class="linha">Δ = 49 − 24 = 25 &nbsp;→&nbsp; √Δ = 5</div>
+            <div class="formula-wrap sm">
+              <span>x&nbsp;=</span>
+              <div class="frac sm"><div class="num"><div class="num-line"><span>−b&nbsp;±</span><span class="sqrt sm"><span class="radical">√</span><span class="radicand">Δ</span></span></div></div><div class="den">2a</div></div>
+              <span>=</span>
+              <div class="frac sm"><div class="num">7&nbsp;±&nbsp;5</div><div class="den">4</div></div>
+            </div>
+            <div class="raizes-branch">
+              <span class="seta">⇒</span>
+              <div class="branch-lines">
+                <div>x' = 12/4 = 3</div>
+                <div>x'' = 2/4 = 1/2</div>
+              </div>
+            </div>
+            <div class="resp-final">x = 3 ou x = 1/2</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercicio">
+        <span class="numero">3.</span>
+        <div class="enunciado">Calcule o discriminante (Δ) de 3x² + 2x + 5 = 0 e diga quantas raízes reais a equação possui, sem resolvê-la.</div>
+        <button class="ver-resp" onclick="toggleResp('r3')">Ver resposta</button>
+        <div class="resposta" id="r3">
+          <div class="resolucao">
+            <div class="linha">a = 3, b = 2, c = 5</div>
+            <div class="linha">Δ = b² − 4ac</div>
+            <div class="linha">Δ = (2)² − 4(3)(5)</div>
+            <div class="linha">Δ = 4 − 60 = −56</div>
+            <div class="resp-final">Δ &lt; 0 → a equação não tem raízes reais</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercicio">
+        <span class="numero">4.</span>
+        <div class="enunciado">Um retângulo tem área 40 m² e o comprimento é 3 m maior que a largura. Escreva a equação e encontre as dimensões.</div>
+        <button class="ver-resp" onclick="toggleResp('r4')">Ver resposta</button>
+        <div class="resposta" id="r4">
+          <div class="resolucao">
+            <div class="linha">Largura = x, comprimento = x + 3</div>
+            <div class="linha">x(x + 3) = 40 &nbsp;→&nbsp; x² + 3x − 40 = 0</div>
+            <div class="linha">a = 1, b = 3, c = −40</div>
+            <div class="linha">Δ = 3² − 4(1)(−40) = 9 + 160 = 169 &nbsp;→&nbsp; √Δ = 13</div>
+            <div class="formula-wrap sm">
+              <span>x&nbsp;=</span>
+              <div class="frac sm"><div class="num"><div class="num-line"><span>−b&nbsp;±</span><span class="sqrt sm"><span class="radical">√</span><span class="radicand">Δ</span></span></div></div><div class="den">2a</div></div>
+              <span>=</span>
+              <div class="frac sm"><div class="num">−3&nbsp;±&nbsp;13</div><div class="den">2</div></div>
+            </div>
+            <div class="raizes-branch">
+              <span class="seta">⇒</span>
+              <div class="branch-lines">
+                <div>x' = 10/2 = 5</div>
+                <div>x'' = −16/2 = −8 (descartado, negativo)</div>
+              </div>
+            </div>
+            <div class="resp-final">Largura = 5 m, comprimento = 8 m (5 × 8 = 40 ✓)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercicio">
+        <span class="numero">5.</span>
+        <div class="enunciado">Dada x² − 2x − 8 = 0, encontre as raízes.</div>
+        <button class="ver-resp" onclick="toggleResp('r5')">Ver resposta</button>
+        <div class="resposta" id="r5">
+          <div class="resolucao">
+            <div class="linha">Procuramos dois números que multiplicados dão −8 e somados dão −2: são <b>−4</b> e <b>2</b>.</div>
+            <div class="linha">(x − 4)(x + 2) = 0</div>
+            <div class="resp-final">x = 4 ou x = −2</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 9 - RESUMO -->
+  <section class="section" id="p9">
+    <div class="card">
+      <span class="eyebrow">Parte 9 · Resumo</span>
+      <h2>Para o caderno</h2>
+      <p>Uma equação do 2º grau tem a forma ax² + bx + c = 0, com a diferente de zero, e suas raízes são os valores de x que tornam essa igualdade verdadeira — no gráfico, são os pontos onde a parábola toca o eixo x. Quando a equação é fatorável, resolvemos procurando dois números cujo produto é c e cuja soma é b, escrevendo o trinômio como o produto de dois binômios, (x + p)(x + q) = 0, e igualando cada fator a zero. Quando a fatoração não é óbvia, usamos a fórmula de Bhaskara: calculamos primeiro o discriminante Δ = b² − 4ac e depois aplicamos x = (−b ± √Δ) / 2a. O próprio Δ já conta boa parte da história antes de terminarmos a conta: se Δ for maior que zero, a equação tem duas raízes reais diferentes; se Δ for igual a zero, tem uma raiz real repetida; e se Δ for menor que zero, não existe raiz real. Com esses três caminhos — fatoração, discriminante e fórmula de Bhaskara — você já está pronto para começar a estudar função do 2º grau, porque as raízes que aprendemos a encontrar aqui são exatamente os pontos onde o gráfico dessas funções cruza o eixo x.</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // ---------- floating symbols ----------
+  const symbols = ['x²','+','Δ','√','=','x','∴','±','²'];
+  const bg = document.getElementById('bgSymbols');
+  for(let i=0;i<16;i++){
+    const s = document.createElement('span');
+    s.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    s.style.left = Math.random()*95 + '%';
+    s.style.top = Math.random()*95 + '%';
+    s.style.fontSize = (18 + Math.random()*26) + 'px';
+    s.style.animationDuration = (22 + Math.random()*16) + 's';
+    s.style.animationDelay = (Math.random()*10) + 's';
+    bg.appendChild(s);
+  }
+
+  // ---------- interactivity ----------
+  function checkHook(){
+    const val = document.getElementById('hookInput').value.trim();
+    const fb = document.getElementById('hookFeedback');
+    if(val.includes('2') && val.includes('3')){
+      fb.className='feedback ok'; fb.textContent='Isso mesmo! 2 e 3: 2×3=6 e 2+3=5.';
+    } else {
+      fb.className='feedback bad'; fb.textContent='Quase — pense em dois números pequenos. Dica: 2 e 3.';
+    }
+  }
+  function checkP4(){
+    const val = document.getElementById('p4Input').value.trim();
+    const fb = document.getElementById('p4Feedback');
+    if(val.includes('2') && val.includes('4')){
+      fb.className='feedback ok'; fb.textContent='Isso mesmo! (x−2)(x−4)=0 → x=2 ou x=4.';
+    } else {
+      fb.className='feedback bad'; fb.textContent='Quase, revê esse passo: procure dois números que multiplicados dão 8 e somados dão −6.';
+    }
+  }
+  function checkP5(){
+    const val = document.getElementById('p5Input').value.trim();
+    const fb = document.getElementById('p5Feedback');
+    if(val.includes('4') && (val.includes('-1') || val.includes('−1'))){
+      fb.className='feedback ok'; fb.textContent='Isso mesmo! Δ=25, x=(3±5)/2 → x=4 ou x=−1.';
+    } else {
+      fb.className='feedback bad'; fb.textContent='Quase, revê esse passo: confira o cálculo de Δ = b²−4ac antes de aplicar a fórmula.';
+    }
+  }
+  function toggleResp(id){
+    document.getElementById(id).classList.toggle('show');
+  }
+</script>
+
+</body>
+</html>
