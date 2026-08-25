@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escalas: Plantas, Fotos e Mapas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F4FC;
+    --indigo:#362F78;
+    --indigo-deep:#241F52;
+    --indigo-soft:#6C63B5;
+    --mint:#A9E5D0;
+    --coral:#FFB3A0;
+    --coral-dark:#E4694F;
+    --yellow:#FFDD73;
+    --text:#2A2650;
+    --text-sec:#5B5686;
+    --card-border:#E3DEF7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+  h1,h2,h3,.baloo,.numeral{font-family:'Baloo 2', sans-serif;}
+
+  /* ---------- floating background ---------- */
+  #bgSymbols{
+    position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+  }
+  .symbol{
+    position:absolute; opacity:0.08; font-family:'Baloo 2', sans-serif; font-weight:700;
+    color:var(--indigo); animation: drift 26s linear infinite;
+  }
+  @keyframes drift{
+    0%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-24px) rotate(8deg);}
+    100%{transform:translateY(0) rotate(0deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .symbol{animation:none;}
+  }
+
+  /* ---------- layout shell ---------- */
+  .app{position:relative; z-index:1; max-width:900px; margin:0 auto; padding:0 16px 90px;}
+
+  .progress-wrap{
+    position:sticky; top:0; z-index:20; background:var(--bg);
+    padding:10px 0 6px; margin-bottom:6px;
+  }
+  .progress-label{
+    font-size:11px; color:var(--text-sec); font-weight:700; margin-bottom:5px;
+    font-family:'Baloo 2', sans-serif; letter-spacing:.2px;
+  }
+  .progress-track{
+    height:7px; border-radius:6px; background:var(--card-border); overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; background:linear-gradient(90deg, var(--indigo-soft), var(--indigo));
+    border-radius:6px; transition:width .35s ease;
+  }
+
+  .lesson-title{
+    text-align:center; font-size:19px; font-weight:800; color:var(--indigo-deep);
+    margin:10px 0 12px;
+  }
+
+  .tabs{
+    display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:16px;
+  }
+  .tab{
+    font-family:'Baloo 2', sans-serif; font-weight:600; font-size:11px;
+    padding:4px 9px; border-radius:999px; border:1px solid var(--card-border);
+    background:#fff; color:var(--text-sec); cursor:pointer; transition:all .2s;
+    white-space:nowrap;
+  }
+  .tab.active{
+    background:var(--indigo); color:#fff; border-color:var(--indigo);
+  }
+
+  .section{display:none; animation:fadeIn .3s ease;}
+  .section.active{display:block;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .card{
+    background:#fff; border:1px solid var(--card-border); border-radius:18px;
+    padding:20px; margin-bottom:16px; box-shadow:0 4px 18px rgba(54,47,120,0.06);
+  }
+  .eyebrow{
+    display:inline-block; font-family:'Baloo 2', sans-serif; font-weight:700; font-size:11px;
+    padding:3px 10px; border-radius:999px; margin-bottom:10px; letter-spacing:.3px;
+  }
+  .eyebrow.indigo{background:#EDEBFA; color:var(--indigo);}
+  .eyebrow.mint{background:#E3F7EF; color:#1F8A66;}
+  .eyebrow.coral{background:#FFEDE8; color:var(--coral-dark);}
+  .eyebrow.yellow{background:#FFF6DE; color:#A67A00;}
+
+  .card h2{font-size:18px; color:var(--indigo-deep); margin:0 0 10px;}
+  .card h3{font-size:15px; color:var(--indigo); margin:16px 0 8px;}
+  .card p{line-height:1.6; font-size:15px; margin:0 0 10px;}
+  .card p:last-child{margin-bottom:0;}
+
+  .pense-assim{
+    background:#EEECFA; border-radius:14px; padding:16px; margin:14px 0;
+  }
+  .pense-assim .tag{
+    font-family:'Baloo 2', sans-serif; font-weight:700; color:var(--indigo); font-size:13px; margin-bottom:6px; display:block;
+  }
+
+  .dica{
+    background:#FFFBEF; border-left:6px solid var(--yellow); border-radius:10px;
+    padding:14px 16px; margin:14px 0;
+  }
+  .dica .tag{
+    font-family:'Baloo 2', sans-serif; font-weight:700; color:#A67A00; font-size:13px; margin-bottom:6px; display:block;
+  }
+
+  .algo-block{
+    background:#F3F0FC; border:1px solid #DCD5F5; border-radius:14px; padding:16px;
+    margin:14px 0;
+  }
+  .algo-block .passo{margin:0 0 10px; font-size:15px;}
+  .algo-block .passo:last-child{margin-bottom:0;}
+  .algo-block b{color:var(--indigo);}
+
+  .try-box{
+    border:2px dashed var(--indigo-soft); border-radius:14px; padding:16px; margin:14px 0;
+    background:#FBFAFF;
+  }
+  .try-box input{
+    font-family:'Atkinson Hyperlegible', sans-serif; font-size:15px; padding:8px 12px;
+    border:1px solid var(--card-border); border-radius:10px; width:120px; margin-right:8px;
+  }
+  .try-box button{
+    font-family:'Baloo 2', sans-serif; font-weight:700; font-size:13px; padding:8px 16px;
+    background:var(--indigo); color:#fff; border:none; border-radius:10px; cursor:pointer;
+  }
+  .try-box button:hover{background:var(--indigo-deep);}
+  .feedback{margin-top:10px; font-size:14px; font-weight:700; display:none;}
+  .feedback.correct{color:#1F8A66; display:block;}
+  .feedback.wrong{color:var(--coral-dark); display:block;}
+
+  table.tbl{width:100%; border-collapse:collapse; margin:12px 0; font-size:14px;}
+  table.tbl th, table.tbl td{padding:8px 10px; text-align:center; border:1px solid var(--card-border);}
+  table.tbl th{background:#EEECFA; color:var(--indigo); font-family:'Baloo 2',sans-serif;}
+  table.tbl input{width:70px; padding:5px; border:1px solid var(--card-border); border-radius:6px; text-align:center; font-family:'Atkinson Hyperlegible',sans-serif;}
+
+  .chain{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:16px 0;}
+  .chain-box{
+    background:var(--indigo); color:#fff; font-family:'Baloo 2',sans-serif; font-weight:700;
+    border-radius:12px; padding:10px 16px; font-size:15px; min-width:50px; text-align:center;
+  }
+  .chain-pill{
+    background:var(--coral); color:#5A2314; font-family:'Baloo 2',sans-serif; font-weight:700;
+    border-radius:999px; padding:6px 14px; font-size:13px; cursor:pointer; user-select:none;
+    border:none;
+  }
+  .chain-arrow{color:var(--indigo-soft); font-size:18px;}
+
+  .book-question{border-top:3px dashed var(--card-border); padding-top:14px; margin-top:14px;}
+  .book-question:first-child{border-top:none; padding-top:0; margin-top:0;}
+  .book-num{
+    display:inline-flex; align-items:center; justify-content:center;
+    background:var(--yellow); color:#5A4300; font-family:'Baloo 2',sans-serif; font-weight:800;
+    width:26px; height:26px; border-radius:8px; font-size:14px; margin-right:8px;
+  }
+  .reveal-btn{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:13px; padding:7px 14px;
+    background:#fff; color:var(--indigo); border:2px solid var(--indigo); border-radius:10px;
+    cursor:pointer; margin-top:8px;
+  }
+  .reveal-btn:hover{background:var(--indigo); color:#fff;}
+  .answer-box{
+    display:none; background:#E3F7EF; border-radius:10px; padding:12px 14px; margin-top:10px; font-size:14px;
+  }
+  .answer-box.shown{display:block;}
+
+  .quiz-q{margin-bottom:18px;}
+  .quiz-opts{display:flex; flex-direction:column; gap:8px; margin-top:10px;}
+  .quiz-opt{
+    text-align:left; padding:10px 14px; border-radius:12px; border:1.5px solid var(--card-border);
+    background:#fff; font-family:'Atkinson Hyperlegible',sans-serif; font-size:14.5px; cursor:pointer;
+  }
+  .quiz-opt.correct{background:#E3F7EF; border-color:#1F8A66;}
+  .quiz-opt.wrong{background:#FFEDE8; border-color:var(--coral-dark);}
+  .quiz-explain{font-size:13.5px; margin-top:8px; padding:8px 12px; background:#F6F4FC; border-radius:8px; display:none;}
+  .quiz-explain.shown{display:block;}
+  .score-box{
+    background:var(--indigo); color:#fff; border-radius:14px; padding:12px 18px;
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:14px; text-align:center; margin-bottom:16px;
+  }
+
+  .figure-wrap{text-align:center; margin:14px 0;}
+  .figure-caption{font-size:12.5px; color:var(--text-sec); margin-top:6px;}
+
+  footer.nav{
+    position:fixed; bottom:0; left:0; right:0; background:#fff; border-top:1px solid var(--card-border);
+    padding:8px 16px; display:flex; justify-content:space-between; align-items:center; z-index:20;
+  }
+  footer.nav button{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:12px; padding:7px 14px;
+    border-radius:10px; border:1.5px solid var(--indigo); background:#fff; color:var(--indigo); cursor:pointer;
+  }
+  footer.nav button:disabled{opacity:.35; cursor:default;}
+  footer.nav button.primary{background:var(--indigo); color:#fff;}
+  footer.nav .step-info{font-size:11px; color:var(--text-sec); font-family:'Baloo 2',sans-serif;}
+
+  @media (min-width:900px){
+    .lesson-title{font-size:24px;}
+    .card{padding:26px 30px;}
+    .card h2{font-size:22px;}
+    .card h3{font-size:17px;}
+    .card p{font-size:16px;}
+    .tab{font-size:12px; padding:5px 12px;}
+  }
+  @media (min-width:1500px){
+    .app{max-width:1180px;}
+    .lesson-title{font-size:30px;}
+    .card{padding:34px 40px;}
+    .card h2{font-size:27px;}
+    .card h3{font-size:20px;}
+    .card p{font-size:18px; line-height:1.7;}
+    .tab{font-size:14px; padding:7px 16px;}
+    .chain-box{font-size:19px; padding:14px 22px;}
+    .algo-block .passo{font-size:18px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="bgSymbols"></div>
+
+<div class="app">
+  <div class="progress-wrap">
+    <div class="progress-label" id="progressLabel">Parte 1 de 8 — Início</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:12.5%"></div></div>
+  </div>
+
+  <h1 class="lesson-title">Escalas: Plantas, Fotos e Mapas</h1>
+
+  <div class="tabs" id="tabs"></div>
+
+  <!-- ===================== PARTE 1: GANCHO ===================== -->
+  <section class="section" data-part="1">
+    <div class="card">
+      <span class="eyebrow coral">Gancho</span>
+      <h2>Duas fotos, mesma pessoa</h2>
+      <p>Olha essas duas fotos da mesma foto ampliada:</p>
+      <div class="figure-wrap">
+        <svg width="260" height="170" viewBox="0 0 260 170">
+          <rect x="10" y="35" width="60" height="90" rx="4" fill="#FFB3A0" stroke="#E4694F" stroke-width="2"/>
+          <text x="40" y="30" text-anchor="middle" font-family="Baloo 2" font-size="12" fill="#2A2650">10 × 15</text>
+          <rect x="110" y="10" width="90" height="135" rx="4" fill="#A9E5D0" stroke="#1F8A66" stroke-width="2"/>
+          <text x="155" y="6" text-anchor="middle" font-family="Baloo 2" font-size="12" fill="#2A2650">?</text>
+        </svg>
+        <div class="figure-caption">A primeira mede 10 cm × 15 cm. Será que a segunda pode ser 15 cm × 24 cm e continuar "com a mesma cara"?</div>
+      </div>
+      <p>Pensa um pouco: se você só esticasse a largura e deixasse a altura igual, o que aconteceria com a imagem? Guarda essa ideia — ela é o fio condutor da aula de hoje.</p>
+    </div>
+  </section>
+
+  <!-- ===================== PARTE 2: REVISÃO ===================== -->
+  <section class="section" data-part="2">
+    <div class="card">
+      <span class="eyebrow mint">Revisão</span>
+      <h2>Relembrando: grandezas diretamente proporcionais</h2>
+      <p>Você já viu que duas grandezas são <b>diretamente proporcionais</b> quando, ao multiplicar uma delas por um número, a outra fica multiplicada pelo mesmo número.</p>
+      <div class="chain">
+        <div class="chain-box">2</div>
+        <span class="chain-arrow">→</span>
+        <button class="chain-pill" onclick="this.textContent='×3'; this.style.cursor='default'; this.onclick=null;">?</button>
+        <span class="chain-arrow">→</span>
+        <div class="chain-box">6</div>
+      </div>
+      <p style="font-size:13px; color:var(--text-sec);">Toque na pílula coral para descobrir a operação escondida.</p>
+      <p>Hoje vamos usar exatamente essa ideia — mas aplicada a plantas de casas, fotos e mapas, que são <b>reduções ou ampliações</b> de algo real, sempre guardando a mesma proporção.</p>
+    </div>
+  </section>
+
+  <!-- ===================== PARTE 3: ESCALA - PLANTAS ===================== -->
+  <section class="section" data-part="3">
+    <div class="card">
+      <span class="eyebrow indigo">Parte 3</span>
+      <h2>O que é uma escala?</h2>
+      <p><b>Escala</b> é a relação entre uma medida no desenho (planta, foto, mapa) e a medida real correspondente. Ela garante que o desenho seja diretamente proporcional à realidade — sem distorções.</p>
+
+      <div class="pense-assim">
+        <span class="tag">💡 Pense assim</span>
+        <p>Uma escala é como uma receita que você sempre segue à risca: "para cada 1 cm que eu desenhar, corresponde sempre a mesma quantidade de centímetros na vida real." Se a receita muda no meio do desenho, a figura fica torta — por isso a escala precisa valer para todas as medidas, sem exceção.</p>
+      </div>
+
+      <h3>Exemplo trabalhado: a planta da casa</h3>
+      <p>Esta planta foi desenhada na escala <b>1 cm : 100 cm</b> — ou seja, cada centímetro no papel equivale a 100 cm (1 m) na realidade.</p>
+
+      <div class="figure-wrap">
+        <svg width="280" height="200" viewBox="0 0 280 200">
+          <rect x="20" y="20" width="70" height="80" fill="#F0EBDD" stroke="#362F78" stroke-width="2"/>
+          <text x="55" y="65" text-anchor="middle" font-size="10" font-family="Atkinson Hyperlegible" fill="#2A2650">dormitório</text>
+          <rect x="90" y="20" width="35" height="40" fill="#D6EFE3" stroke="#362F78" stroke-width="2"/>
+          <text x="107" y="42" text-anchor="middle" font-size="8" font-family="Atkinson Hyperlegible" fill="#2A2650">W.C.</text>
+          <rect x="125" y="20" width="110" height="80" fill="#CDE7F5" stroke="#362F78" stroke-width="2"/>
+          <text x="180" y="65" text-anchor="middle" font-size="10" font-family="Atkinson Hyperlegible" fill="#2A2650">sala</text>
+          <text x="180" y="14" text-anchor="middle" font-size="9" font-family="Baloo 2" fill="#5B5686">4,70</text>
+          <text x="240" y="65" text-anchor="middle" font-size="9" font-family="Baloo 2" fill="#5B5686" transform="rotate(90 240 65)">3,35</text>
+          <rect x="20" y="105" width="55" height="70" fill="#E7E7E7" stroke="#362F78" stroke-width="2"/>
+          <text x="47" y="145" text-anchor="middle" font-size="9" font-family="Atkinson Hyperlegible" fill="#2A2650">copa/cozinha</text>
+          <rect x="75" y="105" width="60" height="70" fill="none" stroke="#362F78" stroke-width="2" stroke-dasharray="4,3"/>
+          <text x="105" y="145" text-anchor="middle" font-size="9" font-family="Atkinson Hyperlegible" fill="#5B5686">garagem</text>
+          <text x="140" y="195" text-anchor="middle" font-size="10" font-family="Baloo 2" fill="#362F78">Escala 1 : 100 cm</text>
+        </svg>
+        <div class="figure-caption">Na planta, a sala mede 3,35 cm × 4,70 cm.</div>
+      </div>
+
+      <table class="tbl">
+        <tr><th></th><th>Planta da sala (cm)</th><th>Realidade (cm)</th><th>Realidade (m)</th></tr>
+        <tr><td><b>Comprimento</b></td><td>3,35</td><td>335</td><td>3,35</td></tr>
+        <tr><td><b>Largura</b></td><td>4,70</td><td>470</td><td>4,70</td></tr>
+      </table>
+      <p>Repare: basta multiplicar cada medida da planta por 100 para chegar à medida real em centímetros.</p>
+
+      <div class="try-box">
+        <p><b>Agora é sua vez:</b> segundo a planta, a garagem (tracejada) mede 3,40 cm × 4,70 cm no papel. Qual é a medida real, em metros?</p>
+        <input type="text" id="tb1" placeholder="ex: 3,40 m × 4,70 m">
+        <button onclick="checkTry1()">Conferir</button>
+        <div class="feedback" id="fb1"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PARTE 4: ESCALA - FOTOS ===================== -->
+  <section class="section" data-part="4">
+    <div class="card">
+      <span class="eyebrow indigo">Parte 4</span>
+      <h2>A mesma ideia, agora com fotos</h2>
+      <p>Escalas também aparecem em ampliações e reduções de fotos. O segredo é o mesmo: <b>todas as medidas precisam ser multiplicadas pelo mesmo número</b>, chamado de <b>fator de escala</b>.</p>
+
+      <h3>Exemplo trabalhado</h3>
+      <p>Uma foto de 10 cm × 15 cm foi ampliada para 15 cm × 22,5 cm.</p>
+      <div class="figure-wrap">
+        <svg width="220" height="180" viewBox="0 0 220 180">
+          <rect x="10" y="50" width="60" height="90" fill="#FFEDE8" stroke="#E4694F" stroke-width="2"/>
+          <text x="40" y="45" text-anchor="middle" font-size="11" font-family="Baloo 2" fill="#2A2650">10×15</text>
+          <rect x="100" y="15" width="90" height="135" fill="#E3F7EF" stroke="#1F8A66" stroke-width="2"/>
+          <text x="145" y="10" text-anchor="middle" font-size="11" font-family="Baloo 2" fill="#2A2650">15×22,5</text>
+        </svg>
+      </div>
+      <table class="tbl">
+        <tr><th>Cálculo</th><th>Resultado</th></tr>
+        <tr><td>1,5 × 10</td><td>15</td></tr>
+        <tr><td>1,5 × 15</td><td>22,5</td></tr>
+      </table>
+      <p>A largura e a altura da foto ampliada são diretamente proporcionais às da foto original. Isso pode ser representado por uma função:</p>
+      <div class="chain">
+        <div class="chain-box" style="background:var(--indigo-soft);">medida original</div>
+        <span class="chain-arrow">→</span>
+        <div class="chain-pill" style="cursor:default;">× 1,5</div>
+        <span class="chain-arrow">→</span>
+        <div class="chain-box">medida ampliada</div>
+      </div>
+      <p>O fator de ampliação é <b>1,5</b>.</p>
+
+      <div class="dica">
+        <span class="tag">⚠️ Dica</span>
+        <p>Um erro comum é achar que só é preciso multiplicar <i>uma</i> das medidas (só a largura, por exemplo). Mas se apenas uma dimensão muda de fator, a imagem fica esticada ou achatada — para manter as proporções, comprimento <b>e</b> largura precisam usar o mesmo fator.</p>
+      </div>
+
+      <div class="try-box">
+        <p><b>Agora é sua vez:</b> se chamarmos de <i>x</i> a medida da foto original e de <i>y</i> a medida da foto ampliada, qual é a relação entre <i>x</i> e <i>y</i> neste exemplo?</p>
+        <input type="text" id="tb2" placeholder="ex: y = ...">
+        <button onclick="checkTry2()">Conferir</button>
+        <div class="feedback" id="fb2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PARTE 5: ALGO-BLOCK ===================== -->
+  <section class="section" data-part="5">
+    <div class="card">
+      <span class="eyebrow yellow">Parte 5</span>
+      <h2>Como calcular a partir de uma escala</h2>
+      <p>Agora que você já viu os dois exemplos, aqui está o passo a passo para resolver qualquer problema de escala:</p>
+      <div class="algo-block">
+        <p class="passo"><b>Passo 1.</b> Identifique a escala (ex: 1 : 100) ou o fator de ampliação/redução (ex: × 1,5).</p>
+        <p class="passo"><b>Passo 2.</b> Meça (ou anote) a medida no desenho.</p>
+        <p class="passo"><b>Passo 3.</b> Multiplique a medida do desenho pelo número da escala (ou pelo fator).</p>
+        <p class="passo"><b>Passo 4.</b> Confira a unidade de medida — muitas vezes é preciso converter de cm para m no final.</p>
+      </div>
+      <div class="dica">
+        <span class="tag">⚠️ Dica</span>
+        <p>Na escala 1 : 100, o número <b>100</b> não é "100 cm no desenho" — é quantas vezes a medida real é maior que a medida do desenho. É fácil trocar essa leitura, então sempre confira: o primeiro número da escala é sempre o desenho, o segundo é sempre a realidade.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PARTE 6: QUIZ ===================== -->
+  <section class="section" data-part="6">
+    <div class="card">
+      <span class="eyebrow coral">Parte 6 · Pratique</span>
+      <h2>Quiz — escalas</h2>
+      <div class="score-box">Pontuação: <span id="scoreVal">0</span> / <span id="scoreTotal">3</span></div>
+
+      <div class="quiz-q" data-q="1">
+        <p><b>1.</b> Uma planta usa escala 1 : 50. Um quarto mede 4 cm de comprimento no desenho. Qual é a medida real?</p>
+        <div class="quiz-opts">
+          <button class="quiz-opt" data-correct="false">40 cm</button>
+          <button class="quiz-opt" data-correct="true">200 cm (2 m)</button>
+          <button class="quiz-opt" data-correct="false">54 cm</button>
+        </div>
+        <div class="quiz-explain">Basta multiplicar 4 cm × 50 = 200 cm, ou seja, 2 metros.</div>
+      </div>
+
+      <div class="quiz-q" data-q="2">
+        <p><b>2.</b> Uma foto de 8 cm × 12 cm foi ampliada para 20 cm × 30 cm. Qual foi o fator de ampliação?</p>
+        <div class="quiz-opts">
+          <button class="quiz-opt" data-correct="false">2</button>
+          <button class="quiz-opt" data-correct="true">2,5</button>
+          <button class="quiz-opt" data-correct="false">12</button>
+        </div>
+        <div class="quiz-explain">20 ÷ 8 = 2,5 e 30 ÷ 12 = 2,5 — o fator é o mesmo nas duas medidas.</div>
+      </div>
+
+      <div class="quiz-q" data-q="3">
+        <p><b>3.</b> Em um mapa na escala 1 : 50 000, a distância entre duas cidades é 6 cm. Qual é a distância real?</p>
+        <div class="quiz-opts">
+          <button class="quiz-opt" data-correct="false">300 m</button>
+          <button class="quiz-opt" data-correct="true">3 km</button>
+          <button class="quiz-opt" data-correct="false">30 km</button>
+        </div>
+        <div class="quiz-explain">6 cm × 50 000 = 300 000 cm = 3 000 m = 3 km.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PARTE 7: DIRETO DO LIVRO ===================== -->
+  <section class="section" data-part="7">
+    <div class="card">
+      <span class="eyebrow mint">Direto do livro</span>
+      <h2>Atividades do material</h2>
+
+      <div class="book-question">
+        <p><span class="book-num">17</span> A planta foi elaborada de acordo com a escala de 1 : 200 (1 cm na planta equivale a 200 cm na realidade). Complete a tabela com as medidas corretas.</p>
+        <table class="tbl">
+          <tr><th>Cômodo da casa</th><th>Comprimento real (cm)</th><th>Largura real (cm)</th></tr>
+          <tr><td>W.C.</td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td>Dormitório 1</td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td>Dormitório 2</td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td>Cozinha</td><td><input type="text"></td><td><input type="text"></td></tr>
+          <tr><td>Sala de jantar</td><td><input type="text"></td><td><input type="text"></td></tr>
+        </table>
+        <button class="reveal-btn" onclick="toggleAnswer('a17')">Ver resposta</button>
+        <div class="answer-box" id="a17">
+          W.C.: 220 cm × 290 cm · Dormitório 1: 410 cm × 390 cm · Dormitório 2: 490 cm × 680 cm · Cozinha: 320 cm × 390 cm · Sala de jantar: 520 cm × 390 cm.
+        </div>
+      </div>
+
+      <div class="book-question">
+        <p><span class="book-num">18</span> Sabendo que a distância de Salvador a Aracaju, em linha reta, é de 275 km, usando uma régua, descubra qual foi a escala usada no mapa. (Dica: verifique quantos quilômetros correspondem a 1 cm no mapa.)</p>
+        <button class="reveal-btn" onclick="toggleAnswer('a18')">Ver resposta</button>
+        <div class="answer-box" id="a18">
+          1 : 100 000 (1 cm no mapa corresponde a 100 000 cm, ou seja, 100 km).
+        </div>
+      </div>
+
+      <div class="book-question">
+        <p><span class="book-num">21</span> As figuras a seguir foram ilustradas de acordo com a escala 1 : 63, isto é, 1 cm no desenho corresponde a 63 cm na realidade. Usando uma régua, calcule o comprimento e a altura reais dos animais (raposa-do-ártico e boi-almiscarado).</p>
+        <button class="reveal-btn" onclick="toggleAnswer('a21')">Ver resposta</button>
+        <div class="answer-box" id="a21">
+          Raposa-do-ártico: 207,9 cm (2,079 m) de comprimento por 94,5 cm (0,945 m) de altura.<br>
+          Boi-almiscarado: 378 cm (3,78 m) de comprimento e 308,7 cm (3,087 m) de altura.
+        </div>
+      </div>
+
+      <div class="book-question">
+        <p><span class="book-num">24</span> Em uma fotografia de um pai com sua filha, a filha tem 3,4 cm de altura, e o pai, 5,8 cm. Se a altura do pai é de 1,88 m, qual é a altura da filha?</p>
+        <button class="reveal-btn" onclick="toggleAnswer('a24')">Ver resposta</button>
+        <div class="answer-box" id="a24">
+          A filha tem 1,10 m de altura.
+        </div>
+      </div>
+
+      <div class="book-question">
+        <p><span class="book-num">25</span> Observe quatro tamanhos de impressão de uma mesma foto: (I) 44,5 mm × 63,5 mm; (II) 89 mm × 127 mm; (III) 124 mm × 177 mm; (IV) 178 mm × 254 mm.</p>
+        <p><b>a)</b> A foto I é uma redução das demais?</p>
+        <p><b>b)</b> Encontre o fator de escala para a ampliação de II para III, de III para IV e de II para IV.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('a25')">Ver resposta</button>
+        <div class="answer-box" id="a25">
+          a) Sim.<br>
+          b) De II para III: fator 1,4. De III para IV: fator 1,4. De II para IV: fator 2 (valores aproximados).
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PARTE 8: RESUMO + GANCHO ===================== -->
+  <section class="section" data-part="8">
+    <div class="card">
+      <span class="eyebrow coral">Antes de ir...</span>
+      <h2>Um gancho para a próxima aula</h2>
+      <p>Willian quer pedalar até uma cidade vizinha, 40 km de distância. Ele percebeu algo curioso: a 5 km/h, demora 8 horas; a 10 km/h, só 4 horas; a 20 km/h, apenas 2 horas; e a 40 km/h, só 1 hora!</p>
+      <p>Repare: aqui, quando a velocidade dobra, o tempo não dobra — ele <b>cai pela metade</b>. Isso é bem diferente do que vimos hoje com as escalas. Essa relação tem um nome, e vamos explorá-la com calma na próxima aula.</p>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow indigo">Resumo pro caderno</span>
+      <h2>Para revisar depois</h2>
+      <p>Hoje aprendemos que uma escala é a relação entre uma medida desenhada (em uma planta, foto ou mapa) e a medida real correspondente, e que essa relação precisa valer sempre da mesma forma para todas as medidas da figura, senão ela fica distorcida. Vimos que, numa escala como 1 : 100, cada centímetro do desenho representa 100 centímetros na realidade, e que para descobrir a medida real basta multiplicar a medida do desenho por esse número. Também vimos que o mesmo raciocínio vale para ampliações e reduções de fotos: existe sempre um fator de escala que multiplica tanto a largura quanto a altura da imagem original, garantindo que a foto ampliada ou reduzida mantenha exatamente a mesma forma. Por fim, praticamos esse cálculo em situações variadas — plantas de casas, mapas e fotografias — sempre seguindo o mesmo caminho: identificar a escala ou o fator, multiplicar a medida do desenho por ele e, se necessário, converter a unidade de medida no final.</p>
+    </div>
+  </section>
+
+</div>
+
+<footer class="nav">
+  <button id="btnBack" onclick="changePart(-1)">← Voltar</button>
+  <span class="step-info" id="stepInfo">1 / 8</span>
+  <button id="btnNext" class="primary" onclick="changePart(1)">Avançar →</button>
+</footer>
+
+<script>
+  const partNames = [
+    "Início", "Revisão", "Plantas", "Fotos", "Como calcular",
+    "Quiz", "Direto do livro", "Resumo"
+  ];
+  let currentPart = 1;
+  const totalParts = 8;
+
+  // build tabs
+  const tabsEl = document.getElementById('tabs');
+  partNames.forEach((name, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab' + (i === 0 ? ' active' : '');
+    btn.textContent = name;
+    btn.onclick = () => goToPart(i + 1);
+    tabsEl.appendChild(btn);
+  });
+
+  function goToPart(n){
+    currentPart = n;
+    document.querySelectorAll('.section').forEach(s => {
+      s.classList.toggle('active', parseInt(s.dataset.part) === n);
+    });
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', i === n - 1);
+    });
+    document.getElementById('progressLabel').textContent = `Parte ${n} de ${totalParts} — ${partNames[n-1]}`;
+    document.getElementById('progressFill').style.width = (n / totalParts * 100) + '%';
+    document.getElementById('stepInfo').textContent = `${n} / ${totalParts}`;
+    document.getElementById('btnBack').disabled = (n === 1);
+    document.getElementById('btnNext').disabled = (n === totalParts);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  function changePart(delta){
+    const n = currentPart + delta;
+    if(n >= 1 && n <= totalParts) goToPart(n);
+  }
+  goToPart(1);
+
+  // try-boxes
+  function normalize(s){
+    return s.toLowerCase().replace(/\s/g,'').replace(/,/g,'.');
+  }
+  function checkTry1(){
+    const val = normalize(document.getElementById('tb1').value);
+    const fb = document.getElementById('fb1');
+    if(val.includes('3.4') && val.includes('4.7') && val.includes('m')){
+      fb.textContent = 'Isso mesmo! 3,40 m × 4,70 m.';
+      fb.className = 'feedback correct';
+    } else {
+      fb.textContent = 'Quase, revê esse passo: multiplique 3,40 cm e 4,70 cm por 100 e depois transforme em metros.';
+      fb.className = 'feedback wrong';
+    }
+  }
+  function checkTry2(){
+    const val = normalize(document.getElementById('tb2').value);
+    const fb = document.getElementById('fb2');
+    if(val.includes('1.5') && val.includes('x')){
+      fb.textContent = 'Isso mesmo! y = 1,5 · x';
+      fb.className = 'feedback correct';
+    } else {
+      fb.textContent = 'Quase, revê esse passo: qual número multiplica x para chegar a 15 e 22,5?';
+      fb.className = 'feedback wrong';
+    }
+  }
+
+  // reveal answers
+  function toggleAnswer(id){
+    document.getElementById(id).classList.toggle('shown');
+  }
+
+  // quiz
+  let score = 0;
+  document.getElementById('scoreTotal').textContent = document.querySelectorAll('.quiz-q').length;
+  document.querySelectorAll('.quiz-q').forEach(q => {
+    const opts = q.querySelectorAll('.quiz-opt');
+    let answered = false;
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if(answered) return;
+        answered = true;
+        const correct = opt.dataset.correct === 'true';
+        opts.forEach(o => {
+          if(o.dataset.correct === 'true') o.classList.add('correct');
+          else if(o === opt) o.classList.add('wrong');
+        });
+        if(correct){ score++; document.getElementById('scoreVal').textContent = score; }
+        q.querySelector('.quiz-explain').classList.add('shown');
+      });
+    });
+  });
+
+  // floating background symbols
+  const symbols = ['%','÷','×','∝','1:100', '=', 'y=1,5x', 'π'];
+  const bg = document.getElementById('bgSymbols');
+  for(let i=0; i<16; i++){
+    const s = document.createElement('div');
+    s.className = 'symbol';
+    s.textContent = symbols[i % symbols.length];
+    s.style.left = Math.random()*95 + '%';
+    s.style.top = Math.random()*95 + '%';
+    s.style.fontSize = (18 + Math.random()*24) + 'px';
+    s.style.animationDelay = (Math.random()*10) + 's';
+    s.style.animationDuration = (20 + Math.random()*14) + 's';
+    bg.appendChild(s);
+  }
+</script>
+
+</body>
+</html>
