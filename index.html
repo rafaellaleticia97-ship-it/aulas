@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisão — Volume e Proporcionalidade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F4FC;
+    --indigo:#362F78;
+    --indigo-deep:#241F52;
+    --indigo-soft:#6C63B5;
+    --mint:#A9E5D0;
+    --coral:#FFB3A0;
+    --coral-dark:#E4694F;
+    --yellow:#FFDD73;
+    --text:#2A2650;
+    --text2:#5B5686;
+    --card:#FFFFFF;
+    --border:#E3DEF7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    line-height:1.5;
+    position:relative;
+    overflow-x:hidden;
+    padding-bottom:90px;
+  }
+  h1,h2,h3,.baloo,.num,.pill,.tab{font-family:'Baloo 2', sans-serif;}
+  .bgsym{
+    position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+  }
+  .bgsym span{
+    position:absolute; font-family:'Baloo 2',sans-serif; font-weight:700;
+    color:var(--indigo-soft); opacity:0.08; font-size:2.4rem;
+    animation:drift 26s linear infinite;
+  }
+  @keyframes drift{
+    0%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-18px) rotate(8deg);}
+    100%{transform:translateY(0) rotate(0deg);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .bgsym span{animation:none;}
+  }
+  header.top{
+    position:sticky; top:0; z-index:20; background:var(--bg);
+    padding-top:10px;
+  }
+  .progress-track{
+    height:8px; background:var(--border); border-radius:6px; margin:0 16px 6px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; background:linear-gradient(90deg,var(--indigo-soft),var(--indigo));
+    border-radius:6px; transition:width .35s ease; width:20%;
+  }
+  .progress-label{
+    text-align:center; font-size:12px; color:var(--text2); margin-bottom:8px; font-weight:700;
+  }
+  .title-wrap{ text-align:center; padding:2px 16px 8px; }
+  .title-wrap h1{
+    font-size:1.3rem; color:var(--indigo-deep); margin:0 0 2px; font-weight:800;
+  }
+  .title-wrap p{ margin:0; font-size:13px; color:var(--text2);}
+  nav.tabs{
+    display:flex; gap:6px; overflow-x:auto; padding:8px 12px 10px; justify-content:center;
+    flex-wrap:wrap;
+  }
+  .tab{
+    font-size:11px; font-weight:700; padding:4px 9px; border-radius:999px;
+    background:var(--card); border:1px solid var(--border); color:var(--indigo);
+    cursor:pointer; white-space:nowrap; transition:.2s;
+  }
+  .tab.active{ background:var(--indigo); color:#fff; border-color:var(--indigo);}
+  main{ position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 14px;}
+  section.part{ display:none; animation:fade .3s ease; }
+  section.part.active{ display:block; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:18px;
+    padding:16px 16px 18px; margin-bottom:16px; box-shadow:0 4px 14px rgba(54,47,120,0.06);
+  }
+  .eyebrow{
+    display:inline-block; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:11px;
+    letter-spacing:.03em; text-transform:uppercase; color:#fff; background:var(--indigo-soft);
+    padding:3px 10px; border-radius:999px; margin-bottom:10px;
+  }
+  .eyebrow.mint{ background:#4FAE8C; }
+  .eyebrow.coral{ background:var(--coral-dark); }
+  .eyebrow.yellow{ background:#C99A1B; }
+  h2.section-title{ font-size:1.05rem; color:var(--indigo-deep); margin:0 0 12px; font-weight:800;}
+  h3.skill-title{ font-size:0.98rem; color:var(--indigo); margin:0 0 6px; font-weight:700;}
+
+  .macete-box{
+    background:var(--bg); border:1px solid var(--border); border-radius:14px;
+    padding:12px 14px; margin-bottom:10px;
+  }
+  .formula{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:1.05rem; color:var(--indigo);
+    background:#fff; border:1px dashed var(--indigo-soft); border-radius:10px;
+    padding:8px 12px; display:inline-block; margin:6px 0;
+  }
+  .dica-box{
+    background:#FFF9EA; border-left:6px solid var(--yellow); border-radius:10px;
+    padding:10px 12px; margin-top:8px; font-size:14px;
+  }
+  .dica-box b{ color:#8a6a00; }
+  .macete-tag{
+    font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--coral-dark); font-size:13px;
+  }
+  p{ margin:6px 0; font-size:14.5px; }
+
+  /* quiz */
+  .score-box{
+    background:var(--indigo); color:#fff; border-radius:16px; padding:12px 16px;
+    display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;
+    font-family:'Baloo 2',sans-serif; font-weight:700; position:sticky; top:86px; z-index:5;
+    box-shadow:0 4px 12px rgba(54,47,120,.25);
+  }
+  .score-box .num-score{ font-size:1.2rem; }
+  .q-card{ margin-bottom:18px; }
+  .q-cat{
+    font-size:11px; font-weight:700; color:var(--indigo-soft); text-transform:uppercase;
+    letter-spacing:.02em; margin-bottom:4px;
+  }
+  .q-num{ font-family:'Baloo 2',sans-serif; font-weight:800; color:var(--indigo-deep); font-size:1rem;}
+  .q-statement{ margin:6px 0 10px; font-size:14.5px; }
+  .fig-wrap{ display:flex; justify-content:center; margin:8px 0 12px; }
+  .fig-wrap svg{ max-width:100%; height:auto; display:block; }
+  .fig-wrap{ background:#FCFBFF; border:1px solid var(--border); border-radius:14px; padding:8px 4px; }
+  .options{ display:flex; flex-direction:column; gap:8px; }
+  .opt-btn{
+    text-align:left; font-family:'Atkinson Hyperlegible',sans-serif; font-size:14px;
+    padding:10px 12px; border-radius:12px; border:1.5px solid var(--border); background:#fff;
+    cursor:pointer; color:var(--text); transition:.15s;
+  }
+  .opt-btn:hover{ border-color:var(--indigo-soft); }
+  .opt-btn.correct{ background:#E4F8EF; border-color:#4FAE8C; color:#1c6b4d; font-weight:700;}
+  .opt-btn.wrong{ background:#FFEDEA; border-color:var(--coral-dark); color:#9c3423; font-weight:700;}
+  .opt-btn:disabled{ cursor:default; }
+  .feedback{ font-size:13.5px; font-weight:700; margin-top:8px; }
+  .feedback.ok{ color:#1c6b4d; }
+  .feedback.no{ color:#9c3423; }
+  .res-btn{
+    margin-top:10px; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:12.5px;
+    background:#fff; border:1.5px solid var(--indigo-soft); color:var(--indigo);
+    padding:6px 12px; border-radius:999px; cursor:pointer; display:none;
+  }
+  .res-btn.show{ display:inline-block; }
+  .resolution{
+    display:none; margin-top:10px; background:#F1EEFB; border:1px solid var(--border);
+    border-radius:14px; padding:12px 14px;
+  }
+  .resolution.open{ display:block; }
+  .algo-block{
+    background:#EFEBFC; border:1px solid #D8D0F4; border-radius:10px; padding:10px 12px; margin-top:6px;
+  }
+  .algo-block .passo{ font-size:13.5px; margin:5px 0; }
+  .algo-block .passo b{ color:var(--indigo); }
+  .resposta-final{
+    margin-top:8px; font-family:'Baloo 2',sans-serif; font-weight:700; color:#1c6b4d;
+    background:#E4F8EF; border-radius:10px; padding:7px 10px; font-size:14px; display:inline-block;
+  }
+
+  .summary-text p{ font-size:14.5px; }
+
+  footer.bottom{
+    position:fixed; bottom:0; left:0; right:0; background:var(--card);
+    border-top:1px solid var(--border); padding:8px 14px; display:flex;
+    justify-content:space-between; z-index:20;
+  }
+  .nav-btn{
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:12px; padding:6px 12px;
+    border-radius:999px; border:1.5px solid var(--indigo-soft); background:#fff; color:var(--indigo);
+    cursor:pointer;
+  }
+  .nav-btn:disabled{ opacity:0.35; cursor:default; }
+  .nav-btn.primary{ background:var(--indigo); color:#fff; border-color:var(--indigo); }
+
+  @media (min-width:900px){
+    .title-wrap h1{ font-size:1.7rem; }
+    main{ max-width:900px; }
+    p, .q-statement{ font-size:16px; }
+    .formula{ font-size:1.2rem; }
+  }
+  @media (min-width:1500px){
+    body{ font-size:18px; }
+    .title-wrap h1{ font-size:2.2rem; }
+    .card{ padding:26px 28px 30px; }
+    p,.q-statement{ font-size:19px; }
+    .formula{ font-size:1.5rem; }
+    .tab{ font-size:14px; padding:6px 14px; }
+    .opt-btn{ font-size:17px; padding:14px 16px; }
+    .score-box{ font-size:1.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bgsym" id="bgsym"></div>
+
+<header class="top">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">Parte 1 de 5 — Volume de blocos</div>
+  <div class="title-wrap">
+    <h1>Revisão para a Prova</h1>
+    <p>Volume de blocos e Proporcionalidade — macetes rápidos + treino</p>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-part="1">1. Volume</button>
+    <button class="tab" data-part="2">2. Prop. Direta</button>
+    <button class="tab" data-part="3">3. Prop. Inversa</button>
+    <button class="tab" data-part="4">4. Quiz (20)</button>
+    <button class="tab" data-part="5">5. Resumo</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- PARTE 1: VOLUME -->
+  <section class="part active" data-part="1">
+    <div class="card">
+      <span class="eyebrow">Revisão rápida</span>
+      <h2 class="section-title">Volume de blocos retangulares</h2>
+
+      <div class="macete-box">
+        <h3 class="skill-title">① Volume simples</h3>
+        <p>Você já sabe as três dimensões. É só multiplicar.</p>
+        <div class="formula">V = comprimento × largura × altura</div>
+        <p><span class="macete-tag">Macete:</span> multiplica dois números primeiro, depois multiplica o resultado pelo terceiro. Facilita a conta de cabeça.</p>
+        <div class="dica-box"><b>Erro comum:</b> esquecer que a resposta fica em <b>cm³</b> (ao cubo), não em cm² nem cm.</div>
+      </div>
+
+      <div class="macete-box">
+        <h3 class="skill-title">② Dimensão desconhecida</h3>
+        <p>Você já sabe o volume e duas dimensões. Falta achar a terceira. <b>Não tem fórmula nova aqui</b> — é a mesma de sempre:</p>
+        <div class="formula">V = comprimento × largura × altura</div>
+        <p>Você coloca tudo que sabe dentro dela e isola o que falta. Exemplo: volume 210 cm³, dimensões 7 cm e 5 cm.</p>
+        <div class="algo-block">
+          <div class="passo"><b>Passo 1.</b> Escreva a fórmula de sempre: V = c × l × h</div>
+          <div class="passo"><b>Passo 2.</b> Substitua o que você já tem: 210 = 7 × 5 × h</div>
+          <div class="passo"><b>Passo 3.</b> Resolva a parte que dá pra resolver: 210 = 35 × h</div>
+          <div class="passo"><b>Passo 4.</b> Isole o h: 35 estava multiplicando, então passa dividindo → h = 210 ÷ 35</div>
+          <div class="passo"><b>Passo 5.</b> h = 6 cm</div>
+        </div>
+        <p><span class="macete-tag">Macete:</span> resolva primeiro a multiplicação dos dois números que você conhece. Aí sobra uma continha simples de isolar.</p>
+        <div class="dica-box"><b>Erro comum:</b> dividir o volume por só uma das dimensões conhecidas, esquecendo de multiplicar as duas primeiro no Passo 3.</div>
+      </div>
+
+      <div class="macete-box">
+        <h3 class="skill-title">③ Volume de sólido composto (tipo escada)</h3>
+        <p>A figura parece complicada, mas é sempre a mesma estratégia:</p>
+        <div class="algo-block">
+          <div class="passo"><b>Passo 1.</b> Separe a figura em blocos simples (retangulares).</div>
+          <div class="passo"><b>Passo 2.</b> Calcule o volume de cada bloco separadamente.</div>
+          <div class="passo"><b>Passo 3.</b> Some todos os volumes.</div>
+        </div>
+        <div class="dica-box"><b>Erro comum:</b> usar a mesma medida de largura/profundidade duas vezes sem perceber que ela é a mesma para todos os blocos — releia a figura com calma antes de multiplicar.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 2: PROPORÇÃO DIRETA -->
+  <section class="part" data-part="2">
+    <div class="card">
+      <span class="eyebrow mint">Revisão rápida</span>
+      <h2 class="section-title">Proporção direta</h2>
+      <p>Sinal de proporção direta: as duas grandezas <b>andam juntas</b> — se uma aumenta, a outra também aumenta (na mesma proporção). Ex.: mais horas enchendo a piscina → mais litros.</p>
+
+      <div class="macete-box">
+        <h3 class="skill-title">① Taxa unitária ("por 1")</h3>
+        <p>Quando a pergunta é "quanto é 1 [litro / km / cópia]", é divisão direta.</p>
+        <div class="formula">valor por unidade = total ÷ quantidade de unidades</div>
+        <div class="dica-box"><b>Macete:</b> a palavra "por 1" ou "cada 1" quase sempre pede uma divisão simples do total pela quantidade daquela unidade.</div>
+      </div>
+
+      <div class="macete-box">
+        <h3 class="skill-title">② Regra de três direta</h3>
+        <p>Monte a proporção na mesma direção (sem inverter nada) e faça a multiplicação cruzada.</p>
+        <div class="formula">a/b = c/x → a × x = b × c</div>
+        <div class="algo-block">
+          <div class="passo"><b>Passo 1.</b> Organize os dados em duas colunas (mesma grandeza embaixo da mesma grandeza).</div>
+          <div class="passo"><b>Passo 2.</b> Multiplique em cruz.</div>
+          <div class="passo"><b>Passo 3.</b> Divida para isolar o valor desconhecido.</div>
+        </div>
+      </div>
+
+      <div class="macete-box">
+        <h3 class="skill-title">③ Tabela de proporção direta</h3>
+        <p>Ache a constante k (quanto vale y para cada 1 de x), depois aplique esse k nos outros valores.</p>
+        <div class="formula">k = y ÷ x  →  y = k × x</div>
+        <div class="dica-box"><b>Macete:</b> use o par de valores completo da tabela (o único que já tem x e y) para achar k. Depois é só multiplicar k pelos outros x.</div>
+      </div>
+
+      <div class="dica-box"><b>Cuidado geral:</b> textos que falam de "tempo passando e algo se acumulando" (água na piscina, dinheiro guardado, peças produzidas) quase sempre são proporção direta — não inversa.</div>
+    </div>
+  </section>
+
+  <!-- PARTE 3: PROPORÇÃO INVERSA -->
+  <section class="part" data-part="3">
+    <div class="card">
+      <span class="eyebrow coral">Revisão rápida</span>
+      <h2 class="section-title">Proporção inversa</h2>
+      <p>Sinal de proporção inversa: uma grandeza <b>sobe</b> e a outra <b>desce</b> na mesma proporção. Ex.: menos máquinas → mais dias de trabalho. Mais velocidade → menos tempo de viagem.</p>
+
+      <div class="macete-box">
+        <h3 class="skill-title">Regra de três inversa</h3>
+        <p>Em vez de multiplicar em cruz, o produto das duas grandezas relacionadas se mantém constante.</p>
+        <div class="formula">a × b = c × d</div>
+        <div class="algo-block">
+          <div class="passo"><b>Passo 1.</b> Confirme que é inversa (uma sobe, outra desce).</div>
+          <div class="passo"><b>Passo 2.</b> Multiplique o par de valores que você já conhece completo.</div>
+          <div class="passo"><b>Passo 3.</b> Divida esse resultado pelo novo valor da outra grandeza.</div>
+        </div>
+      </div>
+
+      <div class="dica-box">
+        <b>Erro mais comum da prova:</b> montar a conta como se fosse direta (multiplicar em cruz) numa situação inversa. Isso dá uma resposta com "cara de errada" — por exemplo, tirar uma máquina e o tempo <i>diminuir</i>. Se o resultado não faz sentido com a lógica da pergunta, revê se você não esqueceu de inverter.
+      </div>
+
+      <div class="macete-box">
+        <h3 class="skill-title">Onde essa habilidade mais aparece</h3>
+        <p>• Máquinas / funcionários × dias de trabalho<br>
+        • Velocidade × tempo de viagem</p>
+        <p>Em ambos os casos: identifique as duas grandezas, confirme que uma sobe e a outra desce, multiplique o par completo e divida pelo valor novo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 4: QUIZ -->
+  <section class="part" data-part="4">
+    <div class="score-box">
+      <span>Seu treino</span>
+      <span class="num-score" id="scoreLabel">0 / 20 acertos</span>
+    </div>
+    <div id="quizContainer"></div>
+  </section>
+
+  <!-- PARTE 5: RESUMO -->
+  <section class="part" data-part="5">
+    <div class="card summary-text">
+      <span class="eyebrow yellow">Copie no caderno</span>
+      <h2 class="section-title">Resumo pro caderno</h2>
+      <p>Para calcular o volume de um bloco retangular, multiplico as três dimensões: comprimento, largura e altura, e a resposta sempre fica em uma unidade ao cubo, como cm³. Quando já sei o volume e apenas duas das dimensões, faço o caminho contrário: multiplico as duas dimensões que conheço e divido o volume por esse resultado, encontrando a dimensão que falta. Quando a figura é um sólido composto, como um formato de escada, eu separo o desenho em blocos retangulares simples, calculo o volume de cada um separadamente e depois somo todos os resultados.</p>
+      <p>Nos problemas de proporção, primeiro eu preciso decidir se a relação é direta ou inversa. É direta quando as duas grandezas crescem ou diminuem juntas, como o tempo passando e a água enchendo uma piscina — nesses casos, ou eu acho o valor de uma unidade dividindo o total pela quantidade, ou monto uma proporção e multiplico em cruz sem inverter nada. Quando a tabela pede para eu completar valores, primeiro descubro a constante dividindo o par de valores que já tenho completo, e depois uso essa constante para achar os valores que faltam.</p>
+      <p>É inversa quando uma grandeza aumenta e a outra diminui, como acontece com máquinas e dias de trabalho, ou com velocidade e tempo de viagem. Nesses casos, em vez de multiplicar em cruz, eu multiplico o par de valores que já conheço completo e divido esse resultado pelo novo valor da outra grandeza. Sempre que o resultado que eu encontrar não fizer sentido com a lógica da pergunta — por exemplo, menos máquinas terminando o trabalho mais rápido — é sinal de que eu tratei uma proporção inversa como se fosse direta, e preciso revisar a conta.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="bottom">
+  <button class="nav-btn" id="prevBtn">← Voltar</button>
+  <button class="nav-btn primary" id="nextBtn">Avançar →</button>
+</footer>
+
+<script>
+/* ---------- floating background symbols ---------- */
+(function(){
+  const syms = ['+','−','×','÷','=','%','∝','³'];
+  const container = document.getElementById('bgsym');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  for(let i=0;i<16;i++){
+    const s = document.createElement('span');
+    s.textContent = syms[i % syms.length];
+    s.style.left = Math.random()*95+'%';
+    s.style.top = Math.random()*95+'%';
+    s.style.fontSize = (1.4+Math.random()*2)+'rem';
+    if(!reduced){ s.style.animationDuration = (18+Math.random()*14)+'s'; s.style.animationDelay = (Math.random()*6)+'s'; }
+    container.appendChild(s);
+  }
+})();
+
+/* ---------- tab / part navigation ---------- */
+const partNames = {1:'Volume de blocos',2:'Proporção direta',3:'Proporção inversa',4:'Quiz (20 questões)',5:'Resumo pro caderno'};
+let currentPart = 1;
+const totalParts = 5;
+
+function showPart(n){
+  currentPart = n;
+  document.querySelectorAll('.part').forEach(p=>p.classList.toggle('active', +p.dataset.part===n));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', +t.dataset.part===n));
+  document.getElementById('progressFill').style.width = (n/totalParts*100)+'%';
+  document.getElementById('progressLabel').textContent = `Parte ${n} de ${totalParts} — ${partNames[n]}`;
+  document.getElementById('prevBtn').disabled = n===1;
+  document.getElementById('nextBtn').textContent = n===totalParts ? 'Fim ✓' : 'Avançar →';
+  document.getElementById('nextBtn').disabled = n===totalParts;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>showPart(+t.dataset.part)));
+document.getElementById('prevBtn').addEventListener('click',()=>{ if(currentPart>1) showPart(currentPart-1); });
+document.getElementById('nextBtn').addEventListener('click',()=>{ if(currentPart<totalParts) showPart(currentPart+1); });
+
+/* ---------- SVG figure builders ---------- */
+/* Bloco retangular em perspectiva. unknown: 'comp' | 'larg' | 'alt' | null */
+function singleBoxSVG(compVal, largVal, altVal, unknown){
+  const C = (k)=> unknown===k ? '#E4694F' : '#241F52';
+  return `<svg viewBox="28 20 348 250" role="img"
+    aria-label="Bloco retangular com comprimento ${compVal}, largura ${largVal} e altura ${altVal}">
+    <polygon points="70,100 250,100 305,50 125,50" fill="#EDE9FB" stroke="#6C63B5" stroke-width="2"/>
+    <polygon points="250,100 305,50 305,170 250,220" fill="#DDD6F6" stroke="#6C63B5" stroke-width="2"/>
+    <rect x="70" y="100" width="180" height="120" fill="#FFFFFF" stroke="#6C63B5" stroke-width="2"/>
+    <g stroke="#A79EDD" stroke-width="1.5" stroke-dasharray="6 5" fill="none">
+      <path d="M125,50 L125,170"/><path d="M125,170 L305,170"/><path d="M125,170 L70,220"/>
+    </g>
+    <g stroke="#241F52" stroke-width="1.3">
+      <path d="M70,234 L250,234"/><path d="M70,228 L70,240"/><path d="M250,228 L250,240"/>
+      <path d="M56,100 L56,220"/><path d="M50,100 L62,100"/><path d="M50,220 L62,220"/>
+      <path d="M261,88 L316,38"/><path d="M256,83 L266,93"/><path d="M311,33 L321,43"/>
+    </g>
+    <text x="160" y="256" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="700" font-size="17" fill="${C('comp')}">${compVal}</text>
+    <text x="40" y="160" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="700" font-size="17" fill="${C('alt')}" transform="rotate(-90 40 160)">${altVal}</text>
+    <text x="326" y="52" text-anchor="start" font-family="Baloo 2,sans-serif" font-weight="700" font-size="17" fill="${C('larg')}">${largVal}</text>
+  </svg>`;
+}
+
+/* Sólido em L: base 20x10x4 + bloco de cima 10x10x6 */
+function lShapeSVG(){
+  return `<svg viewBox="26 95 342 205" role="img"
+    aria-label="Sólido em forma de L formado por dois blocos retangulares empilhados">
+    <polygon points="70,150 150,150 195,110 115,110" fill="#EDE9FB" stroke="#6C63B5" stroke-width="2"/>
+    <polygon points="150,210 230,210 275,170 195,170" fill="#EDE9FB" stroke="#6C63B5" stroke-width="2"/>
+    <polygon points="150,150 195,110 195,170 150,210" fill="#DDD6F6" stroke="#6C63B5" stroke-width="2"/>
+    <polygon points="230,210 275,170 275,210 230,250" fill="#DDD6F6" stroke="#6C63B5" stroke-width="2"/>
+    <polygon points="70,250 230,250 230,210 150,210 150,150 70,150" fill="#FFFFFF" stroke="#6C63B5" stroke-width="2"/>
+    <g stroke="#A79EDD" stroke-width="1.5" stroke-dasharray="6 5" fill="none">
+      <path d="M115,110 L115,210"/><path d="M115,210 L275,210"/><path d="M115,210 L70,250"/>
+    </g>
+    <path d="M70,210 L150,210" stroke="#E4694F" stroke-width="2" stroke-dasharray="7 5"/>
+    <text x="110" y="204" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="700" font-size="12" fill="#E4694F">corte aqui</text>
+    <g stroke="#241F52" stroke-width="1.3">
+      <path d="M70,264 L230,264"/><path d="M70,258 L70,270"/><path d="M230,258 L230,270"/>
+      <path d="M70,178 L150,178"/><path d="M70,173 L70,183"/><path d="M150,173 L150,183"/>
+      <path d="M56,150 L56,210"/><path d="M50,150 L62,150"/><path d="M50,210 L62,210"/>
+      <path d="M56,210 L56,250"/><path d="M50,250 L62,250"/>
+      <path d="M239,260 L284,220"/><path d="M234,255 L244,265"/><path d="M279,215 L289,225"/>
+    </g>
+    <text x="150" y="286" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="700" font-size="16" fill="#241F52">20 cm</text>
+    <text x="110" y="170" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="700" font-size="15" fill="#241F52">10 cm</text>
+    <text x="40" y="180" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="700" font-size="15" fill="#241F52" transform="rotate(-90 40 180)">6 cm</text>
+    <text x="40" y="230" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="700" font-size="15" fill="#241F52" transform="rotate(-90 40 230)">4 cm</text>
+    <text x="294" y="242" text-anchor="start" font-family="Baloo 2,sans-serif" font-weight="700" font-size="15" fill="#241F52">10 cm</text>
+  </svg>`;
+}
+
+/* Escada de 3 degraus: 30/20/10 cm de comprimento, 5 cm de altura cada, 10 cm de largura */
+function stairsSVG(){
+  return `<svg viewBox="30 75 312 202" role="img"
+    aria-label="Sólido em forma de escada com três degraus de mesma altura">
+    <polygon points="70,130 120,130 165,90 115,90" fill="#EDE9FB" stroke="#6C63B5" stroke-width="2"/>
+    <polygon points="120,170 170,170 215,130 165,130" fill="#EDE9FB" stroke="#6C63B5" stroke-width="2"/>
+    <polygon points="170,210 220,210 265,170 215,170" fill="#EDE9FB" stroke="#6C63B5" stroke-width="2"/>
+    <polygon points="120,130 165,90 165,130 120,170" fill="#DDD6F6" stroke="#6C63B5" stroke-width="2"/>
+    <polygon points="170,170 215,130 215,170 170,210" fill="#DDD6F6" stroke="#6C63B5" stroke-width="2"/>
+    <polygon points="220,210 265,170 265,210 220,250" fill="#DDD6F6" stroke="#6C63B5" stroke-width="2"/>
+    <polygon points="70,250 220,250 220,210 170,210 170,170 120,170 120,130 70,130"
+             fill="#FFFFFF" stroke="#6C63B5" stroke-width="2"/>
+    <g stroke="#A79EDD" stroke-width="1.5" stroke-dasharray="6 5" fill="none">
+      <path d="M115,90 L115,210"/><path d="M115,210 L265,210"/><path d="M115,210 L70,250"/>
+    </g>
+    <g stroke="#E4694F" stroke-width="2" stroke-dasharray="7 5">
+      <path d="M70,170 L120,170"/><path d="M70,210 L170,210"/>
+    </g>
+    <text x="145" y="236" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="700" font-size="15" fill="#241F52">30 cm</text>
+    <text x="120" y="196" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="700" font-size="15" fill="#241F52">20 cm</text>
+    <text x="95" y="156" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="700" font-size="13" fill="#241F52">10 cm</text>
+    <g stroke="#241F52" stroke-width="1.3">
+      <path d="M56,130 L56,250"/>
+      <path d="M50,130 L62,130"/><path d="M50,170 L62,170"/><path d="M50,210 L62,210"/><path d="M50,250 L62,250"/>
+      <path d="M229,260 L274,220"/><path d="M224,255 L234,265"/><path d="M269,215 L279,225"/>
+    </g>
+    <text x="40" y="150" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="700" font-size="14" fill="#241F52" transform="rotate(-90 40 150)">5 cm</text>
+    <text x="284" y="242" text-anchor="start" font-family="Baloo 2,sans-serif" font-weight="700" font-size="15" fill="#241F52">10 cm</text>
+  </svg>`;
+}
+
+/* ---------- quiz data ---------- */
+const quiz = [
+{cat:'Volume simples', statement:'Uma caixa de sapato tem dimensões 8 cm, 5 cm e 4 cm. Qual é o volume dessa caixa?',
+ fig:singleBoxSVG('8 cm','5 cm','4 cm',null),
+ options:['160 cm³','17 cm³','40 cm³','200 cm³'], correct:0,
+ steps:['Identifique as três dimensões: 8 cm, 5 cm e 4 cm.','Multiplique as três: 8 × 5 = 40, depois 40 × 4 = 160.','A unidade do volume é sempre ao cubo.'], resposta:'160 cm³'},
+
+{cat:'Volume simples', statement:'Um bloco de madeira tem 12 cm de comprimento, 6 cm de largura e 3 cm de altura. Qual é o volume?',
+ fig:singleBoxSVG('12 cm','6 cm','3 cm',null),
+ options:['21 cm³','72 cm³','216 cm³','220 cm³'], correct:2,
+ steps:['Identifique as três dimensões: 12 cm, 6 cm e 3 cm.','Multiplique as três: 12 × 6 = 72, depois 72 × 3 = 216.','Confira a unidade: cm³.'], resposta:'216 cm³'},
+
+{cat:'Dimensão desconhecida', statement:'O volume de um bloco é 210 cm³. Duas de suas dimensões são 7 cm e 5 cm. Qual é a dimensão que falta?',
+ fig:singleBoxSVG('7 cm','5 cm','h = ?','alt'),
+ options:['5 cm','6 cm','30 cm','35 cm'], correct:1,
+ steps:['Escreva a fórmula de sempre: V = c × l × h','Substitua o que você já tem: 210 = 7 × 5 × h','Resolva a multiplicação possível: 210 = 35 × h','Isole o h — o 35 estava multiplicando, então passa dividindo: h = 210 ÷ 35','h = 6'], resposta:'6 cm'},
+
+{cat:'Dimensão desconhecida', statement:'O volume de um bloco é 288 cm³. Duas de suas dimensões são 8 cm e 4 cm. Qual é a terceira dimensão?',
+ fig:singleBoxSVG('8 cm','4 cm','h = ?','alt'),
+ options:['4 cm','8 cm','9 cm','48 cm'], correct:2,
+ steps:['Escreva a fórmula de sempre: V = c × l × h','Substitua o que você já tem: 288 = 8 × 4 × h','Resolva a multiplicação possível: 288 = 32 × h','Isole o h — o 32 passa dividindo: h = 288 ÷ 32','h = 9'], resposta:'9 cm'},
+
+{cat:'Sólido composto', statement:'O sólido abaixo é formado por dois blocos: a base tem 20 cm de comprimento, 10 cm de largura e 4 cm de altura; o bloco de cima tem 10 cm de comprimento, 10 cm de largura e 6 cm de altura. Qual é o volume total do sólido?',
+ fig:lShapeSVG(),
+ options:['800 cm³','600 cm³','1400 cm³','2400 cm³'], correct:2,
+ steps:['Separe o sólido em 2 blocos (já estão marcados na figura).','Volume do bloco de baixo: 20 × 10 × 4 = 800 cm³.','Volume do bloco de cima: 10 × 10 × 6 = 600 cm³.','Some os dois: 800 + 600 = 1400 cm³.'], resposta:'1400 cm³'},
+
+{cat:'Sólido composto', statement:'O sólido em formato de escada abaixo tem 3 degraus. Cada degrau tem 5 cm de altura e todos têm 10 cm de largura (profundidade). Os comprimentos estão marcados na figura. Qual é o volume total?',
+ fig:stairsSVG(),
+ options:['1500 cm³','3000 cm³','3500 cm³','3300 cm³'], correct:1,
+ steps:['Separe a escada em 3 blocos, um por degrau.','Degrau de baixo: 30 × 10 × 5 = 1500 cm³.','Degrau do meio: 20 × 10 × 5 = 1000 cm³.','Degrau de cima: 10 × 10 × 5 = 500 cm³.','Some os três: 1500 + 1000 + 500 = 3000 cm³.'], resposta:'3000 cm³'},
+
+{cat:'Proporção direta — taxa acumulada', statement:'Um tanque está sendo enchido por uma torneira. Após 3 horas, há 450 litros dentro dele. Mantendo essa proporção, quantos litros haverá após 8 horas?',
+ options:['900 L','1200 L','1350 L','3600 L'], correct:1,
+ steps:['Ache quanto entra por hora: 450 ÷ 3 = 150 L/h.','Multiplique pela nova quantidade de horas: 150 × 8 = 1200.'], resposta:'1200 litros'},
+
+{cat:'Proporção direta — taxa acumulada', statement:'Uma máquina engarrafa 280 garrafas em 4 minutos. Mantendo o mesmo ritmo, quantas garrafas ela engarrafa em 10 minutos?',
+ options:['630 garrafas','700 garrafas','280 garrafas','2800 garrafas'], correct:1,
+ steps:['Ache quantas garrafas por minuto: 280 ÷ 4 = 70 garrafas/min.','Multiplique pelos novos minutos: 70 × 10 = 700.'], resposta:'700 garrafas'},
+
+{cat:'Proporção direta — taxa unitária', statement:'Um carro percorreu 315 km usando 25 litros de combustível. Qual foi a distância percorrida com 1 litro de combustível?',
+ options:['11,5 km','12 km','12,6 km','13 km'], correct:2,
+ steps:['A pergunta pede "por 1 litro" — isso é divisão direta.','Divida a distância total pelos litros usados: 315 ÷ 25 = 12,6.'], resposta:'12,6 km por litro'},
+
+{cat:'Proporção direta — taxa unitária', statement:'Uma impressora usou 40 folhas para imprimir 8 cópias de um documento. Quantas folhas são usadas para imprimir 1 cópia?',
+ options:['5 folhas','8 folhas','32 folhas','48 folhas'], correct:0,
+ steps:['A pergunta pede "por 1 cópia" — divisão direta.','Divida o total de folhas pela quantidade de cópias: 40 ÷ 8 = 5.'], resposta:'5 folhas'},
+
+{cat:'Proporção direta — regra de três', statement:'Pedro está economizando dinheiro. Em 4 semanas ele guardou R$ 140,00. Mantendo a mesma proporção, quantas semanas serão necessárias para juntar R$ 350,00?',
+ options:['8 semanas','10 semanas','14 semanas','25 semanas'], correct:1,
+ steps:['Monte a proporção: 4 semanas está para 140 reais, assim como x semanas está para 350 reais.','Multiplique em cruz: 4 × 350 = 1400.','Divida pelo outro valor: 1400 ÷ 140 = 10.'], resposta:'10 semanas'},
+
+{cat:'Proporção direta — regra de três', statement:'Uma turma vendeu 60 rifas em 5 dias de campanha. Seguindo esse ritmo, em quantos dias eles venderão 180 rifas?',
+ options:['10 dias','12 dias','15 dias','20 dias'], correct:2,
+ steps:['Monte a proporção: 5 dias está para 60 rifas, assim como x dias está para 180 rifas.','Multiplique em cruz: 5 × 180 = 900.','Divida pelo outro valor: 900 ÷ 60 = 15.'], resposta:'15 dias'},
+
+{cat:'Proporção direta — tabela', statement:'As grandezas x e y são diretamente proporcionais. Na tabela, quando x = 3, y = 21. Qual é o valor de y quando x = 8?',
+ options:['48','56','63','15'], correct:1,
+ steps:['Ache a constante k usando o par completo: k = 21 ÷ 3 = 7.','Aplique k no valor pedido: y = 7 × 8 = 56.'], resposta:'56'},
+
+{cat:'Proporção direta — tabela', statement:'As grandezas x e y são diretamente proporcionais. Na tabela, quando x = 4, y = 20. Qual é o valor de y quando x = 9?',
+ options:['40','45','54','14'], correct:1,
+ steps:['Ache a constante k usando o par completo: k = 20 ÷ 4 = 5.','Aplique k no valor pedido: y = 5 × 9 = 45.'], resposta:'45'},
+
+{cat:'Proporção inversa — máquinas/dias', statement:'Uma gráfica imprime um lote de panfletos em 12 dias usando 4 máquinas. Se ela usar apenas 3 máquinas, em quantos dias o lote ficará pronto (mesma proporção)?',
+ options:['8 dias','9 dias','15 dias','16 dias'], correct:3,
+ steps:['Confirme que é inversa: menos máquinas → mais dias.','Multiplique o par conhecido: 4 × 12 = 48.','Divida pelo novo número de máquinas: 48 ÷ 3 = 16.'], resposta:'16 dias'},
+
+{cat:'Proporção inversa — funcionários/dias', statement:'Uma fábrica entrega um pedido em 40 dias com 8 funcionários. Se ela contratar mais gente e ficar com 10 funcionários, em quantos dias o pedido fica pronto (mesma proporção)?',
+ options:['30 dias','32 dias','48 dias','50 dias'], correct:1,
+ steps:['Confirme que é inversa: mais funcionários → menos dias.','Multiplique o par conhecido: 8 × 40 = 320.','Divida pelo novo número de funcionários: 320 ÷ 10 = 32.'], resposta:'32 dias'},
+
+{cat:'Proporção inversa — funcionários/dias', statement:'Uma equipe de 6 pintores pinta uma casa em 15 dias. Se a equipe tiver 9 pintores, em quantos dias a casa fica pronta (mesma proporção)?',
+ options:['9 dias','10 dias','12 dias','22,5 dias'], correct:1,
+ steps:['Confirme que é inversa: mais pintores → menos dias.','Multiplique o par conhecido: 6 × 15 = 90.','Divida pelo novo número de pintores: 90 ÷ 9 = 10.'], resposta:'10 dias'},
+
+{cat:'Proporção inversa — velocidade/tempo', statement:'Uma viagem demora 8 horas a uma velocidade média de 90 km/h. Quanto tempo ela demoraria a uma velocidade média de 120 km/h?',
+ options:['4 horas','6 horas','7 horas','10,6 horas'], correct:1,
+ steps:['Confirme que é inversa: mais velocidade → menos tempo.','Multiplique o par conhecido: 90 × 8 = 720 (isso representa a distância total).','Divida pela nova velocidade: 720 ÷ 120 = 6.'], resposta:'6 horas'},
+
+{cat:'Proporção inversa — velocidade/tempo', statement:'Um ciclista percorre um trajeto em 5 horas pedalando a 15 km/h. A quantos km/h ele precisaria pedalar para fazer o mesmo trajeto em 3 horas?',
+ options:['9 km/h','20 km/h','25 km/h','45 km/h'], correct:2,
+ steps:['Confirme que é inversa: menos tempo → mais velocidade.','Multiplique o par conhecido: 15 × 5 = 75 (distância total do trajeto).','Divida pelo novo tempo: 75 ÷ 3 = 25.'], resposta:'25 km/h'},
+
+{cat:'Proporção inversa — velocidade/tempo', statement:'Um trem percorre certo trajeto em 4 horas a 100 km/h. Se ele reduzir a velocidade para 80 km/h, quanto tempo levará para o mesmo trajeto?',
+ options:['3,2 horas','4,5 horas','5 horas','6 horas'], correct:2,
+ steps:['Confirme que é inversa: menos velocidade → mais tempo.','Multiplique o par conhecido: 100 × 4 = 400 (distância total).','Divida pela nova velocidade: 400 ÷ 80 = 5.'], resposta:'5 horas'},
+];
+
+let score = 0;
+let answered = new Array(quiz.length).fill(false);
+
+function renderQuiz(){
+  const container = document.getElementById('quizContainer');
+  quiz.forEach((q,i)=>{
+    const card = document.createElement('div');
+    card.className = 'card q-card';
+    card.innerHTML = `
+      <div class="q-cat">${q.cat}</div>
+      <div class="q-num">Questão ${i+1}</div>
+      <p class="q-statement">${q.statement}</p>
+      ${q.fig ? `<div class="fig-wrap">${q.fig}</div>` : ''}
+      <div class="options" id="opts-${i}">
+        ${q.options.map((opt,j)=>`<button class="opt-btn" data-i="${i}" data-j="${j}">${opt}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb-${i}"></div>
+      <button class="res-btn" id="resbtn-${i}">Ver resolução</button>
+      <div class="resolution" id="res-${i}">
+        <div class="algo-block">
+          ${q.steps.map((s,k)=>`<div class="passo"><b>Passo ${k+1}.</b> ${s}</div>`).join('')}
+        </div>
+        <span class="resposta-final">Resposta: ${q.resposta}</span>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  container.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.opt-btn');
+    if(btn){
+      const i = +btn.dataset.i, j = +btn.dataset.j;
+      if(answered[i]) return;
+      answered[i] = true;
+      const opts = document.querySelectorAll(`#opts-${i} .opt-btn`);
+      opts.forEach(o=>o.disabled = true);
+      const fb = document.getElementById(`fb-${i}`);
+      if(j === quiz[i].correct){
+        btn.classList.add('correct');
+        fb.textContent = 'Isso aí! ✅';
+        fb.className = 'feedback ok';
+        score++;
+      } else {
+        btn.classList.add('wrong');
+        opts[quiz[i].correct].classList.add('correct');
+        fb.textContent = 'Quase! Revê esse passo na resolução abaixo. 💜';
+        fb.className = 'feedback no';
+      }
+      document.getElementById(`resbtn-${i}`).classList.add('show');
+      updateScore();
+      return;
+    }
+    const rbtn = e.target.closest('.res-btn');
+    if(rbtn){
+      const id = rbtn.id.split('-')[1];
+      document.getElementById(`res-${id}`).classList.toggle('open');
+      rbtn.textContent = document.getElementById(`res-${id}`).classList.contains('open') ? 'Esconder resolução' : 'Ver resolução';
+    }
+  });
+}
+function updateScore(){
+  document.getElementById('scoreLabel').textContent = `${score} / ${quiz.length} acertos`;
+}
+renderQuiz();
+showPart(1);
+</script>
+</body>
+</html>
