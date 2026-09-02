@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisão AV2 — 8º ano | Sequências, Círculos, Volumes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F4FC;
+    --indigo:#362F78;
+    --indigo-deep:#241F52;
+    --indigo-soft:#6C63B5;
+    --mint:#A9E5D0;
+    --coral:#FFB3A0;
+    --coral-dark:#E4694F;
+    --yellow:#FFDD73;
+    --text:#2A2650;
+    --text-sec:#5B5686;
+    --card:#FFFFFF;
+    --border:#E3DEF7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    line-height:1.55;
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4,.title-font,.pill,.eyebrow,.progress-label,.score-box .num{
+    font-family:'Baloo 2', sans-serif;
+  }
+
+  /* ---------- floating background symbols ---------- */
+  .bg-symbols{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none;}
+  .bg-symbols span{
+    position:absolute;
+    color:var(--indigo-soft);
+    opacity:0.08;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    animation:drift 26s linear infinite;
+  }
+  @keyframes drift{
+    0%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-24px) rotate(8deg);}
+    100%{transform:translateY(0) rotate(0deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bg-symbols span{animation:none;}
+  }
+
+  /* ---------- layout shell ---------- */
+  .app{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 14px 90px;}
+  header.top{padding:18px 4px 8px;}
+  header.top h1{
+    font-size:1.35rem;
+    color:var(--indigo-deep);
+    margin:0 0 4px;
+    font-weight:800;
+  }
+  header.top p.sub{margin:0;color:var(--text-sec);font-size:0.92rem;}
+
+  /* ---------- sticky progress bar ---------- */
+  .progress-wrap{
+    position:sticky;top:0;z-index:20;
+    background:var(--bg);
+    padding:10px 0 8px;
+    border-bottom:1px solid var(--border);
+  }
+  .progress-label{
+    font-size:0.78rem;
+    color:var(--indigo);
+    font-weight:700;
+    margin-bottom:6px;
+    padding:0 2px;
+  }
+  .progress-track{
+    height:8px;background:#E9E5F8;border-radius:99px;overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;background:linear-gradient(90deg, var(--indigo-soft), var(--indigo));
+    border-radius:99px;transition:width .35s ease;
+  }
+
+  /* ---------- pill tabs ---------- */
+  .tabs{
+    display:flex;gap:6px;flex-wrap:wrap;
+    margin:10px 0 16px;padding:0 2px;
+  }
+  .tab-pill{
+    font-family:'Baloo 2', sans-serif;
+    font-size:11px;
+    font-weight:700;
+    padding:4px 9px;
+    border-radius:99px;
+    border:1px solid var(--border);
+    background:#fff;
+    color:var(--text-sec);
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab-pill.active{
+    background:var(--indigo);
+    color:#fff;
+    border-color:var(--indigo);
+  }
+
+  /* ---------- generic card ---------- */
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:18px 16px;
+    margin-bottom:16px;
+    box-shadow:0 4px 18px rgba(54,47,120,0.06);
+  }
+  .eyebrow{
+    display:inline-block;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    color:var(--indigo);
+    background:#EDEAFA;
+    padding:3px 10px;
+    border-radius:99px;
+    margin-bottom:10px;
+  }
+  .card h3{
+    margin:2px 0 10px;
+    font-size:1.08rem;
+    color:var(--indigo-deep);
+    font-weight:700;
+  }
+  .card p{margin:0 0 10px;font-size:0.96rem;}
+  .card p:last-child{margin-bottom:0;}
+
+  /* ---------- dica box ---------- */
+  .dica-box{
+    background:#FFFAEF;
+    border-left:5px solid var(--yellow);
+    border-radius:10px;
+    padding:10px 12px;
+    margin-top:10px;
+    font-size:0.9rem;
+  }
+  .dica-box strong{color:var(--coral-dark);}
+
+  /* ---------- pense assim ---------- */
+  .pense-box{
+    background:#F0EEFA;
+    border-radius:10px;
+    padding:10px 12px;
+    margin-top:10px;
+    font-size:0.9rem;
+  }
+
+  /* ---------- algo block (step lists) ---------- */
+  .algo-block{
+    background:#F4F1FC;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px 14px;
+    margin-top:8px;
+  }
+  .algo-block .passo{
+    display:block;
+    margin:0 0 7px;
+    font-size:0.92rem;
+  }
+  .algo-block .passo:last-child{margin-bottom:0;}
+  .algo-block .passo b{color:var(--indigo);}
+  .algo-block .resultado{
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+    font-weight:700;
+    color:var(--indigo-deep);
+    font-size:0.96rem;
+  }
+
+  /* ---------- score box ---------- */
+  .score-box{
+    background:linear-gradient(135deg, var(--indigo), var(--indigo-deep));
+    color:#fff;
+    border-radius:18px;
+    padding:16px 18px;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .score-box .label{font-size:0.85rem;opacity:0.9;}
+  .score-box .num{font-size:1.7rem;font-weight:800;}
+
+  /* ---------- quiz question card ---------- */
+  .q-card{margin-bottom:18px;}
+  .q-figure{margin:10px 0;display:flex;justify-content:center;}
+  .q-figure svg{max-width:100%;height:auto;}
+  .options{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+  .opt-btn{
+    text-align:left;
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    font-size:0.94rem;
+    padding:10px 12px;
+    border-radius:12px;
+    border:1.5px solid var(--border);
+    background:#fff;
+    color:var(--text);
+    cursor:pointer;
+    transition:background .15s,border-color .15s;
+  }
+  .opt-btn:hover{border-color:var(--indigo-soft);}
+  .opt-btn .letter{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    color:var(--indigo);
+    margin-right:8px;
+  }
+  .opt-btn.correct{background:#E7F7EF;border-color:#3FAE73;}
+  .opt-btn.wrong{background:#FDECE9;border-color:var(--coral-dark);}
+  .opt-btn[disabled]{cursor:default;}
+  .feedback{
+    margin-top:10px;
+    padding:9px 12px;
+    border-radius:10px;
+    font-size:0.9rem;
+    font-weight:700;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.ok{background:#E7F7EF;color:#217A50;}
+  .feedback.no{background:#FDECE9;color:var(--coral-dark);}
+
+  .reveal-btn{
+    margin-top:12px;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:0.85rem;
+    background:#fff;
+    border:1.5px solid var(--indigo-soft);
+    color:var(--indigo);
+    padding:7px 13px;
+    border-radius:99px;
+    cursor:pointer;
+  }
+  .reveal-btn:hover{background:var(--indigo);color:#fff;}
+  .resolucao{display:none;margin-top:10px;}
+  .resolucao.show{display:block;}
+  .resolucao .eyebrow{background:#EAF7F0;color:#217A50;}
+
+  /* ---------- footer nav ---------- */
+  .foot-nav{
+    position:fixed;left:0;right:0;bottom:0;z-index:20;
+    background:rgba(246,244,252,0.96);
+    backdrop-filter:blur(4px);
+    border-top:1px solid var(--border);
+    padding:8px 14px;
+    display:flex;justify-content:space-between;align-items:center;
+    max-width:920px;margin:0 auto;
+  }
+  .nav-btn{
+    font-family:'Baloo 2', sans-serif;
+    font-size:11px;font-weight:700;
+    padding:4px 9px;
+    border-radius:99px;
+    border:1px solid var(--border);
+    background:#fff;color:var(--indigo);
+    cursor:pointer;
+  }
+  .nav-btn[disabled]{opacity:0.35;cursor:default;}
+  .foot-center{font-size:11px;color:var(--text-sec);font-family:'Baloo 2',sans-serif;font-weight:700;}
+
+  .part{display:none;}
+  .part.active{display:block;}
+
+  .prose p{margin:0 0 12px;font-size:0.97rem;}
+  .prose p:last-child{margin-bottom:0;}
+
+  @media (min-width:900px){
+    header.top h1{font-size:1.7rem;}
+    .card{padding:24px 26px;}
+    .card h3{font-size:1.25rem;}
+    .card p, .options .opt-btn, .algo-block .passo{font-size:1.02rem;}
+    .score-box .num{font-size:2.1rem;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-symbols" aria-hidden="true">
+  <span style="top:6%;left:8%;font-size:38px;">π</span>
+  <span style="top:15%;left:80%;font-size:30px;animation-delay:2s;">∑</span>
+  <span style="top:35%;left:20%;font-size:26px;animation-delay:4s;">√</span>
+  <span style="top:50%;left:65%;font-size:34px;animation-delay:1s;">×</span>
+  <span style="top:68%;left:10%;font-size:28px;animation-delay:3s;">=</span>
+  <span style="top:80%;left:75%;font-size:30px;animation-delay:5s;">r²</span>
+  <span style="top:25%;left:45%;font-size:24px;animation-delay:2.5s;">V</span>
+  <span style="top:90%;left:40%;font-size:26px;animation-delay:1.5s;">T(n)</span>
+</div>
+
+<div class="app">
+  <header class="top">
+    <h1>Revisão para a AV2 — 8º ano</h1>
+    <p class="sub">Sequências numéricas · Área do círculo · Áreas compostas · Volume e capacidade · Volume do cilindro</p>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-label" id="progressLabel">Parte 1 de 3 — Macetes rápidos</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:33.33%;"></div></div>
+    <div class="tabs" id="tabs">
+      <button class="tab-pill active" data-part="0">① Macetes rápidos</button>
+      <button class="tab-pill" data-part="1">② Quiz (22 questões)</button>
+      <button class="tab-pill" data-part="2">③ Resumo pro caderno</button>
+    </div>
+  </div>
+
+  <!-- ===================== PARTE 1 — MACETES ===================== -->
+  <section class="part active" id="part0">
+
+    <div class="card">
+      <span class="eyebrow">Antes de começar</span>
+      <h3>Como usar esta revisão</h3>
+      <p>Você já viu todo esse conteúdo em aula. Aqui não tem explicação do zero — só os <strong>macetes</strong> pra lembrar rápido e os <strong>erros mais comuns</strong> de cada tipo de questão. Leia essa parte, depois vá para o quiz com 22 questões parecidas com as da prova (nunca iguais) pra treinar de verdade.</p>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow">Sequências · fórmula T(n)</span>
+      <h3>1. Sequência dada por fórmula</h3>
+      <p>Não monte a sequência inteira até chegar no termo pedido. <strong>Troque direto o n</strong> pela posição que a questão pede e resolva na ordem certa: primeiro multiplicação, depois soma ou subtração.</p>
+      <div class="pense-box"><strong>Pense assim:</strong> a fórmula é uma receita. Você não precisa fazer o bolo inteiro pra saber o gosto da fatia 15 — só coloca n = 15 na receita e calcula.</div>
+      <div class="dica-box"><strong>Erro comum:</strong> trocar a ordem das operações — fazer a soma ou subtração antes da multiplicação. Sempre multiplique primeiro.</div>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow">Sequências · padrão em figuras</span>
+      <h3>2. Sequência mostrada em figuras (imagens que crescem)</h3>
+      <p>Monte uma tabela rápida: <strong>posição da figura → quantidade de quadradinhos</strong>. Veja o que muda de uma figura pra outra (o "salto"). Se o salto for sempre igual, é só repetir esse salto até chegar na figura pedida.</p>
+      <div class="dica-box"><strong>Erro comum:</strong> olhar só a última figura desenhada e "chutar" o crescimento, sem checar se o padrão é realmente constante entre todas as figuras.</div>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow">Área do círculo · direto</span>
+      <h3>3. Área do círculo (te dão raio ou diâmetro)</h3>
+      <p>Fórmula: <strong>A = π × r²</strong>. Primeiro pergunte: "isso é RAIO ou DIÂMETRO?" Se for diâmetro, <strong>divida por 2 antes</strong> de elevar ao quadrado.</p>
+      <div class="dica-box"><strong>Erro comum:</strong> elevar o diâmetro ao quadrado direto, sem dividir por 2 primeiro. Isso multiplica a resposta por 4 — sempre confirme qual medida você recebeu.</div>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow">Área do círculo · inverso</span>
+      <h3>4. Te dão a área, pedem o raio (caminho contrário)</h3>
+      <p>É a mesma fórmula de sempre: <strong>A = π × r²</strong>. Só que agora você conhece A e π, e quer isolar o r². Coloque os valores que você tem no lugar certo da fórmula e reorganize a conta pra sobrar só o r² de um lado.</p>
+      <div class="pense-box"><strong>Pense assim:</strong> é a mesma receita de sempre, só que agora você sabe o resultado do bolo e quer descobrir um dos ingredientes. Você reorganiza a conta pra isolar o que falta, em vez de aplicar a fórmula direto.</div>
+      <div class="dica-box"><strong>Erro comum:</strong> depois de isolar o r² e fazer a divisão, esquecer que r² ainda não é o raio — falta um último passo: achar a raiz quadrada desse valor (o número que multiplicado por ele mesmo dá esse resultado).</div>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow">Área sombreada</span>
+      <h3>5. Área sombreada (figura composta)</h3>
+      <p><strong>Área sombreada = área da figura MAIOR − área da(s) figura(s) BRANCA(s)</strong> de dentro. Calcule cada parte separadamente, com calma, e só depois subtraia.</p>
+      <div class="dica-box"><strong>Erro comum:</strong> quando tem mais de uma figura branca (como dois círculos), esquecer de somar as duas ANTES de subtrair da figura maior — subtrair só uma por engano.</div>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow">Volume e capacidade</span>
+      <h3>6. Volume de caixa / piscina / reservatório em litros</h3>
+      <p><strong>V = comprimento × largura × altura</strong> (dá o volume em m³). Pra transformar em litros: <strong>multiplique por 1000</strong> (1 m³ = 1000 L).</p>
+      <div class="dica-box"><strong>Erro comum:</strong> calcular o volume certinho em m³ e esquecer de multiplicar por 1000 quando a pergunta pede a resposta em litros.</div>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow">Volume do cilindro</span>
+      <h3>7. Volume do cilindro</h3>
+      <p><strong>V = π × r² × altura</strong>. Mesma pegadinha da área do círculo: se te derem o diâmetro, divida por 2 primeiro pra achar o raio.</p>
+      <div class="dica-box"><strong>Erro comum:</strong> multiplicar π × r primeiro sem elevar ao quadrado, ou usar o diâmetro no lugar do raio na fórmula.</div>
+    </div>
+
+  </section>
+
+  <!-- ===================== PARTE 2 — QUIZ ===================== -->
+  <section class="part" id="part1">
+    <div class="score-box">
+      <div>
+        <div class="label">Sua pontuação</div>
+        <div class="num"><span id="scoreNum">0</span> / 22</div>
+      </div>
+      <div class="label" style="max-width:220px;">Responda, veja o feedback e depois abra a resolução passo a passo pra estudar.</div>
+    </div>
+    <div id="quizContainer"></div>
+  </section>
+
+  <!-- ===================== PARTE 3 — RESUMO ===================== -->
+  <section class="part" id="part2">
+    <div class="card">
+      <span class="eyebrow">Resumo pro caderno</span>
+      <h3>O que levar pra prova</h3>
+      <div class="prose">
+        <p>Nas sequências dadas por fórmula, o segredo é trocar o n direto pela posição pedida e resolver respeitando a ordem das operações — primeiro multiplicação, depois soma ou subtração. Nas sequências mostradas em figuras, o caminho é montar uma tabelinha de posição por quantidade, descobrir o salto entre uma figura e a próxima, e repetir esse salto até chegar na figura que a pergunta pede.</p>
+        <p>Para a área do círculo, a fórmula é sempre A = π × r². O ponto de atenção é identificar se você recebeu o raio ou o diâmetro: se for diâmetro, divida por 2 antes de elevar ao quadrado. Quando a pergunta é ao contrário — te dão a área e pedem o raio — você desfaz a fórmula na ordem inversa: primeiro divide a área pelo π para achar r², e só depois calcula a raiz quadrada desse resultado para chegar no raio.</p>
+        <p>Nas áreas sombreadas, a regra é sempre a mesma: área da figura maior menos a área da parte branca de dentro. Quando houver mais de uma figura branca, some todas elas antes de subtrair da figura maior. Vale a pena calcular cada parte em uma linha separada, com calma, antes de fazer a subtração final.</p>
+        <p>Para volume e capacidade, multiplique comprimento, largura e altura para achar o volume em metros cúbicos, e lembre que 1 m³ equivale a 1000 litros — então, se a pergunta pede litros, o último passo é sempre multiplicar por 1000. O volume do cilindro segue a mesma lógica da área do círculo, mas com um passo a mais: calcule π × r² para achar a área da base e depois multiplique pela altura do cilindro, sempre conferindo se você recebeu o raio ou o diâmetro antes de começar a conta.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="foot-nav">
+  <button class="nav-btn" id="btnBack">← Voltar</button>
+  <span class="foot-center" id="footCenter">Parte 1 de 3</span>
+  <button class="nav-btn" id="btnNext">Avançar →</button>
+</div>
+
+<script>
+/* ============================================================
+   NAVIGATION (progress bar, pills, footer buttons)
+   ============================================================ */
+const partNames = ["Macetes rápidos", "Quiz de revisão", "Resumo pro caderno"];
+let currentPart = 0;
+const totalParts = 3;
+
+function goToPart(i){
+  currentPart = Math.max(0, Math.min(totalParts-1, i));
+  document.querySelectorAll('.part').forEach((el,idx)=>{
+    el.classList.toggle('active', idx===currentPart);
+  });
+  document.querySelectorAll('.tab-pill').forEach((el,idx)=>{
+    el.classList.toggle('active', idx===currentPart);
+  });
+  document.getElementById('progressLabel').textContent =
+    `Parte ${currentPart+1} de ${totalParts} — ${partNames[currentPart]}`;
+  document.getElementById('progressFill').style.width = ((currentPart+1)/totalParts*100)+'%';
+  document.getElementById('footCenter').textContent = `Parte ${currentPart+1} de ${totalParts}`;
+  document.getElementById('btnBack').disabled = currentPart===0;
+  document.getElementById('btnNext').disabled = currentPart===totalParts-1;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+document.querySelectorAll('.tab-pill').forEach((btn,idx)=>{
+  btn.addEventListener('click', ()=>goToPart(idx));
+});
+document.getElementById('btnBack').addEventListener('click', ()=>goToPart(currentPart-1));
+document.getElementById('btnNext').addEventListener('click', ()=>goToPart(currentPart+1));
+goToPart(0);
+
+/* ============================================================
+   SVG FIGURE BUILDERS
+   ============================================================ */
+function svgWrap(w,h,inner){
+  return `<svg viewBox="0 0 ${w} ${h}" width="${Math.min(w,320)}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="figura ilustrativa">${inner}</svg>`;
+}
+
+function gridSVG(cols, rows, cell){
+  const pad = 26;
+  const w = cols*cell + pad*2;
+  const h = rows*cell + pad*2 + 14;
+  let rects = '';
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      rects += `<rect x="${pad+c*cell}" y="${pad+r*cell}" width="${cell}" height="${cell}" fill="#EDEAFA" stroke="#6C63B5" stroke-width="1.5"/>`;
+    }
+  }
+  const label = `<text x="${w/2}" y="${h-6}" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="700" font-size="12" fill="#5B5686">${cols} col × ${rows} lin</text>`;
+  return svgWrap(w,h, rects+label);
+}
+
+function rectCircleSVG(rw, rh, d, scale){
+  scale = scale || 8;
+  const pad = 34;
+  const W = rw*scale, H = rh*scale;
+  const w = W + pad*2, h = H + pad*1.6;
+  const cx = pad + W/2, cy = pad + H/2;
+  const r = (d*scale)/2;
+  return svgWrap(w,h, `
+    <rect x="${pad}" y="${pad}" width="${W}" height="${H}" fill="#A9E5D0" stroke="#362F78" stroke-width="2"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="#F6F4FC" stroke="#362F78" stroke-width="2"/>
+    <text x="${pad+W/2}" y="${pad+H+18}" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="700" font-size="13" fill="#241F52">${rw} cm</text>
+    <text x="${pad-10}" y="${pad+H/2}" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="700" font-size="13" fill="#241F52" transform="rotate(-90 ${pad-10} ${pad+H/2})">${rh} cm</text>
+  `);
+}
+
+function rectTwoCirclesSVG(rw, rh, d, scale){
+  scale = scale || 6;
+  const pad = 34;
+  const W = rw*scale, H = rh*scale;
+  const w = W + pad*2, h = H + pad*1.6;
+  const r = (d*scale)/2;
+  const cy = pad + H/2;
+  const cx1 = pad + r, cx2 = pad + W - r;
+  return svgWrap(w,h, `
+    <rect x="${pad}" y="${pad}" width="${W}" height="${H}" fill="#A9E5D0" stroke="#362F78" stroke-width="2"/>
+    <circle cx="${cx1}" cy="${cy}" r="${r}" fill="#F6F4FC" stroke="#362F78" stroke-width="2"/>
+    <circle cx="${cx2}" cy="${cy}" r="${r}" fill="#F6F4FC" stroke="#362F78" stroke-width="2"/>
+    <text x="${pad+W/2}" y="${pad+H+18}" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="700" font-size="13" fill="#241F52">${rw} cm</text>
+    <text x="${pad-10}" y="${pad+H/2}" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="700" font-size="13" fill="#241F52" transform="rotate(-90 ${pad-10} ${pad+H/2})">${rh} cm</text>
+  `);
+}
+
+function triangleRectSVG(base, height, rw, rh, scale){
+  scale = scale || 8;
+  const pad = 34;
+  const B = base*scale, Hh = height*scale;
+  const w = B + pad*2, h = Hh + pad*1.6;
+  const x0=pad, y0=pad+Hh;      // bottom-left
+  const x1=pad+B, y1=pad+Hh;    // bottom-right
+  const x2=pad+B, y2=pad;       // top-right
+  const rW = rw*scale, rH = rh*scale;
+  const rx = x1-rW, ry = y1-rH;
+  return svgWrap(w,h, `
+    <polygon points="${x0},${y0} ${x1},${y1} ${x2},${y2}" fill="#FFB3A0" stroke="#362F78" stroke-width="2"/>
+    <rect x="${rx}" y="${ry}" width="${rW}" height="${rH}" fill="#F6F4FC" stroke="#362F78" stroke-width="2"/>
+    <text x="${pad+B/2}" y="${y1+18}" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="700" font-size="13" fill="#241F52">${base} cm</text>
+    <text x="${x1+16}" y="${pad+Hh/2}" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="700" font-size="13" fill="#241F52" transform="rotate(90 ${x1+16} ${pad+Hh/2})">${height} cm</text>
+  `);
+}
+
+function cylinderSVG(d, hgt, scale){
+  scale = scale || 6;
+  const pad = 30;
+  const rx = (d*scale)/2, ry = rx*0.35, H = hgt*scale;
+  const w = rx*2+pad*2, h = H+ry*2+pad*1.6;
+  const cx = pad+rx, topY = pad+ry;
+  return svgWrap(w,h, `
+    <ellipse cx="${cx}" cy="${topY+H}" rx="${rx}" ry="${ry}" fill="#6C63B5" stroke="#362F78" stroke-width="2"/>
+    <rect x="${cx-rx}" y="${topY}" width="${rx*2}" height="${H}" fill="#EDEAFA" stroke="#362F78" stroke-width="2"/>
+    <ellipse cx="${cx}" cy="${topY}" rx="${rx}" ry="${ry}" fill="#F6F4FC" stroke="#362F78" stroke-width="2"/>
+    <text x="${cx}" y="${topY+H+ry+18}" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="700" font-size="13" fill="#241F52">diâmetro ${d} cm</text>
+    <text x="${cx+rx+16}" y="${topY+H/2}" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="700" font-size="13" fill="#241F52" transform="rotate(90 ${cx+rx+16} ${topY+H/2})">altura ${hgt} cm</text>
+  `);
+}
+
+/* ============================================================
+   QUIZ DATA — 22 questões (mesmas habilidades da prova, números
+   e contextos diferentes — nenhuma questão é igual à avaliação)
+   ============================================================ */
+const quizData = [
+{
+  cat:"Sequências · fórmula",
+  statement:"Uma sequência numérica é formada pela expressão <strong>T(n) = 4n + 3</strong>, onde n é a posição do termo. Qual é o 15º termo dessa sequência?",
+  figure:null,
+  options:[
+    {t:"60", c:false},{t:"63", c:true},{t:"67", c:false},{t:"55", c:false},{t:"47", c:false}
+  ],
+  res:[
+    "Troque <b>n por 15</b> na fórmula: T(15) = 4 × 15 + 3.",
+    "Resolva a multiplicação primeiro: 4 × 15 = 60.",
+    "Agora some: 60 + 3 = 63."
+  ],
+  final:"O 15º termo é 63."
+},
+{
+  cat:"Sequências · fórmula",
+  statement:"Uma sequência é dada por <strong>T(n) = 7n − 6</strong>. Qual é o 9º termo dessa sequência?",
+  figure:null,
+  options:[
+    {t:"63", c:false},{t:"50", c:false},{t:"57", c:true},{t:"64", c:false},{t:"51", c:false}
+  ],
+  res:[
+    "Troque <b>n por 9</b>: T(9) = 7 × 9 − 6.",
+    "Multiplique primeiro: 7 × 9 = 63.",
+    "Agora subtraia: 63 − 6 = 57."
+  ],
+  final:"O 9º termo é 57."
+},
+{
+  cat:"Sequências · padrão em figuras",
+  statement:"As grades abaixo crescem sempre 2 quadradinhos de lado: a Fig.1 tem lado 2, a Fig.2 tem lado 4, a Fig.3 tem lado 6. Seguindo esse padrão, quantos quadradinhos vão formar a Fig.4?",
+  figure:{type:"gridrow", grids:[{c:2,r:2},{c:4,r:4},{c:6,r:6}]},
+  options:[
+    {t:"49", c:false},{t:"56", c:false},{t:"72", c:false},{t:"64", c:true},{t:"48", c:false}
+  ],
+  res:[
+    "Veja como o lado cresce: 2, 4, 6 — sempre <b>+2</b>. Então a Fig.4 tem lado 8.",
+    "Como é uma grade quadrada, a quantidade de quadradinhos é lado × lado.",
+    "Calcule: 8 × 8 = 64."
+  ],
+  final:"A Fig.4 tem 64 quadradinhos."
+},
+{
+  cat:"Sequências · padrão em figuras",
+  statement:"As grades abaixo têm sempre 3 colunas, e o número de linhas aumenta: Fig.1 tem 1 linha (3 quadradinhos), Fig.2 tem 2 linhas (6 quadradinhos), Fig.3 tem 3 linhas (9 quadradinhos). Seguindo o padrão, quantos quadradinhos terá a Fig.6?",
+  figure:{type:"gridrow", grids:[{c:3,r:1},{c:3,r:2},{c:3,r:3}]},
+  options:[
+    {t:"15", c:false},{t:"21", c:false},{t:"18", c:true},{t:"12", c:false},{t:"24", c:false}
+  ],
+  res:[
+    "As colunas são sempre 3. O número de linhas é igual ao número da figura.",
+    "Na Fig.6, o número de linhas é 6.",
+    "Calcule: 3 colunas × 6 linhas = 18 quadradinhos."
+  ],
+  final:"A Fig.6 tem 18 quadradinhos."
+},
+{
+  cat:"Área do círculo · direto",
+  statement:"Um pires circular tem diâmetro de 18 cm. Usando π = 3,14, qual é a área desse círculo?",
+  figure:null,
+  options:[
+    {t:"113,04 cm²", c:false},{t:"254,34 cm²", c:true},{t:"56,52 cm²", c:false},{t:"1017,36 cm²", c:false},{t:"324 cm²", c:false}
+  ],
+  res:[
+    "O valor dado é o <b>diâmetro</b>, então primeiro ache o raio: 18 ÷ 2 = 9 cm.",
+    "Eleve o raio ao quadrado: 9 × 9 = 81.",
+    "Aplique a fórmula A = π × r²: 3,14 × 81 = 254,34."
+  ],
+  final:"A área do pires é 254,34 cm²."
+},
+{
+  cat:"Sequências · montar a sequência",
+  statement:"Qual alternativa mostra corretamente os 5 primeiros termos da sequência gerada pela expressão <strong>T(n) = 90 − 6n</strong>?",
+  figure:null,
+  options:[
+    {t:"90, 84, 78, 72, 66", c:false},
+    {t:"84, 78, 72, 66, 60", c:true},
+    {t:"84, 78, 72, 66, 54", c:false},
+    {t:"78, 72, 66, 60, 54", c:false},
+    {t:"84, 90, 96, 102, 108", c:false}
+  ],
+  res:[
+    "O primeiro termo é n = 1: T(1) = 90 − 6 × 1 = 90 − 6 = 84.",
+    "Continue trocando n por 2, 3, 4 e 5: T(2) = 90 − 12 = 78 · T(3) = 90 − 18 = 72 · T(4) = 90 − 24 = 66 · T(5) = 90 − 30 = 60.",
+    "Junte os 5 termos na ordem: 84, 78, 72, 66, 60."
+  ],
+  final:"A sequência correta é 84, 78, 72, 66, 60."
+},
+{
+  cat:"Área do círculo · direto",
+  statement:"Um jardim circular tem raio de 11 m. Usando π = 3, qual é a área desse jardim?",
+  figure:null,
+  options:[
+    {t:"242 m²", c:false},{t:"121 m²", c:false},{t:"363 m²", c:true},{t:"66 m²", c:false},{t:"33 m²", c:false}
+  ],
+  res:[
+    "Aqui já foi dado o <b>raio</b> direto: 11 m — sem precisar dividir por 2.",
+    "Eleve ao quadrado: 11 × 11 = 121.",
+    "Aplique A = π × r²: 3 × 121 = 363."
+  ],
+  final:"A área do jardim é 363 m²."
+},
+{
+  cat:"Área do círculo · inverso",
+  statement:"Um círculo desenhado no quadro tem área de 300 cm². Usando π = 3, qual é a medida do raio desse círculo?",
+  figure:null,
+  options:[
+    {t:"15 cm", c:false},{t:"6 cm", c:false},{t:"10 cm", c:true},{t:"100 cm", c:false},{t:"150 cm", c:false}
+  ],
+  res:[
+    "Parta da mesma fórmula de sempre: A = π × r². Coloque os valores que você tem: 300 = 3 × r².",
+    "Isole o r² dividindo os dois lados por 3: r² = 300 ÷ 3 = 100.",
+    "Esse 100 ainda é r², não é o raio. Pergunte: que número vezes ele mesmo dá 100? É o 10, porque 10 × 10 = 100."
+  ],
+  final:"O raio do círculo é 10 cm."
+},
+{
+  cat:"Área do círculo · inverso",
+  statement:"Uma mesa circular tem área de 1017,36 cm². Usando π = 3,14, qual é a medida do raio dessa mesa?",
+  figure:null,
+  options:[
+    {t:"9 cm", c:false},{t:"36 cm", c:false},{t:"324 cm", c:false},{t:"18 cm", c:true},{t:"162 cm", c:false}
+  ],
+  res:[
+    "Parta da mesma fórmula de sempre: A = π × r². Coloque os valores que você tem: 1017,36 = 3,14 × r².",
+    "Isole o r² dividindo os dois lados por 3,14: r² = 1017,36 ÷ 3,14 = 324.",
+    "Agora ache a raiz quadrada de 324: que número vezes ele mesmo dá 324? É o 18, porque 18 × 18 = 324."
+  ],
+  final:"O raio da mesa é 18 cm."
+},
+{
+  cat:"Área sombreada",
+  statement:"Um retângulo de 12 cm de largura por 10 cm de altura tem um círculo branco de diâmetro 10 cm encostando nas bordas de cima e de baixo. Usando π = 3, qual é a área da parte sombreada (cinza)?",
+  figure:{type:"rectcircle", rw:12, rh:10, d:10},
+  options:[
+    {t:"90 cm²", c:false},{t:"45 cm²", c:true},{t:"120 cm²", c:false},{t:"75 cm²", c:false},{t:"30 cm²", c:false}
+  ],
+  res:[
+    "Calcule a área do retângulo (figura maior): 12 × 10 = 120 cm².",
+    "Calcule a área do círculo branco: raio = 10 ÷ 2 = 5, então r² = 25. Área = 3 × 25 = 75 cm².",
+    "Subtraia: área sombreada = 120 − 75 = 45 cm²."
+  ],
+  final:"A área sombreada é 45 cm²."
+},
+{
+  cat:"Área sombreada",
+  statement:"Um retângulo de 25 cm por 20 cm tem um círculo branco de diâmetro 20 cm encostando nas bordas de cima e de baixo. Usando π = 3,14, qual é a área sombreada?",
+  figure:{type:"rectcircle", rw:25, rh:20, d:20, scale:5},
+  options:[
+    {t:"314 cm²", c:false},{t:"150,68 cm²", c:false},{t:"186 cm²", c:true},{t:"500 cm²", c:false},{t:"100 cm²", c:false}
+  ],
+  res:[
+    "Área do retângulo: 25 × 20 = 500 cm².",
+    "Área do círculo: raio = 20 ÷ 2 = 10, r² = 100. Área = 3,14 × 100 = 314 cm².",
+    "Subtraia: 500 − 314 = 186 cm²."
+  ],
+  final:"A área sombreada é 186 cm²."
+},
+{
+  cat:"Área sombreada",
+  statement:"Calcule a área sombreada: um triângulo retângulo com base 12 cm e altura 9 cm tem um retângulo branco de 4 cm por 3 cm encaixado dentro dele.",
+  figure:{type:"trianglerect", base:12, height:9, rw:4, rh:3},
+  options:[
+    {t:"54 cm²", c:false},{t:"12 cm²", c:false},{t:"66 cm²", c:false},{t:"42 cm²", c:true},{t:"30 cm²", c:false}
+  ],
+  res:[
+    "Área do triângulo: (base × altura) ÷ 2 = (12 × 9) ÷ 2 = 54 cm².",
+    "Área do retângulo branco: 4 × 3 = 12 cm².",
+    "Subtraia: 54 − 12 = 42 cm²."
+  ],
+  final:"A área sombreada é 42 cm²."
+},
+{
+  cat:"Área sombreada",
+  statement:"Calcule a área sombreada: um triângulo retângulo com base 16 cm e altura 10 cm tem um retângulo branco de 6 cm por 4 cm encaixado dentro dele.",
+  figure:{type:"trianglerect", base:16, height:10, rw:6, rh:4},
+  options:[
+    {t:"80 cm²", c:false},{t:"24 cm²", c:false},{t:"56 cm²", c:true},{t:"104 cm²", c:false},{t:"44 cm²", c:false}
+  ],
+  res:[
+    "Área do triângulo: (16 × 10) ÷ 2 = 80 cm².",
+    "Área do retângulo branco: 6 × 4 = 24 cm².",
+    "Subtraia: 80 − 24 = 56 cm²."
+  ],
+  final:"A área sombreada é 56 cm²."
+},
+{
+  cat:"Área sombreada",
+  statement:"Um retângulo tem 16 cm de largura e 8 cm de altura. Dentro dele, dois círculos brancos de diâmetro 8 cm, lado a lado, encostam nas bordas de cima e de baixo. Usando π = 3, calcule a área sombreada.",
+  figure:{type:"rect2circ", rw:16, rh:8, d:8},
+  options:[
+    {t:"128 cm²", c:false},{t:"96 cm²", c:false},{t:"32 cm²", c:true},{t:"64 cm²", c:false},{t:"16 cm²", c:false}
+  ],
+  res:[
+    "Área do retângulo: 16 × 8 = 128 cm².",
+    "Raio de cada círculo: 8 ÷ 2 = 4, r² = 16. Área de 1 círculo = 3 × 16 = 48 cm².",
+    "Some os dois círculos: 48 × 2 = 96 cm². Depois subtraia: 128 − 96 = 32 cm²."
+  ],
+  final:"A área sombreada é 32 cm²."
+},
+{
+  cat:"Área sombreada",
+  statement:"Um retângulo tem 24 cm de largura e 12 cm de altura, com dois círculos brancos de diâmetro 12 cm lado a lado. Usando π = 3, calcule a área sombreada.",
+  figure:{type:"rect2circ", rw:24, rh:12, d:12, scale:4.5},
+  options:[
+    {t:"288 cm²", c:false},{t:"216 cm²", c:false},{t:"108 cm²", c:false},{t:"72 cm²", c:true},{t:"36 cm²", c:false}
+  ],
+  res:[
+    "Área do retângulo: 24 × 12 = 288 cm².",
+    "Raio de cada círculo: 12 ÷ 2 = 6, r² = 36. Área de 1 círculo = 3 × 36 = 108 cm².",
+    "Some os dois círculos: 108 × 2 = 216 cm². Depois subtraia: 288 − 216 = 72 cm²."
+  ],
+  final:"A área sombreada é 72 cm²."
+},
+{
+  cat:"Volume e capacidade",
+  statement:"Uma caixa d'água tem 4 m de comprimento, 3 m de largura e 2 m de altura. Quantos litros de água cabem nela? (Lembre: 1 m³ = 1000 L)",
+  figure:null,
+  options:[
+    {t:"12.000 L", c:false},{t:"2.400 L", c:false},{t:"24.000 L", c:true},{t:"9 L", c:false},{t:"24 L", c:false}
+  ],
+  res:[
+    "Calcule o volume: 4 × 3 × 2 = 24 m³.",
+    "Transforme em litros multiplicando por 1000: 24 × 1000 = 24.000 L."
+  ],
+  final:"Cabem 24.000 litros de água na caixa."
+},
+{
+  cat:"Volume e capacidade",
+  statement:"Uma piscina tem 10 m de comprimento, 4 m de largura e 1,5 m de profundidade. Quantos litros de água são necessários para enchê-la? (1 m³ = 1000 L)",
+  figure:null,
+  options:[
+    {t:"40.000 L", c:false},{t:"60.000 L", c:true},{t:"15.500 L", c:false},{t:"6.000 L", c:false},{t:"600 L", c:false}
+  ],
+  res:[
+    "Calcule o volume: 10 × 4 × 1,5 = 60 m³.",
+    "Transforme em litros: 60 × 1000 = 60.000 L."
+  ],
+  final:"São necessários 60.000 litros."
+},
+{
+  cat:"Volume e capacidade",
+  statement:"Um reservatório tem 6 m de comprimento, 2,5 m de largura e 2 m de altura. Quantos litros de água ele comporta? (1 m³ = 1000 L)",
+  figure:null,
+  options:[
+    {t:"10.500 L", c:false},{t:"15.000 L", c:false},{t:"30.000 L", c:true},{t:"3.000 L", c:false},{t:"10,5 L", c:false}
+  ],
+  res:[
+    "Calcule o volume: 6 × 2,5 × 2 = 30 m³.",
+    "Transforme em litros: 30 × 1000 = 30.000 L."
+  ],
+  final:"O reservatório comporta 30.000 litros."
+},
+{
+  cat:"Volume do cilindro",
+  statement:"Um pote cilíndrico tem diâmetro da base de 12 cm e altura de 15 cm. Usando π = 3, qual é o volume desse cilindro?",
+  figure:{type:"cylinder", d:12, hgt:15},
+  options:[
+    {t:"3.240 cm³", c:false},{t:"1.620 cm³", c:true},{t:"540 cm³", c:false},{t:"6.480 cm³", c:false},{t:"108 cm³", c:false}
+  ],
+  res:[
+    "Ache o raio: 12 ÷ 2 = 6 cm. Depois eleve ao quadrado: 6 × 6 = 36.",
+    "Calcule a área da base: π × r² = 3 × 36 = 108 cm².",
+    "Multiplique pela altura: 108 × 15 = 1.620 cm³."
+  ],
+  final:"O volume do pote é 1.620 cm³."
+},
+{
+  cat:"Volume do cilindro",
+  statement:"Uma lata cilíndrica tem raio da base de 5 cm e altura de 10 cm. Usando π = 3,14, qual é o volume dessa lata?",
+  figure:{type:"cylinder", d:10, hgt:10},
+  options:[
+    {t:"157 cm³", c:false},{t:"1.570 cm³", c:false},{t:"785 cm³", c:true},{t:"78,5 cm³", c:false},{t:"314 cm³", c:false}
+  ],
+  res:[
+    "Aqui já foi dado o raio: 5 cm. Eleve ao quadrado: 5 × 5 = 25.",
+    "Calcule a área da base: 3,14 × 25 = 78,5 cm².",
+    "Multiplique pela altura: 78,5 × 10 = 785 cm³."
+  ],
+  final:"O volume da lata é 785 cm³."
+},
+{
+  cat:"Volume do cilindro",
+  statement:"Um enfeite cilíndrico tem diâmetro da base de 8 cm e altura de 9 cm. Usando π = 3, qual é o volume desse cilindro?",
+  figure:{type:"cylinder", d:8, hgt:9},
+  options:[
+    {t:"216 cm³", c:false},{t:"144 cm³", c:false},{t:"432 cm³", c:true},{t:"72 cm³", c:false},{t:"1.728 cm³", c:false}
+  ],
+  res:[
+    "Ache o raio: 8 ÷ 2 = 4 cm. Eleve ao quadrado: 4 × 4 = 16.",
+    "Calcule a área da base: 3 × 16 = 48 cm².",
+    "Multiplique pela altura: 48 × 9 = 432 cm³."
+  ],
+  final:"O volume do enfeite é 432 cm³."
+},
+{
+  cat:"Volume do cilindro",
+  statement:"Um enfeite cilíndrico tem diâmetro da base de 14 cm e altura de 20 cm. Usando π = 3, qual é o volume desse cilindro?",
+  figure:{type:"cylinder", d:14, hgt:20, scale:4},
+  options:[
+    {t:"147 cm³", c:false},{t:"11.760 cm³", c:false},{t:"1.470 cm³", c:false},{t:"2.940 cm³", c:true},{t:"3.077,2 cm³", c:false}
+  ],
+  res:[
+    "Ache o raio: 14 ÷ 2 = 7 cm. Eleve ao quadrado: 7 × 7 = 49.",
+    "Calcule a área da base: 3 × 49 = 147 cm².",
+    "Multiplique pela altura: 147 × 20 = 2.940 cm³."
+  ],
+  final:"O volume do enfeite é 2.940 cm³."
+}
+];
+
+/* ============================================================
+   RENDER QUIZ
+   ============================================================ */
+const letters = ['A','B','C','D','E'];
+let score = 0;
+const answered = new Set();
+
+function buildFigure(fig){
+  if(!fig) return '';
+  let html = '';
+  if(fig.type === 'gridrow'){
+    html = '<div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;align-items:flex-end;">';
+    fig.grids.forEach(g=>{ html += gridSVG(g.c, g.r, 16); });
+    html += '</div>';
+  } else if(fig.type === 'rectcircle'){
+    html = rectCircleSVG(fig.rw, fig.rh, fig.d, fig.scale);
+  } else if(fig.type === 'rect2circ'){
+    html = rectTwoCirclesSVG(fig.rw, fig.rh, fig.d, fig.scale);
+  } else if(fig.type === 'trianglerect'){
+    html = triangleRectSVG(fig.base, fig.height, fig.rw, fig.rh, fig.scale);
+  } else if(fig.type === 'cylinder'){
+    html = cylinderSVG(fig.d, fig.hgt, fig.scale);
+  }
+  return `<div class="q-figure">${html}</div>`;
+}
+
+function renderQuiz(){
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  quizData.forEach((q, qi)=>{
+    html += `<div class="card q-card" id="qcard-${qi}">
+      <span class="eyebrow">Questão ${qi+1} · ${q.cat}</span>
+      <p>${q.statement}</p>
+      ${buildFigure(q.figure)}
+      <div class="options" id="opts-${qi}">
+        ${q.options.map((o,oi)=>`<button class="opt-btn" data-qi="${qi}" data-oi="${oi}">
+            <span class="letter">${letters[oi]})</span>${o.t}
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="fb-${qi}"></div>
+      <button class="reveal-btn" data-qi="${qi}">Ver resolução passo a passo</button>
+      <div class="resolucao" id="res-${qi}">
+        <div class="algo-block">
+          ${q.res.map((s,si)=>`<span class="passo"><b>Passo ${si+1}.</b> ${s}</span>`).join('')}
+          <div class="resultado">✓ ${q.final}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+
+  container.querySelectorAll('.opt-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const qi = btn.dataset.qi;
+      if(answered.has(qi)) return;
+      answered.add(qi);
+      const q = quizData[qi];
+      const oi = parseInt(btn.dataset.oi);
+      const fb = document.getElementById('fb-'+qi);
+      const allBtns = container.querySelectorAll(`.opt-btn[data-qi="${qi}"]`);
+      allBtns.forEach(b=>b.disabled = true);
+      if(q.options[oi].c){
+        btn.classList.add('correct');
+        fb.textContent = 'Isso aí! Resposta certa. 🎉';
+        fb.className = 'feedback show ok';
+        score++;
+      } else {
+        btn.classList.add('wrong');
+        allBtns.forEach(b=>{ if(q.options[parseInt(b.dataset.oi)].c) b.classList.add('correct'); });
+        fb.textContent = 'Quase — revê esse passo. A resposta certa está marcada em verde.';
+        fb.className = 'feedback show no';
+      }
+      document.getElementById('scoreNum').textContent = score;
+    });
+  });
+
+  container.querySelectorAll('.reveal-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const qi = btn.dataset.qi;
+      const res = document.getElementById('res-'+qi);
+      const isShown = res.classList.toggle('show');
+      btn.textContent = isShown ? 'Esconder resolução' : 'Ver resolução passo a passo';
+    });
+  });
+}
+
+renderQuiz();
+</script>
+</body>
+</html>
