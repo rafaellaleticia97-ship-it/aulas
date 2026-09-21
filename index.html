@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transformações Geométricas e Simetrias — 8º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F4FC; --indigo:#362F78; --deep:#241F52; --soft:#6C63B5;
+  --mint:#A9E5D0; --coral:#FFB3A0; --coralDark:#E4694F; --yellow:#FFDD73;
+  --text:#2A2650; --text2:#5B5686; --border:#E3DEF7; --green:#2C8467;
+  --card:#FFFFFF; --r:16px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Atkinson Hyperlegible',system-ui,sans-serif;
+  font-size:16px; line-height:1.62; overflow-x:hidden;
+}
+h1,h2,h3,h4,.eyebrow,.tab,.navbtn,.btn,.score,.chain-num,.plabel{font-family:'Baloo 2',system-ui,sans-serif}
+
+/* ---------- fundo com símbolos ---------- */
+.bgsym{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bgsym span{
+  position:absolute; color:var(--indigo); opacity:.08;
+  font-family:'Baloo 2',sans-serif; font-weight:700;
+  animation:drift 34s ease-in-out infinite alternate;
+}
+@keyframes drift{from{transform:translate(0,0) rotate(0deg)}to{transform:translate(14px,-22px) rotate(8deg)}}
+@media (prefers-reduced-motion: reduce){.bgsym span{animation:none}}
+
+/* ---------- barra de progresso ---------- */
+.topbar{
+  position:sticky; top:0; z-index:30;
+  background:rgba(246,244,252,.94); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--border); padding:8px 14px 7px;
+}
+.track{height:7px;background:#E7E3F6;border-radius:99px;overflow:hidden}
+.fill{height:100%;width:12.5%;background:linear-gradient(90deg,var(--soft),var(--indigo));border-radius:99px;transition:width .3s ease}
+.plabel{font-size:12px;font-weight:600;color:var(--indigo);margin-top:4px;letter-spacing:.2px}
+
+/* ---------- layout ---------- */
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:16px 14px 44px}
+h1{font-size:25px;line-height:1.2;margin:8px 0 2px;color:var(--deep);font-weight:800}
+.sub{color:var(--text2);font-size:14px;margin:0 0 12px}
+
+/* ---------- abas ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 16px}
+.tab{
+  font-size:11px;font-weight:600;padding:4px 9px;border-radius:99px;
+  border:1px solid var(--border);background:#fff;color:var(--soft);cursor:pointer;
+}
+.tab[aria-selected="true"]{background:var(--indigo);border-color:var(--indigo);color:#fff}
+
+/* ---------- cartões ---------- */
+.part{display:none;animation:fade .25s ease}
+.part.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.part.on{animation:none}}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:16px 15px;margin:0 0 14px;box-shadow:0 2px 10px rgba(54,47,120,.06);
+}
+.eyebrow{
+  display:inline-block;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+  padding:3px 10px;border-radius:99px;background:var(--mint);color:#14503C;margin-bottom:9px;
+}
+.eyebrow.coral{background:var(--coral);color:#7A2E1B}
+.eyebrow.yellow{background:var(--yellow);color:#6B4E00}
+.eyebrow.lilac{background:#E7E3F8;color:var(--indigo)}
+h2{font-size:21px;line-height:1.25;margin:0 0 8px;color:var(--deep);font-weight:700}
+h3{font-size:17px;margin:18px 0 6px;color:var(--indigo);font-weight:700}
+p{margin:0 0 11px}
+.small{font-size:14px;color:var(--text2)}
+b,strong{color:var(--deep)}
+
+/* ---------- caixas especiais ---------- */
+.pense{background:#F0EDFB;border:1px solid #DCD6F4;border-radius:14px;padding:13px 14px;margin:12px 0}
+.pense h4{margin:0 0 5px;font-size:15px;color:var(--indigo)}
+.dica{background:#FFF9E8;border-left:7px solid var(--yellow);border-radius:0 14px 14px 0;padding:12px 14px;margin:12px 0}
+.dica h4{margin:0 0 5px;font-size:15px;color:#6B4E00}
+.caderno{border:2px dashed var(--mint);background:#F3FBF8;border-radius:14px;padding:13px 14px;margin:12px 0}
+.caderno h4{margin:0 0 6px;font-size:15px;color:var(--green)}
+.caderno p{margin:0 0 6px}
+.algo{background:#F0EDFB;border:1px solid #D7D0F0;border-radius:14px;padding:13px 14px;margin:12px 0}
+.algo .step{margin:0 0 7px;font-size:15px}
+.algo .step b{color:var(--indigo)}
+
+/* ---------- botões ---------- */
+.btn{
+  font-size:13px;font-weight:600;padding:8px 13px;border-radius:99px;cursor:pointer;
+  border:1px solid var(--indigo);background:#fff;color:var(--indigo);
+}
+.btn:hover{background:#F0EDFB}
+.btn.solid{background:var(--indigo);color:#fff}
+.btn.coral{border-color:var(--coralDark);color:var(--coralDark)}
+.btn.coral:hover{background:#FFF1ED}
+.btnrow{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+
+/* ---------- laboratórios ---------- */
+.lab{background:#FBFAFE;border:1px solid var(--border);border-radius:14px;padding:12px;margin:12px 0}
+.lab svg{display:block;width:100%;height:auto;max-width:420px;margin:0 auto;border-radius:10px}
+.readout{margin-top:10px;font-size:14px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px 12px}
+.readout .ok{color:var(--green);font-weight:700}
+.readout .no{color:var(--coralDark);font-weight:700}
+.hint{font-size:12.5px;color:var(--text2);text-align:center;margin:8px 0 0}
+.two{display:grid;gap:12px}
+@media(min-width:620px){.two{grid-template-columns:1fr 1fr}}
+.stepper{display:flex;align-items:center;gap:6px;font-size:13px}
+.stepper button{
+  width:28px;height:28px;border-radius:50%;border:1px solid var(--indigo);background:#fff;
+  color:var(--indigo);font-weight:700;cursor:pointer;font-family:'Baloo 2',sans-serif;font-size:15px;line-height:1
+}
+.rule{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:16px;color:var(--indigo);text-align:center;margin:6px 0 0}
+.rulebig{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:19px;color:var(--deep);text-align:center;margin:2px 0 0}
+input[type=range]{width:100%;accent-color:var(--indigo)}
+
+/* ---------- corrente ---------- */
+.chain{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;margin:14px 0}
+.chain-num{
+  background:var(--indigo);color:#fff;font-weight:700;font-size:14px;
+  padding:9px 12px;border-radius:12px;min-width:74px;text-align:center
+}
+.chain-op{
+  background:var(--coral);color:#7A2E1B;font-weight:700;font-size:12px;
+  padding:5px 10px;border-radius:99px;border:none;cursor:pointer;font-family:'Baloo 2',sans-serif
+}
+.chain-op.done{background:var(--mint);color:#14503C;cursor:default}
+
+/* ---------- try-box ---------- */
+.try{border:2px dashed var(--soft);border-radius:14px;padding:13px 14px;margin:14px 0;background:#fff}
+.try h4{margin:0 0 7px;font-size:15px;color:var(--indigo)}
+.try .row{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-top:9px}
+.try input[type=text]{
+  flex:1;min-width:130px;padding:9px 11px;border:1px solid var(--border);border-radius:10px;
+  font-family:'Atkinson Hyperlegible',sans-serif;font-size:15px;color:var(--text);background:#FBFAFE
+}
+.fb{margin-top:9px;font-size:14px;padding:9px 11px;border-radius:10px;display:none}
+.fb.good{display:block;background:#EAF8F2;border:1px solid var(--mint);color:#14503C}
+.fb.bad{display:block;background:#FFF1ED;border:1px solid var(--coral);color:#7A2E1B}
+
+/* ---------- quiz ---------- */
+.score{
+  background:var(--indigo);color:#fff;border-radius:14px;padding:10px 14px;font-weight:700;
+  font-size:15px;display:flex;justify-content:space-between;align-items:center;margin:0 0 14px
+}
+.q{border-top:1px solid var(--border);padding-top:14px;margin-top:14px}
+.q:first-of-type{border-top:none;padding-top:0;margin-top:0}
+.qnum{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--soft);font-size:13px}
+.opt{
+  display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border-radius:12px;
+  border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;
+  font-family:'Atkinson Hyperlegible',sans-serif;font-size:15px;line-height:1.4
+}
+.opt:hover{border-color:var(--soft)}
+.opt.good{background:#EAF8F2;border-color:var(--green);color:#14503C;font-weight:700}
+.opt.bad{background:#FFF1ED;border-color:var(--coralDark);color:#7A2E1B}
+.opt .mark{font-weight:700;margin-right:6px}
+.qfb{display:none;margin-top:8px;font-size:14px;background:#F0EDFB;border-radius:10px;padding:10px 12px;color:var(--text)}
+.qfb.on{display:block}
+.miniwrap{text-align:center;margin:10px 0}
+.miniwrap svg{width:100%;max-width:330px;height:auto}
+
+/* ---------- navegação inferior ---------- */
+.navbtns{display:flex;justify-content:space-between;gap:9px;margin-top:6px}
+.navbtn{
+  font-size:11px;font-weight:600;padding:4px 9px;border-radius:99px;
+  border:1px solid var(--border);background:#fff;color:var(--soft);cursor:pointer
+}
+.navbtn:disabled{opacity:.35;cursor:default}
+
+/* ---------- telas grandes (TV) ---------- */
+@media(min-width:900px){
+  body{font-size:18px}
+  .wrap{max-width:900px;padding:22px 22px 60px}
+  h1{font-size:33px} h2{font-size:26px} h3{font-size:20px}
+  .tab{font-size:12px;padding:5px 11px}
+  .lab svg{max-width:520px}
+  .miniwrap svg{max-width:420px}
+}
+@media(min-width:1500px){
+  body{font-size:21px;line-height:1.66}
+  .wrap{max-width:1180px}
+  h1{font-size:42px} h2{font-size:32px} h3{font-size:24px}
+  .tab{font-size:14px;padding:6px 14px}
+  .eyebrow{font-size:13px}
+  .lab svg{max-width:660px}
+  .miniwrap svg{max-width:520px}
+  .rulebig{font-size:26px} .rule{font-size:21px}
+}
+</style>
+</head>
+<body>
+
+<div class="bgsym" aria-hidden="true">
+  <span style="left:6%;top:12%;font-size:54px">△</span>
+  <span style="left:82%;top:8%;font-size:44px;animation-delay:-6s">□</span>
+  <span style="left:14%;top:56%;font-size:48px;animation-delay:-12s">⟲</span>
+  <span style="left:74%;top:44%;font-size:52px;animation-delay:-3s">↔</span>
+  <span style="left:44%;top:78%;font-size:46px;animation-delay:-18s">⬡</span>
+  <span style="left:90%;top:72%;font-size:40px;animation-delay:-9s">∡</span>
+  <span style="left:28%;top:30%;font-size:38px;animation-delay:-15s">≅</span>
+</div>
+
+<div class="topbar">
+  <div class="track"><div class="fill" id="pfill"></div></div>
+  <div class="plabel" id="plabel">Parte 1 de 8 — Para começar</div>
+</div>
+
+<main class="wrap">
+  <h1>Transformações geométricas e simetrias</h1>
+  <p class="sub">8º ano · mexa nas figuras para entender o que cada transformação faz</p>
+
+  <nav class="tabs" id="tabs" aria-label="Seções da aula"></nav>
+
+  <!-- ================= PARTE 1 ================= -->
+  <section class="part on" id="p1">
+    <div class="card">
+      <span class="eyebrow">Parte 1</span>
+      <h2>Você já faz isso sem perceber</h2>
+      <p>Pegue um livro em cima da mesa e empurre ele para o lado. O livro mudou de lugar, mas continua exatamente o mesmo livro.</p>
+      <p>Agora gire o livro sobre a mesa. De novo: mesmo livro. E se você olhar o livro num espelho, a imagem também tem o mesmo tamanho — só está virada ao contrário.</p>
+      <p>Empurrar, girar e espelhar. São essas três coisas que a Matemática vai estudar hoje, só que com figuras no papel.</p>
+
+      <div class="miniwrap">
+        <svg viewBox="0 0 330 130" role="img" aria-label="Três painéis mostrando reflexão, translação e rotação de uma figura em forma de L">
+          <!-- painel 1: reflexão -->
+          <rect x="2" y="2" width="102" height="96" rx="10" fill="#fff" stroke="#E3DEF7"/>
+          <polygon points="18,20 30,20 30,68 54,68 54,80 18,80" fill="#fff" stroke="#362F78" stroke-width="2.2"/>
+          <line x1="53" y1="12" x2="53" y2="90" stroke="#E4694F" stroke-width="1.6" stroke-dasharray="5 4"/>
+          <polygon points="88,20 76,20 76,68 52,68 52,80 88,80" fill="#A9E5D0" stroke="#362F78" stroke-width="2.2"/>
+          <text x="53" y="114" font-family="'Baloo 2',sans-serif" font-size="13" font-weight="700" fill="#362F78" text-anchor="middle">Reflexão</text>
+          <!-- painel 2: translação -->
+          <rect x="114" y="2" width="102" height="96" rx="10" fill="#fff" stroke="#E3DEF7"/>
+          <polygon points="124,20 136,20 136,68 160,68 160,80 124,80" fill="#fff" stroke="#362F78" stroke-width="2.2"/>
+          <polygon points="164,20 176,20 176,68 200,68 200,80 164,80" fill="#A9E5D0" stroke="#362F78" stroke-width="2.2"/>
+          <line x1="140" y1="50" x2="178" y2="50" stroke="#E4694F" stroke-width="2.4" marker-end="url(#ah1)"/>
+          <text x="165" y="114" font-family="'Baloo 2',sans-serif" font-size="13" font-weight="700" fill="#362F78" text-anchor="middle">Translação</text>
+          <!-- painel 3: rotação -->
+          <rect x="226" y="2" width="102" height="96" rx="10" fill="#fff" stroke="#E3DEF7"/>
+          <polygon points="236,20 248,20 248,68 272,68 272,80 236,80" fill="#fff" stroke="#362F78" stroke-width="2.2"/>
+          <polygon points="318,80 306,80 306,32 282,32 282,20 318,20" fill="#A9E5D0" stroke="#362F78" stroke-width="2.2"/>
+          <circle cx="277" cy="50" r="3.4" fill="#E4694F"/>
+          <path d="M268 36 A 18 18 0 0 1 292 38" fill="none" stroke="#E4694F" stroke-width="2.2" marker-end="url(#ah1)"/>
+          <text x="277" y="114" font-family="'Baloo 2',sans-serif" font-size="13" font-weight="700" fill="#362F78" text-anchor="middle">Rotação</text>
+          <defs>
+            <marker id="ah1" markerWidth="7" markerHeight="7" refX="5.5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 z" fill="#E4694F"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+
+      <div class="try">
+        <h4>Antes de continuar</h4>
+        <p class="small" style="margin:0">Olhe os três desenhos acima. A figura verde é sempre a imagem da figura branca. O que as três situações têm em comum?</p>
+        <div class="btnrow"><button class="btn" id="hookBtn">Ver a resposta</button></div>
+        <div class="fb" id="hookFb">Em todas elas, a figura verde tem <b>exatamente o mesmo tamanho e a mesma forma</b> da branca. Só a posição mudou. Guarde isso: é a ideia central da aula.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PARTE 2 ================= -->
+  <section class="part" id="p2">
+    <div class="card">
+      <span class="eyebrow lilac">Parte 2</span>
+      <h2>O que é uma isometria</h2>
+      <p>Uma <b>isometria</b> é uma transformação que muda a figura de posição sem mudar o tamanho nem a forma dela.</p>
+      <p>A palavra ajuda a lembrar: <b>iso</b> quer dizer igual e <b>metria</b> quer dizer medida. Medida igual. Todos os lados continuam com o mesmo comprimento e todos os ângulos continuam com a mesma abertura.</p>
+
+      <div class="pense">
+        <h4>Pense assim</h4>
+        <p style="margin:0">Uma isometria é como mexer num adesivo já colado numa folha de plástico. Você pode deslizar o adesivo, girar o adesivo ou virar ele do avesso — continua sendo o mesmo adesivo, do mesmo tamanho. Se você jogasse ele numa fotocopiadora e apertasse “ampliar 150%”, aí sim ele deixaria de ser o mesmo: isso <b>não</b> é isometria.</p>
+      </div>
+
+      <div class="caderno">
+        <h4>Copie no caderno</h4>
+        <p>Isometria é uma transformação geométrica que conserva o tamanho e a forma da figura. A figura que sai da transformação chama-se <b>imagem</b>.</p>
+        <p>As três isometrias básicas do plano são: <b>reflexão</b>, <b>translação</b> e <b>rotação</b>.</p>
+        <p>Ampliação e redução <b>não</b> são isometrias, porque mudam o tamanho.</p>
+      </div>
+
+      <div class="dica">
+        <h4>Dica — erro comum de prova</h4>
+        <p style="margin:0">Muita gente marca a alternativa “sim, porque a forma continua <i>parecida</i>”. Não basta parecida. Numa isometria a figura fica <b>exatamente</b> do mesmo tamanho. Uma figura ampliada tem a forma parecida e mesmo assim não é isometria. Quando a pergunta for “isso é uma isometria?”, a sua primeira checagem é sempre o tamanho.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PARTE 3 ================= -->
+  <section class="part" id="p3">
+    <div class="card">
+      <span class="eyebrow">Parte 3</span>
+      <h2>As três isometrias, uma por uma</h2>
+      <p><b>Reflexão</b> espelha a figura em relação a uma reta, chamada eixo de reflexão. É o que o espelho faz com você.</p>
+      <p><b>Translação</b> desloca a figura numa certa direção e numa certa distância, sem girar e sem espelhar. É o empurrão no livro.</p>
+      <p><b>Rotação</b> gira a figura em torno de um ponto fixo, chamado centro, com um ângulo e um sentido.</p>
+
+      <div class="caderno">
+        <h4>Copie no caderno</h4>
+        <p><b>Reflexão:</b> espelha a figura em relação a uma reta r.</p>
+        <p><b>Translação:</b> desloca a figura na direção e na distância de um vetor.</p>
+        <p><b>Rotação:</b> gira a figura em torno de um centro P, com um ângulo e um sentido.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow coral">Laboratório</span>
+      <h2>Mexa você mesmo</h2>
+      <p class="small">A figura branca é a original e fica parada. A figura verde é a imagem: <b>arraste ela com o dedo</b> pela malha e use os botões para espelhar, girar e ampliar. Veja o que acontece com o veredito lá embaixo.</p>
+
+      <div class="lab">
+        <svg id="labSvg" viewBox="0 0 360 260" role="img" aria-label="Malha quadriculada com a figura original e a figura imagem, que pode ser arrastada">
+          <defs>
+            <pattern id="gridLab" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M20 0 H0 V20" fill="none" stroke="#E3DEF7" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="360" height="260" fill="#fff"/>
+          <rect width="360" height="260" fill="url(#gridLab)"/>
+          <polygon points="40,40 60,40 60,160 100,160 100,180 40,180" fill="#fff" stroke="#362F78" stroke-width="2.6"/>
+          <g id="imgG" style="cursor:grab">
+            <polygon points="40,40 60,40 60,160 100,160 100,180 40,180" fill="#A9E5D0" stroke="#241F52" stroke-width="2.6"/>
+          </g>
+        </svg>
+        <p class="hint">Arraste a figura verde. Ela encaixa sozinha nos quadradinhos.</p>
+        <div class="btnrow" style="justify-content:center">
+          <button class="btn" data-lab="flip">Espelhar ⇄</button>
+          <button class="btn" data-lab="rot90">Girar 90° ↻</button>
+          <button class="btn" data-lab="rot180">Girar 180°</button>
+          <button class="btn coral" data-lab="scale" id="scaleBtn">Ampliar</button>
+          <button class="btn solid" data-lab="reset">Reiniciar</button>
+        </div>
+        <div class="readout" id="labOut"></div>
+      </div>
+
+      <div class="dica">
+        <h4>Dica — reflexão ou rotação?</h4>
+        <p style="margin:0">As duas “viram” a figura, e é fácil confundir. O teste é este: se você consegue chegar na imagem <b>girando</b> a folha, é rotação. Se por mais que você gire nunca encaixa, e só encaixaria virando a figura do avesso, é reflexão. Teste isso agora no laboratório: aperte “Girar 90°” quatro vezes e veja que a figura nunca fica espelhada.</p>
+      </div>
+
+      <div class="try">
+        <h4>Agora é sua vez</h4>
+        <p class="small" style="margin:0">Na malha abaixo, a figura branca é a original e a verde é a imagem. Qual transformação foi aplicada?</p>
+        <div class="miniwrap">
+          <svg viewBox="0 0 224 128" role="img" aria-label="Figura em L à esquerda e a mesma figura, na mesma orientação, deslocada para a direita">
+            <defs><pattern id="gT" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0 H0 V16" fill="none" stroke="#E3DEF7" stroke-width="1"/></pattern></defs>
+            <rect width="224" height="128" fill="#fff"/><rect width="224" height="128" fill="url(#gT)"/>
+            <polygon points="16,16 32,16 32,80 64,80 64,96 16,96" fill="#fff" stroke="#362F78" stroke-width="2.2"/>
+            <polygon points="144,16 160,16 160,80 192,80 192,96 144,96" fill="#A9E5D0" stroke="#241F52" stroke-width="2.2"/>
+          </svg>
+        </div>
+        <div class="row">
+          <input type="text" id="t3in" placeholder="reflexão, translação ou rotação?" aria-label="Sua resposta">
+          <button class="btn solid" data-try="t3" data-ans="translação,translacao">Conferir</button>
+        </div>
+        <div class="fb" id="t3fb"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PARTE 4 ================= -->
+  <section class="part" id="p4">
+    <div class="card">
+      <span class="eyebrow lilac">Parte 4</span>
+      <h2>As mesmas ideias, agora com coordenadas</h2>
+      <p>No plano cartesiano cada ponto tem um par de números: o primeiro é o x e o segundo é o y. Quando você aplica uma transformação num ponto, esses números mudam de um jeito certinho, que dá para prever.</p>
+      <p class="small">Arraste o ponto laranja pelo plano e troque a transformação nos botões. O ponto roxo é a imagem, e a regra aparece embaixo.</p>
+
+      <div class="lab">
+        <svg id="planeSvg" viewBox="0 0 320 320" role="img" aria-label="Plano cartesiano com o ponto P, que pode ser arrastado, e sua imagem P linha"></svg>
+        <p class="hint">Toque ou arraste dentro do plano para mover o ponto P.</p>
+        <div class="btnrow" style="justify-content:center">
+          <button class="btn solid" data-mode="x">Reflexão no eixo x</button>
+          <button class="btn" data-mode="y">Reflexão no eixo y</button>
+          <button class="btn" data-mode="r">Rotação de 180°</button>
+          <button class="btn" data-mode="t">Translação</button>
+        </div>
+        <div id="vecBox" style="display:none">
+          <div class="btnrow" style="justify-content:center;align-items:center">
+            <div class="stepper"><button data-vec="mm">−</button><span>m = <b id="mVal">3</b></span><button data-vec="mp">+</button></div>
+            <div class="stepper"><button data-vec="nm">−</button><span>n = <b id="nVal">0</b></span><button data-vec="np">+</button></div>
+          </div>
+          <p class="hint" style="margin-top:0">m move na horizontal, n move na vertical.</p>
+        </div>
+        <div class="readout">
+          <div class="rule" id="ruleTxt"></div>
+          <div class="rulebig" id="ruleEx"></div>
+        </div>
+      </div>
+
+      <div class="caderno">
+        <h4>Copie no caderno</h4>
+        <p>Reflexão no eixo x: P(a, b) → P′(a, −b)</p>
+        <p>Reflexão no eixo y: P(a, b) → P′(−a, b)</p>
+        <p>Translação pelo vetor de (0, 0) até (m, n): P(a, b) → P′(a + m, b + n)</p>
+        <p>Rotação de 180° em torno da origem: P(a, b) → P′(−a, −b)</p>
+      </div>
+
+      <div class="dica">
+        <h4>Dica — o erro que mais aparece na prova</h4>
+        <p style="margin:0">Na reflexão no <b>eixo x</b>, quem troca de sinal é o <b>y</b>. Parece contraditório, mas faz sentido: o eixo x é o espelho, e o espelho está deitado. O ponto atravessa o espelho para cima ou para baixo, ou seja, mexe na altura, que é o y. Na reflexão no eixo y é o contrário: o espelho está em pé e quem troca de sinal é o x. Antes de marcar a resposta, pergunte-se: “qual eixo é o espelho? Então o outro número é que muda.”</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow coral">Descubra</span>
+      <h2>Que operação está escondida?</h2>
+      <p class="small">Cada pílula laranja esconde uma transformação. Clique nela e descubra qual foi.</p>
+      <div class="chain">
+        <div class="chain-num">(3, 5)</div>
+        <button class="chain-op" data-reveal="Reflexão no eixo x">?</button>
+        <div class="chain-num">(3, −5)</div>
+        <button class="chain-op" data-reveal="Translação de 3 para a direita">?</button>
+        <div class="chain-num">(6, −5)</div>
+        <button class="chain-op" data-reveal="Rotação de 180° na origem">?</button>
+        <div class="chain-num">(−6, 5)</div>
+      </div>
+
+      <div class="try">
+        <h4>Agora é sua vez</h4>
+        <p class="small" style="margin:0">O ponto D(6, 2) sofre uma reflexão em relação ao eixo x. Escreva as coordenadas de D′.</p>
+        <div class="row">
+          <input type="text" id="t4in" placeholder="Ex.: (0, 0)" aria-label="Sua resposta">
+          <button class="btn solid" data-try="t4" data-ans="(6,-2)">Conferir</button>
+        </div>
+        <div class="fb" id="t4fb"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PARTE 5 ================= -->
+  <section class="part" id="p5">
+    <div class="card">
+      <span class="eyebrow">Parte 5</span>
+      <h2>Simetria: quando a figura combina com ela mesma</h2>
+      <p>Até agora você pegou uma figura e criou uma imagem dela em outro lugar. Agora vamos olhar para uma figura só e perguntar: ela já é simétrica sozinha?</p>
+      <p>Uma <b>linha de simetria</b> é uma reta que divide a figura em duas partes que coincidem quando a gente dobra uma sobre a outra. Imagine dobrar o papel bem em cima dessa linha: as duas metades tinham que encaixar perfeitamente.</p>
+      <p>Já a <b>simetria de rotação</b> é outra coisa: a figura coincide com ela mesma depois de um giro menor que uma volta completa.</p>
+
+      <div class="pense">
+        <h4>Pense assim</h4>
+        <p style="margin:0">A linha de simetria é a dobra do papel. A simetria de rotação é o botão de um liquidificador: você gira e, antes de completar a volta, ele já parece igualzinho ao que era.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow coral">Laboratório</span>
+      <h2>Dobre e gire</h2>
+      <div class="btnrow" style="justify-content:center">
+        <button class="btn solid" data-fig="quad">Quadrado</button>
+        <button class="btn" data-fig="ret">Retângulo</button>
+        <button class="btn" data-fig="tri">Triângulo equilátero</button>
+      </div>
+
+      <div class="two">
+        <div class="lab">
+          <p class="small" style="text-align:center;margin:0 0 6px"><b>Ferramenta 1 — linhas de simetria</b></p>
+          <svg id="symSvg" viewBox="0 0 240 200" role="img" aria-label="Figura com suas linhas de simetria sendo reveladas uma a uma"></svg>
+          <div class="btnrow" style="justify-content:center">
+            <button class="btn" id="lineBtn">Mostrar uma linha</button>
+          </div>
+          <div class="readout" id="lineOut" style="text-align:center"></div>
+        </div>
+
+        <div class="lab">
+          <p class="small" style="text-align:center;margin:0 0 6px"><b>Ferramenta 2 — simetria de rotação</b></p>
+          <svg id="rotSvg" viewBox="0 0 240 200" role="img" aria-label="Figura girando em torno do centro, comparada com a posição original"></svg>
+          <input type="range" id="rotRange" min="0" max="360" step="15" value="0" aria-label="Ângulo de giro">
+          <div class="readout" id="rotOut" style="text-align:center"></div>
+        </div>
+      </div>
+
+      <div class="dica">
+        <h4>Dica — a pegadinha do retângulo</h4>
+        <p style="margin:0">Quase todo mundo acha que o retângulo tem 4 linhas de simetria, igual ao quadrado, e conta as diagonais. Teste na ferramenta 1: no retângulo, dobrar pela diagonal <b>não</b> faz as metades coincidirem, porque os lados têm comprimentos diferentes. O retângulo tem só <b>2</b> linhas de simetria: a vertical e a horizontal. As diagonais só funcionam quando todos os lados são iguais, como no quadrado.</p>
+      </div>
+
+      <div class="caderno">
+        <h4>Copie no caderno</h4>
+        <p><b>Linha de simetria:</b> reta que divide a figura em duas partes que coincidem quando dobradas uma sobre a outra.</p>
+        <p><b>Simetria de rotação:</b> a figura coincide com ela mesma após um giro entre 0° e 360° em torno de um centro.</p>
+        <p>Quadrado: 4 linhas de simetria, menor giro 90°. Retângulo: 2 linhas, menor giro 180°. Triângulo equilátero: 3 linhas, menor giro 120°.</p>
+      </div>
+
+      <div class="try">
+        <h4>Agora é sua vez</h4>
+        <p class="small" style="margin:0">Qual é o menor giro que faz o triângulo equilátero coincidir com ele mesmo? Responda em graus.</p>
+        <div class="row">
+          <input type="text" id="t5in" placeholder="Ex.: 45°" aria-label="Sua resposta">
+          <button class="btn solid" data-try="t5" data-ans="120,120°,120graus">Conferir</button>
+        </div>
+        <div class="fb" id="t5fb"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PARTE 6 ================= -->
+  <section class="part" id="p6">
+    <div class="card">
+      <span class="eyebrow yellow">Parte 6</span>
+      <h2>Um roteiro para não errar na malha</h2>
+      <p>Quando a questão mostra a figura original e a imagem numa malha quadriculada e pergunta qual transformação foi aplicada, siga sempre a mesma ordem de perguntas. Assim você não decide no chute.</p>
+
+      <div class="algo">
+        <p class="step"><b>Passo 1.</b> Compare o tamanho da imagem com o tamanho da figura original.</p>
+        <p class="step"><b>Passo 2.</b> Se o tamanho mudou, não é isometria: é ampliação ou redução. Pare aqui.</p>
+        <p class="step"><b>Passo 3.</b> Se o tamanho é o mesmo, tente encaixar a imagem na original só deslizando, sem girar. Se encaixa, é translação.</p>
+        <p class="step"><b>Passo 4.</b> Se não encaixou deslizando, tente girar. Se encaixa girando, é rotação.</p>
+        <p class="step"><b>Passo 5.</b> Se não encaixa nem deslizando nem girando, a figura foi virada como num espelho: é reflexão.</p>
+      </div>
+
+      <h3>O mesmo roteiro, em fluxograma</h3>
+      <div class="lab">
+        <svg viewBox="0 0 360 560" role="img" aria-label="Fluxograma para identificar qual transformação foi aplicada">
+          <defs>
+            <marker id="aI" markerWidth="8" markerHeight="8" refX="6.5" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#362F78"/></marker>
+            <marker id="aC" markerWidth="8" markerHeight="8" refX="6.5" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#E4694F"/></marker>
+          </defs>
+          <rect width="360" height="560" fill="#fff"/>
+
+          <ellipse cx="120" cy="26" rx="52" ry="20" fill="#E7E3F8" stroke="#362F78" stroke-width="2"/>
+          <text x="120" y="31" text-anchor="middle" font-family="'Baloo 2',sans-serif" font-size="14" font-weight="700" fill="#241F52">Início</text>
+          <line x1="120" y1="46" x2="120" y2="64" stroke="#362F78" stroke-width="2" marker-end="url(#aI)"/>
+
+          <rect x="32" y="66" width="176" height="40" rx="8" fill="#fff" stroke="#362F78" stroke-width="2"/>
+          <text x="120" y="91" text-anchor="middle" font-family="'Atkinson Hyperlegible',sans-serif" font-size="12.5" fill="#2A2650">Compare a imagem com a original</text>
+          <line x1="120" y1="106" x2="120" y2="120" stroke="#362F78" stroke-width="2" marker-end="url(#aI)"/>
+
+          <polygon points="120,122 196,160 120,198 44,160" fill="#FFF9E8" stroke="#362F78" stroke-width="2"/>
+          <text x="120" y="157" text-anchor="middle" font-family="'Atkinson Hyperlegible',sans-serif" font-size="12" fill="#2A2650">O tamanho</text>
+          <text x="120" y="172" text-anchor="middle" font-family="'Atkinson Hyperlegible',sans-serif" font-size="12" fill="#2A2650">mudou?</text>
+          <line x1="196" y1="160" x2="220" y2="160" stroke="#E4694F" stroke-width="2" marker-end="url(#aC)"/>
+          <text x="208" y="152" text-anchor="middle" font-family="'Baloo 2',sans-serif" font-size="12" font-weight="700" fill="#E4694F">Sim</text>
+          <ellipse cx="288" cy="160" rx="66" ry="30" fill="#FFF1ED" stroke="#E4694F" stroke-width="2"/>
+          <text x="288" y="155" text-anchor="middle" font-family="'Baloo 2',sans-serif" font-size="13" font-weight="700" fill="#7A2E1B">Ampliação ou redução</text>
+          <text x="288" y="172" text-anchor="middle" font-family="'Atkinson Hyperlegible',sans-serif" font-size="10.5" fill="#7A2E1B">não é isometria</text>
+          <line x1="120" y1="198" x2="120" y2="228" stroke="#362F78" stroke-width="2" marker-end="url(#aI)"/>
+          <text x="134" y="216" font-family="'Baloo 2',sans-serif" font-size="12" font-weight="700" fill="#362F78">Não</text>
+
+          <polygon points="120,230 196,270 120,310 44,270" fill="#FFF9E8" stroke="#362F78" stroke-width="2"/>
+          <text x="120" y="266" text-anchor="middle" font-family="'Atkinson Hyperlegible',sans-serif" font-size="12" fill="#2A2650">Encaixa só</text>
+          <text x="120" y="281" text-anchor="middle" font-family="'Atkinson Hyperlegible',sans-serif" font-size="12" fill="#2A2650">deslizando?</text>
+          <line x1="196" y1="270" x2="224" y2="270" stroke="#E4694F" stroke-width="2" marker-end="url(#aC)"/>
+          <text x="210" y="262" text-anchor="middle" font-family="'Baloo 2',sans-serif" font-size="12" font-weight="700" fill="#E4694F">Sim</text>
+          <ellipse cx="288" cy="270" rx="62" ry="24" fill="#EAF8F2" stroke="#2C8467" stroke-width="2"/>
+          <text x="288" y="275" text-anchor="middle" font-family="'Baloo 2',sans-serif" font-size="14" font-weight="700" fill="#14503C">Translação</text>
+          <line x1="120" y1="310" x2="120" y2="340" stroke="#362F78" stroke-width="2" marker-end="url(#aI)"/>
+          <text x="134" y="328" font-family="'Baloo 2',sans-serif" font-size="12" font-weight="700" fill="#362F78">Não</text>
+
+          <polygon points="120,342 196,380 120,418 44,380" fill="#FFF9E8" stroke="#362F78" stroke-width="2"/>
+          <text x="120" y="376" text-anchor="middle" font-family="'Atkinson Hyperlegible',sans-serif" font-size="12" fill="#2A2650">Encaixa</text>
+          <text x="120" y="391" text-anchor="middle" font-family="'Atkinson Hyperlegible',sans-serif" font-size="12" fill="#2A2650">girando?</text>
+          <line x1="196" y1="380" x2="224" y2="380" stroke="#E4694F" stroke-width="2" marker-end="url(#aC)"/>
+          <text x="210" y="372" text-anchor="middle" font-family="'Baloo 2',sans-serif" font-size="12" font-weight="700" fill="#E4694F">Sim</text>
+          <ellipse cx="288" cy="380" rx="62" ry="24" fill="#EAF8F2" stroke="#2C8467" stroke-width="2"/>
+          <text x="288" y="385" text-anchor="middle" font-family="'Baloo 2',sans-serif" font-size="14" font-weight="700" fill="#14503C">Rotação</text>
+          <line x1="120" y1="418" x2="120" y2="456" stroke="#362F78" stroke-width="2" marker-end="url(#aI)"/>
+          <text x="134" y="440" font-family="'Baloo 2',sans-serif" font-size="12" font-weight="700" fill="#362F78">Não</text>
+
+          <ellipse cx="120" cy="482" rx="62" ry="24" fill="#EAF8F2" stroke="#2C8467" stroke-width="2"/>
+          <text x="120" y="487" text-anchor="middle" font-family="'Baloo 2',sans-serif" font-size="14" font-weight="700" fill="#14503C">Reflexão</text>
+        </svg>
+      </div>
+
+      <div class="dica">
+        <h4>Dica — leia o passo certo</h4>
+        <p style="margin:0">Repare que o Passo 4 só vale se o Passo 3 falhou, e o Passo 5 só vale se o 4 também falhou. Um erro comum é pular direto para o passo que parece mais fácil e responder “rotação” sem antes ter testado o deslizamento. Se você testar na ordem, a resposta sai sozinha: o roteiro nunca dá duas respostas ao mesmo tempo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PARTE 7 ================= -->
+  <section class="part" id="p7">
+    <div class="card">
+      <span class="eyebrow coral">Parte 7</span>
+      <h2>Hora de praticar</h2>
+      <div class="score"><span>Sua pontuação</span><span><span id="scoreN">0</span> / 9</span></div>
+
+      <div class="q" data-q>
+        <p class="qnum">Questão 1</p>
+        <p>Qual das transformações abaixo <b>não</b> é uma isometria?</p>
+        <button class="opt" data-ok="0"><span class="mark">A</span>Reflexão.</button>
+        <button class="opt" data-ok="0"><span class="mark">B</span>Translação.</button>
+        <button class="opt" data-ok="1"><span class="mark">C</span>Ampliação.</button>
+        <button class="opt" data-ok="0"><span class="mark">D</span>Rotação.</button>
+        <button class="opt" data-ok="0"><span class="mark">E</span>Rotação de 180°.</button>
+        <div class="qfb">Isometria conserva tamanho e forma. A ampliação aumenta a figura, então ela sai da lista. As outras quatro só mudam a posição.</div>
+      </div>
+
+      <div class="q" data-q>
+        <p class="qnum">Questão 2</p>
+        <p>Na malha, a figura branca é a original e a figura verde é a imagem. Qual transformação foi aplicada?</p>
+        <div class="miniwrap">
+          <svg viewBox="0 0 224 128" role="img" aria-label="Figura em L e sua imagem espelhada, com o pé apontando para o lado contrário">
+            <defs><pattern id="gq2" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0 H0 V16" fill="none" stroke="#E3DEF7" stroke-width="1"/></pattern></defs>
+            <rect width="224" height="128" fill="#fff"/><rect width="224" height="128" fill="url(#gq2)"/>
+            <polygon points="16,16 32,16 32,80 64,80 64,96 16,96" fill="#fff" stroke="#362F78" stroke-width="2.2"/>
+            <polygon points="192,16 176,16 176,80 144,80 144,96 192,96" fill="#A9E5D0" stroke="#241F52" stroke-width="2.2"/>
+          </svg>
+        </div>
+        <button class="opt" data-ok="1"><span class="mark">A</span>Reflexão.</button>
+        <button class="opt" data-ok="0"><span class="mark">B</span>Translação.</button>
+        <button class="opt" data-ok="0"><span class="mark">C</span>Rotação.</button>
+        <button class="opt" data-ok="0"><span class="mark">D</span>Ampliação.</button>
+        <button class="opt" data-ok="0"><span class="mark">E</span>Redução.</button>
+        <div class="qfb">A figura continua em pé, mas o pé do L trocou de lado. Deslizar não resolve e girar também não: ela foi espelhada. É reflexão.</div>
+      </div>
+
+      <div class="q" data-q>
+        <p class="qnum">Questão 3</p>
+        <p>Na malha, a figura branca é a original e a figura verde é a imagem. Qual transformação foi aplicada?</p>
+        <div class="miniwrap">
+          <svg viewBox="0 0 224 128" role="img" aria-label="Figura em L e sua imagem de cabeça para baixo, com o pé no alto">
+            <defs><pattern id="gq3" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0 H0 V16" fill="none" stroke="#E3DEF7" stroke-width="1"/></pattern></defs>
+            <rect width="224" height="128" fill="#fff"/><rect width="224" height="128" fill="url(#gq3)"/>
+            <polygon points="16,16 32,16 32,80 64,80 64,96 16,96" fill="#fff" stroke="#362F78" stroke-width="2.2"/>
+            <polygon points="208,96 192,96 192,32 160,32 160,16 208,16" fill="#A9E5D0" stroke="#241F52" stroke-width="2.2"/>
+          </svg>
+        </div>
+        <button class="opt" data-ok="0"><span class="mark">A</span>Translação.</button>
+        <button class="opt" data-ok="0"><span class="mark">B</span>Reflexão.</button>
+        <button class="opt" data-ok="1"><span class="mark">C</span>Rotação.</button>
+        <button class="opt" data-ok="0"><span class="mark">D</span>Ampliação.</button>
+        <button class="opt" data-ok="0"><span class="mark">E</span>Redução.</button>
+        <div class="qfb">A imagem está de cabeça para baixo. Se você girar a folha meia volta, ela encaixa na original. Como encaixa girando, é rotação — de 180°.</div>
+      </div>
+
+      <div class="q" data-q>
+        <p class="qnum">Questão 4</p>
+        <p>Na malha, a figura branca é a original e a figura verde é a imagem. Essa transformação é uma isometria?</p>
+        <div class="miniwrap">
+          <svg viewBox="0 0 224 128" role="img" aria-label="Figura em L e uma cópia claramente maior dela">
+            <defs><pattern id="gq4" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0 H0 V16" fill="none" stroke="#E3DEF7" stroke-width="1"/></pattern></defs>
+            <rect width="224" height="128" fill="#fff"/><rect width="224" height="128" fill="url(#gq4)"/>
+            <polygon points="16,48 28,48 28,88 52,88 52,100 16,100" fill="#fff" stroke="#362F78" stroke-width="2.2"/>
+            <polygon points="112,16 136,16 136,96 184,96 184,120 112,120" fill="#A9E5D0" stroke="#241F52" stroke-width="2.2"/>
+          </svg>
+        </div>
+        <button class="opt" data-ok="0"><span class="mark">A</span>Sim, porque a figura mudou de lugar.</button>
+        <button class="opt" data-ok="0"><span class="mark">B</span>Sim, porque a forma continua parecida.</button>
+        <button class="opt" data-ok="1"><span class="mark">C</span>Não, porque a figura mudou de tamanho.</button>
+        <button class="opt" data-ok="0"><span class="mark">D</span>Não, porque a figura foi girada.</button>
+        <button class="opt" data-ok="0"><span class="mark">E</span>Não, porque a figura foi espelhada.</button>
+        <div class="qfb">Conte os quadradinhos: a imagem é o dobro da original. A forma até continua parecida, mas o tamanho mudou, e isometria exige tamanho igual. Isso é uma ampliação.</div>
+      </div>
+
+      <div class="q" data-q>
+        <p class="qnum">Questão 5</p>
+        <p>Na reflexão em relação ao eixo y, o que acontece com as coordenadas de um ponto?</p>
+        <button class="opt" data-ok="0"><span class="mark">A</span>O y troca de sinal e o x continua igual.</button>
+        <button class="opt" data-ok="1"><span class="mark">B</span>O x troca de sinal e o y continua igual.</button>
+        <button class="opt" data-ok="0"><span class="mark">C</span>Os dois trocam de sinal.</button>
+        <button class="opt" data-ok="0"><span class="mark">D</span>Nenhum dos dois muda.</button>
+        <button class="opt" data-ok="0"><span class="mark">E</span>O x e o y trocam de lugar.</button>
+        <div class="qfb">O eixo y é o espelho e ele está em pé. O ponto atravessa para a esquerda ou para a direita, então quem muda é o x: P(a, b) → P′(−a, b).</div>
+      </div>
+
+      <div class="q" data-q>
+        <p class="qnum">Questão 6</p>
+        <p>Qual é a imagem do ponto M(−5, 2) pela reflexão em relação ao eixo x?</p>
+        <button class="opt" data-ok="0"><span class="mark">A</span>(5, 2)</button>
+        <button class="opt" data-ok="0"><span class="mark">B</span>(5, −2)</button>
+        <button class="opt" data-ok="1"><span class="mark">C</span>(−5, −2)</button>
+        <button class="opt" data-ok="0"><span class="mark">D</span>(2, −5)</button>
+        <button class="opt" data-ok="0"><span class="mark">E</span>(−5, 2)</button>
+        <div class="qfb">No eixo x só o y troca de sinal: o −5 fica como está e o 2 vira −2. Resultado: (−5, −2). Cuidado para não trocar o sinal dos dois.</div>
+      </div>
+
+      <div class="q" data-q>
+        <p class="qnum">Questão 7</p>
+        <p>O ponto C(7, 3) sofre uma translação de 4 unidades para cima. Qual é a imagem C′?</p>
+        <button class="opt" data-ok="0"><span class="mark">A</span>(11, 3)</button>
+        <button class="opt" data-ok="1"><span class="mark">B</span>(7, 7)</button>
+        <button class="opt" data-ok="0"><span class="mark">C</span>(7, −1)</button>
+        <button class="opt" data-ok="0"><span class="mark">D</span>(3, 7)</button>
+        <button class="opt" data-ok="0"><span class="mark">E</span>(11, 7)</button>
+        <div class="qfb">Subir mexe na altura, ou seja, no y: 3 + 4 = 7. O x não se mexe, porque não houve deslocamento lateral. Fica (7, 7).</div>
+      </div>
+
+      <div class="q" data-q>
+        <p class="qnum">Questão 8</p>
+        <p>Quantas linhas de simetria tem o triângulo isósceles abaixo, que tem dois lados iguais e um lado diferente?</p>
+        <div class="miniwrap">
+          <svg viewBox="0 0 224 128" role="img" aria-label="Triângulo isósceles alto e estreito">
+            <polygon points="112,18 152,110 72,110" fill="#fff" stroke="#362F78" stroke-width="2.4"/>
+          </svg>
+        </div>
+        <button class="opt" data-ok="1"><span class="mark">A</span>1</button>
+        <button class="opt" data-ok="0"><span class="mark">B</span>2</button>
+        <button class="opt" data-ok="0"><span class="mark">C</span>3</button>
+        <button class="opt" data-ok="0"><span class="mark">D</span>4</button>
+        <button class="opt" data-ok="0"><span class="mark">E</span>0</button>
+        <div class="qfb">Só a dobra vertical, que passa pelo bico de cima e pelo meio da base, faz as duas metades coincidirem. As outras dobras deixam sobra de um lado. O triângulo equilátero é que tem 3 linhas, porque lá todos os lados são iguais.</div>
+      </div>
+
+      <div class="q" data-q>
+        <p class="qnum">Questão 9</p>
+        <p>Qual é o menor giro que faz um retângulo (que não é quadrado) coincidir com ele mesmo?</p>
+        <button class="opt" data-ok="0"><span class="mark">A</span>45°</button>
+        <button class="opt" data-ok="0"><span class="mark">B</span>90°</button>
+        <button class="opt" data-ok="0"><span class="mark">C</span>120°</button>
+        <button class="opt" data-ok="1"><span class="mark">D</span>180°</button>
+        <button class="opt" data-ok="0"><span class="mark">E</span>360°</button>
+        <div class="qfb">Girando 90° o retângulo fica em pé e não coincide, porque a largura e a altura são diferentes. Só com meia volta, 180°, ele volta a ocupar o mesmo lugar. No quadrado bastariam 90°.</div>
+      </div>
+
+      <div class="readout" id="finalMsg" style="display:none;margin-top:16px"></div>
+    </div>
+  </section>
+
+  <!-- ================= PARTE 8 ================= -->
+  <section class="part" id="p8">
+    <div class="card">
+      <span class="eyebrow lilac">Parte 8</span>
+      <h2>Resumo pro caderno</h2>
+      <p>Uma transformação geométrica é uma regra que pega uma figura e produz outra, chamada imagem. Quando essa regra não altera nem o tamanho nem a forma da figura, ela recebe o nome de isometria, palavra formada por iso, que quer dizer igual, e metria, que quer dizer medida. Numa isometria, todos os lados continuam com o mesmo comprimento e todos os ângulos continuam com a mesma abertura; o que muda é apenas a posição da figura no plano. Ampliação e redução, por mudarem o tamanho, não são isometrias, mesmo que a forma continue parecida.</p>
+      <p>Existem três isometrias básicas no plano. A reflexão espelha a figura em relação a uma reta, chamada eixo de reflexão, como acontece quando você se olha no espelho. A translação desloca a figura numa certa direção e numa certa distância, indicadas por um vetor, sem girar e sem espelhar. A rotação gira a figura em torno de um ponto fixo, chamado centro, com um ângulo e um sentido determinados. Para descobrir qual delas foi aplicada numa malha quadriculada, primeiro confira se o tamanho mudou; se não mudou, tente encaixar a imagem na original apenas deslizando, o que indicaria translação; se não encaixar, tente girar, o que indicaria rotação; e se não encaixar de nenhum desses dois jeitos, a figura foi virada como num espelho, ou seja, houve reflexão.</p>
+      <p>No plano cartesiano essas transformações viram regras com números. Na reflexão em relação ao eixo x, o ponto P(a, b) tem imagem P′(a, −b), porque o espelho está deitado e quem atravessa é a altura, isto é, o y. Na reflexão em relação ao eixo y, a imagem é P′(−a, b), pois agora o espelho está em pé e quem muda é o x. Numa translação pelo vetor que vai de (0, 0) até (m, n), a imagem é P′(a + m, b + n), somando m na horizontal e n na vertical. Já na rotação de 180° em torno da origem, os dois números trocam de sinal, e a imagem fica P′(−a, −b).</p>
+      <p>Simetria é um assunto próximo, mas olha para uma figura sozinha. Uma linha de simetria é uma reta que divide a figura em duas partes que coincidem quando dobramos uma sobre a outra, como se dobrássemos o papel exatamente sobre essa reta. O quadrado tem quatro linhas de simetria, sendo duas pelos meios dos lados e duas pelas diagonais; o retângulo que não é quadrado tem apenas duas, a vertical e a horizontal, porque dobrar pela diagonal não faz as metades coincidirem; e o triângulo equilátero tem três. Já a simetria de rotação acontece quando a figura coincide com ela mesma após um giro maior que zero e menor que uma volta completa: o menor giro que serve é de 90° no quadrado, de 180° no retângulo e de 120° no triângulo equilátero.</p>
+      <p>Se na prova você lembrar de duas perguntas, já resolve a maior parte das questões: o tamanho mudou? E, se não mudou, dá para encaixar deslizando, girando, ou só espelhando? A primeira pergunta separa o que é isometria do que não é, e a segunda diz qual das três isometrias foi usada.</p>
+    </div>
+  </section>
+
+  <div class="navbtns">
+    <button class="navbtn" id="prevBtn">← Voltar</button>
+    <button class="navbtn" id="nextBtn">Avançar →</button>
+  </div>
+</main>
+
+<script>
+(function(){
+'use strict';
+
+/* =============== NAVEGAÇÃO =============== */
+var NAMES = ['Para começar','Isometria','As três isometrias','Plano cartesiano','Simetria','Roteiro','Prática','Resumo'];
+var N = NAMES.length, cur = 0;
+var tabsEl = document.getElementById('tabs');
+NAMES.forEach(function(nm,i){
+  var b = document.createElement('button');
+  b.className='tab'; b.type='button'; b.textContent=(i+1)+'. '+nm;
+  b.setAttribute('aria-selected', i===0?'true':'false');
+  b.addEventListener('click',function(){go(i);});
+  tabsEl.appendChild(b);
+});
+function go(i){
+  cur = Math.max(0, Math.min(N-1, i));
+  for(var k=0;k<N;k++){
+    document.getElementById('p'+(k+1)).classList.toggle('on', k===cur);
+    tabsEl.children[k].setAttribute('aria-selected', k===cur?'true':'false');
+  }
+  document.getElementById('pfill').style.width = ((cur+1)/N*100)+'%';
+  document.getElementById('plabel').textContent = 'Parte '+(cur+1)+' de '+N+' — '+NAMES[cur];
+  document.getElementById('prevBtn').disabled = (cur===0);
+  document.getElementById('nextBtn').disabled = (cur===N-1);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.getElementById('prevBtn').addEventListener('click',function(){go(cur-1);});
+document.getElementById('nextBtn').addEventListener('click',function(){go(cur+1);});
+go(0);
+
+/* =============== GANCHO =============== */
+document.getElementById('hookBtn').addEventListener('click',function(){
+  document.getElementById('hookFb').classList.add('good');
+  this.style.display='none';
+});
+
+/* =============== LAB 1 — MALHA =============== */
+var CELL=20, CX=70, CY=110;
+var st={tx:8,ty:0,rot:0,flip:false,sc:1};
+var imgG=document.getElementById('imgG'), labSvg=document.getElementById('labSvg');
+var labOut=document.getElementById('labOut'), scaleBtn=document.getElementById('scaleBtn');
+
+function applyLab(){
+  var f=(st.flip?-1:1)*st.sc;
+  imgG.setAttribute('transform',
+    'translate('+(st.tx*CELL)+','+(st.ty*CELL)+') rotate('+st.rot+','+CX+','+CY+')'+
+    ' translate('+CX+','+CY+') scale('+f+','+st.sc+') translate('+(-CX)+','+(-CY)+')');
+  var ops=[];
+  if(st.tx!==0||st.ty!==0) ops.push('translação');
+  if(st.flip) ops.push('reflexão');
+  if(st.rot!==0) ops.push('rotação de '+st.rot+'°');
+  if(st.sc!==1) ops.push('ampliação');
+  var txt = ops.length ? ops.join(' + ') : 'nada ainda — arraste a figura verde';
+  var verdict = (st.sc!==1)
+    ? '<span class="no">✕ Não é isometria</span> — a figura mudou de tamanho.'
+    : '<span class="ok">✓ É isometria</span> — mesmo tamanho, mesma forma.';
+  labOut.innerHTML = '<b>Você aplicou:</b> '+txt+'<br>'+verdict;
+  scaleBtn.textContent = (st.sc!==1) ? 'Voltar ao tamanho' : 'Ampliar';
+}
+document.querySelectorAll('[data-lab]').forEach(function(b){
+  b.addEventListener('click',function(){
+    var a=b.getAttribute('data-lab');
+    if(a==='flip') st.flip=!st.flip;
+    else if(a==='rot90') st.rot=(st.rot+90)%360;
+    else if(a==='rot180') st.rot=(st.rot+180)%360;
+    else if(a==='scale') st.sc=(st.sc===1?1.5:1);
+    else if(a==='reset') st={tx:8,ty:0,rot:0,flip:false,sc:1};
+    applyLab();
+  });
+});
+function svgPt(svg,ev){
+  var p=svg.createSVGPoint(); p.x=ev.clientX; p.y=ev.clientY;
+  return p.matrixTransform(svg.getScreenCTM().inverse());
+}
+var drag=null;
+imgG.addEventListener('pointerdown',function(ev){
+  ev.preventDefault();
+  var p=svgPt(labSvg,ev);
+  drag={x:p.x,y:p.y,tx:st.tx,ty:st.ty};
+  imgG.setPointerCapture(ev.pointerId);
+  imgG.style.cursor='grabbing';
+});
+imgG.addEventListener('pointermove',function(ev){
+  if(!drag) return;
+  var p=svgPt(labSvg,ev);
+  st.tx=Math.max(-1,Math.min(13, drag.tx+Math.round((p.x-drag.x)/CELL)));
+  st.ty=Math.max(-2,Math.min(3,  drag.ty+Math.round((p.y-drag.y)/CELL)));
+  applyLab();
+});
+['pointerup','pointercancel'].forEach(function(e){
+  imgG.addEventListener(e,function(){drag=null;imgG.style.cursor='grab';});
+});
+applyLab();
+
+/* =============== LAB 2 — PLANO CARTESIANO =============== */
+var U=20, OX=160, OY=160, RMAX=7;
+var P={x:3,y:5}, mode='x', vm=3, vn=0;
+var plane=document.getElementById('planeSvg');
+function PX(x){return OX+U*x} function PY(y){return OY-U*y}
+function imgOf(p){
+  if(mode==='x') return {x:p.x, y:-p.y};
+  if(mode==='y') return {x:-p.x, y:p.y};
+  if(mode==='r') return {x:-p.x, y:-p.y};
+  return {x:p.x+vm, y:p.y+vn};
+}
+function clampP(){
+  P.x=Math.max(-6,Math.min(6,Math.round(P.x)));
+  P.y=Math.max(-6,Math.min(6,Math.round(P.y)));
+  var q=imgOf(P), dx=0, dy=0;
+  if(q.x>RMAX) dx=RMAX-q.x; if(q.x<-RMAX) dx=-RMAX-q.x;
+  if(q.y>RMAX) dy=RMAX-q.y; if(q.y<-RMAX) dy=-RMAX-q.y;
+  P.x=Math.max(-6,Math.min(6,P.x+dx));
+  P.y=Math.max(-6,Math.min(6,P.y+dy));
+}
+function sig(v){return v<0?('('+v+')'):v;}
+function drawPlane(){
+  clampP();
+  var q=imgOf(P), s=[];
+  s.push('<defs><marker id="ax" markerWidth="8" markerHeight="8" refX="6" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#362F78"/></marker></defs>');
+  s.push('<rect width="320" height="320" fill="#fff"/>');
+  for(var i=-RMAX;i<=RMAX;i++){
+    s.push('<line x1="'+PX(i)+'" y1="'+PY(RMAX)+'" x2="'+PX(i)+'" y2="'+PY(-RMAX)+'" stroke="#E3DEF7" stroke-width="1"/>');
+    s.push('<line x1="'+PX(-RMAX)+'" y1="'+PY(i)+'" x2="'+PX(RMAX)+'" y2="'+PY(i)+'" stroke="#E3DEF7" stroke-width="1"/>');
+  }
+  s.push('<line x1="'+PX(-RMAX)+'" y1="'+OY+'" x2="'+(PX(RMAX)+6)+'" y2="'+OY+'" stroke="#362F78" stroke-width="2" marker-end="url(#ax)"/>');
+  s.push('<line x1="'+OX+'" y1="'+PY(-RMAX)+'" x2="'+OX+'" y2="'+(PY(RMAX)-6)+'" stroke="#362F78" stroke-width="2" marker-end="url(#ax)"/>');
+  [-6,-4,-2,2,4,6].forEach(function(n){
+    s.push('<text x="'+PX(n)+'" y="'+(OY+13)+'" font-size="9" text-anchor="middle" fill="#5B5686" font-family="Arial,sans-serif">'+n+'</text>');
+    s.push('<text x="'+(OX-7)+'" y="'+(PY(n)+3)+'" font-size="9" text-anchor="end" fill="#5B5686" font-family="Arial,sans-serif">'+n+'</text>');
+  });
+  s.push('<text x="'+(PX(RMAX)-2)+'" y="'+(OY+16)+'" font-size="11" fill="#362F78" font-family="\'Baloo 2\',sans-serif" font-weight="700">x</text>');
+  s.push('<text x="'+(OX+8)+'" y="'+(PY(RMAX)+4)+'" font-size="11" fill="#362F78" font-family="\'Baloo 2\',sans-serif" font-weight="700">y</text>');
+  s.push('<line x1="'+PX(P.x)+'" y1="'+PY(P.y)+'" x2="'+PX(q.x)+'" y2="'+PY(q.y)+'" stroke="#6C63B5" stroke-width="1.6" stroke-dasharray="5 4"/>');
+  s.push('<circle cx="'+PX(q.x)+'" cy="'+PY(q.y)+'" r="6.5" fill="#362F78" stroke="#fff" stroke-width="2.2"/>');
+  s.push('<circle cx="'+PX(P.x)+'" cy="'+PY(P.y)+'" r="6.5" fill="#E4694F" stroke="#fff" stroke-width="2.2"/>');
+  var lx=(P.x>3? -10:10), qx=(q.x>3? -10:10);
+  s.push('<text x="'+(PX(P.x)+lx)+'" y="'+(PY(P.y)-11)+'" font-size="12" font-weight="700" fill="#E4694F" text-anchor="'+(P.x>3?'end':'start')+'" font-family="\'Baloo 2\',sans-serif">P('+P.x+', '+P.y+')</text>');
+  s.push('<text x="'+(PX(q.x)+qx)+'" y="'+(PY(q.y)+20)+'" font-size="12" font-weight="700" fill="#362F78" text-anchor="'+(q.x>3?'end':'start')+'" font-family="\'Baloo 2\',sans-serif">P\u2032('+q.x+', '+q.y+')</text>');
+  plane.innerHTML = s.join('');
+
+  var rule, ex;
+  if(mode==='x'){ rule='Reflexão no eixo x:  P(a, b) → P′(a, −b)'; }
+  else if(mode==='y'){ rule='Reflexão no eixo y:  P(a, b) → P′(−a, b)'; }
+  else if(mode==='r'){ rule='Rotação de 180° na origem:  P(a, b) → P′(−a, −b)'; }
+  else { rule='Translação (m = '+vm+', n = '+vn+'):  P(a, b) → P′(a + m, b + n)'; }
+  ex = 'P('+P.x+', '+P.y+')  →  P′('+q.x+', '+q.y+')';
+  document.getElementById('ruleTxt').textContent = rule;
+  document.getElementById('ruleEx').textContent = ex;
+  document.getElementById('mVal').textContent = vm;
+  document.getElementById('nVal').textContent = vn;
+}
+document.querySelectorAll('[data-mode]').forEach(function(b){
+  b.addEventListener('click',function(){
+    mode=b.getAttribute('data-mode');
+    document.querySelectorAll('[data-mode]').forEach(function(o){o.classList.remove('solid');});
+    b.classList.add('solid');
+    document.getElementById('vecBox').style.display = (mode==='t'?'block':'none');
+    drawPlane();
+  });
+});
+document.querySelectorAll('[data-vec]').forEach(function(b){
+  b.addEventListener('click',function(){
+    var a=b.getAttribute('data-vec');
+    if(a==='mm') vm=Math.max(-4,vm-1);
+    if(a==='mp') vm=Math.min(4,vm+1);
+    if(a==='nm') vn=Math.max(-4,vn-1);
+    if(a==='np') vn=Math.min(4,vn+1);
+    drawPlane();
+  });
+});
+var pDrag=false;
+function movePoint(ev){
+  var p=svgPt(plane,ev);
+  P.x=Math.round((p.x-OX)/U);
+  P.y=Math.round((OY-p.y)/U);
+  drawPlane();
+}
+plane.addEventListener('pointerdown',function(ev){ev.preventDefault();pDrag=true;plane.setPointerCapture(ev.pointerId);movePoint(ev);});
+plane.addEventListener('pointermove',function(ev){if(pDrag)movePoint(ev);});
+['pointerup','pointercancel'].forEach(function(e){plane.addEventListener(e,function(){pDrag=false;});});
+drawPlane();
+
+/* =============== CORRENTE =============== */
+document.querySelectorAll('[data-reveal]').forEach(function(b){
+  b.addEventListener('click',function(){
+    if(b.classList.contains('done')) return;
+    b.textContent=b.getAttribute('data-reveal');
+    b.classList.add('done');
+  });
+});
+
+/* =============== LAB 3 — SIMETRIA =============== */
+var FIG={
+  quad:{name:'quadrado', pts:'70,50 170,50 170,150 70,150',
+    lines:[[120,36,120,164],[56,100,184,100],[62,42,178,158],[178,42,62,158]],
+    sym:[90,180,270,360], menor:'90°'},
+  ret:{name:'retângulo', pts:'50,60 190,60 190,140 50,140',
+    lines:[[120,46,120,154],[36,100,204,100]],
+    sym:[180,360], menor:'180°'},
+  tri:{name:'triângulo equilátero', pts:'120,37 175,132 65,132',
+    lines:[[120,25,120,145],[185,138,82,78],[55,138,158,78]],
+    sym:[120,240,360], menor:'120°'}
+};
+var figKey='quad', shown=0;
+var symSvg=document.getElementById('symSvg'), rotSvg=document.getElementById('rotSvg');
+var lineOut=document.getElementById('lineOut'), rotOut=document.getElementById('rotOut');
+var lineBtn=document.getElementById('lineBtn'), rotRange=document.getElementById('rotRange');
+
+function drawSym(){
+  var f=FIG[figKey], s=['<rect width="240" height="200" fill="#fff" rx="10"/>'];
+  s.push('<polygon points="'+f.pts+'" fill="#F0EDFB" stroke="#362F78" stroke-width="2.4"/>');
+  for(var i=0;i<shown;i++){
+    var L=f.lines[i];
+    s.push('<line x1="'+L[0]+'" y1="'+L[1]+'" x2="'+L[2]+'" y2="'+L[3]+'" stroke="#E4694F" stroke-width="2.2" stroke-dasharray="7 5"/>');
+  }
+  symSvg.innerHTML=s.join('');
+  var tot=f.lines.length;
+  lineOut.innerHTML = shown===0
+    ? 'Nenhuma linha mostrada ainda.'
+    : '<b>'+shown+' de '+tot+'</b> linha'+(shown>1?'s':'')+' de simetria do '+f.name+(shown===tot?' — <span class="ok">✓ são todas</span>':'');
+  lineBtn.textContent = (shown>=tot) ? 'Começar de novo' : 'Mostrar uma linha';
+}
+lineBtn.addEventListener('click',function(){
+  var tot=FIG[figKey].lines.length;
+  shown = (shown>=tot) ? 0 : shown+1;
+  drawSym();
+});
+function drawRot(){
+  var f=FIG[figKey], a=parseInt(rotRange.value,10);
+  var s=['<rect width="240" height="200" fill="#fff" rx="10"/>'];
+  s.push('<polygon points="'+f.pts+'" fill="none" stroke="#C9C1E8" stroke-width="2" stroke-dasharray="5 4"/>');
+  s.push('<g transform="rotate('+a+',120,100)"><polygon points="'+f.pts+'" fill="#A9E5D0" fill-opacity="0.75" stroke="#241F52" stroke-width="2.4"/></g>');
+  s.push('<circle cx="120" cy="100" r="3.6" fill="#E4694F"/>');
+  rotSvg.innerHTML=s.join('');
+  var hit = (a>0 && f.sym.indexOf(a)>=0);
+  rotOut.innerHTML = 'Giro de <b>'+a+'°</b><br>'+ (hit
+    ? '<span class="ok">✓ coincide com a original</span>'
+    : (a===0 ? 'ainda não girou' : '<span class="no">✕ não coincide</span>'));
+}
+rotRange.addEventListener('input',drawRot);
+document.querySelectorAll('[data-fig]').forEach(function(b){
+  b.addEventListener('click',function(){
+    figKey=b.getAttribute('data-fig'); shown=0; rotRange.value=0;
+    document.querySelectorAll('[data-fig]').forEach(function(o){o.classList.remove('solid');});
+    b.classList.add('solid');
+    drawSym(); drawRot();
+  });
+});
+drawSym(); drawRot();
+
+/* =============== TRY-BOXES =============== */
+function norm(s){
+  return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[\s().;º°]/g,'').replace(/,/g,'').replace(/graus/g,'');
+}
+var TIPS={
+  t3:'Quase — repare que o pé do L continua apontando para o mesmo lado e a figura não girou. Ela só escorregou. Tente de novo.',
+  t4:'Quase — o espelho aqui é o eixo x, então quem troca de sinal é o y. O 6 fica igual. Tente de novo.',
+  t5:'Quase — pense em quantas posições diferentes o triângulo pode ocupar numa volta inteira, e divida 360° por esse número.'
+};
+var OKS={
+  t3:'Isso mesmo: é uma <b>translação</b>. A figura só deslizou, sem girar e sem espelhar.',
+  t4:'Isso mesmo: <b>D′(6, −2)</b>. Na reflexão no eixo x, o x fica quieto e o y troca de sinal.',
+  t5:'Isso mesmo: <b>120°</b>. O triângulo equilátero tem 3 posições iguais numa volta, e 360° ÷ 3 = 120°.'
+};
+document.querySelectorAll('[data-try]').forEach(function(b){
+  b.addEventListener('click',function(){
+    var id=b.getAttribute('data-try');
+    var ans=b.getAttribute('data-ans').split(',').map(norm);
+    var val=norm(document.getElementById(id+'in').value);
+    var fb=document.getElementById(id+'fb');
+    fb.className='fb';
+    if(!val){ fb.classList.add('bad'); fb.innerHTML='Escreva sua resposta no campo antes de conferir.'; return; }
+    if(ans.indexOf(val)>=0){ fb.classList.add('good'); fb.innerHTML='✓ '+OKS[id]; }
+    else { fb.classList.add('bad'); fb.innerHTML='↺ '+TIPS[id]; }
+  });
+});
+
+/* =============== QUIZ =============== */
+var score=0, answered=0, TOTAL=9;
+document.querySelectorAll('[data-q]').forEach(function(q){
+  var opts=q.querySelectorAll('.opt'), fb=q.querySelector('.qfb'), lock=false;
+  opts.forEach(function(o){
+    o.addEventListener('click',function(){
+      if(lock) return; lock=true; answered++;
+      var ok = o.getAttribute('data-ok')==='1';
+      if(ok){ score++; }
+      opts.forEach(function(x){
+        if(x.getAttribute('data-ok')==='1'){
+          x.classList.add('good');
+          x.querySelector('.mark').textContent='✓';
+        }
+      });
+      if(!ok){ o.classList.add('bad'); o.querySelector('.mark').textContent='✕'; }
+      fb.classList.add('on');
+      fb.innerHTML = (ok?'<b>Certo!</b> ':'<b>Quase.</b> A resposta certa está marcada acima. ')+fb.innerHTML;
+      document.getElementById('scoreN').textContent=score;
+      if(answered===TOTAL){
+        var m=document.getElementById('finalMsg');
+        m.style.display='block';
+        m.innerHTML='<b>Você terminou:</b> '+score+' de '+TOTAL+'. '+(
+          score>=8 ? 'Excelente — você está pronto para a prova.' :
+          score>=5 ? 'Bom caminho. Volte nas partes 3 e 4 e refaça as que errou.' :
+                     'Sem problema: volte na Parte 6, use o roteiro passo a passo e refaça o quiz.');
+      }
+    });
+  });
+});
+})();
+</script>
+</body>
+</html>
+
