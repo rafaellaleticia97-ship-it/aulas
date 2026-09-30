@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plano Cartesiano · 7º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F4FC; --ind:#362F78; --ind-d:#241F52; --ind-s:#6C63B5;
+  --mint:#A9E5D0; --coral:#FFB3A0; --coral-d:#E4694F; --yel:#FFDD73;
+  --txt:#2A2650; --txt2:#5B5686; --line:#E3DEF7; --ps:1.15;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:17px;line-height:1.55}
+h1,h2,h3,.baloo{font-family:'Baloo 2',system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px;position:relative;z-index:1}
+
+/* fundo */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg span{position:absolute;font-family:'Baloo 2';font-weight:700;color:var(--ind);opacity:.08;animation:drift 40s ease-in-out infinite alternate}
+@keyframes drift{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(30px,-40px) rotate(18deg)}}
+@media (prefers-reduced-motion:reduce){.bg span{animation:none}html{scroll-behavior:auto}}
+
+/* progresso */
+.progress{position:sticky;top:0;z-index:20;background:rgba(246,244,252,.95);backdrop-filter:blur(6px);padding:8px 16px 6px;border-bottom:1px solid var(--line)}
+.progress .in{max-width:760px;margin:0 auto}
+.track{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:10%;background:linear-gradient(90deg,var(--ind),var(--ind-s));border-radius:99px;transition:width .35s}
+.plabel{font-family:'Baloo 2';font-weight:600;font-size:13px;color:var(--txt2);margin-top:3px}
+
+header{padding:18px 0 4px}
+h1{font-weight:800;color:var(--ind-d);font-size:2rem;line-height:1.1;margin:0}
+.sub{color:var(--txt2);margin:4px 0 12px;font-size:.95rem}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tab{font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ind);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ind);color:#fff;border-color:var(--ind)}
+
+/* cartões */
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 6px 20px rgba(54,47,120,.08);padding:20px 18px;margin:16px 0}
+.eyebrow{display:inline-block;font-family:'Baloo 2';font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;padding:3px 10px;border-radius:99px;background:var(--mint);color:#1B5846}
+.ey-rev{background:var(--yel);color:#5A4300}
+.ey-book{background:var(--coral);color:#6B2414}
+.ey-sum{background:var(--ind);color:#fff}
+.ey-pra{background:#DCD7F5;color:var(--ind-d)}
+h2{font-weight:700;font-size:1.55rem;color:var(--ind-d);margin:.35em 0 .3em;line-height:1.2}
+h3{font-weight:700;font-size:1.18rem;color:var(--ind);margin:1.1em 0 .3em}
+p{margin:.55em 0}
+
+.box{border-radius:14px;padding:12px 15px;margin:14px 0}
+.box .lbl{font-family:'Baloo 2';font-weight:700;font-size:.95rem;display:block;margin-bottom:2px}
+.think{background:#EEEBFA}
+.think .lbl{color:var(--ind)}
+.tip{background:#FFF8E6;border-left:6px solid var(--yel)}
+.tip .lbl{color:#7A5A00}
+.copy{border:2px dashed #3E9E7E;background:#F0FAF6}
+.copy .lbl{color:#1F6B52}
+.algo{background:#F1EEFB;border:1.5px solid #CFC8F0}
+.algo p{margin:.4em 0}
+.algo b{font-family:'Baloo 2';color:var(--ind)}
+
+.dirs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.dir{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-family:'Baloo 2';font-weight:600;line-height:1.25}
+.dir small{display:block;font-family:'Atkinson Hyperlegible';font-weight:400;color:var(--txt2);font-size:.85rem}
+.defs{display:grid;gap:8px;margin:12px 0}
+.def{border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:#FCFBFF}
+.def b{font-family:'Baloo 2';color:var(--ind)}
+
+/* figuras */
+.plane{display:block;width:100%;max-width:calc(var(--pw) * var(--ps));height:auto;margin:10px auto}
+.cap{font-size:.86rem;color:var(--txt2);text-align:center;margin:0 0 8px}
+.two{display:grid;gap:10px}
+.fig-box{border:1px solid var(--line);border-radius:14px;padding:8px}
+.fig-box .t{font-family:'Baloo 2';font-weight:700;font-size:.92rem;text-align:center;margin:2px 0}
+svg text{font-family:'Atkinson Hyperlegible',sans-serif}
+
+/* tabela */
+.tblwrap{overflow-x:auto;margin:12px 0}
+table.tbl{border-collapse:collapse;width:100%;font-size:.92rem;background:#fff}
+.tbl th{background:var(--ind);color:#fff;font-family:'Baloo 2';font-weight:600;padding:6px 8px;text-align:left}
+.tbl td{border:1px solid var(--line);padding:6px 8px;vertical-align:top}
+.tbl td b{font-family:'Baloo 2'}
+
+/* prática guiada */
+.try{border:2px dashed var(--ind-s);border-radius:16px;padding:14px 15px;margin:16px 0;background:#FCFBFF}
+.try .lbl{font-family:'Baloo 2';font-weight:700;color:var(--ind);display:block}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.row label{font-family:'Baloo 2';font-weight:600}
+input.ans{font-family:'Baloo 2';font-size:1.05rem;border:2px solid var(--line);border-radius:10px;padding:6px 10px;width:8.5em;color:var(--txt)}
+input.ans:focus{border-color:var(--ind-s);outline:none}
+.btn{font-family:'Baloo 2';font-weight:700;font-size:.98rem;background:var(--ind);color:#fff;border:0;border-radius:10px;padding:7px 14px;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--ind);border:2px solid var(--ind)}
+.btn:disabled{opacity:.4;cursor:default}
+.fb{border-radius:10px;padding:8px 12px;margin-top:8px;font-size:.95rem}
+.fb:empty{display:none}
+.fb.ok{background:#E3F6EE;color:#17613F}
+.fb.no{background:#FFEDE8;color:#9C3219}
+.target{font-family:'Baloo 2';font-weight:700;font-size:1.15rem;color:var(--ind-d)}
+.cp-fig svg{cursor:crosshair;touch-action:manipulation}
+
+/* corrente */
+.chain{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:8px 0}
+.cbox{background:var(--ind);color:#fff;font-family:'Baloo 2';font-weight:700;min-width:46px;text-align:center;padding:6px 12px;border-radius:12px;font-size:1.1rem}
+.carr{color:var(--coral-d);font-weight:700}
+.cpill{background:var(--coral);color:#6B2414;font-family:'Baloo 2';font-weight:700;border:0;border-radius:99px;padding:3px 12px;cursor:pointer;font-size:1rem}
+.cpill.shown{background:var(--coral-d);color:#fff}
+.seq{background:#FFF8E6;border-radius:12px;padding:8px 12px;font-family:'Baloo 2';font-weight:600;text-align:center;margin:10px 0;color:var(--ind-d)}
+
+/* quiz */
+.score{font-family:'Baloo 2';font-weight:700;background:var(--ind);color:#fff;border-radius:12px;padding:8px 14px;display:inline-block;margin:6px 0}
+.q{border:1px solid var(--line);border-radius:14px;padding:14px;margin:14px 0;background:#FCFBFF}
+.q-n{font-family:'Baloo 2';font-weight:700;color:var(--ind-s);font-size:.85rem;margin:0}
+.q-t{font-weight:700;margin:.2em 0 .5em}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:12px;padding:9px 12px;font-family:'Atkinson Hyperlegible';font-size:1rem;color:var(--txt);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--ind-s)}
+.opt:disabled{cursor:default}
+.opt.right{background:#E3F6EE;border-color:#3E9E7E;color:#17613F;font-weight:700}
+.opt.wrong{background:#FFEDE8;border-color:var(--coral-d);color:#9C3219}
+.q-exp{margin-top:10px;border-radius:10px;padding:8px 12px;font-size:.95rem;background:#EEEBFA}
+
+/* livro */
+.ti{border:2px solid #9FD19A;border-radius:14px;overflow:hidden;margin:14px 0}
+.ti-head{background:#9FD19A;color:#1F4D1A;font-family:'Baloo 2';font-weight:800;text-transform:uppercase;padding:5px 12px;letter-spacing:.03em}
+.ti-body{padding:10px 14px}
+.ti-body ol{margin:0;padding-left:1.3em}
+.ti-body li{margin:.5em 0}
+.atv-head{background:var(--yel);color:#5A4300;font-family:'Baloo 2';font-weight:800;text-transform:uppercase;padding:6px 12px;border-radius:10px;margin:20px 0 6px;letter-spacing:.03em}
+.book{display:grid;gap:4px}
+.act{padding:12px 0;border-bottom:2px dotted #F2C94C}
+.act:last-child{border-bottom:0}
+.act-n{display:inline-block;background:#F2B418;color:#fff;font-family:'Baloo 2';font-weight:800;min-width:24px;text-align:center;border-radius:4px;margin-right:6px;padding:0 5px}
+.item{margin:10px 0 4px}
+.reveal{font-family:'Baloo 2';font-weight:700;font-size:.85rem;background:#fff;color:var(--ind);border:2px solid var(--ind);border-radius:99px;padding:3px 12px;cursor:pointer;margin:4px 0}
+.reveal[aria-expanded="true"]{background:var(--ind);color:#fff}
+.answer{background:#F0FAF6;border-left:5px solid #3E9E7E;border-radius:10px;padding:8px 12px;margin:6px 0 10px;font-size:.95rem}
+.fn-arrow{display:flex;justify-content:center;margin:6px 0}
+.btbl{border-collapse:collapse;margin:8px auto;font-family:'Baloo 2';font-size:1rem;background:#fff}
+.btbl th,.btbl td{border:1.5px solid #9FD19A;padding:4px 18px;text-align:center}
+.btbl th{background:#EAF6E7}
+.blank{color:#B7B0D8}
+.hl{color:#1F6B52;font-weight:800}
+
+/* navegação */
+.nav{display:flex;justify-content:space-between;gap:10px;margin:14px 0 40px}
+.nav .btn{font-size:11px;padding:4px 9px;border-radius:99px}
+.summary p{margin:.8em 0}
+
+:focus-visible{outline:3px solid var(--coral-d);outline-offset:2px}
+
+@media (min-width:900px){
+  :root{--ps:1.45}
+  body{font-size:19px}
+  .wrap,.progress .in{max-width:980px}
+  h1{font-size:2.6rem}
+  .tab{font-size:13px;padding:5px 11px}
+  .nav .btn{font-size:13px;padding:5px 12px}
+  .two{grid-template-columns:1fr 1fr}
+  .book{grid-template-columns:1fr 1fr;column-gap:28px}
+  .book .act:nth-child(odd){border-right:0}
+  .dirs{grid-template-columns:repeat(4,1fr)}
+  .opts{grid-template-columns:1fr 1fr}
+  .plabel{font-size:15px}
+}
+@media (min-width:1500px){
+  :root{--ps:1.85}
+  body{font-size:23px}
+  .wrap,.progress .in{max-width:1280px}
+  h1{font-size:3.2rem}
+  .tab{font-size:16px;padding:6px 14px}
+  .nav .btn{font-size:16px;padding:7px 16px}
+  .plabel{font-size:18px}
+  .track{height:11px}
+}
+</style>
+</head>
+<body>
+
+<div class="bg" aria-hidden="true">
+  <span style="left:4%;top:12%;font-size:60px">(x, y)</span>
+  <span style="left:78%;top:8%;font-size:70px">+</span>
+  <span style="left:86%;top:42%;font-size:64px">−</span>
+  <span style="left:8%;top:52%;font-size:72px">×</span>
+  <span style="left:44%;top:30%;font-size:54px">y</span>
+  <span style="left:62%;top:70%;font-size:66px">x</span>
+  <span style="left:20%;top:84%;font-size:58px">(0, 0)</span>
+  <span style="left:90%;top:88%;font-size:56px">÷</span>
+  <span style="left:34%;top:62%;font-size:50px">=</span>
+  <span style="left:70%;top:24%;font-size:48px">−3</span>
+</div>
+
+<div class="progress" aria-live="polite">
+  <div class="in">
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="plabel" id="plabel">Parte 1</div>
+  </div>
+</div>
+
+<div class="wrap">
+<header>
+  <h1>Plano Cartesiano</h1>
+  <p class="sub">7º ano · Geometria — pontos com números negativos, polígonos e tabelas no plano</p>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Partes da aula"></nav>
+</header>
+
+<main>
+
+<!-- ===================== PARTE 1 ===================== -->
+<section class="part" data-name="Início">
+<div class="card">
+  <span class="eyebrow">Parte 1 · Aquecimento</span>
+  <h2>Onde fica a lanchonete?</h2>
+  <p>No mapa do bairro abaixo, as ruas formam uma malha. Sua casa fica no cantinho do 0, e a lanchonete é o ponto L.</p>
+  <p>Que par de números indica onde fica a lanchonete?</p>
+  <div id="gancho"></div>
+  <p>Viu só? Você já sabe localizar pontos. Nesta aula, o mapa vai crescer para lados que você ainda não usou.</p>
+</div>
+</section>
+
+<!-- ===================== PARTE 2 ===================== -->
+<section class="part" data-name="Revisão" hidden>
+<div class="card">
+  <span class="eyebrow ey-rev">Parte 2 · Revisão (6º ano)</span>
+  <h2>O plano que você já conhece</h2>
+  <p>Na lanchonete da Parte 1, você usou dois números para dizer onde ela ficava: quanto andar para o lado e quanto andar para cima. Essa malha com duas retas numeradas é o <b>plano cartesiano</b>.</p>
+  <p>Relembre as peças:</p>
+  <div class="defs">
+    <div class="def"><b>Eixo x</b> — a reta deitada (horizontal).</div>
+    <div class="def"><b>Eixo y</b> — a reta em pé (vertical).</div>
+    <div class="def"><b>Origem (0, 0)</b> — onde os eixos se cruzam. É o ponto de partida.</div>
+    <div class="def"><b>Par ordenado (x, y)</b> — o endereço do ponto: primeiro o x, depois o y.</div>
+  </div>
+  <div class="box think"><span class="lbl">💭 Pense assim</span>
+    O par é como dar direções na escola: “ande pelo corredor até a 5ª sala e depois suba 2 andares”. Primeiro o corredor (deitado, é o x), depois a escada (em pé, é o y). E x vem antes de y, igual no alfabeto.</div>
+  <div class="box copy"><span class="lbl">✎ Copie no caderno</span>
+    O plano cartesiano é formado por duas retas numeradas que se cruzam: o <b>eixo x</b> (horizontal) e o <b>eixo y</b> (vertical). O ponto onde elas se cruzam é a <b>origem</b>, (0, 0). Cada ponto é indicado por um <b>par ordenado (x, y)</b>: o primeiro número diz quanto andar na horizontal, e o segundo, quanto andar na vertical.</div>
+  <div class="try"><span class="lbl">✏️ Agora é sua vez</span>
+    <p>Quais são as coordenadas do ponto M?</p>
+    <div id="fig-rev"></div>
+    <div class="row"><label for="t-rev">M =</label><input class="ans" id="t-rev" placeholder="(x, y)" autocomplete="off"><button class="btn" data-check="t-rev" data-ans="5,2">Conferir</button></div>
+    <div class="fb" id="t-rev-fb" role="status"></div>
+  </div>
+</div>
+</section>
+
+<!-- ===================== PARTE 3 ===================== -->
+<section class="part" data-name="Negativos" hidden>
+<div class="card">
+  <span class="eyebrow">Parte 3 · Conceito novo</span>
+  <h2>E para a esquerda? E para baixo?</h2>
+  <p>No 6º ano, a gente só andava para a <b>direita</b> e para <b>cima</b>. Mas e se a lanchonete ficasse à esquerda da sua casa, ou abaixo dela no mapa? Só com números positivos, não daria para dizer.</p>
+  <p>Por isso, os eixos continuam depois do zero, com os <b>números negativos</b>. O jeito de andar é o mesmo de antes. A novidade é o <b>sinal</b>, que diz para que lado ir:</p>
+  <div class="dirs">
+    <div class="dir">x positivo → direita<small>ex.: x = 3</small></div>
+    <div class="dir">x negativo ← esquerda<small>ex.: x = −3</small></div>
+    <div class="dir">y positivo ↑ cima<small>ex.: y = 2</small></div>
+    <div class="dir">y negativo ↓ baixo<small>ex.: y = −2</small></div>
+  </div>
+  <div class="box think"><span class="lbl">💭 Pense assim</span>
+    Pense no elevador de um shopping. O térreo é o 0. Os andares de cima são 1, 2, 3… e os do subsolo são −1, −2, −3. O eixo y funciona igual: positivo sobe, negativo desce. O eixo x é esse mesmo elevador deitado: positivo vai para a direita, negativo vai para a esquerda.</div>
+
+  <h3>Exemplo: marcando P(2, −3), Q(−4, 1) e R(−3, −2)</h3>
+  <p>Todo ponto sai da origem. Primeiro olhamos o x, depois o y:</p>
+  <div class="tblwrap"><table class="tbl">
+    <tr><th>Ponto</th><th>1º número (x)</th><th>2º número (y)</th></tr>
+    <tr><td><b>P(2, −3)</b></td><td>2 → anda 2 para a <b>direita</b></td><td>−3 → anda 3 para <b>baixo</b></td></tr>
+    <tr><td><b>Q(−4, 1)</b></td><td>−4 → anda 4 para a <b>esquerda</b></td><td>1 → anda 1 para <b>cima</b></td></tr>
+    <tr><td><b>R(−3, −2)</b></td><td>−3 → anda 3 para a <b>esquerda</b></td><td>−2 → anda 2 para <b>baixo</b></td></tr>
+  </table></div>
+  <div id="fig-ex3"></div>
+  <p class="cap">As linhas tracejadas mostram o caminho de cada ponto, sempre saindo da origem.</p>
+  <p>Repare no R: os dois números são negativos, então ele fica <b>embaixo e à esquerda</b>.</p>
+
+  <div class="box tip"><span class="lbl">⚠️ Dica: a ordem importa!</span>
+    (2, −3) e (−3, 2) usam os mesmos números, mas são pontos <b>diferentes</b>. O primeiro número é sempre o x (horizontal) e o segundo é sempre o y (vertical).
+    <div id="fig-ordem"></div>
+  </div>
+  <div class="box tip"><span class="lbl">⚠️ Dica: e o zero?</span>
+    Zero quer dizer “não anda”. O ponto (0, 3) não sai do lugar na horizontal e sobe 3: fica em cima do <b>eixo y</b>. O ponto (−2, 0) anda 2 para a esquerda e não sobe nem desce: fica em cima do <b>eixo x</b>.</div>
+  <div class="box copy"><span class="lbl">✎ Copie no caderno</span>
+    No plano cartesiano, os eixos também têm números negativos. No eixo x, positivo significa <b>direita</b> e negativo significa <b>esquerda</b>. No eixo y, positivo significa <b>cima</b> e negativo significa <b>baixo</b>. Para marcar um ponto (x, y), partimos sempre da origem: primeiro andamos na horizontal, depois na vertical.</div>
+
+  <div class="try"><span class="lbl">✏️ Agora é sua vez</span>
+    <p>Toque na malha para marcar o ponto pedido.</p>
+    <p class="target" id="cp-target">Marque o ponto (−3, 2)</p>
+    <div class="cp-fig" id="cp-fig"></div>
+    <p class="cap" id="cp-you">Você ainda não marcou nenhum ponto.</p>
+    <div class="row"><button class="btn" id="cp-check">Conferir</button><button class="btn ghost" id="cp-next">Próximo ponto</button></div>
+    <div class="fb" id="cp-fb" role="status"></div>
+  </div>
+</div>
+</section>
+
+<!-- ===================== PARTE 4 ===================== -->
+<section class="part" data-name="Lendo pontos" hidden>
+<div class="card">
+  <span class="eyebrow">Parte 4 · Conceito novo</span>
+  <h2>Do ponto para o par</h2>
+  <p>Agora é o caminho contrário: o ponto já está marcado, e você descobre as coordenadas dele.</p>
+  <div class="box think"><span class="lbl">💭 Pense assim</span>
+    Imagine que o ponto solta duas cordinhas bem esticadas: uma cai reto até o eixo x, e a outra vai reto até o eixo y. Onde cada cordinha encosta, você lê um número.</div>
+
+  <h3>Exemplo: quais são as coordenadas de K e de L?</h3>
+  <div id="fig-ex4"></div>
+  <p><b>K:</b> a cordinha que desce encosta no −3 do eixo x. A cordinha que vai para o lado encosta no 2 do eixo y. Então <b>K = (−3, 2)</b>.</p>
+  <p><b>L:</b> a cordinha que sobe encosta no 4 do eixo x. A que vai para o lado encosta no −1 do eixo y. Então <b>L = (4, −1)</b>.</p>
+
+  <div class="box tip"><span class="lbl">⚠️ Dica: confira o sinal pelo lado</span>
+    Se o ponto está <b>à esquerda do eixo y</b>, o x é negativo. Se está <b>abaixo do eixo x</b>, o y é negativo. Antes de escrever o par, olhe onde o ponto está e confira os sinais.</div>
+
+  <h3>Os quatro quadrantes</h3>
+  <p>Os eixos dividem o plano em quatro partes, chamadas <b>quadrantes</b>. Em cada uma, os sinais do par são sempre os mesmos:</p>
+  <div id="fig-quad"></div>
+  <p>Exemplo: (−3, −1) tem os dois números negativos, então fica no <b>3º quadrante</b>, embaixo e à esquerda.</p>
+  <div class="box copy"><span class="lbl">✎ Copie no caderno</span>
+    Para ler as coordenadas de um ponto, traçamos uma linha reta dele até o eixo x (lemos o x) e outra até o eixo y (lemos o y). Os eixos dividem o plano em quatro <b>quadrantes</b>: 1º (+, +), 2º (−, +), 3º (−, −) e 4º (+, −).</div>
+
+  <div class="try"><span class="lbl">✏️ Agora é sua vez</span>
+    <p>Escreva as coordenadas de F, G e H.</p>
+    <div id="fig-try4"></div>
+    <div class="row"><label for="t-f">F =</label><input class="ans" id="t-f" placeholder="(x, y)" autocomplete="off"><button class="btn" data-check="t-f" data-ans="-4,-2">Conferir</button></div>
+    <div class="fb" id="t-f-fb" role="status"></div>
+    <div class="row"><label for="t-g">G =</label><input class="ans" id="t-g" placeholder="(x, y)" autocomplete="off"><button class="btn" data-check="t-g" data-ans="3,-3">Conferir</button></div>
+    <div class="fb" id="t-g-fb" role="status"></div>
+    <div class="row"><label for="t-h">H =</label><input class="ans" id="t-h" placeholder="(x, y)" autocomplete="off"><button class="btn" data-check="t-h" data-ans="0,2">Conferir</button></div>
+    <div class="fb" id="t-h-fb" role="status"></div>
+  </div>
+</div>
+</section>
+
+<!-- ===================== PARTE 5 ===================== -->
+<section class="part" data-name="Passo a passo" hidden>
+<div class="card">
+  <span class="eyebrow">Parte 5 · Algoritmo</span>
+  <h2>Marcar pontos, passo a passo</h2>
+  <p>Tudo o que você aprendeu até aqui cabe numa receita. Use sempre que tiver uma lista de pontos para marcar.</p>
+  <div class="box algo">
+    <p><b>Passo 1.</b> Coloque o lápis na origem (0, 0).</p>
+    <p><b>Passo 2.</b> Leia o 1º número (x). Positivo: ande para a direita. Negativo: ande para a esquerda. Zero: não ande.</p>
+    <p><b>Passo 3.</b> Leia o 2º número (y). Positivo: suba. Negativo: desça. Zero: não suba nem desça.</p>
+    <p><b>Passo 4.</b> Marque o ponto e escreva o nome dele.</p>
+    <p><b>Passo 5.</b> Se houver mais pontos, volte ao Passo 1.</p>
+  </div>
+  <div class="box tip"><span class="lbl">⚠️ Dica: o Passo 5 manda voltar ao Passo 1</span>
+    Voltar ao Passo 1 quer dizer <b>voltar para a origem</b>. Um erro muito comum é começar o ponto seguinte de onde o anterior parou. Cada ponto tem seu próprio caminho, e todos saem do (0, 0).</div>
+  <h3>O mesmo algoritmo em fluxograma</h3>
+  <svg viewBox="0 0 360 760" class="plane" style="--pw:340px" role="img" aria-label="Fluxograma: Início; comece na origem; x é negativo? Sim, ande para a esquerda; Não, ande para a direita; y é negativo? Sim, desça; Não, suba; marque e dê nome ao ponto; mais pontos? Sim, volta à origem; Não, fim.">
+    <defs>
+      <marker id="fa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#362F78"/></marker>
+      <marker id="fc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#E4694F"/></marker>
+    </defs>
+    <g font-size="13" text-anchor="middle" fill="#2A2650">
+      <ellipse cx="180" cy="32" rx="62" ry="22" fill="#362F78"/>
+      <text x="180" y="37" fill="#fff" font-weight="700">Início</text>
+      <line x1="180" y1="54" x2="180" y2="72" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
+      <rect x="90" y="74" width="180" height="40" rx="8" fill="#EEEBFA" stroke="#362F78" stroke-width="1.8"/>
+      <text x="180" y="99">Comece na origem (0, 0)</text>
+      <line x1="180" y1="114" x2="180" y2="136" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
+
+      <polygon points="180,138 262,178 180,218 98,178" fill="#FFF8E6" stroke="#362F78" stroke-width="1.8"/>
+      <text x="180" y="175">x é</text><text x="180" y="191">negativo?</text>
+      <polyline points="98,178 59,178 59,236" fill="none" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
+      <polyline points="262,178 289,178 289,236" fill="none" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
+      <text x="74" y="170" font-weight="700" font-size="12">Sim</text>
+      <text x="278" y="170" font-weight="700" font-size="12">Não</text>
+      <rect x="10" y="238" width="98" height="48" rx="8" fill="#EEEBFA" stroke="#362F78" stroke-width="1.8"/>
+      <text x="59" y="258">Ande para a</text><text x="59" y="275">esquerda</text>
+      <rect x="240" y="238" width="98" height="48" rx="8" fill="#EEEBFA" stroke="#362F78" stroke-width="1.8"/>
+      <text x="289" y="258">Ande para a</text><text x="289" y="275">direita</text>
+      <polyline points="59,286 59,306 180,306" fill="none" stroke="#362F78" stroke-width="2"/>
+      <polyline points="289,286 289,306 180,306" fill="none" stroke="#362F78" stroke-width="2"/>
+      <line x1="180" y1="306" x2="180" y2="330" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
+
+      <polygon points="180,332 262,372 180,412 98,372" fill="#FFF8E6" stroke="#362F78" stroke-width="1.8"/>
+      <text x="180" y="369">y é</text><text x="180" y="385">negativo?</text>
+      <polyline points="98,372 59,372 59,430" fill="none" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
+      <polyline points="262,372 289,372 289,430" fill="none" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
+      <text x="74" y="364" font-weight="700" font-size="12">Sim</text>
+      <text x="278" y="364" font-weight="700" font-size="12">Não</text>
+      <rect x="10" y="432" width="98" height="48" rx="8" fill="#EEEBFA" stroke="#362F78" stroke-width="1.8"/>
+      <text x="59" y="452">Desça</text><text x="59" y="469" font-size="11.5" fill="#5B5686">(para baixo)</text>
+      <rect x="240" y="432" width="98" height="48" rx="8" fill="#EEEBFA" stroke="#362F78" stroke-width="1.8"/>
+      <text x="289" y="452">Suba</text><text x="289" y="469" font-size="11.5" fill="#5B5686">(para cima)</text>
+      <polyline points="59,480 59,500 180,500" fill="none" stroke="#362F78" stroke-width="2"/>
+      <polyline points="289,480 289,500 180,500" fill="none" stroke="#362F78" stroke-width="2"/>
+      <line x1="180" y1="500" x2="180" y2="522" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
+
+      <rect x="80" y="524" width="200" height="40" rx="8" fill="#EEEBFA" stroke="#362F78" stroke-width="1.8"/>
+      <text x="180" y="549">Marque e dê nome ao ponto</text>
+      <line x1="180" y1="564" x2="180" y2="586" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
+
+      <polygon points="180,588 262,628 180,668 98,628" fill="#FFF8E6" stroke="#362F78" stroke-width="1.8"/>
+      <text x="180" y="625">Mais</text><text x="180" y="641">pontos?</text>
+      <line x1="180" y1="668" x2="180" y2="702" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
+      <text x="196" y="690" font-weight="700" font-size="12">Não</text>
+      <ellipse cx="180" cy="726" rx="62" ry="22" fill="#362F78"/>
+      <text x="180" y="731" fill="#fff" font-weight="700">Fim</text>
+
+      <path d="M262,628 H352 V94 H273" fill="none" stroke="#E4694F" stroke-width="2.4" marker-end="url(#fc)"/>
+      <text x="300" y="620" font-weight="700" font-size="12" fill="#B8432B">Sim</text>
+      <text x="346" y="360" font-size="11.5" font-weight="700" fill="#B8432B" transform="rotate(-90 346 360)">repete: volta à origem</text>
+    </g>
+  </svg>
+  <p class="cap">Se o número for zero, você não anda naquela direção.</p>
+</div>
+</section>
+
+<!-- ===================== PARTE 6 ===================== -->
+<section class="part" data-name="Polígonos" hidden>
+<div class="card">
+  <span class="eyebrow">Parte 6 · Conceito novo</span>
+  <h2>Desenhando polígonos no plano</h2>
+  <p>Com pontos, dá para desenhar figuras! Os pontos viram os <b>vértices</b> (os “cantos”) do polígono.</p>
+  <p>Para desenhar: marque os vértices, ligue-os <b>na ordem em que aparecem</b> e, no final, ligue o último ao primeiro para <b>fechar</b> a figura.</p>
+  <div class="box think"><span class="lbl">💭 Pense assim</span>
+    Lembra dos passatempos de “ligue os pontos”? Você segue a numeração 1, 2, 3… e o desenho aparece. Se pular a ordem, o desenho sai todo torto. Aqui, a “numeração” é a ordem em que os pontos foram escritos.</div>
+
+  <h3>Exemplo: vértices (−4, −1), (−1, 3), (3, 3) e (4, −1)</h3>
+  <p>Primeiro marcamos os quatro pontos. Depois ligamos nesta ordem:</p>
+  <div class="seq">(−4, −1) → (−1, 3) → (3, 3) → (4, −1) → (−4, −1)</div>
+  <div id="fig-ex6"></div>
+  <p>Deu um polígono de 4 lados, um <b>quadrilátero</b>. Este tem o lado de cima e o de baixo paralelos, então é um trapézio.</p>
+
+  <div class="box tip"><span class="lbl">⚠️ Dica: mudar a ordem muda a figura</span>
+    Com os <b>mesmos</b> quatro pontos, mas ligando em outra ordem, dois lados se cruzam. Uma figura com lados que se cruzam <b>não é um polígono</b>. Por isso, siga sempre a ordem dada.
+    <div class="two">
+      <div class="fig-box"><p class="t">Na ordem do exemplo</p><div id="fig-ordA"></div><p class="cap">✓ quadrilátero</p></div>
+      <div class="fig-box"><p class="t">(−4, −1) → (3, 3) → (−1, 3) → (4, −1)</p><div id="fig-ordB"></div><p class="cap">✗ lados se cruzam: não é polígono</p></div>
+    </div>
+  </div>
+  <div class="box copy"><span class="lbl">✎ Copie no caderno</span>
+    Para representar um polígono no plano cartesiano, marcamos os vértices, ligamos os pontos na ordem em que aparecem e, no final, ligamos o último ponto ao primeiro para fechar a figura. Se a ordem mudar, a figura pode mudar. Se os lados se cruzarem, a figura não é um polígono.</div>
+
+  <h3>Montando um retângulo com lados dados</h3>
+  <p>Quero um retângulo com lados de <b>4</b> e <b>2</b> unidades. Escolho um canto para começar, por exemplo (1, 1):</p>
+  <div class="box algo">
+    <p><b>Passo 1.</b> Comece em (1, 1).</p>
+    <p><b>Passo 2.</b> Ande 4 para a direita: (5, 1).</p>
+    <p><b>Passo 3.</b> Suba 2: (5, 3).</p>
+    <p><b>Passo 4.</b> Volte 4 para a esquerda: (1, 3).</p>
+  </div>
+  <div id="fig-ret"></div>
+  <p>Os vértices são (1, 1), (5, 1), (5, 3) e (1, 3). Se você começar em outro canto, os números mudam, e tudo bem: existem <b>várias respostas certas</b>.</p>
+  <div class="try"><span class="lbl">✏️ Agora é sua vez</span>
+    <p>Um retângulo tem lado 3 na horizontal e lado 5 na vertical. Um dos vértices é (−2, −1), e o retângulo fica para a direita e para cima dele. Qual é o vértice do canto oposto, lá em cima à direita?</p>
+    <div class="row"><input class="ans" id="t-ret" placeholder="(x, y)" autocomplete="off" aria-label="Vértice oposto"><button class="btn" data-check="t-ret" data-ans="1,4" data-hint="A partir de (−2, −1), ande 3 para a direita e 5 para cima. Faça as contas: −2 + 3 e −1 + 5.">Conferir</button></div>
+    <div class="fb" id="t-ret-fb" role="status"></div>
+  </div>
+</div>
+</section>
+
+<!-- ===================== PARTE 7 ===================== -->
+<section class="part" data-name="Tabela → plano" hidden>
+<div class="card">
+  <span class="eyebrow">Parte 7 · Conceito novo</span>
+  <h2>Da tabela para o plano</h2>
+  <p>Às vezes os pontos vêm de uma <b>máquina</b> que transforma números: entra um número (x) e sai outro (y).</p>
+  <p>Descubra o que esta máquina faz. Toque no <b>?</b> para conferir.</p>
+  <div class="chain"><span class="cbox">1</span><span class="carr">→</span><button class="cpill" data-op="×3">?</button><span class="carr">→</span><span class="cbox">3</span></div>
+  <div class="chain"><span class="cbox">2</span><span class="carr">→</span><button class="cpill" data-op="×3">?</button><span class="carr">→</span><span class="cbox">6</span></div>
+  <div class="chain"><span class="cbox">−1</span><span class="carr">→</span><button class="cpill" data-op="×3">?</button><span class="carr">→</span><span class="cbox">−3</span></div>
+  <div class="box think"><span class="lbl">💭 Pense assim</span>
+    É como uma máquina de suco: entra a fruta, sai o suco. O ponto é sempre (o que entrou, o que saiu), ou seja, <b>(x, y)</b>.</div>
+
+  <h3>Exemplo: a máquina ×3</h3>
+  <div class="tblwrap"><table class="tbl" style="max-width:420px;margin:0 auto">
+    <tr><th>x (entrada)</th><th>y (saída)</th><th>Ponto</th></tr>
+    <tr><td>−1</td><td>−1 × 3 = −3</td><td><b>(−1, −3)</b></td></tr>
+    <tr><td>0</td><td>0 × 3 = 0</td><td><b>(0, 0)</b></td></tr>
+    <tr><td>1</td><td>1 × 3 = 3</td><td><b>(1, 3)</b></td></tr>
+  </table></div>
+  <div id="fig-ex7"></div>
+  <p>Ligando os pontos, aparece uma <b>linha reta</b>. Ela passa pela origem porque, quando entra 0, sai 0 × 3 = 0.</p>
+  <div class="box tip"><span class="lbl">⚠️ Dica: entrada é x, saída é y</span>
+    Na hora de virar ponto, não inverta! A linha “entra −1, sai −3” vira (−1, −3), e não (−3, −1). E lembre da regra de sinais: negativo × positivo dá negativo.</div>
+  <div class="box copy"><span class="lbl">✎ Copie no caderno</span>
+    Numa tabela de entrada e saída, o número que entra é o <b>x</b> e o número que sai é o <b>y</b>. Cada linha da tabela vira um ponto (x, y) no plano cartesiano.</div>
+  <div class="try"><span class="lbl">✏️ Agora é sua vez</span>
+    <p>Uma máquina <b>soma 3</b> ao número que entra. Se entra −5, qual ponto essa linha da tabela forma?</p>
+    <div class="row"><input class="ans" id="t-maq" placeholder="(x, y)" autocomplete="off" aria-label="Ponto formado"><button class="btn" data-check="t-maq" data-ans="-5,-2" data-hint="O x é o que entrou (−5). O y é o que saiu: −5 + 3 = ?">Conferir</button></div>
+    <div class="fb" id="t-maq-fb" role="status"></div>
+  </div>
+</div>
+</section>
+
+<!-- ===================== PARTE 8 ===================== -->
+<section class="part" data-name="Prática" hidden>
+<div class="card">
+  <span class="eyebrow ey-pra">Parte 8 · Prática</span>
+  <h2>Hora de treinar</h2>
+  <div class="score" id="score" aria-live="polite">Acertos: 0 de 9</div>
+  <div id="quiz"></div>
+</div>
+</section>
+
+<!-- ===================== PARTE 9 ===================== -->
+<section class="part" data-name="Direto do livro" hidden>
+<div class="card">
+  <span class="eyebrow ey-book">Parte 9 · Direto do livro</span>
+  <h2>Trocando ideias e Atividades</h2>
+  <p>Tente resolver no caderno primeiro. Depois toque em “Ver resposta” para conferir.</p>
+
+  <div class="ti">
+    <div class="ti-head">💬 Trocando ideias</div>
+    <div class="ti-body"><ol>
+      <li>Quais são as coordenadas dos pontos (−3, 5) e (5, −3)? Esses pontos são iguais? Explique.
+        <br><button class="reveal" data-rv="ti1">Ver resposta</button>
+        <div class="answer" id="ti1" hidden>As coordenadas são diferentes, pois elas devem ser tomadas na ordem em que aparecem. (−3, 5) fica 3 para a esquerda e 5 para cima; (5, −3) fica 5 para a direita e 3 para baixo.<div id="fig-ti1"></div></div></li>
+      <li>Em que parte do plano cartesiano localiza-se a origem (0, 0)?
+        <br><button class="reveal" data-rv="ti2">Ver resposta</button>
+        <div class="answer" id="ti2" hidden>Na interseção dos eixos.</div></li>
+      <li>No exemplo 2, se tivéssemos ligado os pontos em outra ordem, teríamos a mesma figura?
+        <br><span class="cap" style="text-align:left;display:block">(Exemplo 2 do livro: polígono de vértices (3, 4), (6, −2), (−7, −3) e (−4, 4).)</span>
+        <button class="reveal" data-rv="ti3">Ver resposta</button>
+        <div class="answer" id="ti3" hidden>Não necessariamente. Por exemplo, ligando desta forma: (3, 4) → (−7, −3) → (−4, 4) → (6, −2) → (3, 4), não teremos o mesmo polígono. Por isso, é importante ligar os pontos na ordem em que aparecem.
+          <div class="two"><div class="fig-box"><p class="t">Na ordem do exemplo 2</p><div id="fig-ti3a"></div></div><div class="fig-box"><p class="t">Em outra ordem</p><div id="fig-ti3b"></div></div></div></div></li>
+      <li>Que figura obtemos ligando os pontos (3, 0), (−3, 2), (2, −2), (−2, −2) e (3, 2)?
+        <br><button class="reveal" data-rv="ti4">Ver resposta</button>
+        <div class="answer" id="ti4" hidden>É comum pensar que é um pentágono, porque são 5 pontos. Mas, representando no plano, os lados se cruzam: a figura <b>não é um polígono</b>.<div id="fig-ti4"></div></div></li>
+    </ol></div>
+  </div>
+
+  <div class="atv-head">✓ Atividades</div>
+  <div class="book">
+    <div class="act">
+      <p><span class="act-n">1</span>Abaixo temos os pontos <i>A</i>, <i>B</i>, <i>C</i> e <i>D</i> representados no plano cartesiano.</p>
+      <div id="fig-a1"></div>
+      <p>Dê as coordenadas de cada um deles.</p>
+      <button class="reveal" data-rv="a1">Ver resposta</button>
+      <div class="answer" id="a1" hidden>Ponto <i>A</i>: (2, 1) · Ponto <i>B</i>: (3, −2) · Ponto <i>C</i>: (−5, −3) · Ponto <i>D</i>: (−5, 1)</div>
+    </div>
+
+    <div class="act">
+      <p><span class="act-n">2</span>No plano cartesiano a seguir, foram marcados alguns pontos.</p>
+      <div id="fig-a2"></div>
+      <p>Substitua as coordenadas pelas letras correspondentes e descubra três nomes de países da América do Sul, escritos em código, nos seguintes itens.</p>
+      <p class="item">a) (−4, 2), (−5, −3), (5, 1), (1, −2)</p>
+      <button class="reveal" data-rv="a2a">Ver resposta</button>
+      <div class="answer" id="a2a" hidden>PERU</div>
+      <p class="item">b) (2, 3), (−3, −2), (5, −3), (−5, 3), (2, −4), (−5, 3), (1, 1)</p>
+      <button class="reveal" data-rv="a2b">Ver resposta</button>
+      <div class="answer" id="a2b" hidden>BOLÍVIA</div>
+      <p class="item">c) (2, 3), (5, 1), (1, 1), (−2, 1), (−5, 3), (5, −3)</p>
+      <button class="reveal" data-rv="a2c">Ver resposta</button>
+      <div class="answer" id="a2c" hidden>BRASIL</div>
+    </div>
+
+    <div class="act">
+      <p><span class="act-n">3</span>Esta atividade deve ser feita em grupo. Por isso, junte-se a um ou dois colegas para realizá-la.</p>
+      <p>A tabela abaixo foi montada com base na função</p>
+      <div class="fn-arrow"><svg viewBox="0 0 170 34" width="170" height="34" aria-label="função vezes 2"><line x1="4" y1="17" x2="160" y2="17" stroke="#2A2650" stroke-width="1.5"/><path d="M160,12 L168,17 L160,22 z" fill="#2A2650"/><ellipse cx="86" cy="17" rx="24" ry="14" fill="#D6EDB8"/><text x="86" y="23" text-anchor="middle" font-size="17" font-weight="700" fill="#2A2650">×2</text></svg></div>
+      <p>Faça o que se pede.</p>
+      <p class="item">a) Complete a tabela com os números corretos.</p>
+      <table class="btbl">
+        <tr><th>x (entrada)</th><th>y (saída)</th></tr>
+        <tr><td>−1</td><td>−2</td></tr>
+        <tr><td>0</td><td class="blank">___</td></tr>
+        <tr><td>1</td><td class="blank">___</td></tr>
+        <tr><td class="blank">___</td><td>4</td></tr>
+      </table>
+      <button class="reveal" data-rv="a3a">Ver resposta</button>
+      <div class="answer" id="a3a" hidden>
+        <table class="btbl"><tr><th>x (entrada)</th><th>y (saída)</th></tr>
+        <tr><td>−1</td><td>−2</td></tr><tr><td>0</td><td class="hl">0</td></tr><tr><td>1</td><td class="hl">2</td></tr><tr><td class="hl">2</td><td>4</td></tr></table></div>
+      <p class="item">b) Podemos associar cada linha da tabela às coordenadas de um ponto. Por exemplo, associamos a primeira linha da tabela ao ponto (−1, −2). Represente esses pontos no plano cartesiano, utilizando a malha a seguir:</p>
+      <div id="fig-a3"></div>
+      <button class="reveal" data-rv="a3b">Ver resposta</button>
+      <div class="answer" id="a3b" hidden>Pontos (−1, −2), (0, 0), (1, 2) e (2, 4).<div id="fig-a3r"></div></div>
+      <p class="item">c) Que figura você obtém ao ligar os pontos?</p>
+      <button class="reveal" data-rv="a3c">Ver resposta</button>
+      <div class="answer" id="a3c" hidden>Uma linha reta passando pela origem (0, 0).</div>
+    </div>
+
+    <div class="act">
+      <p><span class="act-n">4</span>Utilizando a malha a seguir, responda à pergunta e faça o que se pede:</p>
+      <div id="fig-a4"></div>
+      <p class="item">a) Que polígono podemos formar tendo como vértices os pontos (−3, 1), (3, −3), (−1, 3) e (5, 3)? Desenhe-o na malha ao lado.</p>
+      <button class="reveal" data-rv="a4a">Ver resposta</button>
+      <div class="answer" id="a4a" hidden>Um quadrilátero.<div id="fig-a4a"></div>
+        <b>Atenção:</b> se ligarmos exatamente na ordem em que os pontos foram escritos, dois lados se cruzam. Para formar o quadrilátero, ligamos (−3, 1) → (−1, 3) → (5, 3) → (3, −3) → (−3, 1).</div>
+      <p class="item">b) Caso fosse desenhado um retângulo com lados 3 e 2 unidades, respectivamente, quais poderiam ser as coordenadas de seus vértices?</p>
+      <button class="reveal" data-rv="a4b">Ver resposta</button>
+      <div class="answer" id="a4b" hidden>Existem várias possibilidades, uma delas é: (0, 0), (3, 0), (3, 2) e (0, 2).<div id="fig-a4b"></div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===================== PARTE 10 ===================== -->
+<section class="part" data-name="Resumo" hidden>
+<div class="card summary">
+  <span class="eyebrow ey-sum">Resumo pro caderno</span>
+  <h2>O que aprendemos</h2>
+  <p>O plano cartesiano é formado por duas retas numeradas que se cruzam: o eixo x, que é horizontal, e o eixo y, que é vertical. O ponto onde os dois se cruzam chama-se origem e tem coordenadas (0, 0).</p>
+  <p>Cada ponto do plano é indicado por um par ordenado (x, y), formado por dois números chamados coordenadas. Para marcar um ponto, partimos sempre da origem. O primeiro número, x, diz quanto andamos na horizontal: se for positivo, andamos para a direita; se for negativo, para a esquerda. O segundo número, y, diz quanto andamos na vertical: se for positivo, subimos; se for negativo, descemos. Quando uma coordenada é zero, não andamos naquela direção, e o ponto fica em cima de um dos eixos. A ordem dos números é muito importante, porque (2, −3) e (−3, 2) são pontos diferentes. Quando marcamos vários pontos, cada um começa de novo na origem, e não no ponto anterior.</p>
+  <p>Para descobrir as coordenadas de um ponto já marcado, fazemos o caminho contrário: levamos uma linha reta do ponto até o eixo x para ler o x, e outra até o eixo y para ler o y. Os eixos dividem o plano em quatro quadrantes. No 1º quadrante, os dois números são positivos; no 2º, o x é negativo e o y é positivo; no 3º, os dois são negativos; e no 4º, o x é positivo e o y é negativo.</p>
+  <p>Para desenhar um polígono no plano, marcamos os vértices, ligamos os pontos na ordem em que aparecem e, no final, ligamos o último ponto ao primeiro para fechar a figura. Se trocarmos a ordem, a figura pode mudar, e se os lados se cruzarem, a figura deixa de ser um polígono. Para montar um retângulo com lados de medidas dadas, escolhemos um canto e andamos as medidas dos lados na horizontal e na vertical; por isso, há várias respostas certas.</p>
+  <p>Também podemos criar pontos a partir de uma tabela de entrada e saída. O número que entra é o x e o número que sai é o y, e cada linha da tabela vira um ponto (x, y). Quando a máquina multiplica o número que entra, como ×2 ou ×3, os pontos ficam alinhados e, ligados, formam uma linha reta que passa pela origem.</p>
+</div>
+</section>
+
+</main>
+
+<div class="nav">
+  <button class="btn" id="prev">← Voltar</button>
+  <button class="btn" id="next">Avançar →</button>
+</div>
+</div>
+
+<script>
+/* ---------- plano cartesiano em SVG ---------- */
+let MK=0;
+const fmt=n=>(n<0?'−'+(-n):''+n);
+function plane(o){
+  const u=o.u||26, pad=o.pad||Math.round(u*0.95)+8;
+  const {xmin,xmax,ymin,ymax}=o;
+  const W=(xmax-xmin)*u+2*pad, H=(ymax-ymin)*u+2*pad;
+  const X=x=>+(pad+(x-xmin)*u).toFixed(1), Y=y=>+(pad+(ymax-y)*u).toFixed(1);
+  const id='m'+(++MK);
+  let s=`<svg class="plane" viewBox="0 0 ${W} ${H}" style="--pw:${Math.round(W)}px" role="img" aria-label="${o.aria||'Plano cartesiano'}" data-u="${u}" data-pad="${pad}" data-xmin="${xmin}" data-xmax="${xmax}" data-ymin="${ymin}" data-ymax="${ymax}">`;
+  s+=`<defs><marker id="${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#241F52"/></marker><marker id="${id}c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#E4694F"/></marker></defs>`;
+  const gx0=X(xmin-0.5),gx1=X(xmax+0.5),gy0=Y(ymax+0.5),gy1=Y(ymin-0.5);
+  s+=`<rect x="${gx0}" y="${gy0}" width="${gx1-gx0}" height="${gy1-gy0}" fill="#fff"/>`;
+  s+='<g stroke="#D9D3F0" stroke-width="1" stroke-dasharray="3 3">';
+  for(let x=xmin;x<=xmax;x++) s+=`<line x1="${X(x)}" y1="${gy0}" x2="${X(x)}" y2="${gy1}"/>`;
+  for(let y=ymin;y<=ymax;y++) s+=`<line x1="${gx0}" y1="${Y(y)}" x2="${gx1}" y2="${Y(y)}"/>`;
+  s+='</g>';
+  // quadrant / free texts (under axes)
+  (o.texts||[]).forEach(t=>{s+=`<text x="${X(t.x)}" y="${Y(t.y)}" text-anchor="middle" font-size="${t.size||13}" font-weight="700" fill="${t.c||'#362F78'}">${t.t}</text>`;});
+  // axes
+  const ax='#241F52';
+  if(ymin<=0&&ymax>=0){
+    const a=xmin<0?X(xmin-0.7):X(0), b=X(xmax+0.7);
+    s+=`<line x1="${a}" y1="${Y(0)}" x2="${b}" y2="${Y(0)}" stroke="${ax}" stroke-width="1.8" marker-end="url(#${id})" ${xmin<0?`marker-start="url(#${id})"`:''}/>`;
+    s+=`<text x="${b-2}" y="${Y(0)-8}" font-size="13" font-style="italic" fill="${ax}" text-anchor="end">x</text>`;
+  }
+  if(xmin<=0&&xmax>=0){
+    const a=ymin<0?Y(ymin-0.7):Y(0), b=Y(ymax+0.7);
+    s+=`<line x1="${X(0)}" y1="${a}" x2="${X(0)}" y2="${b}" stroke="${ax}" stroke-width="1.8" marker-end="url(#${id})" ${ymin<0?`marker-start="url(#${id})"`:''}/>`;
+    s+=`<text x="${X(0)+9}" y="${b+6}" font-size="13" font-style="italic" fill="${ax}">y</text>`;
+  }
+  s+='<g font-size="11" fill="#5B5686">';
+  for(let x=xmin;x<=xmax;x++){ if(x===0) continue; s+=`<line x1="${X(x)}" y1="${Y(0)-3}" x2="${X(x)}" y2="${Y(0)+3}" stroke="${ax}"/><text x="${X(x)}" y="${Y(0)+15}" text-anchor="middle">${fmt(x)}</text>`; }
+  for(let y=ymin;y<=ymax;y++){ if(y===0) continue; s+=`<line x1="${X(0)-3}" y1="${Y(y)}" x2="${X(0)+3}" y2="${Y(y)}" stroke="${ax}"/><text x="${X(0)-6}" y="${Y(y)+4}" text-anchor="end">${fmt(y)}</text>`; }
+  s+=`<text x="${X(0)-5}" y="${Y(0)+14}" text-anchor="end">0</text></g>`;
+  // lines (extended)
+  (o.lines||[]).forEach(l=>{s+=`<line x1="${X(l.p[0][0])}" y1="${Y(l.p[0][1])}" x2="${X(l.p[1][0])}" y2="${Y(l.p[1][1])}" stroke="${l.c||'#6C63B5'}" stroke-width="2.5" stroke-linecap="round"/>`;});
+  // polygons
+  (o.polys||[]).forEach(p=>{
+    const pts=p.p.map(q=>X(q[0])+','+Y(q[1])).join(' ');
+    const c=p.c||'#362F78';
+    s+=p.open?`<polyline points="${pts}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linejoin="round"/>`
+             :`<polygon points="${pts}" fill="${p.fill||'rgba(108,99,181,.13)'}" stroke="${c}" stroke-width="2.5" stroke-linejoin="round"/>`;
+  });
+  // side labels
+  (o.sides||[]).forEach(t=>{s+=`<text x="${X(t.x)}" y="${Y(t.y)}" text-anchor="middle" font-size="13" font-weight="700" fill="#E4694F" stroke="#fff" stroke-width="3" paint-order="stroke">${t.t}</text>`;});
+  // guides
+  (o.guides||[]).forEach(g=>{s+=`<g stroke="#6C63B5" stroke-width="1.8" stroke-dasharray="4 3"><line x1="${X(g[0])}" y1="${Y(g[1])}" x2="${X(g[0])}" y2="${Y(0)}"/><line x1="${X(g[0])}" y1="${Y(g[1])}" x2="${X(0)}" y2="${Y(g[1])}"/></g>`;});
+  // walking paths from origin
+  (o.walks||[]).forEach(w=>{s+=`<polyline points="${X(0)},${Y(0)} ${X(w[0])},${Y(0)} ${X(w[0])},${Y(w[1])}" fill="none" stroke="#E4694F" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#${id}c)"/>`;});
+  // points
+  (o.points||[]).forEach(p=>{
+    s+=`<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="6" fill="${p.c||'#E4694F'}" stroke="#fff" stroke-width="2"/>`;
+    if(p.l) s+=`<text x="${X(p.x)+(p.lx??8)}" y="${Y(p.y)+(p.ly??-9)}" text-anchor="${p.a||'start'}" font-size="13" font-weight="700" fill="#241F52" stroke="#fff" stroke-width="3.5" paint-order="stroke">${p.l}</text>`;
+  });
+  return s+'</svg>';
+}
+const P=(id,o)=>{const el=document.getElementById(id); if(el) el.innerHTML=plane(o);};
+
+/* ---------- figuras ---------- */
+P('fig-rev',{xmin:0,xmax:6,ymin:0,ymax:5,u:32,points:[{x:5,y:2,l:'M'},{x:2,y:4,l:'N'}],aria:'Plano com pontos M e N'});
+P('fig-ex3',{xmin:-5,xmax:5,ymin:-4,ymax:4,u:28,walks:[[2,-3],[-4,1],[-3,-2]],points:[{x:2,y:-3,l:'P(2, −3)'},{x:-4,y:1,l:'Q(−4, 1)',a:'middle',lx:0,ly:-11},{x:-3,y:-2,l:'R(−3, −2)',a:'end',lx:-8,ly:16}],aria:'Pontos P, Q e R com caminhos a partir da origem'});
+P('fig-ordem',{xmin:-4,xmax:4,ymin:-4,ymax:3,u:24,points:[{x:2,y:-3,l:'(2, −3)'},{x:-3,y:2,l:'(−3, 2)',c:'#6C63B5'}],aria:'Pontos (2,−3) e (−3,2) em lugares diferentes'});
+P('fig-ex4',{xmin:-5,xmax:5,ymin:-3,ymax:3,u:28,guides:[[-3,2],[4,-1]],points:[{x:-3,y:2,l:'K'},{x:4,y:-1,l:'L',ly:18}],aria:'Pontos K e L com linhas até os eixos'});
+P('fig-quad',{xmin:-4,xmax:4,ymin:-4,ymax:4,u:28,texts:[{x:2,y:2,t:'1º (+, +)'},{x:-2,y:2,t:'2º (−, +)'},{x:-2,y:-2.2,t:'3º (−, −)'},{x:2,y:-2.2,t:'4º (+, −)'}],points:[{x:-3,y:-1,l:'(−3, −1)',a:'end',lx:-8,ly:16,c:'#6C63B5'}],aria:'Os quatro quadrantes com os sinais de cada um'});
+P('fig-try4',{xmin:-5,xmax:5,ymin:-4,ymax:4,u:28,points:[{x:-4,y:-2,l:'F'},{x:3,y:-3,l:'G'},{x:0,y:2,l:'H'}],aria:'Pontos F, G e H'});
+const TRAP=[[-4,-1],[-1,3],[3,3],[4,-1]];
+P('fig-ex6',{xmin:-5,xmax:5,ymin:-2,ymax:4,u:28,polys:[{p:TRAP}],points:TRAP.map(q=>({x:q[0],y:q[1],l:'('+fmt(q[0])+', '+fmt(q[1])+')',a:q[0]<0?'end':'start',lx:q[0]<0?-8:8,ly:q[1]>0?-9:17})),aria:'Trapézio de vértices (−4,−1), (−1,3), (3,3) e (4,−1)'});
+P('fig-ordA',{xmin:-5,xmax:5,ymin:-2,ymax:4,u:22,polys:[{p:TRAP}],points:TRAP.map(q=>({x:q[0],y:q[1]}))});
+P('fig-ordB',{xmin:-5,xmax:5,ymin:-2,ymax:4,u:22,polys:[{p:[[-4,-1],[3,3],[-1,3],[4,-1]],c:'#E4694F',fill:'rgba(255,179,160,.18)'}],points:TRAP.map(q=>({x:q[0],y:q[1]}))});
+P('fig-ret',{xmin:-1,xmax:6,ymin:-1,ymax:4,u:32,polys:[{p:[[1,1],[5,1],[5,3],[1,3]]}],sides:[{x:3,y:0.55,t:'4'},{x:5.4,y:1.9,t:'2'}],points:[{x:1,y:1,l:'(1, 1)',a:'end',lx:-7,ly:16},{x:5,y:1,l:'(5, 1)',ly:16},{x:5,y:3,l:'(5, 3)'},{x:1,y:3,l:'(1, 3)',a:'end',lx:-7}],aria:'Retângulo de lados 4 e 2'});
+P('fig-ex7',{xmin:-3,xmax:3,ymin:-4,ymax:4,u:28,lines:[{p:[[-1.33,-4],[1.33,4]]}],points:[{x:-1,y:-3,l:'(−1, −3)',a:'end',lx:-9,ly:4},{x:0,y:0,l:'(0, 0)',lx:9,ly:4},{x:1,y:3,l:'(1, 3)',lx:9,ly:4}],aria:'Pontos da máquina vezes 3 formando uma reta'});
+
+// livro
+P('fig-ti1',{xmin:-4,xmax:5,ymin:-4,ymax:5,u:24,points:[{x:-3,y:5,l:'(−3, 5)'},{x:5,y:-3,l:'(5, −3)',a:'end',lx:-8}]});
+const EX2=[[3,4],[6,-2],[-7,-3],[-4,4]];
+P('fig-ti3a',{xmin:-8,xmax:7,ymin:-4,ymax:5,u:18,polys:[{p:EX2}],points:EX2.map(q=>({x:q[0],y:q[1]}))});
+P('fig-ti3b',{xmin:-8,xmax:7,ymin:-4,ymax:5,u:18,polys:[{p:[[3,4],[-7,-3],[-4,4],[6,-2]],c:'#E4694F',fill:'rgba(255,179,160,.18)'}],points:EX2.map(q=>({x:q[0],y:q[1]}))});
+const TI4=[[3,0],[-3,2],[2,-2],[-2,-2],[3,2]];
+P('fig-ti4',{xmin:-4,xmax:4,ymin:-3,ymax:3,u:28,polys:[{p:TI4,c:'#E4694F',fill:'rgba(255,179,160,.15)'}],points:TI4.map(q=>({x:q[0],y:q[1]}))});
+P('fig-a1',{xmin:-5,xmax:5,ymin:-3,ymax:2,u:28,points:[{x:2,y:1,l:'A'},{x:3,y:-2,l:'B',lx:8,ly:-9},{x:-5,y:-3,l:'C'},{x:-5,y:1,l:'D'}],aria:'Pontos A, B, C e D'});
+const A2=[['I',-5,3],['P',-4,2],['S',-2,1],['A',1,1],['B',2,3],['R',5,1],['O',-3,-2],['U',1,-2],['E',-5,-3],['L',5,-3],['V',2,-4]];
+P('fig-a2',{xmin:-5,xmax:5,ymin:-4,ymax:3,u:28,points:A2.map(q=>({x:q[1],y:q[2],l:q[0],a:q[1]===5?'end':'start',lx:q[1]===5?-8:8})),aria:'Pontos com letras I, P, S, A, B, R, O, U, E, L, V'});
+P('fig-a3',{xmin:-5,xmax:5,ymin:-3,ymax:4,u:26,aria:'Malha vazia'});
+P('fig-a3r',{xmin:-5,xmax:5,ymin:-3,ymax:4,u:26,lines:[{p:[[-1.5,-3],[2.2,4.4]]}],points:[{x:-1,y:-2},{x:0,y:0},{x:1,y:2},{x:2,y:4}]});
+P('fig-a4',{xmin:-5,xmax:5,ymin:-5,ymax:5,u:24,aria:'Malha vazia'});
+const A4=[[-3,1],[-1,3],[5,3],[3,-3]];
+P('fig-a4a',{xmin:-5,xmax:5,ymin:-5,ymax:5,u:24,polys:[{p:A4}],points:A4.map(q=>({x:q[0],y:q[1],l:'('+fmt(q[0])+', '+fmt(q[1])+')',a:q[0]===5?'end':(q[0]<0?'end':'start'),lx:q[0]<0||q[0]===5?-8:8,ly:q[1]<0?17:-9}))});
+P('fig-a4b',{xmin:-1,xmax:5,ymin:-1,ymax:4,u:30,polys:[{p:[[0,0],[3,0],[3,2],[0,2]]}],sides:[{x:1.5,y:-0.5,t:'3'},{x:3.4,y:0.9,t:'2'}],points:[{x:0,y:0},{x:3,y:0},{x:3,y:2},{x:0,y:2}]});
+
+/* ---------- corrente ---------- */
+document.querySelectorAll('.cpill').forEach(b=>b.addEventListener('click',()=>{b.textContent=b.dataset.op;b.classList.add('shown');}));
+
+/* ---------- revelar respostas ---------- */
+document.querySelectorAll('.reveal').forEach(b=>{
+  b.setAttribute('aria-expanded','false');
+  b.addEventListener('click',()=>{const el=document.getElementById(b.dataset.rv); const open=el.hidden; el.hidden=!open; b.setAttribute('aria-expanded',open); b.textContent=open?'Esconder resposta':'Ver resposta';});
+});
+
+/* ---------- conferir pares ---------- */
+function parsePair(s){
+  s=s.replace(/[−–—]/g,'-').replace(/[()\s]/g,'').replace(';',',');
+  const m=s.match(/^(-?\d+),(-?\d+)$/); return m?[+m[1],+m[2]]:null;
+}
+function pairHint(g,t){
+  if(g[0]===t[1]&&g[1]===t[0]&&t[0]!==t[1]) return 'Quase! Parece que a ordem ficou trocada. O 1º número é o x (horizontal) e o 2º é o y (vertical).';
+  if(g[0]!==t[0]){
+    if(Math.abs(g[0])===Math.abs(t[0])) return 'Quase! Revê o sinal do x: à direita do eixo y é positivo, à esquerda é negativo.';
+    return 'Quase! Revê o x: conte de novo quantas casas o ponto está da origem, na horizontal.';
+  }
+  if(Math.abs(g[1])===Math.abs(t[1])) return 'Quase! Revê o sinal do y: acima do eixo x é positivo, abaixo é negativo.';
+  return 'Quase! Revê o y: conte de novo quantas casas o ponto está da origem, na vertical.';
+}
+function show(fb,ok,msg){fb.className='fb '+(ok?'ok':'no');fb.textContent=(ok?'✓ ':'↺ ')+msg;}
+document.querySelectorAll('[data-check]').forEach(btn=>{
+  const inp=document.getElementById(btn.dataset.check), fb=document.getElementById(btn.dataset.check+'-fb');
+  const t=btn.dataset.ans.split(',').map(Number);
+  const run=()=>{
+    const g=parsePair(inp.value);
+    if(!g){show(fb,false,'Escreva no formato (x, y), por exemplo (2, −1).');return;}
+    if(g[0]===t[0]&&g[1]===t[1]){show(fb,true,'Isso aí! ('+fmt(t[0])+', '+fmt(t[1])+') está certinho.');return;}
+    show(fb,false,btn.dataset.hint?('Quase! '+btn.dataset.hint):pairHint(g,t));
+  };
+  btn.addEventListener('click',run);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+});
+
+/* ---------- plano clicável ---------- */
+(function(){
+  const targets=[[-3,2],[4,-1],[-2,-4],[0,-3],[-5,0],[3,4]];
+  let i=0, cur=null, svg;
+  const fig=document.getElementById('cp-fig'), tg=document.getElementById('cp-target'), you=document.getElementById('cp-you'), fb=document.getElementById('cp-fb');
+  function draw(){
+    fig.innerHTML=plane({xmin:-5,xmax:5,ymin:-5,ymax:5,u:28,aria:'Malha para marcar o ponto; toque numa interseção'});
+    svg=fig.querySelector('svg'); cur=null;
+    tg.textContent='Marque o ponto ('+fmt(targets[i][0])+', '+fmt(targets[i][1])+')';
+    you.textContent='Você ainda não marcou nenhum ponto.'; fb.className='fb'; fb.textContent='';
+    svg.addEventListener('click',pick);
+  }
+  function pick(e){
+    const d=svg.dataset, u=+d.u, pad=+d.pad;
+    const pt=svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY;
+    const p=pt.matrixTransform(svg.getScreenCTM().inverse());
+    let x=Math.round((p.x-pad)/u + +d.xmin), y=Math.round(+d.ymax-(p.y-pad)/u);
+    x=Math.max(+d.xmin,Math.min(+d.xmax,x)); y=Math.max(+d.ymin,Math.min(+d.ymax,y));
+    cur=[x,y];
+    const old=svg.querySelector('.mark'); if(old) old.remove();
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('class','mark'); c.setAttribute('cx',pad+(x - +d.xmin)*u); c.setAttribute('cy',pad+(+d.ymax-y)*u);
+    c.setAttribute('r',7); c.setAttribute('fill','#E4694F'); c.setAttribute('stroke','#fff'); c.setAttribute('stroke-width',2.5);
+    svg.appendChild(c);
+    you.textContent='Você marcou ('+fmt(x)+', '+fmt(y)+').'; fb.className='fb'; fb.textContent='';
+  }
+  document.getElementById('cp-check').addEventListener('click',()=>{
+    const t=targets[i];
+    if(!cur){show(fb,false,'Toque na malha para marcar o ponto primeiro.');return;}
+    if(cur[0]===t[0]&&cur[1]===t[1]) show(fb,true,'Isso aí! Você marcou o ponto certinho. Toque em “Próximo ponto”.');
+    else show(fb,false,pairHint(cur,t));
+  });
+  document.getElementById('cp-next').addEventListener('click',()=>{i=(i+1)%targets.length;draw();});
+  draw();
+})();
+
+/* ---------- múltipla escolha ---------- */
+function mcq(container,qs,scoreEl){
+  let answered=0,right=0;
+  qs.forEach((q,qi)=>{
+    const d=document.createElement('div'); d.className='q';
+    d.innerHTML=(scoreEl?`<p class="q-n">Questão ${qi+1}</p>`:'')+`<p class="q-t">${q.t}</p>`+(q.fig?plane(q.fig):'')+'<div class="opts"></div><div class="q-exp" hidden></div>';
+    const box=d.querySelector('.opts'), exp=d.querySelector('.q-exp');
+    q.o.forEach((txt,oi)=>{
+      const b=document.createElement('button'); b.className='opt'; b.textContent=txt;
+      b.addEventListener('click',()=>{
+        const all=box.querySelectorAll('.opt'); all.forEach(x=>x.disabled=true);
+        all[q.c].classList.add('right'); all[q.c].textContent='✓ '+q.o[q.c];
+        const ok=oi===q.c;
+        if(!ok){b.classList.add('wrong');b.textContent='✗ '+txt;}
+        answered++; if(ok) right++;
+        exp.hidden=false; exp.innerHTML=(ok?'<b>Isso aí!</b> ':'<b>Quase!</b> A resposta certa está marcada. ')+q.e;
+        if(scoreEl){scoreEl.textContent='Acertos: '+right+' de '+qs.length+(answered===qs.length?(right===qs.length?' 🎉 Gabaritou!':' — revê as explicações e tente de novo no caderno!'):'');}
+      });
+      box.appendChild(b);
+    });
+    container.appendChild(d);
+  });
+}
+mcq(document.getElementById('gancho'),[{
+  t:'Em qual par está a lanchonete (L)?',
+  fig:{xmin:0,xmax:6,ymin:0,ymax:5,u:34,points:[{x:4,y:3,l:'L'}],aria:'Mapa em malha com a lanchonete L'},
+  o:['(4, 3)','(3, 4)','(4, 4)'],c:0,
+  e:'Saindo do 0: 4 casas para a direita e 3 para cima. Você já sabe fazer isso desde o 6º ano!'
+}],null);
+
+mcq(document.getElementById('quiz'),[
+ {t:'Quais são as coordenadas do ponto A?',fig:{xmin:-4,xmax:4,ymin:-3,ymax:3,u:26,points:[{x:-3,y:2,l:'A'}]},
+  o:['(2, −3)','(−3, 2)','(3, −2)','(−2, 3)'],c:1,
+  e:'A está 3 casas à esquerda do eixo y (x = −3) e 2 casas acima do eixo x (y = 2). Primeiro o x, depois o y: (−3, 2).'},
+ {t:'Para marcar o ponto (4, −5), saindo da origem, você anda:',
+  o:['4 para a esquerda e 5 para cima','5 para a direita e 4 para baixo','4 para a direita e 5 para baixo','4 para cima e 5 para a direita'],c:2,
+  e:'O 4 é o x: positivo, então direita. O −5 é o y: negativo, então 5 para baixo.'},
+ {t:'Qual destes pontos tem coordenadas (−1, −3)?',fig:{xmin:-4,xmax:4,ymin:-4,ymax:4,u:24,points:[{x:3,y:-1,l:'M'},{x:-3,y:-1,l:'N'},{x:-1,y:-3,l:'P'},{x:1,y:3,l:'Q'}]},
+  o:['M','N','P','Q'],c:2,
+  e:'(−1, −3): 1 para a esquerda e 3 para baixo. Esse é o P. Cuidado com o N: ele é (−3, −1), com os números trocados.'},
+ {t:'Os pontos (6, −1) e (−1, 6) são iguais?',
+  o:['Sim, porque usam os mesmos números','Não, porque a ordem dos números muda o ponto','Sim, porque os dois têm um número negativo','Não dá para saber sem desenhar'],c:1,
+  e:'(6, −1) fica à direita e um pouco abaixo do eixo x; (−1, 6) fica à esquerda e bem acima. O 1º número é sempre o x.'},
+ {t:'Onde fica o ponto (0, −4)?',
+  o:['Na origem','Sobre o eixo x, à esquerda da origem','Sobre o eixo y, abaixo da origem','No meio do 3º quadrante'],c:2,
+  e:'x = 0: não anda na horizontal. y = −4: desce 4. O ponto fica em cima do eixo y, abaixo da origem.'},
+ {t:'Ligando na ordem os pontos (−2, 0), (2, 0) e (0, 4), e depois voltando ao primeiro, que figura você obtém?',
+  o:['Um triângulo','Um quadrilátero','Uma linha reta','Uma figura que não é polígono'],c:0,
+  e:'São 3 vértices que não estão na mesma reta. Ligados e fechados, formam 3 lados: um triângulo.'},
+ {t:'Uma máquina subtrai 1 de cada número que entra. Se entra 3, qual ponto essa linha da tabela forma?',
+  o:['(2, 3)','(3, −1)','(3, 2)','(−1, 3)'],c:2,
+  e:'Entra 3 (é o x) e sai 3 − 1 = 2 (é o y). O ponto é (entrada, saída) = (3, 2).'},
+ {t:'Três vértices de um retângulo são (−3, 1), (2, 1) e (2, 4). Qual é o quarto vértice?',fig:{xmin:-4,xmax:3,ymin:-1,ymax:5,u:26,polys:[{p:[[-3,1],[2,1],[2,4]],open:true}],points:[{x:-3,y:1,l:'(−3, 1)',ly:17},{x:2,y:1,l:'(2, 1)',ly:17},{x:2,y:4,l:'(2, 4)'}]},
+  o:['(−3, 4)','(4, −3)','(2, −3)','(−3, −4)'],c:0,
+  e:'O lado de baixo vai de x = −3 até x = 2, na altura y = 1. O lado da direita sobe até y = 4. O canto que falta fica em x = −3 e y = 4: (−3, 4).'},
+ {t:'Um ponto está à esquerda do eixo y e acima do eixo x. Qual destes pode ser ele?',
+  o:['(5, −2)','(−5, 2)','(−5, −2)','(5, 2)'],c:1,
+  e:'À esquerda do eixo y → x negativo. Acima do eixo x → y positivo. Sinais (−, +), 2º quadrante: só (−5, 2) serve.'}
+],document.getElementById('score'));
+
+/* ---------- navegação ---------- */
+const parts=[...document.querySelectorAll('section.part')], N=parts.length;
+const tabs=document.getElementById('tabs'), fill=document.getElementById('fill'), plabel=document.getElementById('plabel');
+const prev=document.getElementById('prev'), next=document.getElementById('next');
+parts.forEach((p,i)=>{const b=document.createElement('button');b.className='tab';b.setAttribute('role','tab');b.textContent=(i+1)+'. '+p.dataset.name;b.addEventListener('click',()=>go(i));tabs.appendChild(b);});
+let cur=0;
+function go(i,scroll=true){
+  cur=i;
+  parts.forEach((p,j)=>p.hidden=j!==i);
+  [...tabs.children].forEach((b,j)=>b.setAttribute('aria-selected',j===i));
+  fill.style.width=((i+1)/N*100)+'%';
+  plabel.textContent='Parte '+(i+1)+' de '+N+' — '+parts[i].dataset.name;
+  prev.disabled=i===0; next.disabled=i===N-1;
+  if(scroll) window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+}
+prev.addEventListener('click',()=>{if(cur>0)go(cur-1);});
+next.addEventListener('click',()=>{if(cur<N-1)go(cur+1);});
+go(0,false);
+</script>
+</body>
+</html>
