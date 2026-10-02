@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juros Simples · Aulas da Rafa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F4FC; --indigo:#362F78; --indigo-deep:#241F52; --indigo-soft:#6C63B5;
+  --mint:#A9E5D0; --coral:#FFB3A0; --coral-dark:#E4694F; --yellow:#FFDD73;
+  --text:#2A2650; --text-2:#5B5686; --border:#E3DEF7; --card:#fff;
+  --lilac:#EEEAFB; --indigo-light:#ECEAFA; --cream:#FFF8E1;
+  --ok:#1E7A55; --ok-bg:#E3F6EE; --bad:#B23A22; --bad-bg:#FDECE7;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3,.baloo{font-family:'Baloo 2',system-ui,sans-serif}
+h1{font-size:30px;line-height:1.1;margin:0;color:var(--indigo-deep);font-weight:800}
+h2{font-size:24px;line-height:1.15;margin:6px 0 12px;color:var(--indigo-deep);font-weight:800}
+h3{font-size:19px;margin:18px 0 6px;color:var(--indigo);font-weight:700}
+p{margin:0 0 12px}
+strong{color:var(--indigo-deep)}
+
+/* fundo */
+.bg-symbols{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-symbols span{position:absolute;font-family:'Baloo 2';font-weight:800;color:var(--indigo);opacity:.08;animation:drift 28s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(30px,-40px) rotate(12deg)}}
+@media (prefers-reduced-motion:reduce){.bg-symbols span{animation:none}html{scroll-behavior:auto}}
+
+/* progresso */
+.progress{position:sticky;top:0;z-index:20;background:rgba(246,244,252,.94);backdrop-filter:blur(6px);padding:8px 16px 7px;border-bottom:1px solid var(--border)}
+.track{height:7px;background:var(--border);border-radius:99px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--indigo-soft),var(--indigo));border-radius:99px;transition:width .35s}
+.plabel{font-family:'Baloo 2';font-weight:600;font-size:13px;color:var(--text-2);margin-top:3px}
+
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:18px 16px 40px}
+header .kicker{font-family:'Baloo 2';font-weight:700;color:var(--coral-dark);font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+header .sub{color:var(--text-2);margin-top:4px}
+
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 16px}
+.tab{font-family:'Baloo 2';font-weight:600;font-size:12px;padding:4px 10px;border-radius:99px;border:1.5px solid var(--border);background:#fff;color:var(--indigo);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--indigo);border-color:var(--indigo);color:#fff}
+.tab:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+
+section.part{display:none}
+section.part.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px 18px;box-shadow:0 6px 22px rgba(54,47,120,.07);margin-bottom:16px}
+.eyebrow{display:inline-block;font-family:'Baloo 2';font-weight:700;font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:2px 10px;border-radius:99px;background:var(--mint);color:var(--indigo-deep)}
+.eyebrow.coral{background:var(--coral)}
+.eyebrow.yellow{background:var(--yellow)}
+.eyebrow.lilac{background:var(--lilac);color:var(--indigo)}
+
+.box{border-radius:14px;padding:14px 16px;margin:14px 0}
+.box .t{font-family:'Baloo 2';font-weight:700;font-size:16px;margin-bottom:4px;display:flex;gap:6px;align-items:center}
+.think{background:var(--indigo-light);border:1px solid #D9D4F5}
+.think .t{color:var(--indigo)}
+.tip{background:var(--cream);border-left:7px solid var(--yellow)}
+.tip .t{color:#8A5A00}
+.copy{background:#F3FBF8;border:2.5px dashed #5DBF9C}
+.copy .t{color:#1E7A55}
+.copy p:last-child,.tip p:last-child,.think p:last-child{margin-bottom:0}
+
+.calc{font-family:'Baloo 2';font-weight:600;font-size:19px;background:var(--lilac);border-radius:14px;padding:12px 16px;margin:12px 0;color:var(--indigo-deep);line-height:1.5}
+.calc .note{font-family:'Atkinson Hyperlegible';font-weight:400;font-size:14px;color:var(--text-2)}
+.formula{font-family:'Baloo 2';font-weight:800;font-size:34px;text-align:center;color:var(--indigo);background:#fff;border:3px solid var(--indigo);border-radius:18px;padding:6px 10px;margin:14px auto;max-width:280px}
+.formula.small{font-size:26px;max-width:240px;border-width:2px}
+
+table{width:100%;border-collapse:separate;border-spacing:0;margin:12px 0;font-size:16px;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+th{background:var(--indigo);color:#fff;font-family:'Baloo 2';font-weight:700;padding:7px 8px;text-align:left}
+td{padding:7px 8px;border-top:1px solid var(--border);background:#fff}
+td.hl{color:var(--coral-dark);font-weight:700}
+
+/* termos */
+.terms{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0}
+.term{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--border);border-radius:14px;padding:10px 12px}
+.term .l{flex:0 0 38px;height:38px;border-radius:12px;background:var(--indigo);color:#fff;font-family:'Baloo 2';font-weight:800;font-size:20px;display:flex;align-items:center;justify-content:center}
+.term.m .l{background:var(--coral-dark)}
+.term b{font-family:'Baloo 2';font-size:17px;color:var(--indigo-deep)}
+.term div{font-size:15px;line-height:1.4}
+
+/* corrente */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:14px 0}
+.node{background:var(--indigo);color:#fff;font-family:'Baloo 2';font-weight:700;font-size:17px;border-radius:12px;padding:6px 11px;text-align:center;line-height:1.1}
+.node small{display:block;font-size:11px;font-weight:500;opacity:.8}
+.op{background:var(--coral);color:var(--indigo-deep);font-family:'Baloo 2';font-weight:700;font-size:14px;border-radius:99px;padding:2px 9px;border:none;cursor:pointer;min-width:52px}
+.op.hidden-op{background:#fff;border:2px dashed var(--coral-dark);color:var(--coral-dark)}
+.hint-small{font-size:14px;color:var(--text-2)}
+
+/* algo */
+.algo{background:var(--lilac);border:2px solid #CFC8F2;border-radius:16px;padding:14px 16px;margin:14px 0}
+.algo .t{font-family:'Baloo 2';font-weight:700;color:var(--indigo);font-size:17px;margin-bottom:6px}
+.algo ol{list-style:none;margin:0;padding:0}
+.algo li{padding:5px 0;border-top:1px solid #DDD7F7}
+.algo li:first-child{border-top:none}
+
+/* try */
+.try{border:2.5px dashed var(--indigo-soft);border-radius:16px;padding:14px 16px;margin:16px 0;background:#fff}
+.try .t{font-family:'Baloo 2';font-weight:700;color:var(--indigo);font-size:16px}
+.try .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.try input{font-family:'Baloo 2';font-size:18px;padding:6px 10px;border:2px solid var(--border);border-radius:12px;width:150px;color:var(--text)}
+.btn{font-family:'Baloo 2';font-weight:700;font-size:15px;border:none;border-radius:12px;padding:7px 14px;background:var(--indigo);color:#fff;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--indigo);border:2px solid var(--indigo)}
+.fb{margin-top:8px;border-radius:12px;padding:8px 12px;font-size:15px;display:none}
+.fb.ok{display:block;background:var(--ok-bg);color:var(--ok)}
+.fb.bad{display:block;background:var(--bad-bg);color:var(--bad)}
+
+/* quiz */
+.score{font-family:'Baloo 2';font-weight:700;background:var(--indigo);color:#fff;border-radius:14px;padding:8px 14px;display:inline-block;margin-bottom:12px}
+.q{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:14px}
+.q .qn{font-family:'Baloo 2';font-weight:800;color:var(--coral-dark)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.opt{font-family:'Baloo 2';font-weight:600;font-size:16px;padding:8px 10px;border-radius:12px;border:2px solid var(--border);background:#fff;color:var(--text);cursor:pointer;text-align:left}
+.opt.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.opt.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+.opt:disabled{cursor:default}
+.expl{display:none;margin-top:10px;font-size:15px;background:var(--indigo-light);border-radius:12px;padding:10px 12px}
+.expl.show{display:block}
+
+/* livro */
+.book{display:grid;grid-template-columns:1fr;gap:14px}
+.ex{background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px 16px}
+.ex .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:#F6A51A;color:#fff;font-family:'Baloo 2';font-weight:800;font-size:17px;margin-right:8px;vertical-align:middle}
+.ex .item{margin:10px 0 0 14px}
+.ans{display:none;margin-top:8px;background:#EAF6FC;border-left:5px solid #2E9AD6;border-radius:10px;padding:8px 12px;font-size:15px}
+.ans.show{display:block}
+.ans b{color:#1C6E9C}
+.ans .how{color:var(--text-2);font-size:14px;margin-top:4px}
+.btn.see{background:#fff;color:#1C6E9C;border:2px solid #2E9AD6;font-size:13px;padding:4px 10px;margin-top:8px}
+
+.summary p{text-indent:1.2em}
+
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:10px}
+.nav button{font-family:'Baloo 2';font-weight:600;font-size:12px;padding:4px 12px;border-radius:99px;border:1.5px solid var(--indigo);background:#fff;color:var(--indigo);cursor:pointer}
+.nav button.next{background:var(--indigo);color:#fff}
+.nav button:disabled{opacity:.35;cursor:default}
+
+svg text{font-family:'Baloo 2',sans-serif}
+.fig{width:100%;height:auto;display:block;margin:10px 0}
+
+@media (min-width:900px){
+  body{font-size:19px}
+  .wrap{max-width:980px;padding:26px 28px 50px}
+  h1{font-size:40px} h2{font-size:30px} h3{font-size:22px}
+  .card{padding:28px 30px}
+  .terms{grid-template-columns:1fr 1fr}
+  .opts{grid-template-columns:repeat(4,1fr)}
+  .book{grid-template-columns:1fr 1fr}
+  .calc{font-size:22px}
+  .formula{font-size:42px;max-width:340px}
+  .tab{font-size:13px}
+}
+@media (min-width:1500px){
+  body{font-size:23px}
+  .wrap{max-width:1320px}
+  h1{font-size:52px} h2{font-size:38px} h3{font-size:27px}
+  .calc{font-size:27px}
+  .formula{font-size:54px;max-width:440px}
+  .node{font-size:22px} .op{font-size:18px}
+  .opt{font-size:20px}
+  .try input{font-size:22px;width:190px}
+  .btn{font-size:19px}
+  .tab{font-size:15px;padding:5px 13px}
+  .nav button{font-size:15px}
+  table{font-size:21px}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-symbols" aria-hidden="true">
+  <span style="top:8%;left:6%;font-size:60px">%</span>
+  <span style="top:22%;left:82%;font-size:48px;animation-delay:-6s">R$</span>
+  <span style="top:48%;left:12%;font-size:54px;animation-delay:-12s">×</span>
+  <span style="top:66%;left:78%;font-size:64px;animation-delay:-3s">=</span>
+  <span style="top:84%;left:30%;font-size:50px;animation-delay:-9s">÷</span>
+  <span style="top:36%;left:52%;font-size:44px;animation-delay:-15s">+</span>
+  <span style="top:90%;left:88%;font-size:46px;animation-delay:-18s">%</span>
+</div>
+
+<div class="progress" role="status" aria-live="polite">
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div class="plabel" id="plabel">Parte 1 de 10</div>
+</div>
+
+<main class="wrap">
+<header>
+  <div class="kicker">8º ano · Porcentagens e juros</div>
+  <h1>Juros Simples</h1>
+  <p class="sub">O “aluguel” do dinheiro — e como calcular quanto ele custa.</p>
+</header>
+
+<nav class="tabs" id="tabs" role="tablist" aria-label="Partes da aula"></nav>
+
+<!-- ============ PARTE 1 ============ -->
+<section class="part" data-name="À vista ou a prazo?">
+<div class="card">
+  <span class="eyebrow coral">Parte 1 · Para começar</span>
+  <h2>À vista ou a prazo?</h2>
+  <p>Uma loja anuncia um celular assim:</p>
+  <div class="calc" style="text-align:center">R$ 900,00 à vista<br><span class="note">ou</span><br>10 × R$ 99,00</div>
+  <p>Parece quase o mesmo preço, né? Afinal, 99 é pertinho de 90. Mas vamos conferir.</p>
+  <div class="try" data-answer="990" data-hint="Quase! São 10 parcelas de R$ 99,00. Faça 10 × 99.">
+    <div class="t">✏️ Agora é sua vez</div>
+    <p style="margin:4px 0 0">Quanto a pessoa paga no total se escolher as 10 parcelas?</p>
+    <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Sua resposta"><button class="btn check">Conferir</button></div>
+    <div class="fb" role="status"></div>
+  </div>
+  <p>Pagando parcelado, a pessoa gasta <strong>R$ 990,00</strong>. São <strong>R$ 90,00 a mais</strong> do que à vista.</p>
+  <p>Esses R$ 90,00 a mais têm um nome: <strong>juro</strong>. É o que você paga por usar um dinheiro que ainda não tinha. Nesta aula, você vai aprender a calcular isso.</p>
+</div>
+</section>
+
+<!-- ============ PARTE 2 ============ -->
+<section class="part" data-name="Revisão: porcentagem">
+<div class="card">
+  <span class="eyebrow lilac">Parte 2 · Revisão</span>
+  <h2>Porcentagem em número decimal</h2>
+  <p>Você já sabe que <strong>por cento</strong> quer dizer “de cada 100”. Então 6% é 6 de cada 100:</p>
+  <div class="calc" style="text-align:center">6% = 6 ÷ 100 = 0,06</div>
+  <p>Para fazer contas de juros, a gente <strong>sempre</strong> usa a porcentagem na forma decimal. Dividir por 100 é andar com a vírgula duas casas para a esquerda.</p>
+  <table>
+    <tr><th>Porcentagem</th><th>Decimal</th></tr>
+    <tr><td>5%</td><td class="hl">0,05</td></tr>
+    <tr><td>12%</td><td class="hl">0,12</td></tr>
+    <tr><td>50%</td><td class="hl">0,5</td></tr>
+    <tr><td>11,2%</td><td class="hl">0,112</td></tr>
+  </table>
+  <div class="box tip">
+    <div class="t">⚠️ Dica: cuidado com o zero</div>
+    <p>5% é <strong>0,05</strong> (cinco centésimos), e não 0,5. O número 0,5 é 50% — a metade! Confira sempre: a porcentagem tem só um algarismo antes da vírgula? Então o decimal começa com <strong>0,0</strong>.</p>
+  </div>
+  <h3>Porcentagem de um valor</h3>
+  <p>Para achar 20% de R$ 350,00, multiplique o decimal pelo valor:</p>
+  <div class="calc">0,20 × 350 = 70 <span class="note">→ 20% de R$ 350,00 é R$ 70,00</span></div>
+  <div class="try" data-answer="0.18" data-hint="Quase! Divida 18 por 100: a vírgula anda duas casas para a esquerda.">
+    <div class="t">✏️ Agora é sua vez</div>
+    <p style="margin:4px 0 0">Escreva 18% na forma decimal.</p>
+    <div class="row"><input inputmode="decimal" aria-label="Sua resposta"><button class="btn check">Conferir</button></div>
+    <div class="fb" role="status"></div>
+  </div>
+  <div class="try" data-answer="60" data-hint="Revê esse passo: transforme 15% em 0,15 e multiplique por 400.">
+    <div class="t">✏️ Mais uma</div>
+    <p style="margin:4px 0 0">Quanto é 15% de R$ 400,00?</p>
+    <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Sua resposta"><button class="btn check">Conferir</button></div>
+    <div class="fb" role="status"></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 3 ============ -->
+<section class="part" data-name="O que é juro">
+<div class="card">
+  <span class="eyebrow">Parte 3 · Conceito novo</span>
+  <h2>O que é juro?</h2>
+  <p><strong>Juro</strong> é o dinheiro a mais que alguém paga por usar, durante um tempo, um dinheiro que era de outra pessoa.</p>
+  <div class="box think">
+    <div class="t">💡 Pense assim</div>
+    <p>Juro é o <strong>aluguel do dinheiro</strong>. Quando você aluga uma bicicleta, devolve a bicicleta e ainda paga pelo tempo que usou. Com dinheiro é igual: quem pega emprestado devolve o valor e paga um “aluguel” por ele.</p>
+  </div>
+  <p>E funciona nos dois sentidos:</p>
+  <p>• Se <strong>você</strong> pega dinheiro emprestado (ou compra parcelado), <strong>você paga</strong> juro.<br>
+     • Se você <strong>guarda</strong> dinheiro no banco (poupança, aplicação), é o banco que está usando seu dinheiro. Aí <strong>você recebe</strong> juro.</p>
+  <h3>Os nomes de cada parte</h3>
+  <div class="terms">
+    <div class="term"><span class="l">c</span><div><b>Capital</b><br>O valor do começo: o que foi emprestado ou aplicado.</div></div>
+    <div class="term"><span class="l">i</span><div><b>Taxa</b><br>A porcentagem cobrada em cada período (ao ano, ao mês…).</div></div>
+    <div class="term"><span class="l">t</span><div><b>Tempo</b><br>Por quanto tempo o dinheiro ficou emprestado ou aplicado.</div></div>
+    <div class="term"><span class="l">J</span><div><b>Juro</b><br>Só o valor a mais — o “aluguel”.</div></div>
+    <div class="term m"><span class="l">M</span><div><b>Montante</b><br>O total no final: capital + juro.</div></div>
+  </div>
+  <p>No celular da Parte 1: o capital era R$ 900,00, o juro foi R$ 90,00 e o montante (o total pago) foi R$ 990,00.</p>
+  <div class="box copy">
+    <div class="t">📓 Copie no caderno</div>
+    <p><strong>Juro (J)</strong> é a compensação em dinheiro paga pelo uso de um valor durante um tempo. O valor inicial se chama <strong>capital (c)</strong>, a porcentagem cobrada por período se chama <strong>taxa (i)</strong> e a duração se chama <strong>tempo (t)</strong>. O total no final é o <strong>montante</strong>: M = c + J.</p>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 4 ============ -->
+<section class="part" data-name="Juros simples">
+<div class="card">
+  <span class="eyebrow">Parte 4 · Conceito novo</span>
+  <h2>Juros simples: todo ano, o mesmo juro</h2>
+  <p>Nos <strong>juros simples</strong>, o juro é calculado <strong>sempre sobre o capital</strong> — o valor do começo. Por isso, o juro de cada ano é igual ao do ano anterior.</p>
+  <div class="box think">
+    <div class="t">💡 Pense assim</div>
+    <p>É como uma mesada fixa. Todo mês você ganha o mesmo valor, não importa quanto já juntou no cofrinho. No juro simples, o dinheiro “ganha a mesma mesada” todo ano.</p>
+  </div>
+  <h3>Exemplo passo a passo</h3>
+  <p>Ana aplicou <strong>R$ 500,00</strong> a juros simples de <strong>8% ao ano</strong>. Quanto ela terá depois de 3 anos?</p>
+  <p>O juro de <em>cada</em> ano é 8% de 500: <span class="baloo" style="font-weight:700">0,08 × 500 = 40</span>. Toque em cada “?” para ver o que acontece:</p>
+  <div class="chain" aria-label="Corrente de valores">
+    <div class="node"><small>início</small>500</div>
+    <button class="op hidden-op" data-reveal="+40">?</button>
+    <div class="node"><small>1 ano</small>540</div>
+    <button class="op hidden-op" data-reveal="+40">?</button>
+    <div class="node"><small>2 anos</small>580</div>
+    <button class="op hidden-op" data-reveal="+40">?</button>
+    <div class="node"><small>3 anos</small>620</div>
+  </div>
+  <table>
+    <tr><th>Ano</th><th>Juro do ano</th><th>Juro acumulado</th><th>Total</th></tr>
+    <tr><td>1º</td><td>R$ 40</td><td>R$ 40</td><td>R$ 540</td></tr>
+    <tr><td>2º</td><td>R$ 40</td><td>R$ 80</td><td>R$ 580</td></tr>
+    <tr><td>3º</td><td>R$ 40</td><td class="hl">R$ 120</td><td class="hl">R$ 620</td></tr>
+  </table>
+  <p>Repare: em 3 anos, o juro foi <strong>3 vezes R$ 40,00</strong>, ou seja, R$ 120,00. O montante foi 500 + 120 = <strong>R$ 620,00</strong>.</p>
+  <div class="box tip">
+    <div class="t">⚠️ Dica: o juro não é calculado sobre o total</div>
+    <p>No 2º ano, o juro <strong>não</strong> é 8% de 540. É 8% de 500 de novo, porque no juro simples a conta é sempre sobre o capital. (Existe outro tipo, o <em>juro composto</em>, que calcula sobre o novo total — mas ele é outra história.)</p>
+  </div>
+  <div class="try" data-answer="420" data-hint="Quase! Primeiro ache o juro de um ano: 10% de 300. Depois some esse valor 4 vezes ao 300.">
+    <div class="t">✏️ Agora é sua vez</div>
+    <p style="margin:4px 0 0">Léo aplicou R$ 300,00 a juros simples de 10% ao ano. Quanto ele terá depois de 4 anos?</p>
+    <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Sua resposta"><button class="btn check">Conferir</button></div>
+    <div class="fb" role="status"></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 5 ============ -->
+<section class="part" data-name="A fórmula">
+<div class="card">
+  <span class="eyebrow">Parte 5 · Conceito novo</span>
+  <h2>O atalho: a fórmula</h2>
+  <p>Na Parte 4, você fez: <em>juro de um ano</em> × <em>número de anos</em>. E o juro de um ano era <em>taxa × capital</em>. Juntando tudo numa conta só:</p>
+  <div class="formula">J = c · i · t</div>
+  <p style="text-align:center" class="hint-small">juro = capital × taxa (em decimal) × tempo</p>
+  <p>Conferindo com a Ana: J = 500 · 0,08 · 3 = 120. Deu os mesmos R$ 120,00 da tabela! 🎉</p>
+  <h3>Exemplo passo a passo</h3>
+  <p>Bruno pegou emprestado <strong>R$ 2 000,00</strong> a juros simples de <strong>5% ao ano</strong>, por <strong>4 anos</strong>. Qual o juro? Quanto ele devolve no total?</p>
+  <div class="calc">
+    c = 2 000 &nbsp;·&nbsp; i = 0,05 &nbsp;·&nbsp; t = 4<br>
+    J = 2 000 · 0,05 · 4<br>
+    J = 100 · 4 = <span style="color:var(--coral-dark)">400</span><br>
+    M = 2 000 + 400 = <span style="color:var(--coral-dark)">2 400</span>
+  </div>
+  <p>O juro é <strong>R$ 400,00</strong> e Bruno devolve <strong>R$ 2 400,00</strong>.</p>
+  <div class="box copy">
+    <div class="t">📓 Copie no caderno</div>
+    <p>Nos <strong>juros simples</strong>, o juro é calculado sempre sobre o capital inicial, então ele é igual em todos os períodos. Fórmula: <strong>J = c · i · t</strong>, com a taxa <em>i</em> em número decimal. O total é o montante: <strong>M = c + J</strong>.</p>
+  </div>
+  <div class="box tip">
+    <div class="t">⚠️ Dica: a pergunta quer o juro ou o total?</div>
+    <p>Esse é o erro mais comum! Leia a pergunta com calma:</p>
+    <p>• “Qual o juro?”, “Quanto rendeu?” → a resposta é <strong>J</strong>.<br>
+       • “Quanto vai pagar?”, “Quanto terá no final?”, “Qual a quantia resultante?” → a resposta é o <strong>montante M = c + J</strong>.</p>
+  </div>
+  <div class="try" data-answer="180" data-hint="Revê esse passo: 4% vira 0,04. Faça 1 500 · 0,04 · 3.">
+    <div class="t">✏️ Agora é sua vez</div>
+    <p style="margin:4px 0 0">R$ 1 500,00 aplicados a juros simples de 4% ao ano, durante 3 anos. Qual o <strong>juro</strong>?</p>
+    <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Sua resposta"><button class="btn check">Conferir</button></div>
+    <div class="fb" role="status"></div>
+  </div>
+  <div class="try" data-answer="1680" data-hint="Quase! O montante é o capital mais o juro: 1 500 + 180.">
+    <div class="t">✏️ E o total?</div>
+    <p style="margin:4px 0 0">Na mesma aplicação, qual a <strong>quantia resultante</strong> (montante)?</p>
+    <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Sua resposta"><button class="btn check">Conferir</button></div>
+    <div class="fb" role="status"></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 6 ============ -->
+<section class="part" data-name="Meses e anos">
+<div class="card">
+  <span class="eyebrow">Parte 6 · Conceito novo</span>
+  <h2>Quando o tempo vem em meses</h2>
+  <p>A taxa e o tempo precisam “falar a mesma língua”. Se a taxa é <strong>ao ano</strong>, o tempo tem que estar <strong>em anos</strong>. Como 1 ano tem 12 meses, é só dividir os meses por 12.</p>
+  <svg class="fig" viewBox="0 0 360 110" role="img" aria-label="Régua do tempo: 6 meses é meio ano, 12 meses é 1 ano, 18 meses é 1,5 ano, 24 meses é 2 anos, 30 meses é 2,5 anos">
+    <line x1="20" y1="55" x2="340" y2="55" stroke="#362F78" stroke-width="3"/>
+    <g font-size="13" text-anchor="middle">
+      <g><line x1="20" y1="45" x2="20" y2="65" stroke="#362F78" stroke-width="3"/><text x="20" y="38" fill="#362F78" font-weight="700">0</text><text x="20" y="84" fill="#5B5686">0 m</text></g>
+      <g><line x1="84" y1="48" x2="84" y2="62" stroke="#6C63B5" stroke-width="2"/><text x="84" y="38" fill="#E4694F" font-weight="700">0,5</text><text x="84" y="84" fill="#5B5686">6 m</text></g>
+      <g><line x1="148" y1="45" x2="148" y2="65" stroke="#362F78" stroke-width="3"/><text x="148" y="38" fill="#362F78" font-weight="700">1</text><text x="148" y="84" fill="#5B5686">12 m</text></g>
+      <g><line x1="212" y1="48" x2="212" y2="62" stroke="#6C63B5" stroke-width="2"/><text x="212" y="38" fill="#E4694F" font-weight="700">1,5</text><text x="212" y="84" fill="#5B5686">18 m</text></g>
+      <g><line x1="276" y1="45" x2="276" y2="65" stroke="#362F78" stroke-width="3"/><text x="276" y="38" fill="#362F78" font-weight="700">2</text><text x="276" y="84" fill="#5B5686">24 m</text></g>
+      <g><line x1="340" y1="48" x2="340" y2="62" stroke="#6C63B5" stroke-width="2"/><text x="340" y="38" fill="#E4694F" font-weight="700">2,5</text><text x="340" y="84" fill="#5B5686">30 m</text></g>
+    </g>
+    <text x="180" y="104" text-anchor="middle" font-size="12" fill="#5B5686">em cima: anos · embaixo: meses</text>
+  </svg>
+  <div class="box think">
+    <div class="t">💡 Pense assim</div>
+    <p>Se uma academia cobra R$ 1 200,00 <strong>por ano</strong>, quanto custa meio ano? Metade: R$ 600,00. Com juro é igual: 6 meses de uma taxa anual valem <strong>metade</strong> do juro de um ano.</p>
+  </div>
+  <h3>Exemplo passo a passo</h3>
+  <p>R$ 4 000,00 a juros simples de 15% ao ano, durante <strong>18 meses</strong>.</p>
+  <div class="calc">
+    t = 18 ÷ 12 = 1,5 ano<br>
+    J = 4 000 · 0,15 · 1,5<br>
+    J = 600 · 1,5 = <span style="color:var(--coral-dark)">900</span>
+  </div>
+  <div class="box tip">
+    <div class="t">⚠️ Dica: “2 anos e meio” não é 2,6</div>
+    <p>“E meio” quer dizer metade de um ano, que é <strong>0,5</strong>. Então 2 anos e meio = <strong>2,5 anos</strong> = 30 meses. E 1 ano e meio = 1,5 ano = 18 meses.</p>
+  </div>
+  <h3>E o valor de cada parcela?</h3>
+  <p>Uma escola comprou notebooks por <strong>R$ 3 600,00</strong>, financiados em <strong>1 ano e meio</strong> a juros simples de <strong>10% ao ano</strong>. Qual o valor de cada parcela mensal?</p>
+  <div class="calc">
+    J = 3 600 · 0,10 · 1,5 = 540<br>
+    M = 3 600 + 540 = 4 140<br>
+    1 ano e meio = 18 meses<br>
+    parcela = 4 140 ÷ 18 = <span style="color:var(--coral-dark)">230</span>
+  </div>
+  <p>Cada parcela é de <strong>R$ 230,00</strong>.</p>
+  <div class="box tip">
+    <div class="t">⚠️ Dica: parcela = total ÷ número de meses</div>
+    <p>Para achar a mensalidade, divida o <strong>montante</strong> (e não só o juro, nem só o capital) pelo número de <strong>meses</strong> — não pelo número de anos.</p>
+  </div>
+  <div class="box copy">
+    <div class="t">📓 Copie no caderno</div>
+    <p>A taxa e o tempo devem estar na <strong>mesma unidade</strong>. Se a taxa é ao ano e o tempo está em meses, divido os meses por 12 (6 meses = 0,5 ano; 18 meses = 1,5 ano). O valor de cada parcela mensal é o montante dividido pelo número de meses.</p>
+  </div>
+  <div class="try" data-answer="60" data-hint="Quase! 6 meses é meio ano, então t = 0,5. Faça 1 200 · 0,10 · 0,5.">
+    <div class="t">✏️ Agora é sua vez</div>
+    <p style="margin:4px 0 0">R$ 1 200,00 a juros simples de 10% ao ano, durante 6 meses. Qual o juro?</p>
+    <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Sua resposta"><button class="btn check">Conferir</button></div>
+    <div class="fb" role="status"></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 7 ============ -->
+<section class="part" data-name="Achando o que falta">
+<div class="card">
+  <span class="eyebrow">Parte 7 · Conceito novo</span>
+  <h2>Quando falta a taxa ou o tempo</h2>
+  <p>Às vezes o problema já diz o juro e quer saber outra coisa: a <strong>taxa</strong> ou o <strong>tempo</strong>. Não precisa de fórmula nova! Usamos a mesma J = c · i · t, colocamos os números que conhecemos e descobrimos o que falta.</p>
+  <div class="box think">
+    <div class="t">💡 Pense assim</div>
+    <p>É como uma equação de “número escondido”: 6 000 × ? = 15 000. Que número vezes 6 000 dá 15 000? Para descobrir, você divide 15 000 por 6 000.</p>
+  </div>
+  <h3>Exemplo 1 — descobrindo a taxa</h3>
+  <p>Uma aplicação de R$ 5 000,00 rendeu R$ 1 500,00 de juros simples em 2 anos. Qual a taxa anual?</p>
+  <div class="calc">
+    1 500 = 5 000 · i · 2<br>
+    1 500 = 10 000 · i <span class="note">(multipliquei os números que eu já tinha)</span><br>
+    i = 1 500 ÷ 10 000 <span class="note">(dividi os dois lados por 10 000)</span><br>
+    i = 0,15 = <span style="color:var(--coral-dark)">15% ao ano</span>
+  </div>
+  <div class="box tip">
+    <div class="t">⚠️ Dica: volte para porcentagem</div>
+    <p>A conta dá a taxa em decimal (0,15). Se a pergunta pede “em porcentagem”, multiplique por 100: 0,15 = <strong>15%</strong>.</p>
+  </div>
+  <h3>Exemplo 2 — descobrindo o tempo</h3>
+  <p>Carla pegou R$ 40 000,00 a juros simples de 15% ao ano e pagou R$ 15 000,00 de juros. Por quanto tempo?</p>
+  <div class="calc">
+    15 000 = 40 000 · 0,15 · t<br>
+    15 000 = 6 000 · t<br>
+    t = 15 000 ÷ 6 000<br>
+    t = 2,5 = <span style="color:var(--coral-dark)">2 anos e meio</span>
+  </div>
+  <div class="algo">
+    <div class="t">🧭 Roteiro para qualquer problema de juros simples</div>
+    <ol>
+      <li><strong>Passo 1.</strong> Anote o que o problema dá: c, i, t e/ou J.</li>
+      <li><strong>Passo 2.</strong> Transforme a taxa em decimal (se ela for dada).</li>
+      <li><strong>Passo 3.</strong> Deixe o tempo na mesma unidade da taxa.</li>
+      <li><strong>Passo 4.</strong> Coloque os números em J = c · i · t.</li>
+      <li><strong>Passo 5.</strong> Multiplique os números conhecidos do mesmo lado.</li>
+      <li><strong>Passo 6.</strong> Se faltar i ou t, divida os dois lados pelo número que multiplica a letra.</li>
+      <li><strong>Passo 7.</strong> Leia a pergunta de novo: ela quer J, M, a taxa em %, o tempo ou a parcela?</li>
+    </ol>
+  </div>
+  <div class="box copy">
+    <div class="t">📓 Copie no caderno</div>
+    <p>Quando o problema dá o juro e pede a taxa ou o tempo, uso a mesma fórmula J = c · i · t: coloco os valores conhecidos, multiplico o que dá e divido os dois lados pelo número que acompanha a letra desconhecida. A taxa encontrada sai em decimal; para escrever em porcentagem, multiplico por 100.</p>
+  </div>
+  <div class="try" data-answer="8" data-hint="Revê esse passo: 480 = 2 000 · i · 3 → 480 = 6 000 · i. Divida 480 por 6 000 e passe para porcentagem.">
+    <div class="t">✏️ Agora é sua vez</div>
+    <p style="margin:4px 0 0">R$ 2 000,00 renderam R$ 480,00 de juros simples em 3 anos. Qual a taxa ao ano (em %)?</p>
+    <div class="row"><input inputmode="decimal" aria-label="Sua resposta"><span>%</span><button class="btn check">Conferir</button></div>
+    <div class="fb" role="status"></div>
+  </div>
+  <div class="try" data-answer="2.5" data-hint="Quase! 10 000 · 0,20 = 2 000 por ano. Quantas vezes 2 000 cabe em 5 000?">
+    <div class="t">✏️ Mais uma</div>
+    <p style="margin:4px 0 0">R$ 10 000,00 a juros simples de 20% ao ano geraram R$ 5 000,00 de juros. Quantos anos? (use vírgula se precisar)</p>
+    <div class="row"><input inputmode="decimal" aria-label="Sua resposta"><span>anos</span><button class="btn check">Conferir</button></div>
+    <div class="fb" role="status"></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 8 ============ -->
+<section class="part" data-name="Pratique">
+<div class="card">
+  <span class="eyebrow yellow">Parte 8 · Pratique</span>
+  <h2>Quiz de juros simples</h2>
+  <div class="score" id="score">Acertos: 0 de 7</div>
+  <div id="quiz"></div>
+</div>
+</section>
+
+<!-- ============ PARTE 9 ============ -->
+<section class="part" data-name="Direto do livro">
+<div class="card">
+  <span class="eyebrow coral">Parte 9 · Direto do livro</span>
+  <h2>Atividades — Capítulo 9</h2>
+  <p class="hint-small">Resolva no caderno primeiro. Depois toque em “Ver resposta” para conferir.</p>
+  <div class="book">
+    <div class="ex">
+      <p><span class="num">1</span>Severino pegou do banco um empréstimo de R$ 13 000,00 a uma taxa de 18% ao ano. Se os juros são simples, quanto ele deverá pagar após 1 ano?</p>
+      <button class="btn see">Ver resposta</button>
+      <div class="ans"><b>Ele deverá pagar R$ 15 340,00.</b><div class="how">J = 13 000 · 0,18 · 1 = 2 340 → M = 13 000 + 2 340 = 15 340</div></div>
+    </div>
+    <div class="ex">
+      <p><span class="num">2</span>Calcule os juros simples em cada uma das aplicações.</p>
+      <div class="item">a) R$ 100,00 a uma taxa de 4% ao ano, durante 5 anos.
+        <br><button class="btn see">Ver resposta</button>
+        <div class="ans"><b>Juro de R$ 20,00, e a quantia resultante, R$ 120,00.</b><div class="how">J = 100 · 0,04 · 5 = 20</div></div></div>
+      <div class="item">b) R$ 200,00 a uma taxa de 6% ao ano, durante 3 anos.
+        <br><button class="btn see">Ver resposta</button>
+        <div class="ans"><b>Juro de R$ 36,00, e a quantia resultante, R$ 236,00.</b><div class="how">J = 200 · 0,06 · 3 = 36</div></div></div>
+      <div class="item">c) R$ 500,00 a uma taxa de 12% ao ano, durante 4 anos.
+        <br><button class="btn see">Ver resposta</button>
+        <div class="ans"><b>Juro de R$ 240,00, e a quantia resultante, R$ 740,00.</b><div class="how">J = 500 · 0,12 · 4 = 240</div></div></div>
+      <div class="item">d) R$ 10 000,00 a uma taxa de 10% ao ano, durante 6 meses.
+        <br><button class="btn see">Ver resposta</button>
+        <div class="ans"><b>Juro de R$ 500,00, e a quantia resultante, R$ 10 500,00.</b><div class="how">6 meses = 0,5 ano → J = 10 000 · 0,10 · 0,5 = 500</div></div></div>
+    </div>
+    <div class="ex">
+      <p><span class="num">3</span>Uma aplicação de R$ 75 000,00 produziu juros de R$ 27 000,00, em 3 anos. Se o juro é simples, qual a taxa de rendimento da aplicação? Escreva o resultado em porcentagem.</p>
+      <button class="btn see">Ver resposta</button>
+      <div class="ans"><b>Os rendimentos da aplicação tiveram como base uma taxa de 12% ao ano.</b><div class="how">27 000 = 75 000 · i · 3 → 27 000 = 225 000 · i → i = 0,12 = 12%</div></div>
+    </div>
+    <div class="ex">
+      <p><span class="num">4</span>Felipe pagou R$ 25 650,00 de juros no financiamento de uma casa que custava R$ 95 000,00. Considerando um juro simples, a uma taxa de 18% ao ano, qual foi o tempo concedido para o financiamento?</p>
+      <button class="btn see">Ver resposta</button>
+      <div class="ans"><b>O tempo de financiamento foi de um ano e meio.</b><div class="how">25 650 = 95 000 · 0,18 · t → 25 650 = 17 100 · t → t = 1,5 ano</div></div>
+    </div>
+    <div class="ex">
+      <p><span class="num">7</span>Um escritório adquiriu 15 novos computadores, que foram instalados por um preço de R$ 24 000,00. Esse valor foi financiado em 2 anos e meio, a uma taxa anual de 11,2%. Se os juros são simples, qual o valor da mensalidade a ser paga?</p>
+      <button class="btn see">Ver resposta</button>
+      <div class="ans"><b>A mensalidade será de R$ 1 024,00.</b><div class="how">J = 24 000 · 0,112 · 2,5 = 6 720 → M = 30 720 → 2 anos e meio = 30 meses → 30 720 ÷ 30 = 1 024</div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 10 ============ -->
+<section class="part" data-name="Resumo pro caderno">
+<div class="card summary">
+  <span class="eyebrow">Parte 10 · Resumo pro caderno</span>
+  <h2>O que aprendemos hoje</h2>
+  <p>Juro é o valor a mais que se paga pelo uso de um dinheiro durante um tempo, como se fosse o aluguel desse dinheiro. Quem pega dinheiro emprestado ou compra parcelado paga juro; quem guarda dinheiro no banco recebe juro. O valor inicial se chama capital (c), a porcentagem cobrada em cada período se chama taxa (i), a duração se chama tempo (t), e o total no final, que é o capital somado ao juro, se chama montante (M = c + J).</p>
+  <p>Nos juros simples, o juro é calculado sempre sobre o capital inicial, por isso ele tem o mesmo valor em todos os períodos. Por exemplo, R$ 500,00 a 8% ao ano rendem R$ 40,00 no primeiro ano, R$ 40,00 no segundo e R$ 40,00 no terceiro, totalizando R$ 120,00 de juro. Para não precisar somar ano por ano, usamos a fórmula J = c · i · t, sempre com a taxa escrita em número decimal (8% = 0,08; 5% = 0,05).</p>
+  <p>A taxa e o tempo precisam estar na mesma unidade. Se a taxa é ao ano e o tempo está em meses, dividimos os meses por 12: 6 meses é 0,5 ano, 18 meses é 1,5 ano e 2 anos e meio é 2,5 anos, que são 30 meses. Quando o problema pede o valor de cada parcela mensal, calculamos o montante e dividimos pelo número de meses.</p>
+  <p>Quando o problema já informa o juro e pergunta a taxa ou o tempo, usamos a mesma fórmula: colocamos os valores conhecidos, multiplicamos os números que já temos e dividimos os dois lados pelo número que acompanha a letra desconhecida. A taxa encontrada sai em decimal e, para escrevê-la em porcentagem, multiplicamos por 100. Por fim, sempre relemos a pergunta: se ela quer saber “quanto rendeu” ou “qual o juro”, a resposta é J; se quer saber “quanto vai pagar” ou “quanto terá no final”, a resposta é o montante.</p>
+</div>
+</section>
+
+<div class="nav">
+  <button id="prev">← Voltar</button>
+  <button id="next" class="next">Avançar →</button>
+</div>
+</main>
+
+<script>
+/* ---------- navegação ---------- */
+const parts=[...document.querySelectorAll('section.part')];
+const tabs=document.getElementById('tabs');
+let cur=0;
+parts.forEach((p,i)=>{
+  const b=document.createElement('button');
+  b.className='tab';b.setAttribute('role','tab');
+  b.textContent=(i+1)+'. '+p.dataset.name;
+  b.onclick=()=>show(i);
+  tabs.appendChild(b);
+});
+function show(i){
+  cur=i;
+  parts.forEach((p,k)=>p.classList.toggle('active',k===i));
+  [...tabs.children].forEach((t,k)=>t.setAttribute('aria-selected',k===i));
+  document.getElementById('fill').style.width=((i+1)/parts.length*100)+'%';
+  document.getElementById('plabel').textContent='Parte '+(i+1)+' de '+parts.length+' — '+parts[i].dataset.name;
+  document.getElementById('prev').disabled=i===0;
+  document.getElementById('next').disabled=i===parts.length-1;
+  window.scrollTo({top:0});
+}
+document.getElementById('prev').onclick=()=>cur>0&&show(cur-1);
+document.getElementById('next').onclick=()=>cur<parts.length-1&&show(cur+1);
+
+/* ---------- try-box ---------- */
+function toNum(s){
+  s=String(s).replace(/R\$|%|anos?|\s/gi,'');
+  if(s.includes(',')) s=s.replace(/\./g,'').replace(',','.');
+  return parseFloat(s);
+}
+document.querySelectorAll('.try').forEach(box=>{
+  const inp=box.querySelector('input'),fb=box.querySelector('.fb');
+  const check=()=>{
+    const v=toNum(inp.value),a=parseFloat(box.dataset.answer);
+    if(inp.value.trim()===''){fb.className='fb bad';fb.textContent='✏️ Escreva sua resposta primeiro.';return;}
+    if(Math.abs(v-a)<0.011){fb.className='fb ok';fb.textContent='✓ Isso mesmo! Mandou bem.';}
+    else{fb.className='fb bad';fb.textContent='↻ '+box.dataset.hint;}
+  };
+  box.querySelector('.check').onclick=check;
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+});
+
+/* ---------- corrente ---------- */
+document.querySelectorAll('.op[data-reveal]').forEach(b=>{
+  b.onclick=()=>{b.textContent=b.dataset.reveal;b.classList.remove('hidden-op');};
+});
+
+/* ---------- livro ---------- */
+document.querySelectorAll('.btn.see').forEach(b=>{
+  b.onclick=()=>{
+    const a=b.nextElementSibling;
+    const s=a.classList.toggle('show');
+    b.textContent=s?'Esconder resposta':'Ver resposta';
+  };
+});
+
+/* ---------- quiz ---------- */
+const Q=[
+ {q:'R$ 800,00 aplicados a juros simples de 5% ao ano, durante 2 anos. Qual o juro?',
+  o:['R$ 80,00','R$ 40,00','R$ 880,00','R$ 8,00'],c:0,
+  e:'J = 800 · 0,05 · 2 = 40 · 2 = 80. Atenção: R$ 880,00 é o montante, não o juro.'},
+ {q:'Marta pegou R$ 9 000,00 emprestados a juros simples de 20% ao ano. Quanto ela deverá pagar após 1 ano?',
+  o:['R$ 1 800,00','R$ 9 180,00','R$ 10 800,00','R$ 11 000,00'],c:2,
+  e:'J = 9 000 · 0,20 · 1 = 1 800. A pergunta é “quanto deverá pagar”, então é o montante: 9 000 + 1 800 = 10 800.'},
+ {q:'Qual é a forma decimal de 7%?',
+  o:['0,7','7','0,07','70'],c:2,
+  e:'7% = 7 ÷ 100 = 0,07. O número 0,7 seria 70%.'},
+ {q:'R$ 20 000,00 a juros simples de 10% ao ano, durante 3 meses. Qual o juro?',
+  o:['R$ 6 000,00','R$ 500,00','R$ 2 000,00','R$ 50,00'],c:1,
+  e:'3 meses = 3 ÷ 12 = 0,25 ano. J = 20 000 · 0,10 · 0,25 = 2 000 · 0,25 = 500. Quem usou t = 3 encontrou 6 000 (errado: 3 é em meses!).'},
+ {q:'Uma aplicação de R$ 6 000,00 rendeu R$ 1 800,00 de juros simples em 2 anos. Qual a taxa anual?',
+  o:['30%','15%','18%','9%'],c:1,
+  e:'1 800 = 6 000 · i · 2 → 1 800 = 12 000 · i → i = 1 800 ÷ 12 000 = 0,15 = 15% ao ano. (30% seria o total dos 2 anos juntos.)'},
+ {q:'João financiou R$ 50 000,00 a juros simples de 16% ao ano e pagou R$ 20 000,00 de juros. Qual foi o tempo do financiamento?',
+  o:['2 anos','3 anos','2 anos e meio','4 anos'],c:2,
+  e:'20 000 = 50 000 · 0,16 · t → 20 000 = 8 000 · t → t = 2,5 → 2 anos e meio.'},
+ {q:'Uma TV de R$ 2 400,00 foi financiada em 2 anos a juros simples de 15% ao ano. Qual o valor de cada parcela mensal?',
+  o:['R$ 100,00','R$ 115,00','R$ 160,00','R$ 130,00'],c:3,
+  e:'J = 2 400 · 0,15 · 2 = 720. M = 2 400 + 720 = 3 120. 2 anos = 24 meses → 3 120 ÷ 24 = 130. (R$ 100,00 seria sem juro nenhum.)'}
+];
+let score=0;
+const qz=document.getElementById('quiz');
+Q.forEach((it,i)=>{
+  const d=document.createElement('div');d.className='q';
+  d.innerHTML='<div><span class="qn">'+(i+1)+'.</span> '+it.q+'</div><div class="opts"></div><div class="expl" role="status"></div>';
+  const opts=d.querySelector('.opts'),ex=d.querySelector('.expl');
+  it.o.forEach((t,k)=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=t;
+    b.onclick=()=>{
+      const bs=[...opts.children];bs.forEach(x=>x.disabled=true);
+      bs[it.c].classList.add('right');bs[it.c].textContent='✓ '+it.o[it.c];
+      if(k===it.c){score++;ex.innerHTML='<strong>✓ Isso!</strong> '+it.e;}
+      else{b.classList.add('wrong');b.textContent='✗ '+t;ex.innerHTML='<strong>↻ Quase — revê esse passo:</strong> '+it.e;}
+      ex.classList.add('show');
+      document.getElementById('score').textContent='Acertos: '+score+' de '+Q.length;
+    };
+    opts.appendChild(b);
+  });
+  qz.appendChild(d);
+});
+
+show(0);
+</script>
+</body>
+</html>
