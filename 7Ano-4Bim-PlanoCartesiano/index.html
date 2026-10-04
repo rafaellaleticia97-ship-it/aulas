@@ -144,6 +144,9 @@ input.ans:focus{border-color:var(--ind-s);outline:none}
 .blank{color:#B7B0D8}
 .hl{color:#1F6B52;font-weight:800}
 
+.steps{margin:10px 0;padding-left:1.4em}
+.steps li{margin:.35em 0}
+.steps li::marker{font-family:'Baloo 2';font-weight:800;color:#362F78}
 /* navegação */
 .nav{display:flex;justify-content:space-between;gap:10px;margin:14px 0 40px}
 .nav .btn{font-size:11px;padding:4px 9px;border-radius:99px}
@@ -213,10 +216,8 @@ input.ans:focus{border-color:var(--ind-s);outline:none}
 <div class="card">
   <span class="eyebrow">Parte 1 · Aquecimento</span>
   <h2>Onde fica a lanchonete?</h2>
-  <p>No mapa do bairro abaixo, as ruas formam uma malha. Sua casa fica no cantinho do 0, e a lanchonete é o ponto L.</p>
-  <p>Que par de números indica onde fica a lanchonete?</p>
+  <p>As ruas do bairro formam uma malha. Sua casa fica no 0, e a lanchonete é o ponto L.</p>
   <div id="gancho"></div>
-  <p>Viu só? Você já sabe localizar pontos. Nesta aula, o mapa vai crescer para lados que você ainda não usou.</p>
 </div>
 </section>
 
@@ -224,19 +225,13 @@ input.ans:focus{border-color:var(--ind-s);outline:none}
 <section class="part" data-name="Revisão" hidden>
 <div class="card">
   <span class="eyebrow ey-rev">Parte 2 · Revisão (6º ano)</span>
-  <h2>O plano que você já conhece</h2>
-  <p>Na lanchonete da Parte 1, você usou dois números para dizer onde ela ficava: quanto andar para o lado e quanto andar para cima. Essa malha com duas retas numeradas é o <b>plano cartesiano</b>.</p>
-  <p>Relembre as peças:</p>
+  <h2>O plano cartesiano</h2>
   <div class="defs">
-    <div class="def"><b>Eixo x</b> — a reta deitada (horizontal).</div>
-    <div class="def"><b>Eixo y</b> — a reta em pé (vertical).</div>
-    <div class="def"><b>Origem (0, 0)</b> — onde os eixos se cruzam. É o ponto de partida.</div>
-    <div class="def"><b>Par ordenado (x, y)</b> — o endereço do ponto: primeiro o x, depois o y.</div>
+    <div class="def"><b>Eixo x</b>: a reta deitada (horizontal).</div>
+    <div class="def"><b>Eixo y</b>: a reta em pé (vertical).</div>
+    <div class="def"><b>Origem (0, 0)</b>: onde os eixos se cruzam. É o ponto de partida.</div>
+    <div class="def"><b>Par ordenado (x, y)</b>: primeiro o x (anda para o lado), depois o y (anda para cima).</div>
   </div>
-  <div class="box think"><span class="lbl">💭 Pense assim</span>
-    O par é como dar direções na escola: “ande pelo corredor até a 5ª sala e depois suba 2 andares”. Primeiro o corredor (deitado, é o x), depois a escada (em pé, é o y). E x vem antes de y, igual no alfabeto.</div>
-  <div class="box copy"><span class="lbl">✎ Copie no caderno</span>
-    O plano cartesiano é formado por duas retas numeradas que se cruzam: o <b>eixo x</b> (horizontal) e o <b>eixo y</b> (vertical). O ponto onde elas se cruzam é a <b>origem</b>, (0, 0). Cada ponto é indicado por um <b>par ordenado (x, y)</b>: o primeiro número diz quanto andar na horizontal, e o segundo, quanto andar na vertical.</div>
   <div class="try"><span class="lbl">✏️ Agora é sua vez</span>
     <p>Quais são as coordenadas do ponto M?</p>
     <div id="fig-rev"></div>
@@ -249,42 +244,46 @@ input.ans:focus{border-color:var(--ind-s);outline:none}
 <!-- ===================== PARTE 3 ===================== -->
 <section class="part" data-name="Negativos" hidden>
 <div class="card">
-  <span class="eyebrow">Parte 3 · Conceito novo</span>
-  <h2>E para a esquerda? E para baixo?</h2>
-  <p>No 6º ano, a gente só andava para a <b>direita</b> e para <b>cima</b>. Mas e se a lanchonete ficasse à esquerda da sua casa, ou abaixo dela no mapa? Só com números positivos, não daria para dizer.</p>
-  <p>Por isso, os eixos continuam depois do zero, com os <b>números negativos</b>. O jeito de andar é o mesmo de antes. A novidade é o <b>sinal</b>, que diz para que lado ir:</p>
+  <span class="eyebrow">Parte 3 · Novo</span>
+  <h2>Números negativos no plano</h2>
+  <p>Os eixos continuam depois do zero, com os números negativos. O <b>sinal</b> diz para que lado ir:</p>
   <div class="dirs">
-    <div class="dir">x positivo → direita<small>ex.: x = 3</small></div>
-    <div class="dir">x negativo ← esquerda<small>ex.: x = −3</small></div>
-    <div class="dir">y positivo ↑ cima<small>ex.: y = 2</small></div>
-    <div class="dir">y negativo ↓ baixo<small>ex.: y = −2</small></div>
+    <div class="dir">x positivo → direita</div>
+    <div class="dir">x negativo ← esquerda</div>
+    <div class="dir">y positivo ↑ cima</div>
+    <div class="dir">y negativo ↓ baixo</div>
   </div>
   <div class="box think"><span class="lbl">💭 Pense assim</span>
-    Pense no elevador de um shopping. O térreo é o 0. Os andares de cima são 1, 2, 3… e os do subsolo são −1, −2, −3. O eixo y funciona igual: positivo sobe, negativo desce. O eixo x é esse mesmo elevador deitado: positivo vai para a direita, negativo vai para a esquerda.</div>
+    É como o elevador de um shopping: o térreo é 0, os andares de cima são positivos e o subsolo é negativo.</div>
 
-  <h3>Exemplo: marcando P(2, −3), Q(−4, 1) e R(−3, −2)</h3>
-  <p>Todo ponto sai da origem. Primeiro olhamos o x, depois o y:</p>
+  <h3>Como marcar um ponto</h3>
+  <ol class="steps">
+    <li>Comece na origem (0, 0).</li>
+    <li>Olhe o 1º número (x) e ande para a direita ou para a esquerda.</li>
+    <li>Olhe o 2º número (y) e ande para cima ou para baixo.</li>
+    <li>Marque o ponto.</li>
+  </ol>
+
+  <h3>Exemplo</h3>
   <div class="tblwrap"><table class="tbl">
-    <tr><th>Ponto</th><th>1º número (x)</th><th>2º número (y)</th></tr>
-    <tr><td><b>P(2, −3)</b></td><td>2 → anda 2 para a <b>direita</b></td><td>−3 → anda 3 para <b>baixo</b></td></tr>
-    <tr><td><b>Q(−4, 1)</b></td><td>−4 → anda 4 para a <b>esquerda</b></td><td>1 → anda 1 para <b>cima</b></td></tr>
-    <tr><td><b>R(−3, −2)</b></td><td>−3 → anda 3 para a <b>esquerda</b></td><td>−2 → anda 2 para <b>baixo</b></td></tr>
+    <tr><th>Ponto</th><th>x</th><th>y</th></tr>
+    <tr><td><b>P(2, −3)</b></td><td>2 para a direita</td><td>3 para baixo</td></tr>
+    <tr><td><b>Q(−4, 1)</b></td><td>4 para a esquerda</td><td>1 para cima</td></tr>
+    <tr><td><b>R(−3, −2)</b></td><td>3 para a esquerda</td><td>2 para baixo</td></tr>
   </table></div>
   <div id="fig-ex3"></div>
-  <p class="cap">As linhas tracejadas mostram o caminho de cada ponto, sempre saindo da origem.</p>
-  <p>Repare no R: os dois números são negativos, então ele fica <b>embaixo e à esquerda</b>.</p>
 
-  <div class="box tip"><span class="lbl">⚠️ Dica: a ordem importa!</span>
-    (2, −3) e (−3, 2) usam os mesmos números, mas são pontos <b>diferentes</b>. O primeiro número é sempre o x (horizontal) e o segundo é sempre o y (vertical).
+  <div class="box tip"><span class="lbl">⚠️ Dica: a ordem importa</span>
+    (2, −3) e (−3, 2) são pontos <b>diferentes</b>. O 1º número é sempre o x.
     <div id="fig-ordem"></div>
   </div>
+  <div class="box tip"><span class="lbl">⚠️ Dica: cada ponto começa na origem</span>
+    Para marcar o próximo ponto, volte ao (0, 0). Não comece de onde o ponto anterior parou.</div>
   <div class="box tip"><span class="lbl">⚠️ Dica: e o zero?</span>
-    Zero quer dizer “não anda”. O ponto (0, 3) não sai do lugar na horizontal e sobe 3: fica em cima do <b>eixo y</b>. O ponto (−2, 0) anda 2 para a esquerda e não sobe nem desce: fica em cima do <b>eixo x</b>.</div>
-  <div class="box copy"><span class="lbl">✎ Copie no caderno</span>
-    No plano cartesiano, os eixos também têm números negativos. No eixo x, positivo significa <b>direita</b> e negativo significa <b>esquerda</b>. No eixo y, positivo significa <b>cima</b> e negativo significa <b>baixo</b>. Para marcar um ponto (x, y), partimos sempre da origem: primeiro andamos na horizontal, depois na vertical.</div>
+    Zero quer dizer “não anda”. O ponto (0, 3) fica em cima do eixo y. O ponto (−2, 0) fica em cima do eixo x.</div>
 
   <div class="try"><span class="lbl">✏️ Agora é sua vez</span>
-    <p>Toque na malha para marcar o ponto pedido.</p>
+    <p>Toque na malha para marcar o ponto.</p>
     <p class="target" id="cp-target">Marque o ponto (−3, 2)</p>
     <div class="cp-fig" id="cp-fig"></div>
     <p class="cap" id="cp-you">Você ainda não marcou nenhum ponto.</p>
@@ -297,27 +296,45 @@ input.ans:focus{border-color:var(--ind-s);outline:none}
 <!-- ===================== PARTE 4 ===================== -->
 <section class="part" data-name="Lendo pontos" hidden>
 <div class="card">
-  <span class="eyebrow">Parte 4 · Conceito novo</span>
+  <span class="eyebrow">Parte 4 · Novo</span>
   <h2>Do ponto para o par</h2>
-  <p>Agora é o caminho contrário: o ponto já está marcado, e você descobre as coordenadas dele.</p>
-  <div class="box think"><span class="lbl">💭 Pense assim</span>
-    Imagine que o ponto solta duas cordinhas bem esticadas: uma cai reto até o eixo x, e a outra vai reto até o eixo y. Onde cada cordinha encosta, você lê um número.</div>
-
-  <h3>Exemplo: quais são as coordenadas de K e de L?</h3>
+  <p>Agora o ponto já está marcado, e você descobre as coordenadas dele.</p>
+  <ol class="steps">
+    <li>Desça (ou suba) reto do ponto até o eixo x e leia o número: esse é o x.</li>
+    <li>Vá reto do ponto até o eixo y e leia o número: esse é o y.</li>
+    <li>Escreva o par (x, y).</li>
+  </ol>
+  <h3>Exemplo</h3>
   <div id="fig-ex4"></div>
-  <p><b>K:</b> a cordinha que desce encosta no −3 do eixo x. A cordinha que vai para o lado encosta no 2 do eixo y. Então <b>K = (−3, 2)</b>.</p>
-  <p><b>L:</b> a cordinha que sobe encosta no 4 do eixo x. A que vai para o lado encosta no −1 do eixo y. Então <b>L = (4, −1)</b>.</p>
-
-  <div class="box tip"><span class="lbl">⚠️ Dica: confira o sinal pelo lado</span>
-    Se o ponto está <b>à esquerda do eixo y</b>, o x é negativo. Se está <b>abaixo do eixo x</b>, o y é negativo. Antes de escrever o par, olhe onde o ponto está e confira os sinais.</div>
-
+  <p><b>K = (−3, 2)</b> e <b>L = (4, −1)</b>.</p>
+  <div class="box tip"><span class="lbl">⚠️ Dica: confira o sinal</span>
+    À esquerda do eixo y, o x é negativo. Abaixo do eixo x, o y é negativo.</div>
   <h3>Os quatro quadrantes</h3>
-  <p>Os eixos dividem o plano em quatro partes, chamadas <b>quadrantes</b>. Em cada uma, os sinais do par são sempre os mesmos:</p>
-  <div id="fig-quad"></div>
-  <p>Exemplo: (−3, −1) tem os dois números negativos, então fica no <b>3º quadrante</b>, embaixo e à esquerda.</p>
-  <div class="box copy"><span class="lbl">✎ Copie no caderno</span>
-    Para ler as coordenadas de um ponto, traçamos uma linha reta dele até o eixo x (lemos o x) e outra até o eixo y (lemos o y). Os eixos dividem o plano em quatro <b>quadrantes</b>: 1º (+, +), 2º (−, +), 3º (−, −) e 4º (+, −).</div>
-
+  <p>Os eixos dividem o plano em quatro partes. Em cada uma, os sinais são sempre os mesmos:</p>
+  <div id="fig-quad"><svg class="plane" viewBox="0 0 340 320" style="--pw:340px" role="img" aria-label="Os quatro quadrantes: 1º (+,+) em cima à direita, 2º (−,+) em cima à esquerda, 3º (−,−) embaixo à esquerda, 4º (+,−) embaixo à direita">
+<defs><marker id="qa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#241F52"/></marker></defs>
+<rect x="14" y="18" width="150" height="130" rx="12" fill="#FFF1C9"/>
+<text x="89" y="66" text-anchor="middle" font-family="Baloo 2" font-size="20" font-weight="800" fill="#7A5A00">2º quadrante</text>
+<text x="89" y="100" text-anchor="middle" font-family="Baloo 2" font-size="26" font-weight="800" fill="#241F52">(−, +)</text>
+<text x="89" y="126" text-anchor="middle" font-size="12.5" fill="#5B5686">ex.: (−3, 2)</text>
+<rect x="176" y="18" width="150" height="130" rx="12" fill="#DDF4EC"/>
+<text x="251" y="66" text-anchor="middle" font-family="Baloo 2" font-size="20" font-weight="800" fill="#1F6B52">1º quadrante</text>
+<text x="251" y="100" text-anchor="middle" font-family="Baloo 2" font-size="26" font-weight="800" fill="#241F52">(+, +)</text>
+<text x="251" y="126" text-anchor="middle" font-size="12.5" fill="#5B5686">ex.: (3, 2)</text>
+<rect x="14" y="172" width="150" height="130" rx="12" fill="#FFE3DB"/>
+<text x="89" y="220" text-anchor="middle" font-family="Baloo 2" font-size="20" font-weight="800" fill="#9C3219">3º quadrante</text>
+<text x="89" y="254" text-anchor="middle" font-family="Baloo 2" font-size="26" font-weight="800" fill="#241F52">(−, −)</text>
+<text x="89" y="280" text-anchor="middle" font-size="12.5" fill="#5B5686">ex.: (−3, −2)</text>
+<rect x="176" y="172" width="150" height="130" rx="12" fill="#E8E4FA"/>
+<text x="251" y="220" text-anchor="middle" font-family="Baloo 2" font-size="20" font-weight="800" fill="#362F78">4º quadrante</text>
+<text x="251" y="254" text-anchor="middle" font-family="Baloo 2" font-size="26" font-weight="800" fill="#241F52">(+, −)</text>
+<text x="251" y="280" text-anchor="middle" font-size="12.5" fill="#5B5686">ex.: (3, −2)</text>
+<line x1="4" y1="160" x2="336" y2="160" stroke="#241F52" stroke-width="2.4" marker-start="url(#qa)" marker-end="url(#qa)"/>
+<line x1="170" y1="314" x2="170" y2="6" stroke="#241F52" stroke-width="2.4" marker-start="url(#qa)" marker-end="url(#qa)"/>
+<text x="330" y="152" text-anchor="end" font-size="14" font-style="italic" font-weight="700" fill="#241F52">x</text>
+<text x="178" y="16" font-size="14" font-style="italic" font-weight="700" fill="#241F52">y</text>
+<circle cx="170" cy="160" r="4.5" fill="#241F52"/>
+</svg></div>
   <div class="try"><span class="lbl">✏️ Agora é sua vez</span>
     <p>Escreva as coordenadas de F, G e H.</p>
     <div id="fig-try4"></div>
@@ -332,140 +349,55 @@ input.ans:focus{border-color:var(--ind-s);outline:none}
 </section>
 
 <!-- ===================== PARTE 5 ===================== -->
-<section class="part" data-name="Passo a passo" hidden>
-<div class="card">
-  <span class="eyebrow">Parte 5 · Algoritmo</span>
-  <h2>Marcar pontos, passo a passo</h2>
-  <p>Tudo o que você aprendeu até aqui cabe numa receita. Use sempre que tiver uma lista de pontos para marcar.</p>
-  <div class="box algo">
-    <p><b>Passo 1.</b> Coloque o lápis na origem (0, 0).</p>
-    <p><b>Passo 2.</b> Leia o 1º número (x). Positivo: ande para a direita. Negativo: ande para a esquerda. Zero: não ande.</p>
-    <p><b>Passo 3.</b> Leia o 2º número (y). Positivo: suba. Negativo: desça. Zero: não suba nem desça.</p>
-    <p><b>Passo 4.</b> Marque o ponto e escreva o nome dele.</p>
-    <p><b>Passo 5.</b> Se houver mais pontos, volte ao Passo 1.</p>
-  </div>
-  <div class="box tip"><span class="lbl">⚠️ Dica: o Passo 5 manda voltar ao Passo 1</span>
-    Voltar ao Passo 1 quer dizer <b>voltar para a origem</b>. Um erro muito comum é começar o ponto seguinte de onde o anterior parou. Cada ponto tem seu próprio caminho, e todos saem do (0, 0).</div>
-  <h3>O mesmo algoritmo em fluxograma</h3>
-  <svg viewBox="0 0 360 760" class="plane" style="--pw:340px" role="img" aria-label="Fluxograma: Início; comece na origem; x é negativo? Sim, ande para a esquerda; Não, ande para a direita; y é negativo? Sim, desça; Não, suba; marque e dê nome ao ponto; mais pontos? Sim, volta à origem; Não, fim.">
-    <defs>
-      <marker id="fa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#362F78"/></marker>
-      <marker id="fc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#E4694F"/></marker>
-    </defs>
-    <g font-size="13" text-anchor="middle" fill="#2A2650">
-      <ellipse cx="180" cy="32" rx="62" ry="22" fill="#362F78"/>
-      <text x="180" y="37" fill="#fff" font-weight="700">Início</text>
-      <line x1="180" y1="54" x2="180" y2="72" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
-      <rect x="90" y="74" width="180" height="40" rx="8" fill="#EEEBFA" stroke="#362F78" stroke-width="1.8"/>
-      <text x="180" y="99">Comece na origem (0, 0)</text>
-      <line x1="180" y1="114" x2="180" y2="136" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
-
-      <polygon points="180,138 262,178 180,218 98,178" fill="#FFF8E6" stroke="#362F78" stroke-width="1.8"/>
-      <text x="180" y="175">x é</text><text x="180" y="191">negativo?</text>
-      <polyline points="98,178 59,178 59,236" fill="none" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
-      <polyline points="262,178 289,178 289,236" fill="none" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
-      <text x="74" y="170" font-weight="700" font-size="12">Sim</text>
-      <text x="278" y="170" font-weight="700" font-size="12">Não</text>
-      <rect x="10" y="238" width="98" height="48" rx="8" fill="#EEEBFA" stroke="#362F78" stroke-width="1.8"/>
-      <text x="59" y="258">Ande para a</text><text x="59" y="275">esquerda</text>
-      <rect x="240" y="238" width="98" height="48" rx="8" fill="#EEEBFA" stroke="#362F78" stroke-width="1.8"/>
-      <text x="289" y="258">Ande para a</text><text x="289" y="275">direita</text>
-      <polyline points="59,286 59,306 180,306" fill="none" stroke="#362F78" stroke-width="2"/>
-      <polyline points="289,286 289,306 180,306" fill="none" stroke="#362F78" stroke-width="2"/>
-      <line x1="180" y1="306" x2="180" y2="330" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
-
-      <polygon points="180,332 262,372 180,412 98,372" fill="#FFF8E6" stroke="#362F78" stroke-width="1.8"/>
-      <text x="180" y="369">y é</text><text x="180" y="385">negativo?</text>
-      <polyline points="98,372 59,372 59,430" fill="none" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
-      <polyline points="262,372 289,372 289,430" fill="none" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
-      <text x="74" y="364" font-weight="700" font-size="12">Sim</text>
-      <text x="278" y="364" font-weight="700" font-size="12">Não</text>
-      <rect x="10" y="432" width="98" height="48" rx="8" fill="#EEEBFA" stroke="#362F78" stroke-width="1.8"/>
-      <text x="59" y="452">Desça</text><text x="59" y="469" font-size="11.5" fill="#5B5686">(para baixo)</text>
-      <rect x="240" y="432" width="98" height="48" rx="8" fill="#EEEBFA" stroke="#362F78" stroke-width="1.8"/>
-      <text x="289" y="452">Suba</text><text x="289" y="469" font-size="11.5" fill="#5B5686">(para cima)</text>
-      <polyline points="59,480 59,500 180,500" fill="none" stroke="#362F78" stroke-width="2"/>
-      <polyline points="289,480 289,500 180,500" fill="none" stroke="#362F78" stroke-width="2"/>
-      <line x1="180" y1="500" x2="180" y2="522" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
-
-      <rect x="80" y="524" width="200" height="40" rx="8" fill="#EEEBFA" stroke="#362F78" stroke-width="1.8"/>
-      <text x="180" y="549">Marque e dê nome ao ponto</text>
-      <line x1="180" y1="564" x2="180" y2="586" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
-
-      <polygon points="180,588 262,628 180,668 98,628" fill="#FFF8E6" stroke="#362F78" stroke-width="1.8"/>
-      <text x="180" y="625">Mais</text><text x="180" y="641">pontos?</text>
-      <line x1="180" y1="668" x2="180" y2="702" stroke="#362F78" stroke-width="2" marker-end="url(#fa)"/>
-      <text x="196" y="690" font-weight="700" font-size="12">Não</text>
-      <ellipse cx="180" cy="726" rx="62" ry="22" fill="#362F78"/>
-      <text x="180" y="731" fill="#fff" font-weight="700">Fim</text>
-
-      <path d="M262,628 H352 V94 H273" fill="none" stroke="#E4694F" stroke-width="2.4" marker-end="url(#fc)"/>
-      <text x="300" y="620" font-weight="700" font-size="12" fill="#B8432B">Sim</text>
-      <text x="346" y="360" font-size="11.5" font-weight="700" fill="#B8432B" transform="rotate(-90 346 360)">repete: volta à origem</text>
-    </g>
-  </svg>
-  <p class="cap">Se o número for zero, você não anda naquela direção.</p>
-</div>
-</section>
-
-<!-- ===================== PARTE 6 ===================== -->
 <section class="part" data-name="Polígonos" hidden>
 <div class="card">
-  <span class="eyebrow">Parte 6 · Conceito novo</span>
-  <h2>Desenhando polígonos no plano</h2>
-  <p>Com pontos, dá para desenhar figuras! Os pontos viram os <b>vértices</b> (os “cantos”) do polígono.</p>
-  <p>Para desenhar: marque os vértices, ligue-os <b>na ordem em que aparecem</b> e, no final, ligue o último ao primeiro para <b>fechar</b> a figura.</p>
-  <div class="box think"><span class="lbl">💭 Pense assim</span>
-    Lembra dos passatempos de “ligue os pontos”? Você segue a numeração 1, 2, 3… e o desenho aparece. Se pular a ordem, o desenho sai todo torto. Aqui, a “numeração” é a ordem em que os pontos foram escritos.</div>
-
-  <h3>Exemplo: vértices (−4, −1), (−1, 3), (3, 3) e (4, −1)</h3>
-  <p>Primeiro marcamos os quatro pontos. Depois ligamos nesta ordem:</p>
+  <span class="eyebrow">Parte 5 · Novo</span>
+  <h2>Polígonos no plano</h2>
+  <p>Os pontos viram os <b>vértices</b> (os cantos) do polígono.</p>
+  <ol class="steps">
+    <li>Marque todos os pontos.</li>
+    <li>Ligue os pontos na ordem em que aparecem.</li>
+    <li>Ligue o último ponto ao primeiro para fechar a figura.</li>
+  </ol>
+  <h3>Exemplo: (−4, −1), (−1, 3), (3, 3) e (4, −1)</h3>
   <div class="seq">(−4, −1) → (−1, 3) → (3, 3) → (4, −1) → (−4, −1)</div>
   <div id="fig-ex6"></div>
-  <p>Deu um polígono de 4 lados, um <b>quadrilátero</b>. Este tem o lado de cima e o de baixo paralelos, então é um trapézio.</p>
-
-  <div class="box tip"><span class="lbl">⚠️ Dica: mudar a ordem muda a figura</span>
-    Com os <b>mesmos</b> quatro pontos, mas ligando em outra ordem, dois lados se cruzam. Uma figura com lados que se cruzam <b>não é um polígono</b>. Por isso, siga sempre a ordem dada.
+  <p>4 lados: é um <b>quadrilátero</b>.</p>
+  <div class="box tip"><span class="lbl">⚠️ Dica: a ordem muda a figura</span>
+    Com os mesmos pontos em outra ordem, os lados podem se cruzar. Aí a figura <b>não é um polígono</b>.
     <div class="two">
-      <div class="fig-box"><p class="t">Na ordem do exemplo</p><div id="fig-ordA"></div><p class="cap">✓ quadrilátero</p></div>
-      <div class="fig-box"><p class="t">(−4, −1) → (3, 3) → (−1, 3) → (4, −1)</p><div id="fig-ordB"></div><p class="cap">✗ lados se cruzam: não é polígono</p></div>
+      <div class="fig-box"><p class="t">Na ordem certa</p><div id="fig-ordA"></div><p class="cap">✓ quadrilátero</p></div>
+      <div class="fig-box"><p class="t">Em outra ordem</p><div id="fig-ordB"></div><p class="cap">✗ não é polígono</p></div>
     </div>
   </div>
-  <div class="box copy"><span class="lbl">✎ Copie no caderno</span>
-    Para representar um polígono no plano cartesiano, marcamos os vértices, ligamos os pontos na ordem em que aparecem e, no final, ligamos o último ponto ao primeiro para fechar a figura. Se a ordem mudar, a figura pode mudar. Se os lados se cruzarem, a figura não é um polígono.</div>
 
-  <h3>Montando um retângulo com lados dados</h3>
-  <p>Quero um retângulo com lados de <b>4</b> e <b>2</b> unidades. Escolho um canto para começar, por exemplo (1, 1):</p>
-  <div class="box algo">
-    <p><b>Passo 1.</b> Comece em (1, 1).</p>
-    <p><b>Passo 2.</b> Ande 4 para a direita: (5, 1).</p>
-    <p><b>Passo 3.</b> Suba 2: (5, 3).</p>
-    <p><b>Passo 4.</b> Volte 4 para a esquerda: (1, 3).</p>
-  </div>
+  <h3>Retângulo com lados 4 e 2</h3>
+  <ol class="steps">
+    <li>Escolha um canto: (1, 1).</li>
+    <li>Ande 4 para a direita: (5, 1).</li>
+    <li>Suba 2: (5, 3).</li>
+    <li>Volte 4 para a esquerda: (1, 3).</li>
+  </ol>
   <div id="fig-ret"></div>
-  <p>Os vértices são (1, 1), (5, 1), (5, 3) e (1, 3). Se você começar em outro canto, os números mudam, e tudo bem: existem <b>várias respostas certas</b>.</p>
+  <p>Se começar em outro canto, os números mudam. Existem <b>várias respostas certas</b>.</p>
   <div class="try"><span class="lbl">✏️ Agora é sua vez</span>
-    <p>Um retângulo tem lado 3 na horizontal e lado 5 na vertical. Um dos vértices é (−2, −1), e o retângulo fica para a direita e para cima dele. Qual é o vértice do canto oposto, lá em cima à direita?</p>
-    <div class="row"><input class="ans" id="t-ret" placeholder="(x, y)" autocomplete="off" aria-label="Vértice oposto"><button class="btn" data-check="t-ret" data-ans="1,4" data-hint="A partir de (−2, −1), ande 3 para a direita e 5 para cima. Faça as contas: −2 + 3 e −1 + 5.">Conferir</button></div>
+    <p>Um retângulo tem lado 3 na horizontal e 5 na vertical. Um vértice é (−2, −1), e o retângulo fica para a direita e para cima dele. Qual é o vértice do canto oposto?</p>
+    <div class="row"><input class="ans" id="t-ret" placeholder="(x, y)" autocomplete="off" aria-label="Vértice oposto"><button class="btn" data-check="t-ret" data-ans="1,4" data-hint="A partir de (−2, −1), ande 3 para a direita e 5 para cima: −2 + 3 e −1 + 5.">Conferir</button></div>
     <div class="fb" id="t-ret-fb" role="status"></div>
   </div>
 </div>
 </section>
 
-<!-- ===================== PARTE 7 ===================== -->
+<!-- ===================== PARTE 6 ===================== -->
 <section class="part" data-name="Tabela → plano" hidden>
 <div class="card">
-  <span class="eyebrow">Parte 7 · Conceito novo</span>
+  <span class="eyebrow">Parte 6 · Novo</span>
   <h2>Da tabela para o plano</h2>
-  <p>Às vezes os pontos vêm de uma <b>máquina</b> que transforma números: entra um número (x) e sai outro (y).</p>
-  <p>Descubra o que esta máquina faz. Toque no <b>?</b> para conferir.</p>
+  <p>Uma máquina transforma números: entra o x, sai o y. Toque no <b>?</b> para descobrir o que ela faz.</p>
   <div class="chain"><span class="cbox">1</span><span class="carr">→</span><button class="cpill" data-op="×3">?</button><span class="carr">→</span><span class="cbox">3</span></div>
   <div class="chain"><span class="cbox">2</span><span class="carr">→</span><button class="cpill" data-op="×3">?</button><span class="carr">→</span><span class="cbox">6</span></div>
   <div class="chain"><span class="cbox">−1</span><span class="carr">→</span><button class="cpill" data-op="×3">?</button><span class="carr">→</span><span class="cbox">−3</span></div>
-  <div class="box think"><span class="lbl">💭 Pense assim</span>
-    É como uma máquina de suco: entra a fruta, sai o suco. O ponto é sempre (o que entrou, o que saiu), ou seja, <b>(x, y)</b>.</div>
-
-  <h3>Exemplo: a máquina ×3</h3>
+  <h3>Exemplo: máquina ×3</h3>
   <div class="tblwrap"><table class="tbl" style="max-width:420px;margin:0 auto">
     <tr><th>x (entrada)</th><th>y (saída)</th><th>Ponto</th></tr>
     <tr><td>−1</td><td>−1 × 3 = −3</td><td><b>(−1, −3)</b></td></tr>
@@ -473,132 +405,24 @@ input.ans:focus{border-color:var(--ind-s);outline:none}
     <tr><td>1</td><td>1 × 3 = 3</td><td><b>(1, 3)</b></td></tr>
   </table></div>
   <div id="fig-ex7"></div>
-  <p>Ligando os pontos, aparece uma <b>linha reta</b>. Ela passa pela origem porque, quando entra 0, sai 0 × 3 = 0.</p>
+  <p>Ligando os pontos, sai uma <b>linha reta</b> que passa pela origem.</p>
   <div class="box tip"><span class="lbl">⚠️ Dica: entrada é x, saída é y</span>
-    Na hora de virar ponto, não inverta! A linha “entra −1, sai −3” vira (−1, −3), e não (−3, −1). E lembre da regra de sinais: negativo × positivo dá negativo.</div>
-  <div class="box copy"><span class="lbl">✎ Copie no caderno</span>
-    Numa tabela de entrada e saída, o número que entra é o <b>x</b> e o número que sai é o <b>y</b>. Cada linha da tabela vira um ponto (x, y) no plano cartesiano.</div>
+    “Entra −1, sai −3” vira (−1, −3), e não (−3, −1).</div>
   <div class="try"><span class="lbl">✏️ Agora é sua vez</span>
-    <p>Uma máquina <b>soma 3</b> ao número que entra. Se entra −5, qual ponto essa linha da tabela forma?</p>
+    <p>Uma máquina <b>soma 3</b>. Se entra −5, qual ponto essa linha forma?</p>
     <div class="row"><input class="ans" id="t-maq" placeholder="(x, y)" autocomplete="off" aria-label="Ponto formado"><button class="btn" data-check="t-maq" data-ans="-5,-2" data-hint="O x é o que entrou (−5). O y é o que saiu: −5 + 3 = ?">Conferir</button></div>
     <div class="fb" id="t-maq-fb" role="status"></div>
   </div>
 </div>
 </section>
 
-<!-- ===================== PARTE 8 ===================== -->
+<!-- ===================== PARTE 7 ===================== -->
 <section class="part" data-name="Prática" hidden>
 <div class="card">
-  <span class="eyebrow ey-pra">Parte 8 · Prática</span>
+  <span class="eyebrow ey-pra">Parte 7 · Prática</span>
   <h2>Hora de treinar</h2>
-  <div class="score" id="score" aria-live="polite">Acertos: 0 de 9</div>
+  <div class="score" id="score" aria-live="polite">Acertos: 0 de 4</div>
   <div id="quiz"></div>
-</div>
-</section>
-
-<!-- ===================== PARTE 9 ===================== -->
-<section class="part" data-name="Direto do livro" hidden>
-<div class="card">
-  <span class="eyebrow ey-book">Parte 9 · Direto do livro</span>
-  <h2>Trocando ideias e Atividades</h2>
-  <p>Tente resolver no caderno primeiro. Depois toque em “Ver resposta” para conferir.</p>
-
-  <div class="ti">
-    <div class="ti-head">💬 Trocando ideias</div>
-    <div class="ti-body"><ol>
-      <li>Quais são as coordenadas dos pontos (−3, 5) e (5, −3)? Esses pontos são iguais? Explique.
-        <br><button class="reveal" data-rv="ti1">Ver resposta</button>
-        <div class="answer" id="ti1" hidden>As coordenadas são diferentes, pois elas devem ser tomadas na ordem em que aparecem. (−3, 5) fica 3 para a esquerda e 5 para cima; (5, −3) fica 5 para a direita e 3 para baixo.<div id="fig-ti1"></div></div></li>
-      <li>Em que parte do plano cartesiano localiza-se a origem (0, 0)?
-        <br><button class="reveal" data-rv="ti2">Ver resposta</button>
-        <div class="answer" id="ti2" hidden>Na interseção dos eixos.</div></li>
-      <li>No exemplo 2, se tivéssemos ligado os pontos em outra ordem, teríamos a mesma figura?
-        <br><span class="cap" style="text-align:left;display:block">(Exemplo 2 do livro: polígono de vértices (3, 4), (6, −2), (−7, −3) e (−4, 4).)</span>
-        <button class="reveal" data-rv="ti3">Ver resposta</button>
-        <div class="answer" id="ti3" hidden>Não necessariamente. Por exemplo, ligando desta forma: (3, 4) → (−7, −3) → (−4, 4) → (6, −2) → (3, 4), não teremos o mesmo polígono. Por isso, é importante ligar os pontos na ordem em que aparecem.
-          <div class="two"><div class="fig-box"><p class="t">Na ordem do exemplo 2</p><div id="fig-ti3a"></div></div><div class="fig-box"><p class="t">Em outra ordem</p><div id="fig-ti3b"></div></div></div></div></li>
-      <li>Que figura obtemos ligando os pontos (3, 0), (−3, 2), (2, −2), (−2, −2) e (3, 2)?
-        <br><button class="reveal" data-rv="ti4">Ver resposta</button>
-        <div class="answer" id="ti4" hidden>É comum pensar que é um pentágono, porque são 5 pontos. Mas, representando no plano, os lados se cruzam: a figura <b>não é um polígono</b>.<div id="fig-ti4"></div></div></li>
-    </ol></div>
-  </div>
-
-  <div class="atv-head">✓ Atividades</div>
-  <div class="book">
-    <div class="act">
-      <p><span class="act-n">1</span>Abaixo temos os pontos <i>A</i>, <i>B</i>, <i>C</i> e <i>D</i> representados no plano cartesiano.</p>
-      <div id="fig-a1"></div>
-      <p>Dê as coordenadas de cada um deles.</p>
-      <button class="reveal" data-rv="a1">Ver resposta</button>
-      <div class="answer" id="a1" hidden>Ponto <i>A</i>: (2, 1) · Ponto <i>B</i>: (3, −2) · Ponto <i>C</i>: (−5, −3) · Ponto <i>D</i>: (−5, 1)</div>
-    </div>
-
-    <div class="act">
-      <p><span class="act-n">2</span>No plano cartesiano a seguir, foram marcados alguns pontos.</p>
-      <div id="fig-a2"></div>
-      <p>Substitua as coordenadas pelas letras correspondentes e descubra três nomes de países da América do Sul, escritos em código, nos seguintes itens.</p>
-      <p class="item">a) (−4, 2), (−5, −3), (5, 1), (1, −2)</p>
-      <button class="reveal" data-rv="a2a">Ver resposta</button>
-      <div class="answer" id="a2a" hidden>PERU</div>
-      <p class="item">b) (2, 3), (−3, −2), (5, −3), (−5, 3), (2, −4), (−5, 3), (1, 1)</p>
-      <button class="reveal" data-rv="a2b">Ver resposta</button>
-      <div class="answer" id="a2b" hidden>BOLÍVIA</div>
-      <p class="item">c) (2, 3), (5, 1), (1, 1), (−2, 1), (−5, 3), (5, −3)</p>
-      <button class="reveal" data-rv="a2c">Ver resposta</button>
-      <div class="answer" id="a2c" hidden>BRASIL</div>
-    </div>
-
-    <div class="act">
-      <p><span class="act-n">3</span>Esta atividade deve ser feita em grupo. Por isso, junte-se a um ou dois colegas para realizá-la.</p>
-      <p>A tabela abaixo foi montada com base na função</p>
-      <div class="fn-arrow"><svg viewBox="0 0 170 34" width="170" height="34" aria-label="função vezes 2"><line x1="4" y1="17" x2="160" y2="17" stroke="#2A2650" stroke-width="1.5"/><path d="M160,12 L168,17 L160,22 z" fill="#2A2650"/><ellipse cx="86" cy="17" rx="24" ry="14" fill="#D6EDB8"/><text x="86" y="23" text-anchor="middle" font-size="17" font-weight="700" fill="#2A2650">×2</text></svg></div>
-      <p>Faça o que se pede.</p>
-      <p class="item">a) Complete a tabela com os números corretos.</p>
-      <table class="btbl">
-        <tr><th>x (entrada)</th><th>y (saída)</th></tr>
-        <tr><td>−1</td><td>−2</td></tr>
-        <tr><td>0</td><td class="blank">___</td></tr>
-        <tr><td>1</td><td class="blank">___</td></tr>
-        <tr><td class="blank">___</td><td>4</td></tr>
-      </table>
-      <button class="reveal" data-rv="a3a">Ver resposta</button>
-      <div class="answer" id="a3a" hidden>
-        <table class="btbl"><tr><th>x (entrada)</th><th>y (saída)</th></tr>
-        <tr><td>−1</td><td>−2</td></tr><tr><td>0</td><td class="hl">0</td></tr><tr><td>1</td><td class="hl">2</td></tr><tr><td class="hl">2</td><td>4</td></tr></table></div>
-      <p class="item">b) Podemos associar cada linha da tabela às coordenadas de um ponto. Por exemplo, associamos a primeira linha da tabela ao ponto (−1, −2). Represente esses pontos no plano cartesiano, utilizando a malha a seguir:</p>
-      <div id="fig-a3"></div>
-      <button class="reveal" data-rv="a3b">Ver resposta</button>
-      <div class="answer" id="a3b" hidden>Pontos (−1, −2), (0, 0), (1, 2) e (2, 4).<div id="fig-a3r"></div></div>
-      <p class="item">c) Que figura você obtém ao ligar os pontos?</p>
-      <button class="reveal" data-rv="a3c">Ver resposta</button>
-      <div class="answer" id="a3c" hidden>Uma linha reta passando pela origem (0, 0).</div>
-    </div>
-
-    <div class="act">
-      <p><span class="act-n">4</span>Utilizando a malha a seguir, responda à pergunta e faça o que se pede:</p>
-      <div id="fig-a4"></div>
-      <p class="item">a) Que polígono podemos formar tendo como vértices os pontos (−3, 1), (3, −3), (−1, 3) e (5, 3)? Desenhe-o na malha ao lado.</p>
-      <button class="reveal" data-rv="a4a">Ver resposta</button>
-      <div class="answer" id="a4a" hidden>Um quadrilátero.<div id="fig-a4a"></div>
-        <b>Atenção:</b> se ligarmos exatamente na ordem em que os pontos foram escritos, dois lados se cruzam. Para formar o quadrilátero, ligamos (−3, 1) → (−1, 3) → (5, 3) → (3, −3) → (−3, 1).</div>
-      <p class="item">b) Caso fosse desenhado um retângulo com lados 3 e 2 unidades, respectivamente, quais poderiam ser as coordenadas de seus vértices?</p>
-      <button class="reveal" data-rv="a4b">Ver resposta</button>
-      <div class="answer" id="a4b" hidden>Existem várias possibilidades, uma delas é: (0, 0), (3, 0), (3, 2) e (0, 2).<div id="fig-a4b"></div></div>
-    </div>
-  </div>
-</div>
-</section>
-
-<!-- ===================== PARTE 10 ===================== -->
-<section class="part" data-name="Resumo" hidden>
-<div class="card summary">
-  <span class="eyebrow ey-sum">Resumo pro caderno</span>
-  <h2>O que aprendemos</h2>
-  <p>O plano cartesiano é formado por duas retas numeradas que se cruzam: o eixo x, que é horizontal, e o eixo y, que é vertical. O ponto onde os dois se cruzam chama-se origem e tem coordenadas (0, 0).</p>
-  <p>Cada ponto do plano é indicado por um par ordenado (x, y), formado por dois números chamados coordenadas. Para marcar um ponto, partimos sempre da origem. O primeiro número, x, diz quanto andamos na horizontal: se for positivo, andamos para a direita; se for negativo, para a esquerda. O segundo número, y, diz quanto andamos na vertical: se for positivo, subimos; se for negativo, descemos. Quando uma coordenada é zero, não andamos naquela direção, e o ponto fica em cima de um dos eixos. A ordem dos números é muito importante, porque (2, −3) e (−3, 2) são pontos diferentes. Quando marcamos vários pontos, cada um começa de novo na origem, e não no ponto anterior.</p>
-  <p>Para descobrir as coordenadas de um ponto já marcado, fazemos o caminho contrário: levamos uma linha reta do ponto até o eixo x para ler o x, e outra até o eixo y para ler o y. Os eixos dividem o plano em quatro quadrantes. No 1º quadrante, os dois números são positivos; no 2º, o x é negativo e o y é positivo; no 3º, os dois são negativos; e no 4º, o x é positivo e o y é negativo.</p>
-  <p>Para desenhar um polígono no plano, marcamos os vértices, ligamos os pontos na ordem em que aparecem e, no final, ligamos o último ponto ao primeiro para fechar a figura. Se trocarmos a ordem, a figura pode mudar, e se os lados se cruzarem, a figura deixa de ser um polígono. Para montar um retângulo com lados de medidas dadas, escolhemos um canto e andamos as medidas dos lados na horizontal e na vertical; por isso, há várias respostas certas.</p>
-  <p>Também podemos criar pontos a partir de uma tabela de entrada e saída. O número que entra é o x e o número que sai é o y, e cada linha da tabela vira um ponto (x, y). Quando a máquina multiplica o número que entra, como ×2 ou ×3, os pontos ficam alinhados e, ligados, formam uma linha reta que passa pela origem.</p>
 </div>
 </section>
 
@@ -675,7 +499,6 @@ P('fig-rev',{xmin:0,xmax:6,ymin:0,ymax:5,u:32,points:[{x:5,y:2,l:'M'},{x:2,y:4,l
 P('fig-ex3',{xmin:-5,xmax:5,ymin:-4,ymax:4,u:28,walks:[[2,-3],[-4,1],[-3,-2]],points:[{x:2,y:-3,l:'P(2, −3)'},{x:-4,y:1,l:'Q(−4, 1)',a:'middle',lx:0,ly:-11},{x:-3,y:-2,l:'R(−3, −2)',a:'end',lx:-8,ly:16}],aria:'Pontos P, Q e R com caminhos a partir da origem'});
 P('fig-ordem',{xmin:-4,xmax:4,ymin:-4,ymax:3,u:24,points:[{x:2,y:-3,l:'(2, −3)'},{x:-3,y:2,l:'(−3, 2)',c:'#6C63B5'}],aria:'Pontos (2,−3) e (−3,2) em lugares diferentes'});
 P('fig-ex4',{xmin:-5,xmax:5,ymin:-3,ymax:3,u:28,guides:[[-3,2],[4,-1]],points:[{x:-3,y:2,l:'K'},{x:4,y:-1,l:'L',ly:18}],aria:'Pontos K e L com linhas até os eixos'});
-P('fig-quad',{xmin:-4,xmax:4,ymin:-4,ymax:4,u:28,texts:[{x:2,y:2,t:'1º (+, +)'},{x:-2,y:2,t:'2º (−, +)'},{x:-2,y:-2.2,t:'3º (−, −)'},{x:2,y:-2.2,t:'4º (+, −)'}],points:[{x:-3,y:-1,l:'(−3, −1)',a:'end',lx:-8,ly:16,c:'#6C63B5'}],aria:'Os quatro quadrantes com os sinais de cada um'});
 P('fig-try4',{xmin:-5,xmax:5,ymin:-4,ymax:4,u:28,points:[{x:-4,y:-2,l:'F'},{x:3,y:-3,l:'G'},{x:0,y:2,l:'H'}],aria:'Pontos F, G e H'});
 const TRAP=[[-4,-1],[-1,3],[3,3],[4,-1]];
 P('fig-ex6',{xmin:-5,xmax:5,ymin:-2,ymax:4,u:28,polys:[{p:TRAP}],points:TRAP.map(q=>({x:q[0],y:q[1],l:'('+fmt(q[0])+', '+fmt(q[1])+')',a:q[0]<0?'end':'start',lx:q[0]<0?-8:8,ly:q[1]>0?-9:17})),aria:'Trapézio de vértices (−4,−1), (−1,3), (3,3) e (4,−1)'});
@@ -808,30 +631,15 @@ mcq(document.getElementById('quiz'),[
  {t:'Quais são as coordenadas do ponto A?',fig:{xmin:-4,xmax:4,ymin:-3,ymax:3,u:26,points:[{x:-3,y:2,l:'A'}]},
   o:['(2, −3)','(−3, 2)','(3, −2)','(−2, 3)'],c:1,
   e:'A está 3 casas à esquerda do eixo y (x = −3) e 2 casas acima do eixo x (y = 2). Primeiro o x, depois o y: (−3, 2).'},
- {t:'Para marcar o ponto (4, −5), saindo da origem, você anda:',
-  o:['4 para a esquerda e 5 para cima','5 para a direita e 4 para baixo','4 para a direita e 5 para baixo','4 para cima e 5 para a direita'],c:2,
-  e:'O 4 é o x: positivo, então direita. O −5 é o y: negativo, então 5 para baixo.'},
  {t:'Qual destes pontos tem coordenadas (−1, −3)?',fig:{xmin:-4,xmax:4,ymin:-4,ymax:4,u:24,points:[{x:3,y:-1,l:'M'},{x:-3,y:-1,l:'N'},{x:-1,y:-3,l:'P'},{x:1,y:3,l:'Q'}]},
   o:['M','N','P','Q'],c:2,
   e:'(−1, −3): 1 para a esquerda e 3 para baixo. Esse é o P. Cuidado com o N: ele é (−3, −1), com os números trocados.'},
- {t:'Os pontos (6, −1) e (−1, 6) são iguais?',
-  o:['Sim, porque usam os mesmos números','Não, porque a ordem dos números muda o ponto','Sim, porque os dois têm um número negativo','Não dá para saber sem desenhar'],c:1,
-  e:'(6, −1) fica à direita e um pouco abaixo do eixo x; (−1, 6) fica à esquerda e bem acima. O 1º número é sempre o x.'},
- {t:'Onde fica o ponto (0, −4)?',
-  o:['Na origem','Sobre o eixo x, à esquerda da origem','Sobre o eixo y, abaixo da origem','No meio do 3º quadrante'],c:2,
-  e:'x = 0: não anda na horizontal. y = −4: desce 4. O ponto fica em cima do eixo y, abaixo da origem.'},
  {t:'Ligando na ordem os pontos (−2, 0), (2, 0) e (0, 4), e depois voltando ao primeiro, que figura você obtém?',
   o:['Um triângulo','Um quadrilátero','Uma linha reta','Uma figura que não é polígono'],c:0,
   e:'São 3 vértices que não estão na mesma reta. Ligados e fechados, formam 3 lados: um triângulo.'},
  {t:'Uma máquina subtrai 1 de cada número que entra. Se entra 3, qual ponto essa linha da tabela forma?',
   o:['(2, 3)','(3, −1)','(3, 2)','(−1, 3)'],c:2,
   e:'Entra 3 (é o x) e sai 3 − 1 = 2 (é o y). O ponto é (entrada, saída) = (3, 2).'},
- {t:'Três vértices de um retângulo são (−3, 1), (2, 1) e (2, 4). Qual é o quarto vértice?',fig:{xmin:-4,xmax:3,ymin:-1,ymax:5,u:26,polys:[{p:[[-3,1],[2,1],[2,4]],open:true}],points:[{x:-3,y:1,l:'(−3, 1)',ly:17},{x:2,y:1,l:'(2, 1)',ly:17},{x:2,y:4,l:'(2, 4)'}]},
-  o:['(−3, 4)','(4, −3)','(2, −3)','(−3, −4)'],c:0,
-  e:'O lado de baixo vai de x = −3 até x = 2, na altura y = 1. O lado da direita sobe até y = 4. O canto que falta fica em x = −3 e y = 4: (−3, 4).'},
- {t:'Um ponto está à esquerda do eixo y e acima do eixo x. Qual destes pode ser ele?',
-  o:['(5, −2)','(−5, 2)','(−5, −2)','(5, 2)'],c:1,
-  e:'À esquerda do eixo y → x negativo. Acima do eixo x → y positivo. Sinais (−, +), 2º quadrante: só (−5, 2) serve.'}
 ],document.getElementById('score'));
 
 /* ---------- navegação ---------- */
