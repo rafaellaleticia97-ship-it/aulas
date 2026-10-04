@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Juros Compostos e Descontos Sucessivos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F4FC; --indigo:#362F78; --deep:#241F52; --soft:#6C63B5;
+  --mint:#A9E5D0; --coral:#FFB3A0; --coral-d:#E4694F; --yellow:#FFDD73;
+  --text:#2A2650; --text2:#5B5686; --border:#E3DEF7; --white:#fff;
+  --lilac:#EEEAFB; --indigo-l:#ECEAF8; --cream:#FFF8E1;
+  --ok:#1E7A55; --ok-bg:#E3F6EE; --no:#B23A26; --no-bg:#FDECE8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3,.baloo{font-family:'Baloo 2',system-ui,sans-serif;color:var(--deep);line-height:1.2}
+h1{font-size:1.75rem;font-weight:800;margin:.2em 0 .1em}
+h2{font-size:1.4rem;font-weight:800;margin:.25em 0 .5em}
+h3{font-size:1.1rem;font-weight:700;margin:1.1em 0 .4em}
+p{margin:.55em 0}
+strong{color:var(--deep)}
+
+/* fundo */
+.bgsym{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bgsym span{position:absolute;font-family:'Baloo 2';font-weight:700;color:var(--indigo);opacity:.08;animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(28px,-36px) rotate(12deg)}}
+@media (prefers-reduced-motion:reduce){.bgsym span{animation:none}html{scroll-behavior:auto}}
+
+/* progresso */
+.progress{position:sticky;top:0;z-index:20;background:rgba(246,244,252,.95);backdrop-filter:blur(6px);padding:8px 16px 7px;border-bottom:1px solid var(--border)}
+.track{height:8px;background:var(--border);border-radius:99px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--soft),var(--indigo));border-radius:99px;transition:width .4s}
+.plabel{font-family:'Baloo 2';font-weight:600;font-size:.82rem;color:var(--text2);margin-top:3px}
+
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:14px 16px 40px}
+.subtitle{color:var(--text2);margin:0 0 10px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px}
+.tab{font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:99px;border:1.5px solid var(--border);background:var(--white);color:var(--indigo);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--indigo);border-color:var(--indigo);color:#fff}
+.tab:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+
+.sec{display:none}
+.sec.active{display:block;animation:fade .35s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.sec.active{animation:none}}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:18px;padding:18px 18px 16px;box-shadow:0 6px 22px rgba(54,47,120,.08);margin-bottom:16px}
+.eyebrow{display:inline-block;font-family:'Baloo 2';font-weight:700;font-size:.78rem;letter-spacing:.03em;text-transform:uppercase;padding:2px 10px;border-radius:99px;background:var(--mint);color:var(--deep)}
+.eyebrow.coral{background:var(--coral)}
+.eyebrow.yellow{background:var(--yellow)}
+.eyebrow.indigo{background:var(--indigo);color:#fff}
+
+.think{background:var(--indigo-l);border-radius:14px;padding:12px 14px;margin:12px 0}
+.think .lbl,.tip .lbl{font-family:'Baloo 2';font-weight:800;color:var(--indigo);display:block;font-size:.95rem}
+.tip{background:var(--cream);border-left:7px solid var(--yellow);border-radius:10px 14px 14px 10px;padding:12px 14px;margin:12px 0}
+.tip .lbl{color:#8A5A00}
+
+.formula{font-family:'Baloo 2';font-weight:700;font-size:1.25rem;color:var(--deep);background:var(--lilac);border-radius:12px;padding:6px 14px;display:inline-block;margin:4px 0}
+
+.tbl{width:100%;border-collapse:separate;border-spacing:0;margin:10px 0;font-size:.95rem;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.tbl th{background:var(--indigo);color:#fff;font-family:'Baloo 2';font-weight:700;padding:7px 8px;text-align:left}
+.tbl td{padding:7px 8px;border-top:1px solid var(--border)}
+.tbl td.n{font-family:'Baloo 2';font-weight:600;white-space:nowrap}
+.tbl tr:nth-child(even) td{background:#FAF9FE}
+.hl{color:var(--coral-d);font-weight:700}
+.tblwrap{overflow-x:auto}
+
+/* corrente */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0}
+.node{font-family:'Baloo 2';font-weight:700;background:var(--indigo);color:#fff;border-radius:12px;padding:6px 11px;font-size:1rem}
+.op{font-family:'Baloo 2';font-weight:700;font-size:.85rem;background:var(--coral);color:var(--deep);border:none;border-radius:99px;padding:3px 10px;cursor:pointer;min-width:36px}
+.op.shown{background:var(--coral-d);color:#fff;cursor:default}
+.hintsmall{font-size:.85rem;color:var(--text2)}
+
+/* algo */
+.algo{background:var(--lilac);border:1.5px solid #CFC7F0;border-radius:14px;padding:12px 14px;margin:12px 0}
+.algo div{margin:3px 0}
+.algo b{font-family:'Baloo 2';color:var(--indigo)}
+
+/* try */
+.try{border:2px dashed var(--soft);border-radius:16px;padding:14px;margin:14px 0;background:#FDFCFF}
+.try .lbl{font-family:'Baloo 2';font-weight:800;color:var(--soft);display:block}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.row input{font:inherit;font-size:1rem;padding:8px 10px;border:1.5px solid var(--border);border-radius:10px;width:150px;color:var(--text)}
+.btn{font-family:'Baloo 2';font-weight:700;font-size:.95rem;background:var(--indigo);color:#fff;border:none;border-radius:10px;padding:8px 14px;cursor:pointer}
+.btn.ghost{background:var(--white);color:var(--indigo);border:1.5px solid var(--indigo)}
+.fb{margin-top:8px;border-radius:10px;padding:8px 12px;display:none;font-size:.95rem}
+.fb.ok{display:block;background:var(--ok-bg);color:var(--ok)}
+.fb.no{display:block;background:var(--no-bg);color:var(--no)}
+
+/* quiz */
+.score{font-family:'Baloo 2';font-weight:700;background:var(--indigo);color:#fff;border-radius:12px;padding:8px 14px;display:inline-block;margin-bottom:10px}
+.q{border-top:1px solid var(--border);padding-top:12px;margin-top:12px}
+.q:first-of-type{border-top:none}
+.qn{font-family:'Baloo 2';font-weight:800;color:var(--indigo)}
+.opts{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+.opt{text-align:left;font:inherit;background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:9px 12px;cursor:pointer;color:var(--text)}
+.opt b{font-family:'Baloo 2';color:var(--soft);margin-right:6px}
+.opt:hover:not(:disabled){border-color:var(--soft)}
+.opt.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.opt.wrong{background:var(--no-bg);border-color:var(--no);color:var(--no)}
+.opt:disabled{cursor:default}
+.expl{display:none;margin-top:8px;background:var(--lilac);border-radius:12px;padding:10px 12px;font-size:.95rem}
+.expl.show{display:block}
+.final{display:none;margin-top:14px;background:var(--mint);border-radius:14px;padding:12px 14px;font-weight:700}
+
+/* resolução */
+.ex{border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin:12px 0;background:#FDFCFF}
+.ex .num{font-family:'Baloo 2';font-weight:800;background:var(--yellow);color:var(--deep);border-radius:8px;padding:0 8px;margin-right:6px}
+.sol{display:none;margin-top:10px}
+.sol.show{display:block}
+.ans{font-family:'Baloo 2';font-weight:700;background:var(--mint);border-radius:10px;padding:5px 12px;display:inline-block;margin-top:6px;color:var(--deep)}
+
+.fig{width:100%;height:auto;display:block;margin:10px auto}
+.figcap{font-size:.85rem;color:var(--text2);text-align:center;margin-top:-4px}
+
+.navbtns{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.nav{font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:99px;border:1.5px solid var(--indigo);background:var(--white);color:var(--indigo);cursor:pointer}
+.nav.fwd{background:var(--indigo);color:#fff}
+.nav:disabled{opacity:.35;cursor:default}
+
+@media (min-width:900px){
+  body{font-size:19px}
+  .wrap{max-width:980px;padding:22px 32px 50px}
+  h1{font-size:2.3rem} h2{font-size:1.8rem}
+  .card{padding:26px 28px}
+  .fig{max-width:560px}
+  .tab,.nav{font-size:13px;padding:5px 12px}
+}
+@media (min-width:1500px){
+  body{font-size:23px}
+  .wrap{max-width:1300px}
+  h1{font-size:2.9rem} h2{font-size:2.2rem}
+  .fig{max-width:760px}
+  .node{font-size:1.3rem} .formula{font-size:1.6rem}
+  .tab,.nav{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<div class="bgsym" aria-hidden="true">
+  <span style="left:6%;top:14%;font-size:44px">%</span>
+  <span style="left:82%;top:10%;font-size:52px;animation-delay:-6s">×</span>
+  <span style="left:70%;top:46%;font-size:40px;animation-delay:-12s">R$</span>
+  <span style="left:12%;top:58%;font-size:56px;animation-delay:-3s">+</span>
+  <span style="left:45%;top:78%;font-size:46px;animation-delay:-9s">÷</span>
+  <span style="left:88%;top:80%;font-size:42px;animation-delay:-15s">%</span>
+  <span style="left:30%;top:30%;font-size:38px;animation-delay:-18s">−</span>
+  <span style="left:55%;top:20%;font-size:36px;animation-delay:-21s">=</span>
+</div>
+
+<div class="progress" role="progressbar" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1" id="progress">
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div class="plabel" id="plabel">Parte 1 de 7</div>
+</div>
+
+<div class="wrap">
+  <header>
+    <h1>Juros compostos e descontos sucessivos</h1>
+    <p class="subtitle">Matemática · 8º ano · Capítulo 9</p>
+    <nav class="tabs" role="tablist" id="tabs"></nav>
+  </header>
+
+  <main id="main">
+
+  <!-- 1 AQUECIMENTO -->
+  <section class="sec" data-name="Aquecimento">
+    <div class="card">
+      <span class="eyebrow">Parte 1</span>
+      <h2>Aquecimento: a camisa em promoção</h2>
+      <p>Uma camisa custa <strong>R$ 100,00</strong>. A loja dá <strong>10% de desconto</strong>. Você já sabe fazer essa conta!</p>
+      <div class="try" data-answer="90" data-hint="10% de 100 é 10. Agora tire esse valor de 100.">
+        <span class="lbl">Agora é sua vez</span>
+        Quanto fica a camisa com 10% de desconto?
+        <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+      <p>Agora, no caixa, você ganha <strong>mais 10% de desconto</strong> — só que em cima do preço que já tinha baixado.</p>
+      <div class="try" data-answer="81" data-hint="O preço agora é R$ 90. Calcule 10% de 90 (que é 9) e tire de 90.">
+        <span class="lbl">Agora é sua vez</span>
+        Quanto você paga depois do segundo desconto?
+        <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+      <p><strong>Pergunta-chave:</strong> dois descontos de 10% são a mesma coisa que um desconto de 20%?</p>
+      <button class="btn ghost reveal" data-target="g1">Ver resposta</button>
+      <div class="sol" id="g1">
+        <p>Não! Um desconto de 20% de uma vez daria: 20% de 100 = 20, então R$ 100 − R$ 20 = <strong>R$ 80,00</strong>.</p>
+        <p>Com dois descontos de 10% você pagou <strong>R$ 81,00</strong>. O segundo desconto foi menor (R$ 9 em vez de R$ 10), porque foi calculado sobre um valor menor.</p>
+        <p>Essa ideia — <em>a porcentagem é calculada sobre o valor novo</em> — é o coração da aula de hoje. Ela vale para descontos e também para juros.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 JUROS COMPOSTOS -->
+  <section class="sec" data-name="Juros compostos">
+    <div class="card">
+      <span class="eyebrow">Parte 2</span>
+      <h2>Juros compostos</h2>
+      <p>Nos <strong>juros compostos</strong>, o juro de cada período é calculado sobre o <strong>valor do final do período anterior</strong> — ou seja, sobre o valor que já inclui os juros ganhos antes. Por isso dizemos que são “juros sobre juros”.</p>
+      <p>Compare: nos juros simples, a base da conta é sempre o capital inicial. Nos compostos, a base muda a cada período.</p>
+
+      <h3>Exemplo passo a passo</h3>
+      <p>R$ 1.000,00 aplicados a juros compostos de 10% ao ano, durante 3 anos. Clique em cada “?” para descobrir quanto rendeu em cada ano.</p>
+      <div class="chain">
+        <span class="node">1.000</span>
+        <button class="op" data-op="+100" aria-label="Revelar juro do ano 1">?</button>
+        <span class="node">1.100</span>
+        <button class="op" data-op="+110" aria-label="Revelar juro do ano 2">?</button>
+        <span class="node">1.210</span>
+        <button class="op" data-op="+121" aria-label="Revelar juro do ano 3">?</button>
+        <span class="node">1.331</span>
+      </div>
+      <div class="tblwrap">
+      <table class="tbl">
+        <tr><th>Ano</th><th>Valor no início</th><th>10% desse valor</th><th>Valor no fim</th></tr>
+        <tr><td class="n">1º</td><td class="n">R$ 1.000,00</td><td class="n">R$ 100,00</td><td class="n">R$ 1.100,00</td></tr>
+        <tr><td class="n">2º</td><td class="n">R$ 1.100,00</td><td class="n">R$ 110,00</td><td class="n">R$ 1.210,00</td></tr>
+        <tr><td class="n">3º</td><td class="n">R$ 1.210,00</td><td class="n">R$ 121,00</td><td class="n hl">R$ 1.331,00</td></tr>
+      </table>
+      </div>
+      <p>Repare: o “valor no fim” de um ano vira o “valor no início” do ano seguinte.</p>
+      <p>O montante é <strong>R$ 1.331,00</strong>. Os juros são 1.331 − 1.000 = <strong>R$ 331,00</strong>.</p>
+
+      <div class="tip"><span class="lbl">⚠️ Dica: a pegadinha mais comum</span>
+        Se você calcular os 10% sempre sobre os R$ 1.000 (R$ 100 + R$ 100 + R$ 100), vai chegar em R$ 1.300 — mas isso é juros <strong>simples</strong>. Nas provas, essa resposta errada quase sempre aparece entre as alternativas. Em juros compostos, a porcentagem é sempre sobre o <strong>último valor</strong> que você encontrou.
+      </div>
+
+      <div class="try" data-answer="220,50" data-hint="Ano 1: 5% de 200 = 10, fica 210. Ano 2: calcule 5% de 210 (não de 200!) e some.">
+        <span class="lbl">Agora é sua vez</span>
+        R$ 200,00 a juros compostos de 5% ao ano, durante 2 anos. Qual é o montante?
+        <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 COMPARAÇÃO -->
+  <section class="sec" data-name="Simples × compostos">
+    <div class="card">
+      <span class="eyebrow">Parte 3</span>
+      <h2>Simples × compostos, lado a lado</h2>
+      <p>Mesmo dinheiro (R$ 1.000,00), mesma taxa (10% ao ano). Veja como cada um cresce:</p>
+      <div class="tblwrap">
+      <table class="tbl">
+        <tr><th>Ano</th><th>Juros simples</th><th>Juros compostos</th><th>Diferença</th></tr>
+        <tr><td class="n">1</td><td class="n">R$ 1.100,00</td><td class="n">R$ 1.100,00</td><td class="n">R$ 0,00</td></tr>
+        <tr><td class="n">2</td><td class="n">R$ 1.200,00</td><td class="n">R$ 1.210,00</td><td class="n">R$ 10,00</td></tr>
+        <tr><td class="n">3</td><td class="n">R$ 1.300,00</td><td class="n">R$ 1.331,00</td><td class="n">R$ 31,00</td></tr>
+        <tr><td class="n">4</td><td class="n">R$ 1.400,00</td><td class="n">R$ 1.464,10</td><td class="n hl">R$ 64,10</td></tr>
+      </table>
+      </div>
+
+      <svg class="fig" viewBox="0 0 360 250" role="img" aria-label="Gráfico de barras comparando juros simples e compostos nos anos 1 a 4">
+        <rect x="40" y="10" width="12" height="12" rx="3" fill="#A9E5D0" stroke="#362F78" stroke-width="1"/>
+        <text x="57" y="20" font-family="Atkinson Hyperlegible" font-size="11" fill="#2A2650">Simples</text>
+        <rect x="120" y="10" width="12" height="12" rx="3" fill="#362F78"/>
+        <text x="137" y="20" font-family="Atkinson Hyperlegible" font-size="11" fill="#2A2650">Compostos</text>
+        <g font-family="Baloo 2" font-size="9" fill="#5B5686" text-anchor="end">
+          <line x1="44" y1="200" x2="352" y2="200" stroke="#5B5686" stroke-width="1.2"/>
+          <line x1="44" y1="168" x2="352" y2="168" stroke="#E3DEF7"/>
+          <line x1="44" y1="136" x2="352" y2="136" stroke="#E3DEF7"/>
+          <line x1="44" y1="104" x2="352" y2="104" stroke="#E3DEF7"/>
+          <line x1="44" y1="72" x2="352" y2="72" stroke="#E3DEF7"/>
+          <line x1="44" y1="40" x2="352" y2="40" stroke="#E3DEF7"/>
+          <text x="40" y="203">1.000</text><text x="40" y="171">1.100</text><text x="40" y="139">1.200</text>
+          <text x="40" y="107">1.300</text><text x="40" y="75">1.400</text><text x="40" y="43">1.500</text>
+        </g>
+        <!-- barras: y = 200 - (v-1000)*0.32 -->
+        <g>
+          <rect x="62" y="168" width="24" height="32" rx="3" fill="#A9E5D0" stroke="#362F78" stroke-width="1"/>
+          <rect x="90" y="168" width="24" height="32" rx="3" fill="#362F78"/>
+          <rect x="139" y="136" width="24" height="64" rx="3" fill="#A9E5D0" stroke="#362F78" stroke-width="1"/>
+          <rect x="167" y="132.8" width="24" height="67.2" rx="3" fill="#362F78"/>
+          <rect x="216" y="104" width="24" height="96" rx="3" fill="#A9E5D0" stroke="#362F78" stroke-width="1"/>
+          <rect x="244" y="94.1" width="24" height="105.9" rx="3" fill="#362F78"/>
+          <rect x="293" y="72" width="24" height="128" rx="3" fill="#A9E5D0" stroke="#362F78" stroke-width="1"/>
+          <rect x="321" y="51.5" width="24" height="148.5" rx="3" fill="#362F78"/>
+        </g>
+        <g font-family="Baloo 2" font-size="9" font-weight="700" text-anchor="middle" fill="#2A2650">
+          <text x="74" y="164">1.100</text><text x="102" y="164">1.100</text>
+          <text x="151" y="132">1.200</text><text x="179" y="129">1.210</text>
+          <text x="228" y="100">1.300</text><text x="256" y="90">1.331</text>
+          <text x="305" y="68">1.400</text><text x="333" y="47" fill="#E4694F">1.464</text>
+        </g>
+        <g font-family="Baloo 2" font-size="11" font-weight="600" text-anchor="middle" fill="#5B5686">
+          <text x="88" y="216">Ano 1</text><text x="165" y="216">Ano 2</text>
+          <text x="242" y="216">Ano 3</text><text x="319" y="216">Ano 4</text>
+        </g>
+        <text x="198" y="240" font-family="Atkinson Hyperlegible" font-size="10" fill="#5B5686" text-anchor="middle">valores em R$ · o eixo começa em R$ 1.000 para mostrar a diferença</text>
+      </svg>
+
+      <div class="tip"><span class="lbl">⚠️ Dica</span>
+        Neste exemplo, no <strong>1º ano</strong> os dois dão exatamente o mesmo valor, porque nos dois casos a conta é feita sobre os R$ 1.000. A diferença só aparece a partir do 2º ano. Então, se o tempo for 1 período só, juros simples e compostos dão o mesmo resultado.
+      </div>
+
+      <div class="try" data-answer="700" data-hint="Use J = c · i · t com c = 500, i = 0,20 e t = 2. Depois some o capital.">
+        <span class="lbl">Agora é sua vez (1/2)</span>
+        R$ 500,00 a <strong>juros simples</strong> de 20% ao ano, por 2 anos. Qual é o montante?
+        <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+      <div class="try" data-answer="720" data-hint="Ano 1: 20% de 500 = 100, fica 600. Ano 2: calcule 20% de 600 e some.">
+        <span class="lbl">Agora é sua vez (2/2)</span>
+        E se fossem <strong>juros compostos</strong>, com os mesmos números?
+        <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 DESCONTOS E AUMENTOS SUCESSIVOS -->
+  <section class="sec" data-name="Descontos e aumentos sucessivos">
+    <div class="card">
+      <span class="eyebrow">Parte 4</span>
+      <h2>Descontos e aumentos sucessivos</h2>
+      <p><strong>Sucessivos</strong> quer dizer “um depois do outro”. Cada novo desconto (ou aumento) é calculado sobre o <strong>preço que acabou de sair</strong> da etapa anterior — exatamente a mesma ideia dos juros compostos.</p>
+
+      <h3>Exemplo: dois descontos diferentes</h3>
+      <p>Uma bicicleta de <strong>R$ 500,00</strong> tem desconto de 20% e depois mais 10%. Clique nos “?”.</p>
+      <div class="chain">
+        <span class="node">500</span>
+        <button class="op" data-op="−100" aria-label="Revelar primeiro desconto">?</button>
+        <span class="node">400</span>
+        <button class="op" data-op="−40" aria-label="Revelar segundo desconto">?</button>
+        <span class="node">360</span>
+      </div>
+      <div class="algo">
+        <div><b>Passo 1.</b> 20% de 500 = 0,20 × 500 = 100. Preço: 500 − 100 = 400.</div>
+        <div><b>Passo 2.</b> 10% de <strong>400</strong> = 0,10 × 400 = 40. Preço: 400 − 40 = <span class="hl">R$ 360,00</span>.</div>
+        <div><b>Passo 3.</b> Desconto total: 500 − 360 = R$ 140,00, que é 140 ÷ 500 = 0,28 = <strong>28%</strong> (e não 30%).</div>
+      </div>
+
+      <h3>Exemplo: aumento e depois desconto</h3>
+      <p>Um produto de <strong>R$ 100,00</strong> sobe 20% e depois baixa 20%. Ele volta a custar R$ 100?</p>
+      <div class="algo">
+        <div><b>Passo 1.</b> Aumento: 20% de 100 = 20. Preço: 100 + 20 = 120.</div>
+        <div><b>Passo 2.</b> Desconto: 20% de <strong>120</strong> = 24. Preço: 120 − 24 = <span class="hl">R$ 96,00</span>.</div>
+      </div>
+      <p>Não volta! O desconto foi calculado sobre um valor maior (120), então tirou mais do que o aumento tinha colocado.</p>
+
+      <div class="tip"><span class="lbl">⚠️ Dica de prova: não some as porcentagens</span>
+        Dois descontos de 10% <strong>não</strong> são 20% de desconto. 20% + 10% <strong>não</strong> é 30%. Subir 20% e descer 20% <strong>não</strong> volta ao preço inicial. Faça sempre uma etapa de cada vez, usando o preço novo.
+      </div>
+
+      <div class="try" data-answer="324" data-hint="Primeiro: 10% de 400 = 40, fica 360. Depois: 10% de 360 (não de 400!) e tire de 360.">
+        <span class="lbl">Agora é sua vez (1/2)</span>
+        Um fone de R$ 400,00 recebe dois descontos sucessivos de 10%. Qual é o preço final?
+        <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+      <div class="try" data-answer="198" data-hint="Aumento: 10% de 200 = 20, fica 220. Desconto: 10% de 220 e tire de 220.">
+        <span class="lbl">Agora é sua vez (2/2)</span>
+        Um jogo de R$ 200,00 sobe 10% e, no mês seguinte, baixa 10%. Quanto ele custa no final?
+        <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 PASSO A PASSO -->
+  <section class="sec" data-name="O passo a passo">
+    <div class="card">
+      <span class="eyebrow">Parte 5</span>
+      <h2>O passo a passo que serve para tudo</h2>
+      <p>Juros compostos, descontos sucessivos e aumentos sucessivos seguem o mesmo roteiro:</p>
+      <div class="algo">
+        <div><b>Passo 1.</b> Anote o valor inicial. Ele é o seu “valor atual”.</div>
+        <div><b>Passo 2.</b> Calcule a porcentagem sobre o valor atual.</div>
+        <div><b>Passo 3.</b> Some (juros ou aumento) ou subtraia (desconto). O resultado vira o novo valor atual.</div>
+        <div><b>Passo 4.</b> Acabaram os períodos (ou os descontos)? Se não, retorne ao Passo 2. Se sim, vá para o Passo 5.</div>
+        <div><b>Passo 5.</b> O último valor é o montante (ou o preço final). Se a pergunta pedir só os juros, faça último valor − valor inicial.</div>
+      </div>
+
+      <div class="tip"><span class="lbl">⚠️ Dica: volte ao Passo 2, não ao Passo 1</span>
+        No Passo 4, quando ainda faltam períodos, você volta para <strong>calcular a porcentagem</strong> (Passo 2), e não para “anote o valor inicial” (Passo 1). Se você voltar ao Passo 1, vai recomeçar do valor inicial a cada vez — e isso é justamente o erro que transforma juros compostos em juros simples (e dois descontos de 10% em 20%).
+      </div>
+
+      <div class="try" data-answer="66" data-hint="Passo 2 e 3: 10% de 50 = 5, fica 55. Repita com 20%: 20% de 55 = 11, e some.">
+        <span class="lbl">Agora é sua vez</span>
+        Use o roteiro: uma passagem de R$ 50,00 teve aumento de 10% e, depois, mais um aumento de 20%. Qual é o preço final?
+        <div class="row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 QUIZ -->
+  <section class="sec" data-name="Pratique">
+    <div class="card" id="quiz">
+      <span class="eyebrow coral">Prática</span>
+      <h2>Pratique</h2>
+      <div class="score" id="score">Acertos: 0 de 8</div>
+
+      <div class="q" data-correct="2">
+        <div><span class="qn">1.</span> Pedro aplicou R$ 1.500,00 a juros simples de 4% ao ano, durante 3 anos. Qual foi o montante ao final?</div>
+        <div class="opts">
+          <button class="opt"><b>A</b>R$ 180,00</button>
+          <button class="opt"><b>B</b>R$ 1.560,00</button>
+          <button class="opt"><b>C</b>R$ 1.680,00</button>
+          <button class="opt"><b>D</b>R$ 1.687,10</button>
+          <button class="opt"><b>E</b>R$ 1.800,00</button>
+        </div>
+        <div class="expl"><strong>Resolução:</strong> 4% = 0,04. J = 1.500 · 0,04 · 3 = 60 · 3 = 180. Montante: M = 1.500 + 180 = <strong>R$ 1.680,00</strong>. Cuidado: R$ 180,00 é só o juro, e R$ 1.560,00 é o montante de 1 ano só.</div>
+      </div>
+
+      <div class="q" data-correct="1">
+        <div><span class="qn">2.</span> Um empréstimo de R$ 6.000,00 gerou R$ 1.080,00 de juros simples em 3 anos. Qual foi a taxa anual?</div>
+        <div class="opts">
+          <button class="opt"><b>A</b>3%</button>
+          <button class="opt"><b>B</b>6%</button>
+          <button class="opt"><b>C</b>9%</button>
+          <button class="opt"><b>D</b>18%</button>
+          <button class="opt"><b>E</b>30%</button>
+        </div>
+        <div class="expl"><strong>Resolução:</strong> J = c · i · t → 1.080 = 6.000 · i · 3 → 1.080 = 18.000 · i → i = 1.080 ÷ 18.000 = 0,06 = <strong>6% ao ano</strong>. Se você esquecer o tempo (1.080 ÷ 6.000 = 0,18), vai marcar 18%, que é o total dos 3 anos.</div>
+      </div>
+
+      <div class="q" data-correct="2">
+        <div><span class="qn">3.</span> Uma aplicação de R$ 800,00 rende juros compostos de 10% ao ano. Qual será o valor após 3 anos?</div>
+        <div class="opts">
+          <button class="opt"><b>A</b>R$ 1.040,00</button>
+          <button class="opt"><b>B</b>R$ 1.056,00</button>
+          <button class="opt"><b>C</b>R$ 1.064,80</button>
+          <button class="opt"><b>D</b>R$ 1.080,00</button>
+          <button class="opt"><b>E</b>R$ 1.100,00</button>
+        </div>
+        <div class="expl"><strong>Resolução:</strong> Ano 1: 10% de 800 = 80 → 880. Ano 2: 10% de 880 = 88 → 968. Ano 3: 10% de 968 = 96,80 → <strong>R$ 1.064,80</strong>. R$ 1.040,00 seria o resultado com juros simples (80 + 80 + 80).</div>
+      </div>
+
+      <div class="q" data-correct="1">
+        <div><span class="qn">4.</span> Uma mochila de R$ 300,00 recebeu dois descontos sucessivos de 10%. Qual é o preço final?</div>
+        <div class="opts">
+          <button class="opt"><b>A</b>R$ 240,00</button>
+          <button class="opt"><b>B</b>R$ 243,00</button>
+          <button class="opt"><b>C</b>R$ 250,00</button>
+          <button class="opt"><b>D</b>R$ 270,00</button>
+          <button class="opt"><b>E</b>R$ 280,00</button>
+        </div>
+        <div class="expl"><strong>Resolução:</strong> 1º desconto: 10% de 300 = 30 → 270. 2º desconto: 10% de 270 = 27 → <strong>R$ 243,00</strong>. R$ 240,00 seria um desconto único de 20%, que não é o que aconteceu.</div>
+      </div>
+
+      <div class="q" data-correct="1">
+        <div><span class="qn">5.</span> R$ 1.000,00 foram aplicados a juros compostos de 5% ao ano, por 2 anos. Quanto rendeu de <strong>juros</strong>?</div>
+        <div class="opts">
+          <button class="opt"><b>A</b>R$ 100,00</button>
+          <button class="opt"><b>B</b>R$ 102,50</button>
+          <button class="opt"><b>C</b>R$ 105,00</button>
+          <button class="opt"><b>D</b>R$ 1.100,00</button>
+          <button class="opt"><b>E</b>R$ 1.102,50</button>
+        </div>
+        <div class="expl"><strong>Resolução:</strong> Ano 1: 5% de 1.000 = 50 → 1.050. Ano 2: 5% de 1.050 = 52,50 → 1.102,50. A pergunta pede os juros: 1.102,50 − 1.000 = <strong>R$ 102,50</strong>. R$ 1.102,50 é o montante, não os juros.</div>
+      </div>
+
+      <div class="q" data-correct="1">
+        <div><span class="qn">6.</span> Um produto de R$ 100,00 teve aumento de 20% e, depois, desconto de 20%. Qual é o preço final?</div>
+        <div class="opts">
+          <button class="opt"><b>A</b>R$ 80,00</button>
+          <button class="opt"><b>B</b>R$ 96,00</button>
+          <button class="opt"><b>C</b>R$ 100,00</button>
+          <button class="opt"><b>D</b>R$ 104,00</button>
+          <button class="opt"><b>E</b>R$ 120,00</button>
+        </div>
+        <div class="expl"><strong>Resolução:</strong> Aumento: 20% de 100 = 20 → 120. Desconto: 20% de 120 = 24 → <strong>R$ 96,00</strong>. Não volta a R$ 100, porque o desconto foi sobre um valor maior.</div>
+      </div>
+
+      <div class="q" data-correct="1">
+        <div><span class="qn">7.</span> Dois descontos sucessivos de 20% equivalem a um único desconto de:</div>
+        <div class="opts">
+          <button class="opt"><b>A</b>20%</button>
+          <button class="opt"><b>B</b>36%</button>
+          <button class="opt"><b>C</b>40%</button>
+          <button class="opt"><b>D</b>44%</button>
+          <button class="opt"><b>E</b>64%</button>
+        </div>
+        <div class="expl"><strong>Resolução:</strong> Quando não há valor, invente R$ 100. 1º: 20% de 100 = 20 → 80. 2º: 20% de 80 = 16 → 64. Desconto total: 100 − 64 = 36, ou seja, <strong>36%</strong>. (64% é o que sobrou do preço, não o desconto.)</div>
+      </div>
+
+      <div class="q" data-correct="1">
+        <div><span class="qn">8.</span> Um salário de R$ 2.000,00 recebeu aumento de 10% e, meses depois, mais um aumento de 5%. Qual é o novo salário?</div>
+        <div class="opts">
+          <button class="opt"><b>A</b>R$ 2.300,00</button>
+          <button class="opt"><b>B</b>R$ 2.310,00</button>
+          <button class="opt"><b>C</b>R$ 2.315,00</button>
+          <button class="opt"><b>D</b>R$ 2.330,00</button>
+          <button class="opt"><b>E</b>R$ 2.400,00</button>
+        </div>
+        <div class="expl"><strong>Resolução:</strong> 1º aumento: 10% de 2.000 = 200 → 2.200. 2º aumento: 5% de 2.200 = 110 → <strong>R$ 2.310,00</strong>. R$ 2.300,00 seria somar 15% de uma vez sobre 2.000.</div>
+      </div>
+
+      <div class="final" id="final"></div>
+    </div>
+  </section>
+
+  <!-- 8 ESTUDO EM CASA -->
+  <section class="sec" data-name="Pra estudar em casa">
+    <div class="card">
+      <span class="eyebrow indigo">Estudo em casa</span>
+      <h2>Pra estudar em casa</h2>
+      <p>Primeiro, quatro exemplos resolvidos com calma. Depois, exercícios para você tentar sozinho — a resolução completa está escondida em cada um. Tente antes de abrir!</p>
+
+      <h3>Exemplos resolvidos</h3>
+
+      <div class="ex">
+        <div><span class="num">Exemplo 1</span><strong>Juros compostos.</strong> Ana aplicou R$ 2.000,00 a juros compostos de 3% ao ano, durante 2 anos. Qual o montante e quanto ela ganhou de juros?</div>
+        <div class="algo">
+          <div><b>Passo 1.</b> Valor inicial: R$ 2.000,00.</div>
+          <div><b>Passo 2.</b> Ano 1: 3% de 2.000 = 0,03 × 2.000 = 60. Novo valor: 2.000 + 60 = 2.060.</div>
+          <div><b>Passo 3.</b> Ano 2: 3% de <strong>2.060</strong> = 0,03 × 2.060 = 61,80. Novo valor: 2.060 + 61,80 = 2.121,80.</div>
+          <div><b>Passo 4.</b> Acabaram os 2 anos. Montante: R$ 2.121,80.</div>
+          <div><b>Passo 5.</b> Juros: 2.121,80 − 2.000 = R$ 121,80.</div>
+        </div>
+        <span class="ans">Montante R$ 2.121,80 · Juros R$ 121,80</span>
+        <p class="hintsmall">Comparação: com juros simples seriam só R$ 120,00 (60 + 60).</p>
+      </div>
+
+      <div class="ex">
+        <div><span class="num">Exemplo 2</span><strong>Descontos sucessivos.</strong> Um tênis de R$ 250,00 teve desconto de 20% e, depois, mais 10%. Qual o preço final e qual foi o desconto total em porcentagem?</div>
+        <div class="algo">
+          <div><b>Passo 1.</b> Preço inicial: R$ 250,00.</div>
+          <div><b>Passo 2.</b> 1º desconto: 20% de 250 = 0,20 × 250 = 50. Novo preço: 250 − 50 = 200.</div>
+          <div><b>Passo 3.</b> 2º desconto: 10% de <strong>200</strong> = 0,10 × 200 = 20. Novo preço: 200 − 20 = 180.</div>
+          <div><b>Passo 4.</b> Desconto total em reais: 250 − 180 = 70.</div>
+          <div><b>Passo 5.</b> Em porcentagem do preço original: 70 ÷ 250 = 0,28 = 28%.</div>
+        </div>
+        <span class="ans">Preço final R$ 180,00 · Desconto total de 28%</span>
+      </div>
+
+      <div class="ex">
+        <div><span class="num">Exemplo 3</span><strong>Descobrir a taxa (juros simples).</strong> R$ 5.000,00 renderam R$ 900,00 de juros simples em 2 anos. Qual a taxa anual?</div>
+        <div class="algo">
+          <div><b>Passo 1.</b> Dados: J = 900, c = 5.000, t = 2. Queremos o i.</div>
+          <div><b>Passo 2.</b> Fórmula: J = c · i · t → 900 = 5.000 · i · 2.</div>
+          <div><b>Passo 3.</b> 5.000 · 2 = 10.000, então 900 = 10.000 · i.</div>
+          <div><b>Passo 4.</b> i = 900 ÷ 10.000 = 0,09.</div>
+          <div><b>Passo 5.</b> 0,09 × 100 = 9%.</div>
+        </div>
+        <span class="ans">Taxa de 9% ao ano</span>
+      </div>
+
+      <div class="ex">
+        <div><span class="num">Exemplo 4</span><strong>Aumento e depois desconto.</strong> Um livro de R$ 80,00 subiu 25% e depois entrou em promoção com 25% de desconto. Qual o preço na promoção?</div>
+        <div class="algo">
+          <div><b>Passo 1.</b> Preço inicial: R$ 80,00.</div>
+          <div><b>Passo 2.</b> Aumento: 25% de 80 = 0,25 × 80 = 20. Novo preço: 80 + 20 = 100.</div>
+          <div><b>Passo 3.</b> Desconto: 25% de <strong>100</strong> = 0,25 × 100 = 25. Novo preço: 100 − 25 = 75.</div>
+        </div>
+        <span class="ans">Preço na promoção: R$ 75,00 (menos que os R$ 80 iniciais)</span>
+      </div>
+
+      <h3>Agora tente sozinho</h3>
+
+      <div class="ex">
+        <div><span class="num">1</span>R$ 600,00 foram aplicados a juros compostos de 10% ao ano, durante 2 anos. Qual o montante e quanto rendeu de juros?</div>
+        <button class="btn ghost reveal" data-target="s1">Ver resolução</button>
+        <div class="sol" id="s1"><div class="algo">
+          <div><b>Passo 1.</b> Valor inicial: 600.</div>
+          <div><b>Passo 2.</b> Ano 1: 10% de 600 = 60 → 600 + 60 = 660.</div>
+          <div><b>Passo 3.</b> Ano 2: 10% de 660 = 66 → 660 + 66 = 726.</div>
+          <div><b>Passo 4.</b> Juros: 726 − 600 = 126.</div>
+        </div><span class="ans">Montante R$ 726,00 · Juros R$ 126,00</span></div>
+      </div>
+
+      <div class="ex">
+        <div><span class="num">2</span>Júlia aplicou R$ 3.000,00 a juros simples de 6% ao ano, durante 4 anos. Qual o montante?</div>
+        <button class="btn ghost reveal" data-target="s2">Ver resolução</button>
+        <div class="sol" id="s2"><div class="algo">
+          <div><b>Passo 1.</b> 6% = 0,06.</div>
+          <div><b>Passo 2.</b> J = c · i · t = 3.000 · 0,06 · 4.</div>
+          <div><b>Passo 3.</b> 3.000 · 0,06 = 180; 180 · 4 = 720. J = 720.</div>
+          <div><b>Passo 4.</b> M = 3.000 + 720 = 3.720.</div>
+        </div><span class="ans">Montante R$ 3.720,00</span></div>
+      </div>
+
+      <div class="ex">
+        <div><span class="num">3</span>Um celular de R$ 1.200,00 recebeu dois descontos sucessivos de 10%. Qual o preço final?</div>
+        <button class="btn ghost reveal" data-target="s3">Ver resolução</button>
+        <div class="sol" id="s3"><div class="algo">
+          <div><b>Passo 1.</b> 1º desconto: 10% de 1.200 = 120 → 1.200 − 120 = 1.080.</div>
+          <div><b>Passo 2.</b> 2º desconto: 10% de 1.080 = 108 → 1.080 − 108 = 972.</div>
+        </div><span class="ans">Preço final R$ 972,00</span>
+        <p class="hintsmall">Se tivesse dado R$ 960,00, você teria feito 20% de uma vez — confira o 2º desconto.</p></div>
+      </div>
+
+      <div class="ex">
+        <div><span class="num">4</span>O preço de uma pizza era R$ 40,00 e teve dois aumentos sucessivos de 10%. Qual o preço atual?</div>
+        <button class="btn ghost reveal" data-target="s4">Ver resolução</button>
+        <div class="sol" id="s4"><div class="algo">
+          <div><b>Passo 1.</b> 1º aumento: 10% de 40 = 4 → 40 + 4 = 44.</div>
+          <div><b>Passo 2.</b> 2º aumento: 10% de 44 = 4,40 → 44 + 4,40 = 48,40.</div>
+        </div><span class="ans">Preço atual R$ 48,40</span></div>
+      </div>
+
+      <div class="ex">
+        <div><span class="num">5</span>Um empréstimo de R$ 2.500,00 gerou R$ 750,00 de juros simples em 5 anos. Qual foi a taxa anual?</div>
+        <button class="btn ghost reveal" data-target="s5">Ver resolução</button>
+        <div class="sol" id="s5"><div class="algo">
+          <div><b>Passo 1.</b> J = c · i · t → 750 = 2.500 · i · 5.</div>
+          <div><b>Passo 2.</b> 2.500 · 5 = 12.500, então 750 = 12.500 · i.</div>
+          <div><b>Passo 3.</b> i = 750 ÷ 12.500 = 0,06.</div>
+          <div><b>Passo 4.</b> 0,06 × 100 = 6%.</div>
+        </div><span class="ans">Taxa de 6% ao ano</span></div>
+      </div>
+
+      <div class="ex">
+        <div><span class="num">6</span>Uma dívida de R$ 10.000,00 cresce a juros compostos de 2% ao mês. Qual será o valor da dívida depois de 3 meses?</div>
+        <button class="btn ghost reveal" data-target="s6">Ver resolução</button>
+        <div class="sol" id="s6"><div class="algo">
+          <div><b>Passo 1.</b> Mês 1: 2% de 10.000 = 200 → 10.200.</div>
+          <div><b>Passo 2.</b> Mês 2: 2% de 10.200 = 204 → 10.404.</div>
+          <div><b>Passo 3.</b> Mês 3: 2% de 10.404 = 208,08 → 10.612,08.</div>
+        </div><span class="ans">Dívida de R$ 10.612,08</span>
+        <p class="hintsmall">Repare que aqui o período é o <strong>mês</strong>, porque a taxa é ao mês.</p></div>
+      </div>
+
+      <div class="ex">
+        <div><span class="num">7</span>Lucas aplicou R$ 1.000,00 a 10% ao ano, por 2 anos. Quanto ele ganharia a mais com juros compostos do que com juros simples?</div>
+        <button class="btn ghost reveal" data-target="s7">Ver resolução</button>
+        <div class="sol" id="s7"><div class="algo">
+          <div><b>Passo 1.</b> Simples: J = 1.000 · 0,10 · 2 = 200.</div>
+          <div><b>Passo 2.</b> Compostos, ano 1: 10% de 1.000 = 100 → 1.100.</div>
+          <div><b>Passo 3.</b> Compostos, ano 2: 10% de 1.100 = 110 → 1.210. Juros: 1.210 − 1.000 = 210.</div>
+          <div><b>Passo 4.</b> Diferença: 210 − 200 = 10.</div>
+        </div><span class="ans">R$ 10,00 a mais com juros compostos</span></div>
+      </div>
+
+      <div class="ex">
+        <div><span class="num">8</span><strong>Desafio.</strong> Dois descontos sucessivos de 10% equivalem a um único desconto de quantos por cento?</div>
+        <button class="btn ghost reveal" data-target="s8">Ver resolução</button>
+        <div class="sol" id="s8"><div class="algo">
+          <div><b>Passo 1.</b> Como não há preço, invente R$ 100,00.</div>
+          <div><b>Passo 2.</b> 1º desconto: 10% de 100 = 10 → 90.</div>
+          <div><b>Passo 3.</b> 2º desconto: 10% de 90 = 9 → 81.</div>
+          <div><b>Passo 4.</b> Desconto total: 100 − 81 = 19 de cada 100, ou seja, 19%.</div>
+        </div><span class="ans">Equivalem a um desconto único de 19%</span></div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <div class="navbtns">
+    <button class="nav" id="prev">← Voltar</button>
+    <button class="nav fwd" id="next">Avançar →</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const secs=[...document.querySelectorAll('.sec')];
+  const tabs=document.getElementById('tabs');
+  const N=secs.length;
+  let cur=0;
+  secs.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.className='tab';b.setAttribute('role','tab');
+    b.textContent=(i+1)+'. '+s.dataset.name;
+    b.onclick=()=>show(i);
+    tabs.appendChild(b);
+  });
+  function show(i,scroll=true){
+    cur=i;
+    secs.forEach((s,j)=>s.classList.toggle('active',j===i));
+    [...tabs.children].forEach((t,j)=>t.setAttribute('aria-selected',j===i?'true':'false'));
+    document.getElementById('fill').style.width=((i+1)/N*100)+'%';
+    document.getElementById('plabel').textContent='Parte '+(i+1)+' de '+N+' — '+secs[i].dataset.name;
+    document.getElementById('progress').setAttribute('aria-valuenow',i+1);
+    document.getElementById('prev').disabled=i===0;
+    document.getElementById('next').disabled=i===N-1;
+    if(scroll) window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  }
+  document.getElementById('prev').onclick=()=>cur>0&&show(cur-1);
+  document.getElementById('next').onclick=()=>cur<N-1&&show(cur+1);
+  show(0,false);
+
+  // números em formato brasileiro
+  function num(str){
+    let s=String(str).replace(/R\$|\s|%/g,'');
+    if(!s) return NaN;
+    if(s.includes(',')) s=s.replace(/\./g,'').replace(',','.');
+    else if(/^\d{1,3}(\.\d{3})+$/.test(s)) s=s.replace(/\./g,'');
+    return parseFloat(s);
+  }
+  document.querySelectorAll('.try').forEach(t=>{
+    const inp=t.querySelector('input'),btn=t.querySelector('.btn'),fb=t.querySelector('.fb');
+    const check=()=>{
+      const v=num(inp.value),a=num(t.dataset.answer);
+      if(isNaN(v)){fb.className='fb no';fb.textContent='✎ Escreva um número para conferir.';return;}
+      if(Math.abs(v-a)<0.011){fb.className='fb ok';fb.textContent='✓ Isso mesmo! Muito bem.';}
+      else{fb.className='fb no';fb.textContent='↺ Quase! Revê esse passo: '+t.dataset.hint;}
+    };
+    btn.onclick=check;
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+  });
+
+  document.querySelectorAll('.op').forEach(o=>{
+    o.onclick=()=>{if(o.classList.contains('shown'))return;o.textContent=o.dataset.op;o.classList.add('shown');};
+  });
+
+  document.querySelectorAll('.reveal').forEach(b=>{
+    b.onclick=()=>{
+      const el=document.getElementById(b.dataset.target);
+      const open=el.classList.toggle('show');
+      b.textContent=open?(b.textContent.includes('resolução')?'Esconder resolução':'Esconder resposta'):(b.textContent.includes('resolução')?'Ver resolução':'Ver resposta');
+    };
+  });
+
+  const qs=[...document.querySelectorAll('.q')];
+  let score=0,answered=0;
+  qs.forEach(q=>{
+    const opts=[...q.querySelectorAll('.opt')],c=+q.dataset.correct;
+    opts.forEach((o,i)=>{
+      o.onclick=()=>{
+        opts.forEach(x=>x.disabled=true);
+        opts[c].classList.add('right');
+        opts[c].insertAdjacentText('beforeend',' ✓');
+        if(i===c){score++;}
+        else{o.classList.add('wrong');o.insertAdjacentText('beforeend',' ✗ (sua escolha)');}
+        q.querySelector('.expl').classList.add('show');
+        answered++;
+        document.getElementById('score').textContent='Acertos: '+score+' de '+qs.length;
+        if(answered===qs.length){
+          const f=document.getElementById('final');
+          f.style.display='block';
+          f.textContent=score===qs.length?'🎉 Você acertou todas! Excelente trabalho.':
+            score>=qs.length/2?'👏 Você acertou '+score+' de '+qs.length+'. Releia as resoluções das que errou — o erro mostra exatamente o passo para treinar.':
+            '💪 Você acertou '+score+' de '+qs.length+'. Tudo bem! Volte nas Partes 2 e 4, refaça os exemplos e depois tente de novo.';
+        }
+      };
+    });
+  });
+})();
+</script>
+</body>
+</html>
