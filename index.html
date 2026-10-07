@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Polígonos no plano cartesiano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F4FC;--ind:#362F78;--ind-d:#241F52;--ind-s:#6C63B5;
+  --mint:#A9E5D0;--coral:#FFB3A0;--coral-d:#E4694F;--yel:#FFDD73;
+  --txt:#2A2650;--txt2:#5B5686;--bd:#E3DEF7;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3{font-family:'Baloo 2',cursive;color:var(--ind-d);line-height:1.15;margin:0}
+h1{font-size:30px;font-weight:800}
+h2{font-size:24px;font-weight:800;margin:8px 0 10px}
+h3{font-size:19px;font-weight:700;margin:16px 0 6px}
+p{margin:8px 0}
+button{font-family:inherit}
+
+/* fundo */
+#bgsym{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+#bgsym span{position:absolute;font-family:'Baloo 2';font-weight:700;color:var(--ind);opacity:.08;animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(26px,-34px) rotate(10deg)}}
+
+/* topo */
+.top{position:sticky;top:0;z-index:30;background:rgba(246,244,252,.94);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-bottom:1px solid var(--bd);padding:8px 16px 6px}
+.top-in{max-width:860px;margin:0 auto}
+.track{height:7px;background:var(--bd);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:20%;background:linear-gradient(90deg,var(--ind-s),var(--ind));border-radius:99px;transition:width .4s}
+.plabel{font-family:'Baloo 2';font-weight:600;font-size:13px;color:var(--txt2);margin-top:2px}
+
+.wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:16px 16px 40px}
+.sub{font-family:'Baloo 2';font-weight:600;color:var(--ind-s);font-size:14px;letter-spacing:.03em}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 16px}
+.tab{font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:99px;border:1.5px solid var(--bd);background:#fff;color:var(--ind);cursor:pointer}
+.tab.on{background:var(--ind);border-color:var(--ind);color:#fff}
+
+.part{display:none}
+.part.on{display:block;animation:fadein .35s}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.card{background:#fff;border:1px solid var(--bd);border-radius:20px;padding:20px 18px;box-shadow:0 6px 24px rgba(54,47,120,.07);margin-bottom:18px}
+.eyebrow{display:inline-block;font-family:'Baloo 2';font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:2px 11px;border-radius:99px;background:var(--mint);color:var(--ind-d)}
+.eyebrow.c{background:var(--coral)}.eyebrow.y{background:var(--yel)}
+
+.pense{background:#EEEBFA;border-radius:16px;padding:12px 16px;margin:14px 0}
+.dica{background:#FFF8E6;border-left:7px solid var(--yel);border-radius:14px;padding:12px 16px;margin:14px 0}
+.copie{border:2.5px dashed #3BA57E;background:#F2FBF7;border-radius:16px;padding:12px 16px;margin:14px 0}
+.bx-t{font-family:'Baloo 2';font-weight:700;font-size:16px;color:var(--ind);display:block;margin-bottom:2px}
+.copie .bx-t{color:#1F7A55}.dica .bx-t{color:#8A6100}
+
+ol.steps{margin:8px 0;padding-left:0;list-style:none;counter-reset:s}
+ol.steps li{counter-increment:s;position:relative;padding:6px 0 6px 40px}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:5px;width:28px;height:28px;border-radius:50%;background:var(--ind);color:#fff;font-family:'Baloo 2';font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px}
+
+.cd{font-family:'Baloo 2';font-weight:700;white-space:nowrap}
+.chg{color:var(--coral-d);font-weight:800}
+
+/* corrente */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0}
+.chain .nd{font-family:'Baloo 2';font-weight:700;background:var(--ind);color:#fff;border-radius:12px;padding:4px 10px;font-size:15px;opacity:.35;transition:opacity .3s,transform .3s}
+.chain .nd.lit{opacity:1}
+.chain .nd.now{transform:scale(1.08);box-shadow:0 0 0 3px var(--yel)}
+.chain .op{font-family:'Baloo 2';font-weight:700;background:var(--coral);color:var(--ind-d);border-radius:99px;padding:0 8px;font-size:13px}
+
+.fig{display:flex;justify-content:center;margin:12px 0}
+.figrow{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:12px 0}
+.figrow figure{margin:0;text-align:center;flex:1 1 160px;max-width:300px}
+.figrow figcaption{font-size:14px;color:var(--txt2);margin-top:4px}
+.plane{width:100%;max-width:440px;height:auto;display:block}
+.plane.sm{max-width:300px}.plane.xs{max-width:240px}
+.plane .g{stroke:#E3DEF7;stroke-width:1}
+.plane .ax{stroke:#2A2650;stroke-width:1.6}
+.plane text.n{font-family:'Baloo 2';font-weight:600;font-size:10px;fill:#5B5686}
+.plane text.axn{font-family:'Atkinson Hyperlegible';font-style:italic;font-weight:700;font-size:13px;fill:#2A2650}
+.plane text.pl{font-family:'Baloo 2';font-weight:700;font-size:11px;paint-order:stroke;stroke:#fff;stroke-width:3px}
+.plane text.pn{font-family:'Atkinson Hyperlegible';font-style:italic;font-weight:700;font-size:15px;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3px}
+
+.btn{font-family:'Baloo 2';font-weight:700;font-size:15px;border:none;border-radius:12px;padding:7px 15px;background:var(--ind);color:#fff;cursor:pointer;transition:transform .15s,background .2s}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn.ghost{background:#fff;color:var(--ind);border:2px solid var(--bd)}
+.btn.coral{background:var(--coral-d)}
+.btn.mint{background:#2E9C78}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.seg .btn{background:#fff;color:var(--ind);border:2px solid var(--bd)}
+.seg .btn.on{background:var(--ind);color:#fff;border-color:var(--ind)}
+
+table.vt{border-collapse:separate;border-spacing:0;margin:10px auto;font-family:'Baloo 2';font-weight:600;font-size:15px;min-width:240px;border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+table.vt th{background:var(--ind);color:#fff;padding:6px 14px;font-weight:700}
+table.vt td{padding:4px 14px;text-align:center;border-top:1px solid var(--bd);background:#fff}
+table.vt tr:nth-child(even) td{background:#FAF9FE}
+.rule{text-align:center;font-family:'Baloo 2';font-weight:700;font-size:18px;color:var(--ind);background:#EEEBFA;border-radius:12px;padding:6px 12px;margin:8px auto;max-width:420px}
+
+/* try-box */
+.try{border:2.5px dashed var(--ind-s);border-radius:16px;padding:14px 16px;margin:16px 0}
+.try .bx-t{color:var(--ind-s)}
+.try input{font-family:'Baloo 2';font-weight:600;font-size:16px;border:2px solid var(--bd);border-radius:10px;padding:5px 10px;width:150px;color:var(--txt)}
+.try input.n{width:64px;text-align:center}
+.try input:focus{outline:3px solid var(--yel);border-color:var(--ind-s)}
+.ln{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0}
+.fb{margin-top:8px;border-radius:10px;padding:0;font-size:16px}
+.fb:not(:empty){padding:8px 12px}
+.fb.ok{background:#E6F7EF;color:#1A6B4A}
+.fb.no{background:#FFEDE8;color:#A8361F}
+
+/* jogo */
+.setup{display:grid;gap:10px}
+.setup label{font-family:'Baloo 2';font-weight:700;color:var(--ind)}
+.setup select,.setup input{font-family:'Baloo 2';font-weight:600;font-size:16px;border:2px solid var(--bd);border-radius:10px;padding:6px 10px;color:var(--txt);background:#fff}
+.names{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.names div{display:flex;align-items:center;gap:6px}
+.names .sw{width:18px;height:18px;border-radius:6px;flex:none;border:1px solid rgba(0,0,0,.1)}
+.names input{width:100%}
+
+.ghead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin:4px 0 12px}
+.qtag{font-family:'Baloo 2';font-weight:800;font-size:20px;color:var(--ind-d)}
+.ptsb{font-family:'Baloo 2';font-weight:700;font-size:14px;background:var(--yel);color:var(--ind-d);border-radius:99px;padding:2px 12px}
+.ggrid{display:grid;gap:14px}
+.gside{display:grid;gap:12px;align-content:start}
+.panel{background:#fff;border:1px solid var(--bd);border-radius:18px;padding:14px}
+.tbox{text-align:center}
+.tring{position:relative;width:150px;height:150px;margin:0 auto}
+.tring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.tring .bgc{stroke:#EEEBFA}.tring .fgc{stroke:var(--ind);transition:stroke-dashoffset 1s linear,stroke .3s}
+.tring.warn .fgc{stroke:var(--coral-d)}
+.tdig{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Baloo 2';font-weight:800;font-size:40px;color:var(--ind-d)}
+.tring.warn .tdig{color:var(--coral-d)}
+.tring.pulse{animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.04)}}
+.tmsg{font-family:'Baloo 2';font-weight:700;color:var(--coral-d);min-height:1.4em;margin-top:4px}
+.scores{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.team{border-radius:14px;padding:8px 10px;color:var(--ind-d);position:relative}
+.team .tn{font-family:'Baloo 2';font-weight:700;font-size:14px;line-height:1.2;word-break:break-word}
+.team .ts{font-family:'Baloo 2';font-weight:800;font-size:28px;line-height:1.1}
+.team .adj{display:flex;gap:4px;margin-top:2px}
+.team .adj button{border:none;background:rgba(255,255,255,.7);border-radius:8px;font-family:'Baloo 2';font-weight:700;font-size:12px;padding:1px 7px;cursor:pointer;color:var(--ind-d)}
+.team.bump{animation:bump .6s}
+@keyframes bump{40%{transform:scale(1.12)}}
+
+.bk{background:#fff;border:1px solid var(--bd);border-radius:18px;padding:14px 16px}
+.bkq{display:flex;gap:10px;align-items:flex-start}
+.bn{flex:none;background:#F5A623;color:#fff;font-family:'Baloo 2';font-weight:800;font-size:17px;min-width:30px;height:30px;border-radius:5px;display:flex;align-items:center;justify-content:center}
+.desafio{display:inline-block;background:#E4694F;color:#fff;font-family:'Baloo 2';font-weight:800;font-size:13px;padding:0 8px;border-radius:4px;margin-right:4px;letter-spacing:.04em}
+.bk .it{margin:8px 0 4px 40px}
+.abox{margin-top:12px;background:#EEF8F4;border:2px solid var(--mint);border-radius:16px;padding:12px 16px}
+.abox .bx-t{color:#1F7A55}
+.abox p{margin:6px 0}
+.who h3{margin-top:0}
+.whob{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.wb{font-family:'Baloo 2';font-weight:700;font-size:15px;border:2.5px solid transparent;border-radius:12px;padding:6px 12px;cursor:pointer;color:var(--ind-d);opacity:.75}
+.wb.on{border-color:var(--ind-d);opacity:1;box-shadow:0 3px 0 var(--ind-d)}
+.wb.on::before{content:'✓ '}
+.gmsg{font-family:'Baloo 2';font-weight:600;color:var(--txt2);margin-top:6px;min-height:1.3em}
+.gnav{display:flex;justify-content:space-between;gap:8px;margin-top:4px}
+
+.final{text-align:center}
+.podium{display:flex;justify-content:center;align-items:flex-end;gap:10px;margin:18px 0}
+.pd{width:31%;max-width:180px;text-align:center}
+.pd .bar{border-radius:14px 14px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;font-family:'Baloo 2';font-weight:800;font-size:30px;color:var(--ind-d)}
+.pd .nm{font-family:'Baloo 2';font-weight:700;font-size:15px;line-height:1.2;margin-bottom:4px;word-break:break-word}
+.pd .sc{font-family:'Baloo 2';font-weight:600;color:var(--txt2);font-size:14px}
+.rest{list-style:none;padding:0;margin:0 auto;max-width:380px;text-align:left}
+.rest li{display:flex;justify-content:space-between;background:#fff;border:1px solid var(--bd);border-radius:12px;padding:6px 12px;margin:6px 0;font-family:'Baloo 2';font-weight:600}
+
+/* comemoração */
+#cf{position:fixed;inset:0;pointer-events:none;z-index:90}
+.party{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;background:rgba(36,31,82,.35);padding:16px}
+.party[hidden]{display:none}
+.party .pc{background:#fff;border-radius:24px;padding:22px 26px;text-align:center;max-width:520px;box-shadow:0 20px 60px rgba(36,31,82,.3);animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.party .big{font-size:52px;line-height:1}
+.party h2{font-size:30px;margin:6px 0}
+.party .who-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+.party .who-list span{font-family:'Baloo 2';font-weight:700;border-radius:99px;padding:3px 14px;color:var(--ind-d)}
+
+.navb{display:flex;justify-content:space-between;margin-top:6px}
+.navb button{font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:99px;border:1.5px solid var(--bd);background:#fff;color:var(--ind);cursor:pointer}
+.navb button:disabled{opacity:.35;cursor:default}
+.resumo p{margin:10px 0}
+
+@media (min-width:900px){
+  body{font-size:19px}
+  .wrap,.top-in{max-width:1180px}
+  h1{font-size:40px}h2{font-size:30px}h3{font-size:22px}
+  .card{padding:26px 30px}
+  .plane{max-width:560px}.plane.sm{max-width:360px}.plane.xs{max-width:280px}
+  .tab,.navb button{font-size:13px;padding:5px 11px}
+  .ggrid{grid-template-columns:1.75fr 1fr;align-items:start}
+  .gmain{order:1}.gside{order:2;position:sticky;top:64px}
+  .scores{grid-template-columns:1fr 1fr}
+  table.vt{font-size:17px}
+}
+@media (min-width:1500px){
+  body{font-size:24px}
+  .wrap,.top-in{max-width:1560px}
+  h1{font-size:52px}h2{font-size:38px}h3{font-size:28px}
+  .plabel{font-size:16px}
+  .tab,.navb button{font-size:16px;padding:6px 14px}
+  .plane{max-width:760px}.plane.sm{max-width:480px}.plane.xs{max-width:360px}
+  .btn{font-size:20px;padding:9px 20px}
+  .bx-t{font-size:22px}
+  .tring{width:220px;height:220px}.tdig{font-size:60px}
+  .team .tn{font-size:18px}.team .ts{font-size:40px}
+  .wb{font-size:20px}
+  .qtag{font-size:28px}.ptsb{font-size:18px}
+  .bn{font-size:22px;min-width:40px;height:40px}.bk .it{margin-left:50px}
+  table.vt{font-size:22px}.rule{font-size:24px;max-width:600px}
+  .chain .nd{font-size:20px}.chain .op{font-size:17px}
+  .try input{font-size:22px;width:200px}.try input.n{width:90px}
+  .party .pc{max-width:760px}.party h2{font-size:44px}.party .big{font-size:80px}
+  .pd .nm{font-size:22px}.pd .bar{font-size:44px}.rest li{font-size:22px}
+}
+
+/* questão + cronômetro lado a lado */
+.qrow{display:grid;gap:12px;align-items:start}
+.qrow .tbox{order:-1;position:sticky;top:48px;z-index:5;display:flex;align-items:center;gap:10px;padding:8px 12px;text-align:left}
+.qrow .tring{width:96px;height:96px;margin:0;flex:none}
+.qrow .tdig{font-size:26px}
+.qrow .tbtns{margin:0;flex-wrap:wrap}
+.qrow .tmsg{margin:0}
+.glow{display:grid;gap:12px;margin-top:12px}
+@media (min-width:600px){
+  .qrow{grid-template-columns:1fr minmax(180px,26%)}
+  .qrow .tbox{order:0;flex-direction:column;text-align:center;padding:14px;top:60px}
+  .qrow .tring{width:160px;height:160px}.qrow .tdig{font-size:42px}
+  .qrow .tbtns{justify-content:center}
+}
+@media (min-width:900px){
+  .glow{grid-template-columns:1fr 1fr;align-items:start}
+  .qrow .tring{width:210px;height:210px}.qrow .tdig{font-size:56px}
+}
+@media (min-width:1500px){
+  .qrow .tring{width:300px;height:300px}.qrow .tdig{font-size:84px}
+  .qrow .tmsg{font-size:26px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<div id="bgsym" aria-hidden="true"></div>
+<canvas id="cf" aria-hidden="true"></canvas>
+
+<div class="top">
+  <div class="top-in">
+    <div class="track"><div class="fill" id="pfill"></div></div>
+    <div class="plabel" id="plabel">Parte 1 de 5 — Polígonos no plano</div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="sub">Matemática · 7º ano · Geometria</div>
+  <h1>Polígonos no plano cartesiano</h1>
+  <nav class="tabs" id="tabs" aria-label="Partes da aula"></nav>
+
+  <!-- PARTE 1 -->
+  <section class="part" data-name="Polígonos no plano">
+    <div class="card">
+      <span class="eyebrow">Parte 1</span>
+      <h2>Desenhando um polígono pelos vértices</h2>
+      <p>Para desenhar um polígono no plano cartesiano, basta conhecer as coordenadas dos seus <b>vértices</b>, que são os "cantos" da figura.</p>
+      <div class="pense"><span class="bx-t">💭 Pense assim</span>Sabe aquele passatempo de ligar os pontos para descobrir o desenho? É a mesma ideia. Os pares (x, y) dizem onde fica cada ponto, e a ordem em que eles aparecem diz qual ponto ligar em seguida.</div>
+
+      <h3>Como fazer</h3>
+      <ol class="steps">
+        <li>Marque cada vértice. O 1º número anda na horizontal (direita se positivo, esquerda se negativo). O 2º anda na vertical (cima se positivo, baixo se negativo).</li>
+        <li>Ligue os pontos na ordem em que aparecem.</li>
+        <li>Ligue o último ponto ao primeiro para fechar a figura.</li>
+      </ol>
+
+      <h3>Exemplo</h3>
+      <p>Vértices: (3, 4), (6, −2), (−7, −3) e (−4, 4). Clique e acompanhe cada ligação.</p>
+      <div class="chain" id="chain1"></div>
+      <div class="fig" id="ex1fig"></div>
+      <div class="btnrow" style="justify-content:center">
+        <button class="btn" id="ex1next">Ligar próximo ponto →</button>
+        <button class="btn ghost" id="ex1reset">Recomeçar</button>
+      </div>
+
+      <div class="copie"><span class="bx-t">✏️ Copie no caderno</span>Para representar um polígono no plano cartesiano, marcamos os vértices pelas suas coordenadas, ligamos os pontos na ordem em que aparecem e, no final, ligamos o último ponto ao primeiro para fechar a figura.</div>
+
+      <div class="dica"><span class="bx-t">⚠️ Dica: a ordem muda a figura!</span>Os pontos abaixo são os mesmos do exemplo. Mudando só a ordem das ligações, as linhas se cruzam e não temos mais o mesmo polígono. Por isso, siga sempre a ordem dada e não esqueça de voltar ao primeiro ponto.
+        <div class="figrow">
+          <figure><div id="ordA"></div><figcaption>Na ordem dada</figcaption></figure>
+          <figure><div id="ordB"></div><figcaption>(3, 4) → (−7, −3) → (−4, 4) → (6, −2) → (3, 4)</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="try" id="try1">
+        <span class="bx-t">🙋 Agora é sua vez</span>
+        <p>Ligue, nessa ordem, os pontos (−2, −1), (2, −1), (2, 3) e (−2, 3). Que polígono você obtém?</p>
+        <div class="ln"><input id="t1" type="text" aria-label="Nome do polígono" placeholder="nome do polígono"><button class="btn" data-check="1">Conferir</button></div>
+        <div class="fb" id="f1" aria-live="polite"></div>
+        <div class="fig" id="t1fig"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 2 -->
+  <section class="part" data-name="Simétricos">
+    <div class="card">
+      <span class="eyebrow c">Parte 2</span>
+      <h2>Simétricos: eixo x, eixo y e origem</h2>
+      <p>Imagine dobrar o plano sobre um dos eixos. A figura que cai exatamente em cima da original é a <b>simétrica</b> dela em relação a esse eixo.</p>
+      <div class="pense"><span class="bx-t">💭 Pense assim</span>É como a pintura de borboleta: você pinta um lado do papel, dobra, e o outro lado sai igualzinho, só que espelhado. O vinco da dobra é o eixo.</div>
+
+      <h3>Exemplo</h3>
+      <p>A figura <i>A</i> tem vértices (3, 5), (6, 4), (6, 1), (2, 1) e (2, 3). Escolha a dobra:</p>
+      <div class="btnrow seg" id="symseg">
+        <button class="btn on" data-m="x">Eixo x</button>
+        <button class="btn" data-m="y">Eixo y</button>
+        <button class="btn" data-m="o">Origem</button>
+      </div>
+      <div class="fig" id="symfig"></div>
+      <p id="symtxt" style="text-align:center"></p>
+      <div class="rule" id="symrule"></div>
+      <div id="symtab"></div>
+
+      <div class="copie"><span class="bx-t">✏️ Copie no caderno</span>
+        Simétrico em relação ao <b>eixo x</b>: (a, b) → (a, −b). Troca o sinal do 2º número.<br>
+        Simétrico em relação ao <b>eixo y</b>: (a, b) → (−a, b). Troca o sinal do 1º número.<br>
+        Simétrico em relação à <b>origem</b>: (a, b) → (−a, −b). Troca o sinal dos dois.<br>
+        Essas transformações mudam a posição da figura, mas não mudam a forma nem o tamanho.
+      </div>
+
+      <div class="dica"><span class="bx-t">⚠️ Dica: eixo x muda o y!</span>Parece estranho, mas faz sentido: dobrando no eixo x, a figura vai para cima ou para baixo, então quem muda é a altura, ou seja, o <b>y</b>. A coordenada que acompanha o eixo da dobra não muda.<br>
+        Dois detalhes que derrubam muita gente: trocar o sinal de um número negativo deixa ele positivo (−3 vira 3), e um ponto que está em cima do eixo da dobra fica no mesmo lugar. Por exemplo, (2, 0) em relação ao eixo x continua (2, 0).</div>
+
+      <div class="try" id="try2">
+        <span class="bx-t">🙋 Agora é sua vez</span>
+        <p>Considere o ponto (4, −3).</p>
+        <div class="ln">a) Simétrico em relação ao eixo y: ( <input class="n" id="t2ax" inputmode="numeric" aria-label="a: coordenada x"> , <input class="n" id="t2ay" inputmode="numeric" aria-label="a: coordenada y"> )</div>
+        <div class="ln">b) Simétrico em relação à origem: ( <input class="n" id="t2bx" inputmode="numeric" aria-label="b: coordenada x"> , <input class="n" id="t2by" inputmode="numeric" aria-label="b: coordenada y"> )</div>
+        <button class="btn" data-check="2">Conferir</button>
+        <div class="fb" id="f2" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 3 -->
+  <section class="part" data-name="Ampliar e reduzir">
+    <div class="card">
+      <span class="eyebrow y">Parte 3</span>
+      <h2>Ampliando e reduzindo figuras</h2>
+      <p>Agora a transformação mexe no tamanho. Multiplicando as <b>duas</b> coordenadas de todos os vértices pelo mesmo número, a figura cresce ou diminui, mas a forma continua a mesma.</p>
+      <div class="pense"><span class="bx-t">💭 Pense assim</span>É o zoom da foto no celular: tudo cresce na mesma proporção e a imagem continua igual, só maior. Se você esticasse a foto só para o lado, ela ficaria deformada.</div>
+
+      <h3>Exemplo</h3>
+      <div class="btnrow seg" id="scaleseg">
+        <button class="btn on" data-m="up">Ampliar (×2)</button>
+        <button class="btn" data-m="down">Reduzir (×⅓)</button>
+      </div>
+      <div class="fig" id="scalefig"></div>
+      <p id="scaletxt"></p>
+      <div id="scaletab"></div>
+
+      <div class="copie"><span class="bx-t">✏️ Copie no caderno</span>Multiplicando as duas coordenadas de cada vértice por um número maior que 1, a figura aumenta. Por um número entre 0 e 1, ela diminui. Os lados ficam multiplicados por esse mesmo número. Figuras com a mesma forma, mesmo com tamanhos diferentes, são chamadas de <b>semelhantes</b>.</div>
+
+      <div class="dica"><span class="bx-t">⚠️ Dica: multiplique os dois números</span>Se você multiplicar só o x (ou só o y), a figura estica para um lado e deixa de ser semelhante à original. E atenção a um caso especial: multiplicar as coordenadas por <b>−1</b> não muda o tamanho. A figura vira o simétrico em relação à origem.</div>
+
+      <div class="try" id="try3">
+        <span class="bx-t">🙋 Agora é sua vez</span>
+        <div class="ln">a) O vértice (2, −1) multiplicado por 3 vira: ( <input class="n" id="t3ax" inputmode="numeric" aria-label="a: coordenada x"> , <input class="n" id="t3ay" inputmode="numeric" aria-label="a: coordenada y"> )</div>
+        <div class="ln">b) O vértice (−6, 9) multiplicado por ⅓ vira: ( <input class="n" id="t3bx" inputmode="numeric" aria-label="b: coordenada x"> , <input class="n" id="t3by" inputmode="numeric" aria-label="b: coordenada y"> )</div>
+        <button class="btn" data-check="3">Conferir</button>
+        <div class="fb" id="f3" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 4 -->
+  <section class="part" data-name="Desafio em grupo">
+    <div class="card">
+      <span class="eyebrow c">Parte 4 · Direto do livro</span>
+      <h2>Desafio em grupo</h2>
+
+      <div id="setup" class="setup">
+        <label for="ng">Quantos grupos?</label>
+        <select id="ng"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>
+        <label>Nome dos grupos</label>
+        <div class="names" id="names"></div>
+        <div class="btnrow"><button class="btn mint" id="startG">🚀 Começar o desafio</button></div>
+      </div>
+
+      <div id="game" hidden>
+        <div class="ghead">
+          <span class="qtag" id="qtag"></span>
+          <span class="ptsb" id="qpts"></span>
+        </div>
+        <div class="qrow">
+          <div id="qbox"></div>
+          <div class="panel tbox">
+            <div class="tring" id="tring">
+              <svg viewBox="0 0 100 100" aria-hidden="true"><circle class="bgc" cx="50" cy="50" r="44" fill="none" stroke-width="9"/><circle class="fgc" id="tfg" cx="50" cy="50" r="44" fill="none" stroke-width="9" stroke-linecap="round" stroke-dasharray="276.46" stroke-dashoffset="0"/></svg>
+              <div class="tdig" id="tdig" role="timer" aria-live="off">5:00</div>
+            </div>
+            <div class="btnrow tbtns">
+              <button class="btn" id="tstart">▶ Iniciar</button>
+              <button class="btn ghost" id="treset">↺ 5:00</button>
+              <button class="btn ghost" id="tmute" aria-label="Ligar ou desligar som">🔊</button>
+            </div>
+            <div class="tmsg" id="tmsg" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="btnrow"><button class="btn ghost" id="btnAns">👀 Ver resposta</button></div>
+        <div id="abox" hidden></div>
+        <div class="glow">
+          <div class="panel who">
+            <h3>Quem acertou?</h3>
+            <div class="whob" id="whob"></div>
+            <button class="btn mint" id="btnGive">⭐ Dar pontos</button>
+            <div class="gmsg" id="gmsg" aria-live="polite"></div>
+          </div>
+          <div class="panel">
+            <h3 style="margin-top:0">Placar</h3>
+            <div class="scores" id="scores"></div>
+            <div class="btnrow"><button class="btn ghost" id="redo" style="font-size:12px;padding:4px 10px">Recomeçar desafio</button></div>
+          </div>
+        </div>
+        <div class="gnav" style="margin-top:12px">
+          <button class="btn ghost" id="qprev">← Questão anterior</button>
+          <button class="btn" id="qnext">Próxima questão →</button>
+        </div>
+      </div>
+
+      <div id="final" class="final" hidden></div>
+    </div>
+  </section>
+
+  <!-- PARTE 5 -->
+  <section class="part" data-name="Resumo pro caderno">
+    <div class="card resumo">
+      <span class="eyebrow">Resumo</span>
+      <h2>Resumo pro caderno</h2>
+      <p>Para desenhar um polígono no plano cartesiano a partir das coordenadas dos seus vértices, primeiro marcamos cada ponto. O primeiro número do par diz quanto andamos na horizontal a partir da origem: para a direita se for positivo, para a esquerda se for negativo. O segundo número diz quanto andamos na vertical: para cima se for positivo, para baixo se for negativo. Depois ligamos os pontos na ordem em que aparecem e, no final, ligamos o último ponto ao primeiro para fechar a figura. A ordem é importante, porque os mesmos pontos ligados em outra ordem podem formar uma figura diferente.</p>
+      <p>Uma figura é simétrica de outra em relação a um eixo quando, se dobrássemos o plano sobre esse eixo, as duas coincidiriam exatamente. Para obter o simétrico em relação ao eixo x, mantemos o primeiro número e trocamos o sinal do segundo, ou seja, (a, b) vira (a, −b). Para obter o simétrico em relação ao eixo y, trocamos o sinal do primeiro número e mantemos o segundo, ou seja, (a, b) vira (−a, b). Para obter o simétrico em relação à origem, trocamos o sinal dos dois números, ou seja, (a, b) vira (−a, −b), o que é o mesmo que fazer a simetria em relação ao eixo x e depois em relação ao eixo y. Trocar o sinal de um número negativo deixa ele positivo, e um ponto que está em cima do eixo usado como dobra continua no mesmo lugar. Essas transformações mudam a posição da figura, mas não mudam a forma nem o tamanho.</p>
+      <p>Quando multiplicamos as duas coordenadas de todos os vértices de um polígono pelo mesmo número positivo, obtemos uma figura com a mesma forma. Se o número for maior que 1, a figura aumenta; se estiver entre 0 e 1, ela diminui. As medidas dos lados ficam multiplicadas por esse mesmo número: com ×2, cada lado fica com o dobro do tamanho, e com ×⅓, cada lado fica com um terço do tamanho. Duas figuras com a mesma forma, mesmo de tamanhos diferentes, são chamadas de semelhantes. Multiplicar as coordenadas por −1 é um caso especial: a figura mantém o tamanho e se transforma no seu simétrico em relação à origem.</p>
+    </div>
+  </section>
+
+  <div class="navb">
+    <button id="bprev">← Voltar</button>
+    <button id="bnext">Avançar →</button>
+  </div>
+</main>
+
+<div class="party" id="party" hidden role="dialog" aria-live="assertive">
+  <div class="pc" id="partyc"></div>
+</div>
+
+<script>
+/* ---------- utilidades ---------- */
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmt=n=>{if(Math.abs(n-Math.round(n))<1e-9)n=Math.round(n);return (n<0?'−':'')+Math.abs(n);};
+const cd=p=>`(${fmt(p[0])}, ${fmt(p[1])})`;
+const C={ind:'#362F78',cor:'#E4694F',grn:'#2E9C78',blu:'#2F78C4',amb:'#C98A0E',red:'#D6453A',dk:'#2A2650'};
+
+/* símbolos de fundo */
+(function(){const s=['x','y','(x, y)','△','□','±','0','⊥','◇','(a, b)','×2','−','⬠','↔'];
+const b=$('#bgsym');for(let i=0;i<22;i++){const e=document.createElement('span');e.textContent=s[i%s.length];
+e.style.left=(i*37%100)+'%';e.style.top=(i*53%100)+'%';e.style.fontSize=(22+(i*7%30))+'px';e.style.animationDelay=(-i*1.7)+'s';e.style.animationDuration=(22+i%9*3)+'s';b.appendChild(e);}})();
+
+/* ---------- plano cartesiano em SVG ---------- */
+let mk=0;
+function plane(o){
+  const u=o.u||26,pad=o.pad||28,xr=o.xmax-o.xmin,yr=o.ymax-o.ymin;
+  const W=xr*u+pad*2,H=yr*u+pad*2,X=x=>pad+(x-o.xmin)*u,Y=y=>pad+(o.ymax-y)*u;
+  const id='ar'+(mk++);
+  let s=`<svg class="plane ${o.cls||''}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.label||'Plano cartesiano'}">`;
+  s+=`<defs><marker id="${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${C.dk}"/></marker></defs>`;
+  s+=`<rect x="${X(o.xmin)}" y="${Y(o.ymax)}" width="${xr*u}" height="${yr*u}" fill="#fff"/>`;
+  for(let x=o.xmin;x<=o.xmax;x++)s+=`<line class="g" x1="${X(x)}" y1="${Y(o.ymax)}" x2="${X(x)}" y2="${Y(o.ymin)}"/>`;
+  for(let y=o.ymin;y<=o.ymax;y++)s+=`<line class="g" x1="${X(o.xmin)}" y1="${Y(y)}" x2="${X(o.xmax)}" y2="${Y(y)}"/>`;
+  if(!o.noAxes){
+    const e=pad*.75;
+    s+=`<line class="ax" x1="${X(o.xmin)-e}" y1="${Y(0)}" x2="${X(o.xmax)+e}" y2="${Y(0)}" marker-start="url(#${id})" marker-end="url(#${id})"/>`;
+    s+=`<line class="ax" x1="${X(0)}" y1="${Y(o.ymin)+e}" x2="${X(0)}" y2="${Y(o.ymax)-e}" marker-start="url(#${id})" marker-end="url(#${id})"/>`;
+    const st=o.step||1;
+    for(let x=o.xmin;x<=o.xmax;x++)if(x!==0&&x%st===0)s+=`<text class="n" x="${X(x)}" y="${Y(0)+13}" text-anchor="middle">${fmt(x)}</text>`;
+    for(let y=o.ymin;y<=o.ymax;y++)if(y!==0&&y%st===0)s+=`<text class="n" x="${X(0)-5}" y="${Y(y)+3.5}" text-anchor="end">${fmt(y)}</text>`;
+    s+=`<text class="axn" x="${X(o.xmax)+e-3}" y="${Y(0)-7}" text-anchor="end">x</text>`;
+    s+=`<text class="axn" x="${X(0)+8}" y="${Y(o.ymax)-e+9}">y</text>`;
+  }
+  (o.polys||[]).forEach(p=>{
+    const P=p.pts.map(([x,y])=>`${X(x)},${Y(y)}`),n=p.pts.length,sg=p.segs===undefined?n:p.segs;
+    const d=p.dash?' stroke-dasharray="7 5"':'';
+    if(sg>=n)s+=`<polygon points="${P.join(' ')}" fill="${p.fill||'none'}" stroke="${p.c}" stroke-width="2.6" stroke-linejoin="round"${d}/>`;
+    else if(sg>0)s+=`<polyline points="${P.slice(0,sg+1).join(' ')}" fill="none" stroke="${p.c}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"${d}/>`;
+    if(!p.noDots)p.pts.forEach(([x,y],i)=>s+=`<circle cx="${X(x)}" cy="${Y(y)}" r="${(p.hl===i)?6.5:(p.r||4.6)}" fill="${p.c}" stroke="#fff" stroke-width="1.8"/>`);
+    if(p.labs)p.labs.forEach((l,i)=>{if(!l)return;const[x,y]=p.pts[i];s+=`<text class="pl" x="${X(x)+l[0]}" y="${Y(y)+l[1]}" text-anchor="${l[2]||'start'}" fill="${p.lc||p.c}">${l[3]||cd(p.pts[i])}</text>`;});
+    if(p.name)s+=`<text class="pn" x="${X(p.np[0])}" y="${Y(p.np[1])+5}" fill="${p.c}">${p.name}</text>`;
+  });
+  (o.points||[]).forEach(q=>{
+    s+=`<circle cx="${X(q.x)}" cy="${Y(q.y)}" r="5" fill="${q.c}" stroke="#fff" stroke-width="1.8"/>`;
+    if(q.t)s+=`<text class="pl" x="${X(q.x)+(q.dx||7)}" y="${Y(q.y)+(q.dy||-7)}" text-anchor="${q.a||'start'}" fill="${q.c}">${q.t}</text>`;
+  });
+  return s+'</svg>';
+}
+const map=(pts,f)=>pts.map(f);
+function vtable(h1,h2,a,b,chg){
+  let s=`<table class="vt"><tr><th>${h1}</th><th>${h2}</th></tr>`;
+  a.forEach((p,i)=>{const q=b[i];
+    const qx=chg&&chg[0]?`<span class="chg">${fmt(q[0])}</span>`:fmt(q[0]);
+    const qy=chg&&chg[1]?`<span class="chg">${fmt(q[1])}</span>`:fmt(q[1]);
+    s+=`<tr><td>${cd(p)}</td><td>(${qx}, ${qy})</td></tr>`;});
+  return s+'</table>';
+}
+
+/* ---------- navegação ---------- */
+const parts=$$('.part');let cur=0;
+const tabs=$('#tabs');
+parts.forEach((p,i)=>{const b=document.createElement('button');b.className='tab';b.textContent=`${i+1}. ${p.dataset.name}`;b.onclick=()=>go(i);tabs.appendChild(b);});
+function go(i){
+  cur=Math.max(0,Math.min(parts.length-1,i));
+  parts.forEach((p,k)=>p.classList.toggle('on',k===cur));
+  $$('.tab').forEach((t,k)=>{t.classList.toggle('on',k===cur);t.setAttribute('aria-current',k===cur?'step':'false');});
+  $('#pfill').style.width=((cur+1)/parts.length*100)+'%';
+  $('#plabel').textContent=`Parte ${cur+1} de ${parts.length} — ${parts[cur].dataset.name}`;
+  $('#bprev').disabled=cur===0;$('#bnext').disabled=cur===parts.length-1;
+  window.scrollTo({top:0,behavior:RM?'auto':'smooth'});
+}
+$('#bprev').onclick=()=>go(cur-1);$('#bnext').onclick=()=>go(cur+1);
+
+/* ---------- Parte 1 ---------- */
+const P1=[[3,4],[6,-2],[-7,-3],[-4,4]];let s1=0;
+const L1=[[8,-8],[8,15],[6,16],[-8,-8,'end']];
+function drawEx1(){
+  $('#ex1fig').innerHTML=plane({xmin:-8,xmax:8,ymin:-4,ymax:5,u:24,label:'Polígono de vértices (3, 4), (6, −2), (−7, −3) e (−4, 4)',
+    polys:[{pts:P1,c:C.cor,segs:s1,fill:s1>=4?'rgba(228,105,79,.10)':'none',labs:L1,lc:C.dk,hl:s1<4?s1:-1}]});
+  const seq=[...P1,P1[0]];let h='';
+  seq.forEach((p,i)=>{h+=`<span class="nd ${i<=s1?'lit':''} ${i===s1?'now':''}">${cd(p)}</span>`;if(i<seq.length-1)h+=`<span class="op">→</span>`;});
+  $('#chain1').innerHTML=h;
+  $('#ex1next').disabled=s1>=4;
+  $('#ex1next').textContent=s1===3?'Fechar a figura →':'Ligar próximo ponto →';
+}
+$('#ex1next').onclick=()=>{if(s1<4){s1++;drawEx1();}};
+$('#ex1reset').onclick=()=>{s1=0;drawEx1();};
+drawEx1();
+$('#ordA').innerHTML=plane({xmin:-8,xmax:8,ymin:-4,ymax:5,u:14,pad:18,cls:'sm',noAxes:false,polys:[{pts:P1,c:C.grn,r:3.6,fill:'rgba(46,156,120,.1)'}]}).replace(/class="n"[^>]*>[^<]*<\/text>/g,'class="n"></text>');
+$('#ordB').innerHTML=plane({xmin:-8,xmax:8,ymin:-4,ymax:5,u:14,pad:18,cls:'sm',polys:[{pts:[[3,4],[-7,-3],[-4,4],[6,-2]],c:C.cor,r:3.6}]}).replace(/class="n"[^>]*>[^<]*<\/text>/g,'class="n"></text>');
+
+/* ---------- Parte 2 ---------- */
+const A2=[[3,5],[6,4],[6,1],[2,1],[2,3]];
+const SYM={
+  x:{f:([a,b])=>[a,-b],nm:'B',c:C.cor,np:[4.3,-5.5],t:'<i>B</i> é o simétrico de <i>A</i> em relação ao eixo x: dobrando no eixo horizontal, uma cai em cima da outra.',r:'(a, b) → (a, −b)',h:'Vértice de B',chg:[0,1]},
+  y:{f:([a,b])=>[-a,b],nm:'D',c:C.blu,np:[-4.3,5.5],t:'<i>D</i> é o simétrico de <i>A</i> em relação ao eixo y: dobrando no eixo vertical, uma cai em cima da outra.',r:'(a, b) → (−a, b)',h:'Vértice de D',chg:[1,0]},
+  o:{f:([a,b])=>[-a,-b],nm:'C',c:C.amb,np:[-4.3,-5.5],t:'<i>C</i> é o simétrico de <i>A</i> em relação à origem: é como dobrar no eixo x e, depois, no eixo y. A figura vai parar no quadrante oposto.',r:'(a, b) → (−a, −b)',h:'Vértice de C',chg:[1,1]}
+};
+function drawSym(m){
+  const S=SYM[m],B=map(A2,S.f);
+  $('#symfig').innerHTML=plane({xmin:-7,xmax:7,ymin:-6,ymax:6,u:24,label:'Figura A e sua simétrica',
+    polys:[{pts:A2,c:C.grn,fill:'rgba(46,156,120,.13)',name:'A',np:[4.3,5.5]},{pts:B,c:S.c,fill:'rgba(0,0,0,.03)',dash:true,name:S.nm,np:S.np}]});
+  $('#symtxt').innerHTML=S.t;$('#symrule').textContent=S.r;
+  $('#symtab').innerHTML=vtable('Vértice de A',S.h,A2,B,S.chg);
+  $$('#symseg .btn').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+}
+$$('#symseg .btn').forEach(b=>b.onclick=()=>drawSym(b.dataset.m));
+drawSym('x');
+
+/* ---------- Parte 3 ---------- */
+const E=[[-2,2],[1,1],[1,-2],[-3,-2],[-3,0]],R=[[-3,3],[6,3],[6,0],[0,-3]];
+function drawScale(m){
+  let html,tab,txt;
+  if(m==='up'){const F=map(E,([a,b])=>[2*a,2*b]);
+    html=plane({xmin:-7,xmax:7,ymin:-5,ymax:5,u:24,label:'Figura E e sua ampliação F',polys:[{pts:F,c:C.cor,fill:'rgba(228,105,79,.08)',name:'F',np:[-5,-3]},{pts:E,c:C.ind,fill:'rgba(54,47,120,.12)',name:'E',np:[-1,0]}]});
+    tab=vtable('Vértice de E','Vértice de F',E,F);
+    txt='Cada coordenada de <i>F</i> é o <b>dobro</b> da coordenada correspondente de <i>E</i>. E cada lado de <i>F</i> também tem o dobro do lado correspondente de <i>E</i>. As duas figuras têm a mesma forma: são <b>semelhantes</b>.';
+  }else{const S=map(R,([a,b])=>[a/3,b/3]);
+    html=plane({xmin:-7,xmax:7,ymin:-5,ymax:5,u:24,label:'Figura R e sua redução S',polys:[{pts:R,c:C.red,fill:'rgba(214,69,58,.07)',name:'R',np:[4.4,2.1]},{pts:S,c:C.amb,fill:'rgba(201,138,14,.15)',name:'S',np:[1,1.5]}]});
+    tab=vtable('Vértice de R','Vértice de S',R,S);
+    txt='Cada coordenada de <i>S</i> é <b>⅓</b> (um terço) da coordenada correspondente de <i>R</i>. Por exemplo, (6, 3) virou (2, 1), porque 6 ÷ 3 = 2 e 3 ÷ 3 = 1. Cada lado de <i>S</i> tem ⅓ da medida do lado correspondente de <i>R</i>.';
+  }
+  $('#scalefig').innerHTML=html;$('#scaletab').innerHTML=tab;$('#scaletxt').innerHTML=txt;
+  $$('#scaleseg .btn').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+}
+$$('#scaleseg .btn').forEach(b=>b.onclick=()=>drawScale(b.dataset.m));
+drawScale('up');
+
+/* ---------- try-boxes ---------- */
+const num=v=>{v=String(v).replace(/[−–—]/g,'-').replace(',','.').trim();return v===''?NaN:Number(v);};
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+function fb(id,ok,msg){const e=$(id);e.className='fb '+(ok?'ok':'no');e.innerHTML=(ok?'✅ ':'🔎 ')+msg;}
+const CHK={
+  1(){const v=norm($('#t1').value);
+    if(v.includes('quadrado')){fb('#f1',true,'Isso aí! Os quatro lados medem 4 unidades e os cantos são retos: é um quadrado.');
+      $('#t1fig').innerHTML=plane({xmin:-4,xmax:4,ymin:-3,ymax:5,u:24,cls:'sm',polys:[{pts:[[-2,-1],[2,-1],[2,3],[-2,3]],c:C.ind,fill:'rgba(54,47,120,.12)'}]});}
+    else if(v.includes('quadrilatero'))fb('#f1',false,'Quase! É um quadrilátero, sim, mas dá para ser mais específico. Conte os quadradinhos de cada lado: todos têm o mesmo tamanho?');
+    else if(v.includes('retangulo'))fb('#f1',false,'Quase! Todo quadrado é um retângulo, mas aqui os quatro lados medem 4 unidades. Qual é o nome desse retângulo especial?');
+    else fb('#f1',false,'Quase lá. Marque os quatro pontos, ligue na ordem e conte quantos lados a figura tem e quanto mede cada um.');},
+  2(){const a=[num($('#t2ax').value),num($('#t2ay').value)],b=[num($('#t2bx').value),num($('#t2by').value)];
+    const oa=a[0]===-4&&a[1]===-3,ob=b[0]===-4&&b[1]===3;
+    if(oa&&ob)fb('#f2',true,'Perfeito! Eixo y troca só o sinal do 1º número: (−4, −3). Origem troca os dois: (−4, 3).');
+    else if(!oa)fb('#f2',false,'Revê o item a: em relação ao eixo y, só o <b>1º número</b> troca de sinal. O 2º fica igual.');
+    else fb('#f2',false,'O item a está certo! No item b, em relação à origem, os <b>dois</b> números trocam de sinal. Lembre: −3 com o sinal trocado vira 3.');},
+  3(){const a=[num($('#t3ax').value),num($('#t3ay').value)],b=[num($('#t3bx').value),num($('#t3by').value)];
+    const oa=a[0]===6&&a[1]===-3,ob=b[0]===-2&&b[1]===3;
+    if(oa&&ob)fb('#f3',true,'Mandou bem! 2 × 3 = 6 e −1 × 3 = −3. Depois, −6 ÷ 3 = −2 e 9 ÷ 3 = 3.');
+    else if(!oa)fb('#f3',false,'Revê o item a: multiplique <b>os dois</b> números por 3. Cuidado com o sinal: −1 × 3 dá negativo.');
+    else fb('#f3',false,'O item a está certo! No item b, multiplicar por ⅓ é o mesmo que dividir por 3. O sinal de cada número se mantém.');}
+};
+$$('[data-check]').forEach(b=>b.onclick=()=>CHK[b.dataset.check]());
+$$('.try input').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')i.closest('.try').querySelector('[data-check]').click();}));
+
+/* ---------- questões do livro ---------- */
+const T5=[[1,1],[3,4],[6,4],[8,1]];
+const T6=[[0,6],[0,8],[6,8],[6,6],[4,6],[4,0],[2,0],[2,6]];
+const B9=[[-6,2],[0,4],[6,-4],[0,-4]],A9=[[0,2],[3,-2],[0,-2],[-3,1]];
+const G10=[[1,2],[4,5],[7,1]];
+const Q=[
+ {n:5,pts:10,
+  q:()=>`<div class="bkq"><span class="bn">5</span><p>Apresente as coordenadas dos vértices do simétrico da figura, com relação ao eixo horizontal <i>x</i>.</p></div>
+   <div class="fig">${plane({xmin:0,xmax:9,ymin:0,ymax:5,u:30,cls:'sm',polys:[{pts:T5,c:C.grn}]})}</div>`,
+  a:()=>`<p>A correspondência entre os vértices das figuras é:</p><p class="cd">(1, 1) → (1, −1); (8, 1) → (8, −1); (6, 4) → (6, −4); (3, 4) → (3, −4)</p>
+   <div class="fig">${plane({xmin:0,xmax:9,ymin:-5,ymax:5,u:24,cls:'sm',polys:[{pts:T5,c:C.grn},{pts:map(T5,([a,b])=>[a,-b]),c:C.cor,dash:true}]})}</div>`},
+ {n:6,pts:10,
+  q:()=>`<div class="bkq"><span class="bn">6</span><p>Preste atenção na figura a seguir e faça o que se pede.</p></div>
+   <div class="fig">${plane({xmin:0,xmax:7,ymin:0,ymax:9,u:26,cls:'xs',polys:[{pts:T6,c:C.grn}]})}</div>
+   <p class="it">a) Quais são as coordenadas dos vértices do simétrico da figura, com respeito ao eixo <i>x</i>?</p>
+   <p class="it">b) Quais as coordenadas dos vértices do simétrico da figura, com respeito à origem?</p>`,
+  a:()=>`<p><b>a)</b> <span class="cd">(0, 6) → (0, −6); (0, 8) → (0, −8); (2, 0) → (2, 0); (4, 0) → (4, 0); (6, 6) → (6, −6); (6, 8) → (6, −8); (4, 6) → (4, −6); (2, 6) → (2, −6)</span></p>
+   <p><b>b)</b> Uma vez calculadas as coordenadas do simétrico com respeito ao eixo <i>x</i>, basta calcular o simétrico delas com respeito ao eixo <i>y</i>. Partindo da figura original:</p>
+   <p class="cd" style="white-space:normal">(0, 6) → (0, −6); (0, 8) → (0, −8); (2, 0) → (−2, 0); (4, 0) → (−4, 0); (6, 6) → (−6, −6); (6, 8) → (−6, −8); (4, 6) → (−4, −6); (2, 6) → (−2, −6)</p>
+   <div class="fig">${plane({xmin:-7,xmax:7,ymin:-9,ymax:9,u:17,pad:22,cls:'sm',polys:[{pts:T6,c:C.grn,r:3.5},{pts:map(T6,([a,b])=>[a,-b]),c:C.cor,dash:true,r:3.5,name:'a',np:[5.2,-4]},{pts:map(T6,([a,b])=>[-a,-b]),c:C.blu,dash:true,r:3.5,name:'b',np:[-5.2,-4]}]})}</div>
+   <p style="font-size:.9em;color:var(--txt2)">Verde: figura original · coral: simétrico em relação ao eixo x (a) · azul: simétrico em relação à origem (b).</p>`},
+ {n:7,pts:10,
+  q:()=>`<div class="bkq"><span class="bn">7</span><p>Considere o ponto <i>A</i> = (−1, 1). Em cada caso, apresente as coordenadas do ponto <i>B</i>. (<b>Dica</b>: Se tiver dificuldade na execução da atividade, utilize um plano cartesiano em uma malha quadriculada.)</p></div>
+   <p class="it">a) <i>B</i> é o simétrico de <i>A</i> com respeito ao eixo horizontal <i>x</i>.</p>
+   <p class="it">b) <i>B</i> é o simétrico de <i>A</i> com respeito ao eixo vertical <i>y</i>.</p>
+   <p class="it">c) <i>B</i> é o simétrico de <i>A</i> com respeito à origem.</p>`,
+  a:()=>`<p><b>a)</b> <span class="cd"><i>B</i> = (−1, −1)</span> &nbsp; <b>b)</b> <span class="cd"><i>B</i> = (1, 1)</span> &nbsp; <b>c)</b> <span class="cd"><i>B</i> = (1, −1)</span></p>
+   <div class="fig">${plane({xmin:-3,xmax:3,ymin:-3,ymax:3,u:34,cls:'xs',points:[{x:-1,y:1,c:C.grn,t:'A',dx:-9,a:'end'},{x:-1,y:-1,c:C.cor,t:'a',dx:-9,dy:14,a:'end'},{x:1,y:1,c:C.blu,t:'b',dx:9},{x:1,y:-1,c:C.amb,t:'c',dx:9,dy:14}]})}</div>`},
+ {n:8,pts:20,
+  q:()=>`<div class="bkq"><span class="bn">8</span><p><span class="desafio">DESAFIO</span> Calcule o valor de <i>x</i> e de <i>y</i>, de modo que os pontos (0, 0), (2, 3), (<i>x</i>, <i>y</i>) e (5, 0) sejam os vértices de um paralelogramo. Utilize a malha a seguir para desenhar um plano cartesiano.</p></div>
+   <div class="fig">${plane({xmin:-6,xmax:8,ymin:-4,ymax:5,u:24,noAxes:true,label:'Malha quadriculada em branco'})}</div>`,
+  a:()=>`<p class="cd" style="font-size:1.15em"><i>x</i> = 7 e <i>y</i> = 3</p>
+   <p>De (0, 0) até (5, 0) andamos 5 unidades para a direita. Fazendo o mesmo a partir de (2, 3), chegamos a (7, 3), e os lados opostos ficam paralelos e do mesmo tamanho.</p>
+   <div class="fig">${plane({xmin:-6,xmax:8,ymin:-4,ymax:5,u:24,polys:[{pts:[[0,0],[2,3],[7,3],[5,0]],c:C.blu,fill:'rgba(47,120,196,.1)',labs:[[-6,14,'end'],[-6,-8,'end'],[6,-8],[6,15]],lc:C.dk}]})}</div>`},
+ {n:9,pts:10,
+  q:()=>`<div class="bkq"><span class="bn">9</span><p>A figura <i>B</i> foi obtida multiplicando as coordenadas dos vértices de um quadrilátero <i>A</i>.</p></div>
+   <div class="fig">${plane({xmin:-7,xmax:7,ymin:-5,ymax:5,u:24,polys:[{pts:B9,c:C.red,name:'B',np:[-3.2,3.6]}]})}</div>
+   <p>Com base nisso, faça o que se pede.</p>
+   <p class="it">a) Obtenha as coordenadas dos vértices de <i>A</i>.</p>
+   <p class="it">b) Desenhe a figura na malha acima.</p>`,
+  a:()=>`<p><b>a)</b> <span class="cd">(0, 2), (3, −2), (0, −2) e (−3, 1)</span></p>
+   <p>Observe que, nesse caso, as coordenadas dos vértices de <i>A</i> correspondem a ½ de cada coordenada dos vértices de <i>B</i>. Ou seja, <i>B</i> foi obtida multiplicando as coordenadas de <i>A</i> por 2.</p>
+   <p><b>b)</b></p>
+   <div class="fig">${plane({xmin:-7,xmax:7,ymin:-5,ymax:5,u:24,polys:[{pts:B9,c:C.red,name:'B',np:[-3.2,3.6]},{pts:A9,c:C.blu,fill:'rgba(47,120,196,.12)',name:'A',np:[-1.4,2.2]}]})}</div>`},
+ {n:10,pts:10,
+  q:()=>`<div class="bkq"><span class="bn">10</span><p>Considere a figura na malha a seguir:</p></div>
+   <div class="fig">${plane({xmin:-7,xmax:7,ymin:-5,ymax:5,u:24,polys:[{pts:G10,c:C.grn}]})}</div>
+   <p>Faça o que se pede.</p>
+   <p class="it">a) Obtenha o simétrico em relação à origem.</p>
+   <p class="it">b) Multiplicando as coordenadas por −1, que figura se obtém?</p>`,
+  a:()=>`<p><b>a)</b> <span class="cd">(−7, −1); (−1, −2); (−4, −5)</span></p>
+   <p><b>b)</b> Obtém-se o simétrico da figura em relação à origem. Nesse caso, no terceiro quadrante.</p>
+   <div class="fig">${plane({xmin:-7,xmax:7,ymin:-5,ymax:5,u:24,polys:[{pts:G10,c:C.grn},{pts:map(G10,([a,b])=>[-a,-b]),c:C.blu,fill:'rgba(47,120,196,.1)'}]})}</div>`}
+];
+
+/* ---------- som ---------- */
+let actx=null,muted=false;
+function tone(f,d,t0=0,type='sine',v=.16){if(muted)return;try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();
+  const o=actx.createOscillator(),g=actx.createGain(),t=actx.currentTime+t0;o.type=type;o.frequency.value=f;
+  g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g).connect(actx.destination);o.start(t);o.stop(t+d+.05);}catch(e){}}
+const fanfare=()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.28,i*.12,'triangle',.2));tone(1319,.6,.5,'triangle',.18);};
+const alarm=()=>{[0,.3,.6].forEach(t=>tone(880,.22,t,'square',.08));};
+$('#tmute').onclick=()=>{muted=!muted;$('#tmute').textContent=muted?'🔇':'🔊';};
+
+/* ---------- confete ---------- */
+function confetti(n=160){
+  if(RM)return;const cv=$('#cf'),ctx=cv.getContext('2d');cv.width=innerWidth;cv.height=innerHeight;
+  const cols=['#362F78','#6C63B5','#A9E5D0','#FFB3A0','#E4694F','#FFDD73'];
+  const ps=Array.from({length:n},(_,i)=>({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*.6,vx:(Math.random()-.5)*4,vy:2.5+Math.random()*4,r:Math.random()*6.28,vr:(Math.random()-.5)*.3,w:7+Math.random()*7,h:4+Math.random()*5,c:cols[i%6]}));
+  const t0=performance.now();
+  (function fr(t){ctx.clearRect(0,0,cv.width,cv.height);
+    ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.04;p.r+=p.vr;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();});
+    if(t-t0<3800)requestAnimationFrame(fr);else ctx.clearRect(0,0,cv.width,cv.height);})(t0);
+}
+let partyT=null;
+function party(html,ms=3600){const p=$('#party');$('#partyc').innerHTML=html;p.hidden=false;clearTimeout(partyT);if(ms)partyT=setTimeout(()=>p.hidden=true,ms);}
+$('#party').onclick=()=>$('#party').hidden=true;
+
+/* ---------- jogo ---------- */
+const TC=['#A9E5D0','#FFB3A0','#FFDD73','#D9D3F5','#BFE0F7','#F7C6DE','#D4EFA8','#FFD3A8'];
+const G={teams:[],q:0,awarded:{},sel:new Set(),left:300,iv:null};
+const PHRASES=['Mandaram bem!','Arrasaram!','Acertou em cheio!','Que time!','É isso aí!'];
+function buildNames(){const n=+$('#ng').value,old=$$('#names input').map(i=>i.value);
+  $('#names').innerHTML=Array.from({length:n},(_,i)=>`<div><span class="sw" style="background:${TC[i]}"></span><input aria-label="Nome do grupo ${i+1}" value="${(old[i]||'Grupo '+(i+1)).replace(/"/g,'&quot;')}" maxlength="24"></div>`).join('');}
+$('#ng').onchange=buildNames;buildNames();
+$('#startG').onclick=()=>{
+  G.teams=$$('#names input').map((inp,i)=>({name:inp.value.trim()||('Grupo '+(i+1)),score:0,c:TC[i]}));
+  G.awarded={};$('#setup').hidden=true;$('#final').hidden=true;$('#game').hidden=false;goQ(0);
+};
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function renderScores(bump){
+  $('#scores').innerHTML=G.teams.map((t,i)=>`<div class="team ${bump&&bump.includes(i)?'bump':''}" style="background:${t.c}"><div class="tn">${esc(t.name)}</div><div class="ts">${t.score}</div><div class="adj"><button data-adj="${i}" data-v="-5" aria-label="Tirar 5 pontos de ${esc(t.name)}">−5</button><button data-adj="${i}" data-v="5" aria-label="Dar 5 pontos a ${esc(t.name)}">+5</button></div></div>`).join('');
+  $$('[data-adj]').forEach(b=>b.onclick=()=>{const t=G.teams[+b.dataset.adj];t.score=Math.max(0,t.score+ +b.dataset.v);renderScores();});
+}
+function renderWho(){
+  const done=G.awarded[G.q];
+  $('#whob').innerHTML=G.teams.map((t,i)=>`<button class="wb ${G.sel.has(i)||(done&&done.includes(i))?'on':''}" data-w="${i}" style="background:${t.c}" ${done?'disabled':''} aria-pressed="${G.sel.has(i)}">${esc(t.name)}</button>`).join('');
+  $$('[data-w]').forEach(b=>b.onclick=()=>{const i=+b.dataset.w;G.sel.has(i)?G.sel.delete(i):G.sel.add(i);renderWho();});
+  $('#btnGive').disabled=!!done;
+  $('#btnGive').textContent=done?'✓ Pontos já dados':`⭐ Dar ${Q[G.q].pts} pontos`;
+  $('#gmsg').textContent=done?(done.length?'Pontuaram nesta questão: '+done.map(i=>G.teams[i].name).join(', ')+'.':'Ninguém pontuou nesta. Bora pra próxima!'):'Selecione os grupos que acertaram e clique em dar pontos.';
+}
+function goQ(i){
+  G.q=i;G.sel=new Set();stopT();G.left=300;drawT();$('#tmsg').textContent='';
+  const q=Q[i];
+  $('#qtag').textContent=`Questão ${i+1} de ${Q.length}`;
+  $('#qpts').textContent=`vale ${q.pts} pontos`;
+  $('#qbox').innerHTML=`<div class="bk">${q.q()}</div>`;
+  $('#qbox .bn').textContent=i+1;
+  $('#abox').hidden=true;$('#abox').innerHTML='';$('#btnAns').textContent='👀 Ver resposta';
+  $('#qprev').disabled=i===0;
+  $('#qnext').textContent=i===Q.length-1?'🏆 Ver resultado final':'Próxima questão →';
+  renderScores();renderWho();
+  $('#game').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
+}
+$('#btnAns').onclick=()=>{const a=$('#abox');if(a.hidden){a.innerHTML=`<span class="bx-t">✔ Resposta</span>${Q[G.q].a()}`;a.hidden=false;$('#btnAns').textContent='🙈 Esconder resposta';stopT();}else{a.hidden=true;$('#btnAns').textContent='👀 Ver resposta';}};
+$('#btnGive').onclick=()=>{
+  if(G.awarded[G.q])return;const win=[...G.sel].sort((a,b)=>a-b),pts=Q[G.q].pts;
+  win.forEach(i=>G.teams[i].score+=pts);G.awarded[G.q]=win;G.sel=new Set();
+  renderScores(win);renderWho();
+  if(win.length){confetti();fanfare();
+    party(`<div class="big">🎉</div><h2>${PHRASES[Math.floor(Math.random()*PHRASES.length)]}</h2><div class="who-list">${win.map(i=>`<span style="background:${G.teams[i].c}">${esc(G.teams[i].name)}</span>`).join('')}</div><p style="font-family:'Baloo 2';font-weight:700;font-size:1.3em;color:var(--ind)">+${pts} pontos</p>`);}
+};
+$('#qprev').onclick=()=>goQ(G.q-1);
+$('#qnext').onclick=()=>{if(G.q<Q.length-1)goQ(G.q+1);else showFinal();};
+$('#redo').onclick=()=>{if(confirm('Recomeçar o desafio? O placar volta a zero.')){stopT();$('#game').hidden=true;$('#final').hidden=true;$('#setup').hidden=false;}};
+
+/* cronômetro */
+function drawT(){const m=Math.floor(G.left/60),s=G.left%60;$('#tdig').textContent=`${m}:${String(s).padStart(2,'0')}`;
+  $('#tfg').style.strokeDashoffset=276.46*(1-G.left/300);
+  $('#tring').classList.toggle('warn',G.left<=30);$('#tring').classList.toggle('pulse',G.left<=10&&G.left>0&&!!G.iv);}
+function stopT(){clearInterval(G.iv);G.iv=null;$('#tstart').textContent='▶ Iniciar';drawT();}
+function startT(){if(G.left<=0)G.left=300;$('#tmsg').textContent='';
+  G.iv=setInterval(()=>{G.left--;drawT();if(G.left<=10&&G.left>0)tone(660,.08,0,'sine',.1);
+    if(G.left<=0){stopT();alarm();$('#tmsg').textContent='⏰ Tempo esgotado! Hora de conferir.';}},1000);
+  $('#tstart').textContent='⏸ Pausar';drawT();}
+$('#tstart').onclick=()=>G.iv?stopT():startT();
+$('#treset').onclick=()=>{stopT();G.left=300;drawT();$('#tmsg').textContent='';};
+
+function showFinal(){
+  stopT();const s=G.teams.map((t,i)=>({...t,i})).sort((a,b)=>b.score-a.score);
+  const rank=t=>1+G.teams.filter(o=>o.score>t.score).length;
+  const md=r=>r===1?'🥇':r===2?'🥈':r===3?'🥉':r+'º';
+  const pod=[s[1],s[0],s[2]].filter(Boolean),hts={0:150,1:110,2:80};
+  let h=`<div class="big" style="font-size:54px">🏆</div><h2>Resultado final</h2><div class="podium">`;
+  pod.forEach(t=>{const pos=s.indexOf(t);h+=`<div class="pd"><div class="nm">${esc(t.name)}</div><div class="sc">${t.score} pontos</div><div class="bar" style="height:${hts[pos]}px;background:${t.c}">${md(rank(t))}</div></div>`;});
+  h+='</div>';
+  if(s.length>3)h+='<ul class="rest">'+s.slice(3).map(t=>`<li><span>${md(rank(t))} ${esc(t.name)}</span><span>${t.score} pts</span></li>`).join('')+'</ul>';
+  const top=s.filter(t=>t.score===s[0].score);
+  h+=`<p style="font-family:'Baloo 2';font-weight:700;color:var(--ind);font-size:1.15em;margin-top:14px">${top.length>1?'Empate no topo! Parabéns, ':'Parabéns, '}${top.map(t=>esc(t.name)).join(' e ')}! 🎉 E parabéns a todos os grupos pelo trabalho em equipe.</p>`;
+  h+=`<div class="btnrow" style="justify-content:center"><button class="btn ghost" id="backQ">← Voltar às questões</button><button class="btn" id="again">Jogar de novo</button></div>`;
+  $('#final').innerHTML=h;$('#game').hidden=true;$('#final').hidden=false;
+  $('#backQ').onclick=()=>{$('#final').hidden=true;$('#game').hidden=false;goQ(Q.length-1);};
+  $('#again').onclick=()=>{$('#final').hidden=true;$('#setup').hidden=false;};
+  confetti(260);fanfare();
+}
+
+go(0);
+</script>
+</body>
+</html>
