@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Princípio Multiplicativo da Contagem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F4FC; --ind:#362F78; --ind-deep:#241F52; --ind-soft:#6C63B5;
+  --mint:#A9E5D0; --coral:#FFB3A0; --coral-d:#E4694F; --yellow:#FFDD73;
+  --text:#2A2650; --text2:#5B5686; --line:#E3DEF7;
+  --ok:#1E7B5A; --okbg:#E3F6EE; --warn:#B4432C; --warnbg:#FFEDE8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:17px;line-height:1.55;position:relative;overflow-x:hidden}
+h1,h2,h3,.num{font-family:'Baloo 2',sans-serif;color:var(--ind-deep);margin:0}
+/* fundo */
+.bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg span{position:absolute;font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--ind);opacity:.08;animation:drift 38s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) rotate(-6deg)}to{transform:translate(26px,-34px) rotate(8deg)}}
+@media (prefers-reduced-motion:reduce){.bg span{animation:none}html{scroll-behavior:auto}}
+/* progresso */
+.prog{position:sticky;top:0;z-index:20;background:rgba(246,244,252,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:8px 16px 10px}
+.prog-label{font-family:'Baloo 2',sans-serif;font-weight:600;font-size:14px;color:var(--ind);margin-bottom:5px}
+.track{height:9px;border-radius:99px;background:var(--line);overflow:hidden}
+.fill{height:100%;background:var(--ind);border-radius:99px;transition:width .35s}
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:16px 16px 40px}
+h1{font-size:28px;line-height:1.15;font-weight:800;margin-top:8px}
+.sub{color:var(--text2);margin:4px 0 14px}
+/* abas */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{font-family:'Baloo 2',sans-serif;font-weight:600;font-size:14px;border:2px solid var(--line);background:#fff;color:var(--ind);border-radius:99px;padding:4px 12px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ind);border-color:var(--ind);color:#fff}
+.tab:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--coral-d);outline-offset:2px}
+/* cartões */
+.sec{display:none}
+.sec.on{display:block}
+.card{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 4px 14px rgba(54,47,120,.07)}
+.eyebrow{display:inline-block;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;background:var(--mint);color:var(--ind-deep);border-radius:99px;padding:1px 12px;margin-bottom:8px}
+.eyebrow.c{background:var(--coral)} .eyebrow.y{background:var(--yellow)}
+h2{font-size:23px;font-weight:700;margin-bottom:6px}
+h3{font-size:18px;font-weight:700;margin:14px 0 4px}
+p{margin:0 0 10px}
+.box{border-radius:14px;padding:12px 14px;margin:12px 0}
+.think{background:#ECEAF8}
+.tip{background:#FFF7DF;border-left:7px solid var(--yellow)}
+.copy{border:2px dashed #4BAF8A;background:#F3FBF8}
+.box .tag{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--ind);display:block;margin-bottom:2px}
+.copy .tag{color:var(--ok)}
+.algo{background:#EFEAFB;border:1.5px solid #CFC6EE}
+.algo p{margin:3px 0}
+.algo b{color:var(--ind)}
+.math{font-family:'Baloo 2',sans-serif;font-weight:600;font-size:1.15em}
+/* traços */
+.slots{display:flex;align-items:flex-end;justify-content:center;gap:6px;flex-wrap:wrap;margin:14px 0 6px}
+.slot{text-align:center;min-width:76px}
+.slot .num{font-size:32px;font-weight:800;color:var(--ind);line-height:1}
+.slot .ln{height:3px;background:var(--ind-soft);border-radius:3px;margin:3px 0}
+.slot small{font-size:13px;color:var(--text2)}
+.op{font-family:'Baloo 2',sans-serif;font-size:26px;font-weight:700;color:var(--coral-d);padding-bottom:30px}
+.res{font-family:'Baloo 2',sans-serif;font-size:30px;font-weight:800;color:var(--ink);padding-bottom:24px}
+.eq{font-family:'Baloo 2',sans-serif;font-size:30px;font-weight:800;color:var(--ind-deep);padding-bottom:22px}
+/* árvore */
+.tree{display:block;width:100%;max-width:420px;height:auto;margin:8px auto}
+.tree text{font-family:'Atkinson Hyperlegible',sans-serif;font-size:13px;fill:var(--text)}
+.tree .hd{font-family:'Baloo 2',sans-serif;font-weight:700;fill:var(--text2);font-size:13px}
+/* try */
+.try{border:2px dashed var(--ind-soft);border-radius:14px;padding:12px 14px;margin:12px 0;background:#FBFAFF}
+.try .tag{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--ind)}
+.try-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+input[type=text]{font:inherit;font-size:18px;border:2px solid var(--line);border-radius:10px;padding:6px 10px;width:150px;color:var(--text);background:#fff}
+button.btn{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:16px;background:var(--ind);color:#fff;border:0;border-radius:12px;padding:7px 16px;cursor:pointer}
+button.btn:hover{background:var(--ind-deep)}
+button.ghost{background:#fff;color:var(--ind);border:2px solid var(--line)}
+button:disabled{opacity:.4;cursor:default}
+.fb{margin-top:8px;font-weight:700;border-radius:10px;padding:0}
+.fb.ok{background:var(--okbg);color:var(--ok);padding:8px 10px}
+.fb.no{background:var(--warnbg);color:var(--warn);padding:8px 10px}
+/* quiz */
+.score{position:sticky;top:62px;z-index:5;display:inline-block;background:var(--yellow);color:var(--ind-deep);font-family:'Baloo 2',sans-serif;font-weight:700;border-radius:99px;padding:2px 14px;margin-bottom:10px}
+.q p.qt{font-weight:700;margin-bottom:8px}
+.q .n{font-family:'Baloo 2',sans-serif;color:var(--coral-d);font-weight:800}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:center;text-align:left;font:inherit;font-size:17px;background:#fff;color:var(--text);border:2px solid var(--line);border-radius:12px;padding:8px 12px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--ind-soft)}
+.opt .l{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--ind);min-width:20px}
+.opt:disabled{opacity:1;cursor:default}
+.opt.right{background:var(--okbg);border-color:#4BAF8A}
+.opt.wrong{background:var(--warnbg);border-color:var(--coral-d)}
+.opt .mk{margin-left:auto;font-weight:700}
+.qexp{margin-top:10px}
+.final{background:var(--ind);color:#fff;border-radius:16px;padding:14px 16px;display:none}
+.final b{font-family:'Baloo 2',sans-serif;font-size:20px}
+/* livro */
+.bk{display:grid;gap:10px;margin:12px 0}
+.bk-row{display:flex;gap:14px;align-items:center;background:#FBFAFF;border:1.5px solid var(--line);border-radius:14px;padding:10px 14px}
+.pg{flex:0 0 auto;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:18px;background:var(--coral);color:var(--ind-deep);border-radius:99px;padding:2px 14px;min-width:78px;text-align:center}
+.ex{font-family:'Baloo 2',sans-serif;font-weight:700;font-size:20px;color:var(--ind-deep);line-height:1.2}
+.sk{color:var(--text2);font-size:.92em}
+.src{color:var(--text2);margin-bottom:4px}
+/* navegação */
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.nav .btn{padding:6px 14px;font-size:15px}
+.summary p{margin-bottom:12px}
+@media (min-width:900px){
+  body{font-size:20px}
+  .wrap{max-width:980px;padding:22px 24px 50px}
+  h1{font-size:40px} h2{font-size:30px} h3{font-size:22px}
+  .tab{font-size:17px;padding:5px 16px} .prog-label{font-size:17px}
+  .card{padding:26px 30px}
+  .slot .num{font-size:44px} .op,.res,.eq{font-size:38px}
+  .slot{min-width:104px} .slot small{font-size:16px}
+  .tree{max-width:540px} .tree text{font-size:12.5px}
+  .opt{font-size:20px;padding:10px 16px}
+  .score{top:72px}
+  .pg{font-size:22px;min-width:96px} .ex{font-size:26px}
+}
+@media (min-width:1500px){
+  body{font-size:24px}
+  .wrap{max-width:1240px}
+  h1{font-size:50px} h2{font-size:36px} h3{font-size:27px}
+  .tree{max-width:660px}
+  .slot .num{font-size:54px} .op,.res,.eq{font-size:46px}
+  .opt{font-size:24px}
+  input[type=text]{font-size:24px;width:190px}
+  button.btn{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true">
+  <span style="left:6%;top:12%;font-size:70px">×</span>
+  <span style="left:82%;top:8%;font-size:64px">²</span>
+  <span style="left:70%;top:34%;font-size:90px">÷</span>
+  <span style="left:12%;top:44%;font-size:80px">=</span>
+  <span style="left:48%;top:20%;font-size:60px">+</span>
+  <span style="left:88%;top:60%;font-size:76px">√</span>
+  <span style="left:30%;top:70%;font-size:84px">π</span>
+  <span style="left:60%;top:82%;font-size:70px">×</span>
+  <span style="left:4%;top:86%;font-size:66px">%</span>
+</div>
+
+<div class="prog">
+  <div class="prog-label" id="plabel">Parte 1 de 6</div>
+  <div class="track"><div class="fill" id="fill"></div></div>
+</div>
+
+<main class="wrap">
+  <h1>Princípio multiplicativo da contagem</h1>
+  <p class="sub">Matemática · 8º ano · Probabilidade e Estatística</p>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Partes da aula"></nav>
+
+  <!-- PARTE 1 -->
+  <section class="sec on" data-name="Árvore de possibilidades">
+    <div class="card">
+      <span class="eyebrow">Parte 1</span>
+      <h2>Contando possibilidades</h2>
+      <p>Lucas vai escolher uma <b>camiseta</b> (branca ou azul) e um <b>boné</b> (preto, vermelho ou verde). Quantos looks diferentes ele consegue montar?</p>
+      <p>Uma forma de contar é desenhar uma <b>árvore de possibilidades</b>. Do início, sai um ramo para cada opção da primeira escolha. De cada ramo, saem novos ramos para a segunda escolha.</p>
+      <div id="tree1"></div>
+      <p>Cada <b>caminho</b>, do início até o final, é uma <b>possibilidade</b>. A árvore tem 6 caminhos, então Lucas pode montar <b>6 looks diferentes</b>.</p>
+
+      <div class="box copy"><span class="tag">✏️ Copie no caderno</span>
+        <b>Árvore de possibilidades</b> é um diagrama que mostra, por meio de ramos, todas as escolhas possíveis. Cada caminho completo é uma possibilidade.</div>
+
+      <div class="box think"><span class="tag">💡 Pense assim</span>
+        Imagine uma trilha com bifurcações. Em cada bifurcação você escolhe um caminho. Cada trilha completa, da entrada até o fim, é uma possibilidade.</div>
+
+      <div class="box tip"><span class="tag">Dica</span>
+        A ordem das escolhas não muda o total. Se Lucas escolher primeiro o boné e depois a camiseta, a árvore fica diferente, mas continua com 6 caminhos.</div>
+
+      <div class="try" data-ans="9" data-ok="3 camisetas, e cada uma leva a 3 bonés: 3 grupos de 3 = 9 caminhos." data-hint="Cada uma das 3 camisetas se liga a 3 bonés. Conte 3 grupos de 3.">
+        <span class="tag">Agora é sua vez</span>
+        <p>Se Lucas tivesse 3 camisetas e 3 bonés, quantos caminhos teria a árvore?</p>
+        <div class="try-row"><input type="text" inputmode="numeric" aria-label="Sua resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 2 -->
+  <section class="sec" data-name="Princípio multiplicativo">
+    <div class="card">
+      <span class="eyebrow">Parte 2</span>
+      <h2>Contando sem desenhar a árvore</h2>
+      <p>Uma pizzaria oferece 3 tamanhos (pequena, média e grande), 4 sabores e 2 tipos de borda (tradicional ou recheada). Desenhar a árvore teria 24 caminhos. Existe um jeito mais rápido.</p>
+
+      <div class="box copy"><span class="tag">✏️ Copie no caderno</span>
+        <b>Princípio multiplicativo da contagem:</b> quando uma situação exige várias decisões em sequência, o número total de possibilidades é o <b>produto</b> do número de opções de cada decisão.</div>
+
+      <div class="box think"><span class="tag">💡 Pense assim</span>
+        Para cada tamanho, há 4 sabores: são 3 grupos de 4, ou seja, 3 · 4 = 12. Para cada uma dessas 12 pizzas, há 2 bordas: 12 · 2 = 24.</div>
+
+      <h3>Exemplo trabalhado</h3>
+      <div class="slots" aria-label="3 vezes 4 vezes 2 igual a 24">
+        <div class="slot"><div class="num">3</div><div class="ln"></div><small>tamanho</small></div>
+        <div class="op">×</div>
+        <div class="slot"><div class="num">4</div><div class="ln"></div><small>sabor</small></div>
+        <div class="op">×</div>
+        <div class="slot"><div class="num">2</div><div class="ln"></div><small>borda</small></div>
+        <div class="eq">= 24</div>
+      </div>
+      <p>A pizzaria oferece <b>24 pizzas diferentes</b>.</p>
+
+      <div class="box algo"><span class="tag">Como aplicar</span>
+        <p><b>Passo 1.</b> Identifique cada decisão a ser tomada.</p>
+        <p><b>Passo 2.</b> Conte quantas opções existem em cada decisão.</p>
+        <p><b>Passo 3.</b> Desenhe um traço para cada decisão e escreva o número de opções sobre ele.</p>
+        <p><b>Passo 4.</b> Multiplique os números.</p>
+      </div>
+
+      <div class="box tip"><span class="tag">Dica: cuidado com o erro mais comum</span>
+        Não some as opções. Como você escolhe o tamanho <b>e</b> o sabor <b>e</b> a borda, as decisões acontecem juntas, então multiplicamos. 3 + 4 + 2 = 9 está errado. O certo é 3 · 4 · 2 = 24.</div>
+
+      <div class="try" data-ans="40" data-ok="3 decisões, com 4, 5 e 2 opções: 4 · 5 · 2 = 40." data-hint="Faça um traço para cada decisão (modelo, cor e cadarço), escreva 4, 5 e 2 sobre eles e multiplique.">
+        <span class="tag">Agora é sua vez</span>
+        <p>Uma loja vende tênis em 4 modelos. Cada modelo existe em 5 cores e pode vir com cadarço comum ou elástico. Quantas versões diferentes de tênis a loja oferece?</p>
+        <div class="try-row"><input type="text" inputmode="numeric" aria-label="Sua resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 3 -->
+  <section class="sec" data-name="Com e sem repetição">
+    <div class="card">
+      <span class="eyebrow">Parte 3</span>
+      <h2>Com repetição</h2>
+      <p>Às vezes todas as decisões têm o mesmo número de opções. Exemplo: um teste tem 5 questões de verdadeiro ou falso. De quantas maneiras ele pode ser respondido?</p>
+      <div class="slots" aria-label="2 vezes 2 vezes 2 vezes 2 vezes 2 igual a 32">
+        <div class="slot"><div class="num">2</div><div class="ln"></div><small>questão 1</small></div><div class="op">×</div>
+        <div class="slot"><div class="num">2</div><div class="ln"></div><small>questão 2</small></div><div class="op">×</div>
+        <div class="slot"><div class="num">2</div><div class="ln"></div><small>questão 3</small></div><div class="op">×</div>
+        <div class="slot"><div class="num">2</div><div class="ln"></div><small>questão 4</small></div><div class="op">×</div>
+        <div class="slot"><div class="num">2</div><div class="ln"></div><small>questão 5</small></div>
+        <div class="eq">= 2<sup>5</sup> = 32</div>
+      </div>
+      <div class="box copy"><span class="tag">✏️ Copie no caderno</span>
+        <b>Com repetição:</b> quando há o mesmo número de opções em todas as decisões, o produto vira uma <b>potência</b>. Total = (número de opções)<sup>(número de decisões)</sup>.</div>
+      <div class="try" data-ans="64" data-ok="3 decisões com 4 opções cada: 4 · 4 · 4 = 4³ = 64." data-hint="São 3 traços (um por disco) e, em cada um, 4 letras possíveis. Multiplique 4 · 4 · 4.">
+        <span class="tag">Agora é sua vez</span>
+        <p>Um cadeado tem 3 discos, e cada disco tem as letras A, B, C e D. As letras podem se repetir. Quantas senhas são possíveis?</p>
+        <div class="try-row"><input type="text" inputmode="numeric" aria-label="Sua resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow c">Parte 3</span>
+      <h2>Sem repetição</h2>
+      <p>Seis atletas disputam a final de uma corrida. De quantas maneiras podem ficar nos três primeiros lugares (1º, 2º e 3º)?</p>
+      <p>Quem chegou em 1º não pode chegar em 2º. Então, a cada decisão, sobra <b>uma opção a menos</b>.</p>
+      <div class="slots" aria-label="6 vezes 5 vezes 4 igual a 120">
+        <div class="slot"><div class="num">6</div><div class="ln"></div><small>1º lugar</small></div><div class="op">×</div>
+        <div class="slot"><div class="num">5</div><div class="ln"></div><small>2º lugar</small></div><div class="op">×</div>
+        <div class="slot"><div class="num">4</div><div class="ln"></div><small>3º lugar</small></div>
+        <div class="eq">= 120</div>
+      </div>
+      <div class="box copy"><span class="tag">✏️ Copie no caderno</span>
+        <b>Sem repetição:</b> o número de opções diminui de 1 em 1 a cada decisão. Exemplo com 6 opções e 3 decisões: 6 · 5 · 4 = 120.</div>
+      <div class="box think"><span class="tag">💡 Pense assim</span>
+        Imagine sortear 3 prêmios entre 6 pessoas, sem que ninguém ganhe dois. A cada prêmio sorteado, uma pessoa sai da lista.</div>
+      <div class="box tip"><span class="tag">Dica: leia se pode ou não repetir</span>
+        Quando o enunciado diz "sem repetir" ou "distintos", comece pelo total e diminua 1 a cada traço: 6 · 5 · 4. Não escreva 6 · 6 · 6 = 216, que seria com repetição, nem some 6 + 5 + 4.</div>
+      <div class="try" data-ans="336" data-ok="1ª letra: 8 opções; 2ª: 7; 3ª: 6. Então 8 · 7 · 6 = 336." data-hint="No primeiro traço há 8 letras; no segundo sobram 7; no terceiro, 6. Multiplique 8 · 7 · 6.">
+        <span class="tag">Agora é sua vez</span>
+        <p>Uma senha tem 3 letras diferentes, escolhidas entre A, B, C, D, E, F, G e H. Quantas senhas são possíveis?</p>
+        <div class="try-row"><input type="text" inputmode="numeric" aria-label="Sua resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 4 -->
+  <section class="sec" data-name="Quiz">
+    <div class="card">
+      <span class="eyebrow y">Parte 4</span>
+      <h2>Quiz de prática</h2>
+      <div class="score" id="score">Acertos: 0 de 8</div>
+      <div id="quiz"></div>
+      <div class="final" id="final" role="status"></div>
+    </div>
+  </section>
+
+  <!-- PARTE 5 -->
+  <section class="sec" data-name="Direto do livro">
+    <div class="card">
+      <span class="eyebrow c">Direto do livro</span>
+      <h2>Exercícios do livro</h2>
+      <p class="src">Livro de Matemática, 4º bimestre. Resolva no caderno.</p>
+      <div class="bk">
+        <div class="bk-row"><span class="pg">p. 7</span><div><div class="ex">Trocando ideias 1, exercícios 10 e 11</div><div class="sk">Produto das opções e árvore de possibilidades</div></div></div>
+        <div class="bk-row"><span class="pg">p. 8</span><div><div class="ex">Exercício 13</div><div class="sk">Várias questões com o mesmo número de alternativas</div></div></div>
+        <div class="bk-row"><span class="pg">p. 8</span><div><div class="ex">Exercício 14</div><div class="sk">Com repetição e sem repetição</div></div></div>
+        <div class="bk-row"><span class="pg">p. 14</span><div><div class="ex">Exercício 18, itens a e c</div><div class="sk">Senha com e sem repetição de algarismos</div></div></div>
+      </div>
+      <div class="box tip"><span class="tag">Dica: por onde começar</span>
+        Em cada exercício, faça um traço para cada decisão, escreva quantas opções ela tem e multiplique. Se o enunciado disser que não pode repetir, diminua 1 a cada traço.</div>
+    </div>
+  </section>
+
+  <!-- PARTE 6 -->
+  <section class="sec" data-name="Resumo pro caderno">
+    <div class="card summary">
+      <span class="eyebrow">Parte 6</span>
+      <h2>Resumo pro caderno</h2>
+      <p>Para contar quantas possibilidades existem em uma situação com várias escolhas, podemos desenhar uma <b>árvore de possibilidades</b>. Cada caminho, do início até o final da árvore, é uma possibilidade diferente. Quando há muitas escolhas, a árvore fica grande demais, e usamos o <b>princípio multiplicativo da contagem</b>.</p>
+      <p>Esse princípio diz que, quando uma situação exige várias decisões em sequência, o total de possibilidades é o <b>produto</b> do número de opções de cada decisão. Para aplicar, identificamos cada decisão, contamos as opções de cada uma, escrevemos esses números sobre traços e multiplicamos. Por exemplo, com 3 tamanhos, 4 sabores e 2 bordas, temos 3 · 4 · 2 = 24 pizzas. Nunca somamos as opções, porque as decisões acontecem juntas.</p>
+      <p>Se o enunciado permite <b>repetição</b> e todas as decisões têm o mesmo número de opções, o produto vira uma potência. Por exemplo, 5 questões de verdadeiro ou falso podem ser respondidas de 2 · 2 · 2 · 2 · 2 = 2<sup>5</sup> = 32 maneiras. Se o enunciado diz <b>sem repetição</b>, cada decisão tem uma opção a menos que a anterior. Por exemplo, 6 atletas disputando 3 posições de pódio dão 6 · 5 · 4 = 120 possibilidades. Sempre leia o enunciado com atenção para saber se pode ou não repetir.</p>
+    </div>
+  </section>
+
+  <div class="nav">
+    <button class="btn ghost" id="prev">← Voltar</button>
+    <button class="btn" id="next">Avançar →</button>
+  </div>
+</main>
+
+<script>
+(function(){
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.sec'));
+  var tabsEl = document.getElementById('tabs');
+  var cur = 0;
+  var N = secs.length;
+
+  secs.forEach(function(s,i){
+    var b = document.createElement('button');
+    b.className = 'tab'; b.type='button'; b.setAttribute('role','tab');
+    b.textContent = (i+1) + '. ' + s.getAttribute('data-name');
+    b.addEventListener('click', function(){ go(i); });
+    tabsEl.appendChild(b);
+  });
+
+  function go(i){
+    cur = Math.max(0, Math.min(N-1, i));
+    secs.forEach(function(s,k){ s.classList.toggle('on', k===cur); });
+    Array.prototype.forEach.call(tabsEl.children, function(t,k){ t.setAttribute('aria-selected', k===cur ? 'true':'false'); });
+    document.getElementById('fill').style.width = ((cur+1)/N*100) + '%';
+    document.getElementById('plabel').textContent = 'Parte ' + (cur+1) + ' de ' + N + ' — ' + secs[cur].getAttribute('data-name');
+    document.getElementById('prev').disabled = cur===0;
+    document.getElementById('next').disabled = cur===N-1;
+    window.scrollTo({top:0});
+  }
+  document.getElementById('prev').addEventListener('click', function(){ go(cur-1); });
+  document.getElementById('next').addEventListener('click', function(){ go(cur+1); });
+
+  /* árvore de possibilidades em SVG inline */
+  function el(n, a, t){
+    var e = document.createElementNS('http://www.w3.org/2000/svg', n);
+    for (var k in a) e.setAttribute(k, a[k]);
+    if (t) e.textContent = t;
+    return e;
+  }
+  function drawTree(host, o){
+    var rh = 30, top = 28;
+    var rows = o.l1.length * o.l2.length;
+    var H = top + rows*rh + 10, W = 372;
+    var svg = el('svg', {viewBox:'0 0 '+W+' '+H, 'class':'tree', role:'img',
+      'aria-label':'Árvore de possibilidades com '+rows+' caminhos'});
+    var l1c = [], leaf = 0;
+    o.l1.forEach(function(){ l1c.push(0); });
+    var leaves = [];
+    o.l1.forEach(function(a,i){
+      var ys = [];
+      o.l2.forEach(function(b,j){
+        var y = top + leaf*rh + rh/2; ys.push(y); leaves.push({y:y,t:b}); leaf++;
+      });
+      l1c[i] = (ys[0]+ys[ys.length-1])/2;
+    });
+    var iy = (l1c[0]+l1c[l1c.length-1])/2;
+    svg.appendChild(el('text',{x:136,y:14,'text-anchor':'middle','class':'hd'},o.h1));
+    svg.appendChild(el('text',{x:278,y:14,'text-anchor':'middle','class':'hd'},o.h2));
+    var lines = el('g',{stroke:'#6C63B5','stroke-width':2,fill:'none'});
+    o.l1.forEach(function(a,i){
+      lines.appendChild(el('path',{d:'M68 '+iy+' C82 '+iy+' 82 '+l1c[i]+' 95 '+l1c[i]}));
+      o.l2.forEach(function(b,j){
+        var y = leaves[i*o.l2.length+j].y;
+        lines.appendChild(el('path',{d:'M177 '+l1c[i]+' C204 '+l1c[i]+' 204 '+y+' 232 '+y}));
+      });
+    });
+    svg.appendChild(lines);
+    svg.appendChild(el('ellipse',{cx:38,cy:iy,rx:30,ry:16,fill:'#ECEAF8',stroke:'#362F78','stroke-width':2}));
+    svg.appendChild(el('text',{x:38,y:iy+4.5,'text-anchor':'middle'},'início'));
+    o.l1.forEach(function(a,i){
+      svg.appendChild(el('rect',{x:95,y:l1c[i]-13,width:82,height:26,rx:9,fill:'#362F78'}));
+      svg.appendChild(el('text',{x:136,y:l1c[i]+4.5,'text-anchor':'middle',fill:'#fff',style:'fill:#fff;font-weight:700'},a));
+    });
+    leaves.forEach(function(lf,k){
+      svg.appendChild(el('rect',{x:232,y:lf.y-12,width:92,height:24,rx:8,fill:'#fff',stroke:'#6C63B5','stroke-width':1.5}));
+      svg.appendChild(el('text',{x:278,y:lf.y+4.5,'text-anchor':'middle'},lf.t));
+      if (o.numbered){
+        svg.appendChild(el('circle',{cx:347,cy:lf.y,r:10,fill:'#FFB3A0'}));
+        svg.appendChild(el('text',{x:347,y:lf.y+4.5,'text-anchor':'middle',style:'font-weight:700;fill:#241F52'},String(k+1)));
+      }
+    });
+    host.appendChild(svg);
+  }
+  drawTree(document.getElementById('tree1'), {h1:'camiseta',h2:'boné',l1:['branca','azul'],l2:['preto','vermelho','verde'],numbered:true});
+
+  /* try-boxes */
+  Array.prototype.forEach.call(document.querySelectorAll('.try'), function(t){
+    var inp = t.querySelector('input'), btn = t.querySelector('button'), fb = t.querySelector('.fb');
+    function check(){
+      var v = inp.value.replace(/[\s.]/g,'');
+      if (!v){ fb.className='fb no'; fb.textContent='Escreva sua resposta e clique em Conferir.'; return; }
+      if (v === t.getAttribute('data-ans')){
+        fb.className='fb ok'; fb.textContent = '✓ Isso mesmo! ' + t.getAttribute('data-ok');
+      } else {
+        fb.className='fb no'; fb.textContent = 'Quase! Revê esse passo: ' + t.getAttribute('data-hint');
+      }
+    }
+    btn.addEventListener('click', check);
+    inp.addEventListener('keydown', function(e){ if (e.key==='Enter') check(); });
+  });
+
+  /* quiz */
+  var Q = [
+    {t:'Ana tem 5 blusas e 4 saias. De quantas maneiras diferentes ela pode combinar uma blusa com uma saia?',
+     o:['9','10','16','20','24'], a:3,
+     e:'Duas decisões: 5 blusas e 4 saias. Pelo princípio multiplicativo, 5 · 4 = 20.'},
+    {t:'Uma loja vende camisetas em 2 modelos (básico ou estampado), 4 cores e 3 tamanhos. Quantas camisetas diferentes a loja oferece?',
+     o:['9','12','24','36','48'], a:2,
+     e:'Três decisões: 2 modelos, 4 cores e 3 tamanhos. 2 · 4 · 3 = 24.'},
+    {t:'Uma senha tem 3 algarismos escolhidos entre 1, 2, 3, 4, 5, 6 e 7, sem repetir algarismos. Quantas senhas são possíveis?',
+     o:['42','210','343','420','504'], a:1,
+     e:'Sem repetir, as opções diminuem: 7 · 6 · 5 = 210. O valor 343 (7 · 7 · 7) seria com repetição.'},
+    {t:'Um teste tem 6 questões, cada uma com 3 alternativas (A, B ou C). De quantas maneiras diferentes ele pode ser respondido?',
+     o:['18','36','216','729','1 458'], a:3,
+     e:'São 6 decisões com 3 opções cada: 3 · 3 · 3 · 3 · 3 · 3 = 3<sup>6</sup> = 729. O valor 216 vem de 6<sup>3</sup>, que troca as posições da base e do expoente.'},
+    {t:'Oito nadadores disputam uma final. De quantas maneiras podem ficar nos três primeiros lugares?',
+     o:['24','56','336','512','720'], a:2,
+     e:'1º lugar: 8 opções; 2º: 7; 3º: 6. Então 8 · 7 · 6 = 336. O valor 512 (8 · 8 · 8) seria com repetição, o que não faz sentido em uma corrida.'},
+    {t:'Uma moeda é lançada 4 vezes seguidas, e anotamos "cara" ou "coroa" em cada lançamento. Quantas sequências diferentes de resultados podem aparecer?',
+     o:['8','16','24','32','64'], a:1,
+     e:'4 decisões com 2 opções cada: 2 · 2 · 2 · 2 = 2<sup>4</sup> = 16.'},
+    {t:'Bia escolhe um prato (massa, carne ou peixe) e uma bebida (suco ou água), como mostra a árvore. Se ela também escolher uma sobremesa entre 4 opções, quantas refeições diferentes pode montar?',
+     o:['9','10','12','18','24'], a:4, tree:true,
+     e:'A árvore tem 3 · 2 = 6 caminhos. Com a sobremesa (4 opções): 6 · 4 = 24.'},
+    {t:'Uma senha tem 2 letras, escolhidas entre A, B, C, D e E, seguidas de 1 algarismo de 0 a 9. As letras podem se repetir. Quantas senhas são possíveis?',
+     o:['25','50','100','250','500'], a:3,
+     e:'Três decisões: 1ª letra (5 opções), 2ª letra (5 opções, pois pode repetir) e algarismo (10 opções). 5 · 5 · 10 = 250.'}
+  ];
+  var quiz = document.getElementById('quiz'), scoreEl = document.getElementById('score'), finalEl = document.getElementById('final');
+  var hits = 0, done = 0, letters = ['A','B','C','D','E'];
+  Q.forEach(function(q,i){
+    var box = document.createElement('div'); box.className = 'q box think';
+    var p = document.createElement('p'); p.className='qt';
+    p.innerHTML = '<span class="n">Questão ' + (i+1) + '.</span> ' + q.t;
+    box.appendChild(p);
+    if (q.tree){
+      var host = document.createElement('div'); box.appendChild(host);
+      var s = drawTree; 
+      var h = host;
+      var o2 = {h1:'prato',h2:'bebida',l1:['massa','carne','peixe'],l2:['suco','água'],numbered:false};
+      drawTree(h, o2);
+    }
+    var wrap = document.createElement('div'); wrap.className='opts';
+    var exp = document.createElement('div'); exp.className='qexp'; exp.setAttribute('aria-live','polite');
+    var btns = [];
+    q.o.forEach(function(txt,k){
+      var b = document.createElement('button'); b.type='button'; b.className='opt';
+      b.innerHTML = '<span class="l">' + letters[k] + ')</span><span>' + txt + '</span><span class="mk"></span>';
+      b.addEventListener('click', function(){
+        btns.forEach(function(x){ x.disabled = true; });
+        var ok = k === q.a;
+        btns[q.a].classList.add('right'); btns[q.a].querySelector('.mk').textContent = '✓ certa';
+        if (ok){ hits++; exp.className='qexp fb ok'; exp.innerHTML = '✓ Muito bem! ' + q.e; }
+        else { b.classList.add('wrong'); b.querySelector('.mk').textContent = '✗ quase'; exp.className='qexp fb no'; exp.innerHTML = 'Quase! A resposta certa é a letra ' + letters[q.a] + '. ' + q.e; }
+        done++;
+        scoreEl.textContent = 'Acertos: ' + hits + ' de ' + Q.length;
+        if (done === Q.length){
+          var msg = hits === Q.length ? 'Você acertou todas! Excelente.' : (hits >= 5 ? 'Bom trabalho! Releia as explicações das que ficaram para fixar.' : 'Você está no caminho. Releia as Partes 2 e 3 e tente de novo.');
+          finalEl.style.display = 'block';
+          finalEl.innerHTML = '<b>' + hits + ' de ' + Q.length + ' acertos.</b><br>' + msg;
+        }
+      });
+      btns.push(b); wrap.appendChild(b);
+    });
+    box.appendChild(wrap); box.appendChild(exp);
+    quiz.appendChild(box);
+  });
+
+  go(0);
+})();
+</script>
+</body>
+</html>
