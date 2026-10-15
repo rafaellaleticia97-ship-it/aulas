@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Correção: Simetrias · 7º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F4FC; --ind:#362F78; --deep:#241F52; --soft:#6C63B5;
+  --mint:#A9E5D0; --coral:#FFB3A0; --coral-d:#E4694F; --yel:#FFDD73;
+  --txt:#2A2650; --txt2:#5B5686; --line:#E3DEF7; --ans:#3D5BC0;
+}
+*{box-sizing:border-box}
+html{font-size:17px}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:"Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.55}
+h1,h2,h3,.baloo{font-family:"Baloo 2",system-ui,sans-serif;color:var(--deep);line-height:1.15}
+h1{font-size:1.75rem;margin:.2rem 0 .1rem;font-weight:800}
+h2{font-size:1.4rem;margin:.5rem 0 .6rem;font-weight:700}
+h3{font-size:1.12rem;margin:.2rem 0 .4rem;font-weight:700}
+p{margin:.5rem 0}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 32px;position:relative;z-index:1}
+
+.bgsym{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bgsym span{position:absolute;font-family:"Baloo 2";font-weight:700;color:var(--ind);opacity:.08;animation:drift 38s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(28px,-36px) rotate(12deg)}}
+@media (prefers-reduced-motion:reduce){.bgsym span{animation:none}*{transition:none!important;animation:none!important}}
+
+.progress{position:sticky;top:0;z-index:20;background:rgba(246,244,252,.94);backdrop-filter:blur(6px);padding:8px 16px 7px;border-bottom:1px solid var(--line)}
+.progress .in{max-width:760px;margin:0 auto}
+.track{height:6px;background:var(--line);border-radius:99px;overflow:hidden}
+.fill{height:100%;background:var(--ind);border-radius:99px;transition:width .4s}
+.plabel{font-family:"Baloo 2";font-weight:600;font-size:.8rem;color:var(--txt2);margin-top:3px}
+
+header{padding:18px 0 6px}
+.sub{color:var(--txt2);font-size:.92rem;margin:0}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 16px}
+.tab{font-family:"Baloo 2";font-weight:600;font-size:11px;padding:4px 9px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ind);cursor:pointer}
+.tab.active{background:var(--ind);border-color:var(--ind);color:#fff}
+
+.part{display:none}
+.part.active{display:block;animation:fade .35s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 18px 16px;margin-bottom:16px;box-shadow:0 6px 22px rgba(54,47,120,.07)}
+.eyebrow{display:inline-block;font-family:"Baloo 2";font-weight:700;font-size:.78rem;padding:2px 10px;border-radius:99px;background:var(--mint);color:var(--deep)}
+.ey-coral{background:var(--coral)}.ey-yel{background:var(--yel)}.ey-ind{background:var(--ind);color:#fff}
+
+.pense,.dica{border-radius:14px;padding:12px 15px;margin:14px 0}
+.pense{background:#EEEBFA}
+.dica{background:#FFF8E6;border-left:7px solid var(--yel)}
+.box-t{font-family:"Baloo 2";font-weight:700;color:var(--deep);font-size:1rem;margin-bottom:2px}
+
+.btn{font-family:"Baloo 2";font-weight:600;font-size:.92rem;border:2px solid var(--ind);background:#fff;color:var(--ind);border-radius:99px;padding:4px 13px;cursor:pointer}
+.btn.primary{background:var(--ind);color:#fff}
+.btn.ghost{border-color:var(--line);color:var(--txt2)}
+.btn:focus-visible,.tab:focus-visible,.op:focus-visible{outline:3px solid var(--coral-d);outline-offset:2px}
+.btn:disabled{opacity:.45;cursor:default}
+
+/* trio de tipos */
+.types{display:grid;gap:12px}
+.type{border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.type h3 .ico{font-size:1.2em}
+.rule{font-family:"Baloo 2";font-weight:600;background:#F3F1FB;border-radius:10px;padding:6px 10px;color:var(--deep);font-size:.95rem}
+
+/* demo */
+.demo .stage svg{overflow:visible;display:block;width:100%;height:auto;max-width:330px;margin:6px auto}
+.demo.wide .stage svg{max-width:520px}
+.demo.plane .stage svg{max-width:520px}
+.ctrls{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0}
+.verdict{min-height:1.6em;text-align:center;font-weight:700;border-radius:10px;padding:0;margin:6px 0 0}
+.verdict.ok{background:#E6F7EF;color:#1E6E4D;padding:7px 11px}
+.verdict.no{background:#FFF0EB;color:#9E3B26;padding:7px 11px}
+.verdict.info{background:#F2F5FF;color:var(--ans);padding:7px 11px}
+.legend{display:flex;gap:14px;justify-content:center;font-size:.8rem;color:var(--txt2);flex-wrap:wrap}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:3px;vertical-align:middle;margin-right:4px}
+
+.items{display:grid;gap:14px}
+.item{border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.letter{display:inline-flex;align-items:center;justify-content:center;width:1.7em;height:1.7em;border-radius:50%;background:var(--ind);color:#fff;font-family:"Baloo 2";font-weight:700;margin-right:6px}
+.num{display:inline-flex;align-items:center;justify-content:center;min-width:1.7em;height:1.7em;border-radius:5px;background:#F5A54A;color:#fff;font-family:"Baloo 2";font-weight:800;margin-right:6px}
+.reveal{font-size:.85rem;padding:3px 12px;margin-top:6px}
+.answer{display:none;color:var(--ans);background:#F2F5FF;border-radius:10px;padding:8px 12px;margin-top:8px;font-weight:700}
+.answer.shown{display:block}
+.answer .why{font-weight:400;color:var(--txt);margin-top:4px}
+.mini3d{display:flex;justify-content:center}
+.mini3d svg{width:150px;height:auto}
+
+.tbl{border-collapse:collapse;margin:10px auto;font-family:"Baloo 2";font-weight:600;font-size:.95rem}
+.tbl th{background:var(--ind);color:#fff;padding:5px 12px;font-weight:600}
+.tbl th:first-child{border-top-left-radius:10px}.tbl th:last-child{border-top-right-radius:10px}
+.tbl td{padding:4px 12px;text-align:center;border-bottom:1px solid var(--line);color:var(--deep)}
+
+.chain{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;margin:8px 0}
+.node{background:var(--ind);color:#fff;font-family:"Baloo 2";font-weight:700;padding:4px 11px;border-radius:10px;min-width:4.4em;text-align:center}
+.node.q{background:#fff;color:var(--ind);border:2px dashed var(--soft)}
+.op{background:var(--coral);color:var(--deep);font-family:"Baloo 2";font-weight:700;font-size:.82rem;border:none;border-radius:99px;padding:2px 10px;cursor:pointer}
+.op.shown{background:var(--coral-d);color:#fff;cursor:default}
+
+.navbtns{display:flex;justify-content:space-between;gap:10px;margin-top:10px}
+.navbtns .btn{font-size:.85rem;padding:4px 12px}
+.navbtns .btn:disabled{opacity:.35;cursor:default}
+
+@media (min-width:900px){
+  html{font-size:19px}
+  .wrap,.progress .in{max-width:1000px}
+  .types{grid-template-columns:repeat(3,1fr)}
+  .items.two{grid-template-columns:1fr 1fr}
+  .demo .stage svg{max-width:380px}
+  .demo.wide .stage svg,.demo.plane .stage svg{max-width:640px}
+}
+@media (min-width:1500px){
+  html{font-size:23px}
+  .wrap,.progress .in{max-width:1320px}
+  .demo .stage svg{max-width:520px}
+  .demo.wide .stage svg,.demo.plane .stage svg{max-width:860px}
+  .tab{font-size:14px}
+  .mini3d svg{width:170px}
+}
+</style>
+</head>
+<body>
+
+<div class="bgsym" aria-hidden="true">
+  <span style="left:6%;top:14%;font-size:44px">⟲</span>
+  <span style="left:78%;top:10%;font-size:52px;animation-delay:-8s">✓</span>
+  <span style="left:12%;top:58%;font-size:60px;animation-delay:-15s">△</span>
+  <span style="left:84%;top:52%;font-size:48px;animation-delay:-4s">↔</span>
+  <span style="left:44%;top:82%;font-size:46px;animation-delay:-20s">(x, y)</span>
+  <span style="left:60%;top:30%;font-size:40px;animation-delay:-11s">+3</span>
+  <span style="left:28%;top:36%;font-size:38px;animation-delay:-25s">⬡</span>
+</div>
+
+<div class="progress"><div class="in">
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div class="plabel" id="plabel">Parte 1</div>
+</div></div>
+
+<div class="wrap">
+<header>
+  <p class="sub">7º ano · Capítulo 9 · Correção das atividades 11, 16, 17 e 20</p>
+  <h1>Correção: Simetrias</h1>
+  <nav class="tabs" id="tabs" aria-label="Partes da correção"></nav>
+</header>
+
+<main>
+
+<!-- 1 COMO TESTAR -->
+<section class="part" data-name="Como testar">
+  <div class="card">
+    <span class="eyebrow ey-coral">Parte 1 · Revisão</span>
+    <h2>Os três testes de simetria</h2>
+    <p>Para descobrir que simetria uma figura tem, a gente faz um <b>teste</b>: mexe numa cópia da figura e vê se ela <b>coincide</b> com a original. Nas animações, a figura clarinha fica parada no lugar original e a cópia colorida é a que se mexe.</p>
+    <div class="types">
+      <div class="type">
+        <h3><span class="ico">🪞</span> Reflexão</h3>
+        <p class="rule">Teste: DOBRAR numa linha.</p>
+        <div class="demo" id="dRef"></div>
+      </div>
+      <div class="type">
+        <h3><span class="ico">🔄</span> Rotação</h3>
+        <p class="rule">Teste: GIRAR ao redor de um ponto, menos que uma volta.</p>
+        <div class="demo" id="dRot"></div>
+      </div>
+      <div class="type">
+        <h3><span class="ico">➡️</span> Translação</h3>
+        <p class="rule">Teste: DESLIZAR, sem girar nem virar.</p>
+        <div class="demo" id="dTra"></div>
+      </div>
+    </div>
+    <div class="pense">
+      <div class="box-t">💭 Pense assim</div>
+      <p><b>Reflexão</b> é como fechar um caderno: uma página cai em cima da outra. <b>Rotação</b> é como girar um ventilador desligado: depois de um pedaço de volta, ele parece igual. <b>Translação</b> é como andar numa calçada de ladrilhos iguais: você dá um passo e o chão continua igual.</p>
+    </div>
+    <div class="dica">
+      <div class="box-t">💡 Dica: faça os três testes</div>
+      <p>Uma figura pode ter <b>mais de um</b> tipo de simetria, ou <b>nenhum</b>. Por isso, não pare no primeiro teste que deu certo.</p>
+      <p>A translação só aparece em <b>padrões que se repetem</b>, como uma faixa com reticências (…). Uma figura sozinha, que não se repete, não tem simetria de translação.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 ATIVIDADE 11 -->
+<section class="part" data-name="Atividade 11">
+  <div class="card">
+    <span class="eyebrow ey-ind">Parte 2 · Correção · p. 15</span>
+    <h2><span class="num">11</span>Identifique o(s) tipo(s) de simetria das figuras.</h2>
+    <p class="note">Toque nos botões para fazer cada teste. ✓ quer dizer que coincidiu; ✗ quer dizer que não coincidiu.</p>
+    <div class="items two">
+      <div class="item"><h3><span class="letter">a</span></h3><div class="demo" id="d11a"></div>
+        <button class="btn reveal" data-ans="r11a">Ver resposta</button>
+        <div class="answer" id="r11a">Reflexão e rotação
+          <div class="why">Dobrando na vertical ou na horizontal, coincide: são 2 linhas de simetria. Girando 180°, também coincide. Atenção: a diagonal <b>não</b> é linha de simetria.</div></div></div>
+      <div class="item"><h3><span class="letter">b</span></h3><div class="demo" id="d11b"></div>
+        <button class="btn reveal" data-ans="r11b">Ver resposta</button>
+        <div class="answer" id="r11b">Reflexão
+          <div class="why">A linha vertical do meio é linha de simetria. Girando, a folha fica de ponta-cabeça e não coincide.</div></div></div>
+      <div class="item"><h3><span class="letter">c</span></h3><div class="demo" id="d11c"></div>
+        <button class="btn reveal" data-ans="r11c">Ver resposta</button>
+        <div class="answer" id="r11c">Rotação e reflexão
+          <div class="why">Girando 45° (360° ÷ 8 pontas), a estrela já coincide. E ela tem 8 linhas de simetria.</div></div></div>
+      <div class="item"><h3><span class="letter">d</span></h3><div class="demo" id="d11d"></div>
+        <button class="btn reveal" data-ans="r11d">Ver resposta</button>
+        <div class="answer" id="r11d">Reflexão
+          <div class="why">A linha vertical divide o carro em dois lados iguais. Girando 180°, a frente vai para trás: os faróis amarelos ficam no lugar das lanternas vermelhas, então não coincide.</div></div></div>
+      <div class="item"><h3><span class="letter">e</span></h3><div class="demo wide" id="d11e"></div>
+        <p class="note">No livro, o segundo desenho é uma mãozinha. Aqui usamos uma lua, que também não tem a mesma forma depois de virar ou girar.</p>
+        <button class="btn reveal" data-ans="r11e">Ver resposta</button>
+        <div class="answer" id="r11e">Translação
+          <div class="why">As reticências mostram que o padrão continua. Deslizando um “estrela + lua”, tudo coincide. Dobrando ou girando, as luas ficam viradas para o lado errado.</div></div></div>
+      <div class="item"><h3><span class="letter">f</span></h3><div class="demo" id="d11f"></div>
+        <button class="btn reveal" data-ans="r11f">Ver resposta</button>
+        <div class="answer" id="r11f">Não tem simetria
+          <div class="why">O triângulo e a faixa até seriam simétricos, mas a bolinha e o quadradinho estragam: dobrando, a bolinha cai onde estava o quadrado. Girando, também não coincide. E é uma figura sozinha, então não tem translação.</div></div></div>
+    </div>
+    <div class="dica">
+      <div class="box-t">💡 Dica: dividir ao meio não é o mesmo que ter simetria</div>
+      <p>No item <b>a</b>, a diagonal divide o retângulo em duas partes de mesmo tamanho, mas, dobrando nela, as partes <b>não</b> coincidem. Teste o botão “Dobrar na diagonal” e veja. Linha de simetria é só aquela em que a dobra encaixa perfeitamente.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 ATIVIDADE 16 -->
+<section class="part" data-name="Atividade 16">
+  <div class="card">
+    <span class="eyebrow ey-ind">Parte 3 · Correção · p. 16</span>
+    <h2><span class="num">16</span>Parte de um polígono está representada no plano cartesiano.</h2>
+    <p>Sabendo que <i>r</i> é uma linha de simetria, obtenha as coordenadas dos outros vértices terminando o desenho.</p>
+    <div class="demo plane" id="d16"></div>
+    <div class="legend"><span><i style="background:#2A2650"></i>parte dada</span><span><i style="background:#3D5BC0"></i>parte que falta</span><span><i style="background:#D9534F"></i>reta r</span></div>
+    <h3 style="margin-top:14px">Vértice por vértice</h3>
+    <p>Cada vértice “atravessa” a reta <i>r</i> andando na <b>diagonal</b>, de quadradinho em quadradinho, e para do outro lado à <b>mesma distância</b>. Toque em um vértice para ver o caminho.</p>
+    <div class="ctrls" id="hopBtns"></div>
+    <p class="verdict" id="hopTxt" aria-live="polite"></p>
+    <table class="tbl">
+      <tr><th>Vértice dado</th><th>Passos na diagonal</th><th>Correspondente</th></tr>
+      <tr><td>(5, 10)</td><td>3</td><td>(2, 7)</td></tr>
+      <tr><td>(10, 9)</td><td>7</td><td>(3, 2)</td></tr>
+      <tr><td>(12, 3)</td><td>3</td><td>(9, 0)</td></tr>
+    </table>
+    <div class="dica">
+      <div class="box-t">💡 Dica: a reta é inclinada, então o caminho também é</div>
+      <p>O erro mais comum é atravessar a reta <i>r</i> andando só na horizontal ou só na vertical. O caminho tem que cruzar a reta <b>em ângulo reto</b>. Como <i>r</i> está na diagonal, o caminho também é na diagonal: <b>1 para a esquerda e 1 para baixo</b> a cada passo. A reta <i>r</i> fica sempre bem no meio do caminho.</p>
+    </div>
+    <button class="btn reveal" data-ans="r16">Ver resposta</button>
+    <div class="answer" id="r16">Os outros vértices são: (9, 0), (3, 2) e (2, 7).</div>
+  </div>
+</section>
+
+<!-- 4 ATIVIDADE 17 -->
+<section class="part" data-name="Atividade 17">
+  <div class="card">
+    <span class="eyebrow ey-ind">Parte 4 · Correção · p. 16</span>
+    <h2><span class="num">17</span>Verifique que tipo(s) de simetria (se houver) tem cada uma das peças.</h2>
+        <div class="items two">
+      <div class="item"><h3><span class="letter">a</span></h3><div class="demo" id="d17a"></div>
+        <button class="btn reveal" data-ans="r17a">Ver resposta</button>
+        <div class="answer" id="r17a">Reflexão e rotação
+          <div class="why">A peça tem 8 ondas iguais. Girando 45° (360° ÷ 8) no eixo que atravessa a peça, uma onda ocupa o lugar da outra. E, cortando pelo centro, as duas metades são o reflexo uma da outra.</div></div></div>
+      <div class="item"><h3><span class="letter">b</span></h3><div class="demo" id="d17b"></div>
+        <button class="btn reveal" data-ans="r17b">Ver resposta</button>
+        <div class="answer" id="r17b">Reflexão e rotação
+          <div class="why">A peça tem 6 lados iguais. Girando 60° (360° ÷ 6) no eixo que atravessa a peça, coincide. E, cortando pelos vértices ou pelo meio dos lados, as duas metades são o reflexo uma da outra.</div></div></div>
+      <div class="item"><h3><span class="letter">c</span></h3><div class="demo plane" id="d17c"></div>
+        <button class="btn reveal" data-ans="r17c">Ver resposta</button>
+        <div class="answer" id="r17c">Reflexão e translação
+          <div class="why">A borda é um padrão de ondas que se repete. Imaginando que ele continua, deslizando uma onda inteira, coincide. E, cortando no alto de uma onda, as duas partes são o reflexo uma da outra.</div></div></div>
+      <div class="item"><h3><span class="letter">d</span></h3><div class="demo" id="d17d"></div>
+        <button class="btn reveal" data-ans="r17d">Ver resposta</button>
+        <div class="answer" id="r17d">Reflexão e rotação
+          <div class="why">É como uma engrenagem com 16 dentes iguais. Girando no eixo de um dente para o próximo (360° ÷ 16 = 22,5°), coincide. E, cortando pela ponta de um dente, as duas metades são o reflexo uma da outra.</div></div></div>
+    </div>
+    <div class="dica">
+      <div class="box-t">💡 Dica: quantas partes iguais tem a figura?</div>
+      <p>Quando uma figura é formada por partes iguais em volta de um centro (ondas, lados, dentes), conte as partes e divida 360° por esse número. O resultado é o menor giro que faz a figura coincidir. Hexágono: 360° ÷ 6 = 60°.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 ATIVIDADE 20 -->
+<section class="part" data-name="Atividade 20">
+  <div class="card">
+    <span class="eyebrow ey-ind">Parte 5 · Correção · p. 17</span>
+    <h2><span class="num">20</span>Um triângulo tem vértices (1, 1), (−1, 1) e (0, 3) e foi trasladado 3 unidades para a direita e 2 unidades para cima.</h2>
+    <p>Quais as coordenadas de seus vértices após essas duas translações?</p>
+    <div class="demo plane" id="d20"></div>
+    <div class="ctrls">
+      <button class="btn primary" id="t20a">1º) 3 para a direita →</button>
+      <button class="btn primary" id="t20b" disabled>2º) 2 para cima ↑</button>
+      <button class="btn ghost" id="t20r">↺ Voltar ao início</button>
+    </div>
+    <p class="verdict" id="t20txt" aria-live="polite"></p>
+    <div class="pense">
+      <div class="box-t">💭 Pense assim</div>
+      <p>Imagine o triângulo como uma peça de jogo de tabuleiro. Ela anda casa por casa, sem girar. <b>Para a direita</b>, ela muda de coluna: mexe só no <b>x</b>. <b>Para cima</b>, ela muda de linha: mexe só no <b>y</b>.</p>
+    </div>
+    <h3>Vértice por vértice</h3>
+    <p>Toque nos <b>?</b> para ver a conta de cada passo.</p>
+    <div id="chains20"></div>
+    <div class="dica">
+      <div class="box-t">💡 Dica: não troque o x com o y</div>
+      <p>“3 para a direita” soma 3 no <b>primeiro</b> número. “2 para cima” soma 2 no <b>segundo</b> número. Cuidado com o negativo: −1 + 3 = 2, então (−1, 1) vai para (2, 1).</p>
+    </div>
+    <button class="btn reveal" data-ans="r20">Ver resposta</button>
+    <div class="answer" id="r20">(1, 1) → (4, 1) → (4, 3)<br>(−1, 1) → (2, 1) → (2, 3)<br>(0, 3) → (3, 3) → (3, 5)</div>
+  </div>
+</section>
+
+<!-- 6 RESUMO -->
+<section class="part" data-name="Resumo pro caderno">
+  <div class="card">
+    <span class="eyebrow ey-yel">Parte 6 · Resumo pro caderno</span>
+    <h2>Resumo da correção</h2>
+    <p>Para descobrir que tipo de simetria uma figura tem, fazemos três testes e observamos se a cópia da figura coincide com a original. No teste da reflexão, dobramos a figura numa linha; se as duas partes se encaixam perfeitamente, essa linha é uma linha de simetria. Uma linha que só divide a figura em duas partes de mesmo tamanho, como a diagonal de um retângulo, não é necessariamente linha de simetria. No teste da rotação, giramos a figura ao redor de um ponto, menos que uma volta completa; se ela coincidir, a figura tem simetria de rotação. Quando a figura é formada por partes iguais em volta de um centro, o menor giro é 360° dividido pelo número de partes: 45° para uma figura com 8 pontas, 60° para o hexágono regular. No teste da translação, deslizamos a figura sem girar nem virar; isso só funciona em padrões que se repetem, como as faixas com reticências. Uma figura pode ter mais de um tipo de simetria, ou nenhum, como a figura do item f da atividade 11.</p>
+    <p>Quando a linha de simetria está no plano cartesiano, cada vértice e o seu correspondente ficam à mesma distância da linha, e o caminho entre eles cruza a linha em ângulo reto. Na atividade 16, como a reta r é diagonal, cada vértice anda na diagonal, um para a esquerda e um para baixo a cada passo, até ficar do outro lado à mesma distância: o vértice (5, 10) corresponde a (2, 7), o vértice (10, 9) corresponde a (3, 2) e o vértice (12, 3) corresponde a (9, 0). Numa translação no plano, todos os vértices andam a mesma quantidade. Andar para a direita soma no primeiro número, e andar para cima soma no segundo. Na atividade 20, o triângulo andou 3 para a direita e 2 para cima, então somamos 3 em todos os x e 2 em todos os y: (1, 1) foi para (4, 3), (−1, 1) foi para (2, 3) e (0, 3) foi para (3, 5).</p>
+  </div>
+</section>
+
+</main>
+
+<div class="navbtns">
+  <button class="btn" id="prev">← Voltar</button>
+  <button class="btn primary" id="next">Avançar →</button>
+</div>
+</div>
+
+<script>
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const C={ind:'#362F78',deep:'#241F52',soft:'#6C63B5',coral:'#E4694F',ans:'#3D5BC0',black:'#2A2650',red:'#D9534F'};
+const P=(a)=>a.map(([x,y])=>`${(+x).toFixed(1)},${(+y).toFixed(1)}`).join(' ');
+const fmt=n=>{const s=(Math.round(n*100)/100).toString().replace('.',',');return n<0?'−'+s.slice(1):s;};
+const ease=k=>k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+function animate(dur,f,done){
+  if(reduce){f(1);done&&done();return;}
+  const t0=performance.now();
+  (function step(t){const p=Math.min(1,(t-t0)/dur);f(ease(p));if(p<1)requestAnimationFrame(step);else done&&done();})(t0);
+}
+
+/* ======== DEMO GENÉRICO ======== */
+let DID=0;
+function demo(id,o){
+  const el=document.getElementById(id),[W,H]=o.vb,pad=14,uid=++DID;
+  const body=o.draw();
+  let s=`<div class="stage"><svg viewBox="${-pad} ${-pad} ${W+2*pad} ${H+2*pad+(o.extraB||0)}" role="img" aria-label="${o.aria||'Figura'}" xmlns="http://www.w3.org/2000/svg">`;
+  s+=`<defs><clipPath id="cp${uid}"><rect x="0" y="0" width="${W}" height="${H}"/></clipPath>`+
+     `<marker id="mk${uid}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="${C.coral}"/></marker></defs>`;
+  s+=`<g${o.clip?` clip-path="url(#cp${uid})"`:''}><g opacity=".22">${body}</g><g class="mov" opacity=".88">${body}</g></g>`;
+  if(o.lines){s+=`<g class="symlines" style="display:none" stroke="${C.ans}" stroke-width="1.8" stroke-dasharray="5 4">`;
+    o.lines.forEach(([x1,y1,x2,y2])=>s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`);s+='</g>';}
+  s+=`<g class="guide"></g></svg></div><div class="ctrls"></div><p class="verdict" aria-live="polite"></p>`;
+  el.innerHTML=s;
+  const mov=el.querySelector('.mov'),guide=el.querySelector('.guide'),ctr=el.querySelector('.ctrls'),ver=el.querySelector('.verdict');
+  let busy=false;
+  const reset=()=>{mov.setAttribute('transform','');guide.innerHTML='';ver.className='verdict';ver.textContent='';};
+  o.tests.forEach(t=>{
+    const b=document.createElement('button');b.className='btn';
+    b.textContent=(t.kind==='fold'?'🪞 ':t.kind==='rot'?'🔄 ':'➡️ ')+t.label;
+    b.onclick=()=>{
+      if(busy)return;busy=true;reset();
+      let tf;
+      if(t.kind==='fold'){
+        const [x1,y1,x2,y2]=t.line,px=(x1+x2)/2,py=(y1+y2)/2,a=Math.atan2(y2-y1,x2-x1)*180/Math.PI;
+        const dx=(x2-x1),dy=(y2-y1),L=Math.hypot(dx,dy),e=Math.max(W,H)/L;
+        guide.innerHTML=`<line x1="${px-dx*e}" y1="${py-dy*e}" x2="${px+dx*e}" y2="${py+dy*e}" stroke="${C.coral}" stroke-width="2.6" stroke-dasharray="7 5"/>`;
+        tf=k=>`translate(${px} ${py}) rotate(${a}) scale(1 ${(1-2*k).toFixed(3)}) rotate(${-a}) translate(${-px} ${-py})`;
+      }else if(t.kind==='rot'){
+        const [cx,cy]=t.c;
+        guide.innerHTML=`<circle cx="${cx}" cy="${cy}" r="5" fill="${C.coral}" stroke="#fff" stroke-width="1.5"/>`;
+        tf=k=>`rotate(${(t.deg*k).toFixed(2)} ${cx} ${cy})`;
+      }else{
+        const [dx,dy]=t.d,[ax,ay]=t.arrow||[W/2-dx/2,H+8];
+        guide.innerHTML=`<line x1="${ax}" y1="${ay}" x2="${ax+dx}" y2="${ay+dy}" stroke="${C.coral}" stroke-width="2.6" marker-end="url(#mk${uid})"/>`;
+        tf=k=>`translate(${(dx*k).toFixed(2)} ${(dy*k).toFixed(2)})`;
+      }
+      animate(t.dur||1500,k=>mov.setAttribute('transform',tf(k)),()=>{
+        ver.className='verdict '+(t.ok?'ok':'no');
+        ver.textContent=(t.ok?'✓ Coincidiu! ':'✗ Não coincidiu. ')+(t.msg||'');busy=false;});
+    };
+    ctr.appendChild(b);
+  });
+  if(o.lines){const b=document.createElement('button');b.className='btn';b.textContent=`📏 Mostrar as ${o.lines.length} linhas`;
+    const g=el.querySelector('.symlines');let on=false;
+    b.onclick=()=>{on=!on;g.style.display=on?'':'none';b.textContent=on?'📏 Esconder as linhas':`📏 Mostrar as ${o.lines.length} linhas`;};ctr.appendChild(b);}
+  const r=document.createElement('button');r.className='btn ghost';r.textContent='↺ Voltar';r.onclick=()=>{if(!busy)reset();};ctr.appendChild(r);
+}
+const radial=(n,cx,cy,R,off=0)=>{const L=[];for(let k=0;k<n;k++){const a=Math.PI/n*k+off;L.push([cx-R*Math.cos(a),cy-R*Math.sin(a),cx+R*Math.cos(a),cy+R*Math.sin(a)].map(v=>+v.toFixed(1)));}return L;};
+
+/* ======== PARTE 1 ======== */
+demo('dRef',{vb:[160,140],aria:'Casinha simétrica',draw:()=>`
+  <polygon points="80,8 150,62 150,132 10,132 10,62" fill="#FFB3A0" stroke="#E4694F" stroke-width="2.5" stroke-linejoin="round"/>
+  <rect x="64" y="86" width="32" height="46" fill="#362F78"/><rect x="24" y="76" width="26" height="22" fill="#A9E5D0" stroke="#2E8F72" stroke-width="2"/>
+  <rect x="110" y="76" width="26" height="22" fill="#A9E5D0" stroke="#2E8F72" stroke-width="2"/><circle cx="80" cy="44" r="9" fill="#FFDD73" stroke="#C99700" stroke-width="2"/>`,
+  tests:[{kind:'fold',label:'Dobrar no meio',line:[80,0,80,140],ok:true,msg:'O lado esquerdo cai certinho em cima do direito.'}]});
+const fan=()=>{let s='<g fill="#362F78">';for(let k=0;k<3;k++)s+=`<path d="M70 70 C54 50 56 22 70 14 C84 22 86 50 70 70 Z" transform="rotate(${k*120} 70 70)"/>`;
+  return `<circle cx="70" cy="70" r="62" fill="#fff" stroke="#241F52" stroke-width="5"/>${s}<path d="M70 14 C84 22 86 50 70 70 Z" fill="#FFB3A0"/><circle cx="70" cy="70" r="12"/></g>`;};
+demo('dRot',{vb:[140,140],aria:'Ventilador de três pás',draw:fan,
+  tests:[{kind:'rot',label:'Girar 120°',c:[70,70],deg:120,ok:true,msg:'Com ⅓ de volta, as pás ocupam o lugar umas das outras. (A pá clarinha mostra quanto girou.)'}]});
+const tileStrip=(x0,n,per)=>{let s='';for(let i=0;i<n;i++){const cx=x0+i*per;
+  s+=`<polygon points="${cx-14},26 ${cx+6},26 ${cx+6},16 ${cx+22},35 ${cx+6},54 ${cx+6},44 ${cx-14},44" fill="${i%2?'#6C63B5':'#E4694F'}"/>`;}return s;};
+demo('dTra',{vb:[200,70],clip:true,extraB:12,aria:'Faixa com setas que se repetem',draw:()=>`<rect x="-200" y="0" width="600" height="70" fill="#FFF8E6"/>${tileStrip(-176,14,40)}`,
+  tests:[{kind:'slide',label:'Deslizar',d:[80,0],ok:true,msg:'Deslizando uma seta laranja + uma roxa, a faixa fica igualzinha.'}]});
+
+/* ======== ATIVIDADE 11 ======== */
+demo('d11a',{vb:[200,110],aria:'Retângulo com diagonais e dois círculos',draw:()=>`
+  <polygon points="10,10 190,10 100,55" fill="#C9C5DD"/><polygon points="10,100 190,100 100,55" fill="#C9C5DD"/>
+  <g stroke="#241F52" stroke-width="2" fill="none"><rect x="10" y="10" width="180" height="90"/><line x1="10" y1="10" x2="190" y2="100"/><line x1="190" y1="10" x2="10" y2="100"/></g>
+  <circle cx="52" cy="55" r="10" fill="#111"/><circle cx="148" cy="55" r="10" fill="#111"/>`,
+  tests:[{kind:'fold',label:'Dobrar na vertical',line:[100,0,100,110],ok:true,msg:'1ª linha de simetria.'},
+         {kind:'fold',label:'Dobrar na horizontal',line:[0,55,200,55],ok:true,msg:'2ª linha de simetria.'},
+         {kind:'fold',label:'Dobrar na diagonal',line:[10,10,190,100],ok:false,msg:'O retângulo saiu de lugar: a diagonal não é linha de simetria.'},
+         {kind:'rot',label:'Girar 180°',c:[100,55],deg:180,ok:true,msg:'Meia volta e tudo volta para o mesmo lugar: tem rotação.'}]});
+const leaf=(()=>{const R=[[100,8],[110,34],[132,22],[130,46],[162,40],[152,66],[170,86],[134,88],[118,102],[108,100],[106,124]];
+  return R.concat(R.slice().reverse().map(([x,y])=>[200-x,y]).filter(([x])=>x!==100));})();
+demo('d11b',{vb:[200,132],aria:'Contorno de folha',draw:()=>`<polygon points="${P(leaf)}" fill="#E4F4EA" stroke="#2E9C5A" stroke-width="3" stroke-linejoin="round"/>`,
+  tests:[{kind:'fold',label:'Dobrar na vertical',line:[100,0,100,132],ok:true,msg:'O lado esquerdo da folha cai em cima do direito.'},
+         {kind:'rot',label:'Girar 180°',c:[100,66],deg:180,ok:false,msg:'A folha ficou de ponta-cabeça.'}]});
+const star11c=()=>{let rays='';for(let k=0;k<16;k++){const a=Math.PI/8*k;rays+=`<line x1="100" y1="100" x2="${(100+52*Math.cos(a)).toFixed(1)}" y2="${(100+52*Math.sin(a)).toFixed(1)}"/>`;}
+  return `<g stroke="#8FC9E8" stroke-width="1.4">${rays}</g><g fill="none" stroke="#1E9A54" stroke-width="10" stroke-linejoin="miter"><rect x="40" y="40" width="120" height="120"/><polygon points="100,15 185,100 100,185 15,100"/></g><circle cx="100" cy="100" r="4" fill="#8FC9E8"/>`;};
+demo('d11c',{vb:[200,200],aria:'Estrela de oito pontas',draw:star11c,lines:radial(8,100,100,98,Math.PI/8*0),
+  tests:[{kind:'rot',label:'Girar 45°',c:[100,100],deg:45,ok:true,msg:'360° ÷ 8 pontas = 45°.'},
+         {kind:'fold',label:'Dobrar na vertical',line:[100,0,100,200],ok:true,msg:'É uma das 8 linhas de simetria.'}]});
+demo('d11d',{vb:[120,200],aria:'Carro visto de cima',draw:()=>`
+  <rect x="8" y="58" width="12" height="8" rx="3" fill="#C25A30"/><rect x="100" y="58" width="12" height="8" rx="3" fill="#C25A30"/>
+  <rect x="18" y="12" width="84" height="176" rx="24" fill="#F08A5D" stroke="#B5532B" stroke-width="2"/>
+  <rect x="28" y="15" width="18" height="8" rx="3" fill="#FFE45C"/><rect x="74" y="15" width="18" height="8" rx="3" fill="#FFE45C"/>
+  <path d="M30 70 Q60 52 90 70 L84 88 Q60 80 36 88 Z" fill="#2B4C9B"/><rect x="34" y="92" width="52" height="56" rx="8" fill="#3A62C4"/>
+  <path d="M38 152 Q60 158 82 152 L86 166 Q60 172 34 166 Z" fill="#2B4C9B"/>
+  <rect x="26" y="178" width="16" height="7" rx="2" fill="#D9363E"/><rect x="78" y="178" width="16" height="7" rx="2" fill="#D9363E"/>`,
+  tests:[{kind:'fold',label:'Dobrar na vertical',line:[60,0,60,200],ok:true,msg:'O lado esquerdo do carro é igual ao direito.'},
+         {kind:'rot',label:'Girar 180°',c:[60,100],deg:180,ok:false,msg:'A frente foi para trás: os faróis amarelos ficaram onde estavam as lanternas vermelhas.'}]});
+const star5=(cx,cy,R,r)=>{const p=[];for(let k=0;k<10;k++){const a=-Math.PI/2+Math.PI/5*k,rr=k%2?r:R;p.push([cx+rr*Math.cos(a),cy+rr*Math.sin(a)]);}return P(p);};
+const strip11e=()=>{let s='<rect x="-240" y="0" width="780" height="70" fill="#fff"/>';
+  for(let i=0;i<13;i++){const cx=-210+i*60;s+=i%2===0?`<polygon points="${star5(cx,35,20,8.5)}" fill="#fff" stroke="#241F52" stroke-width="2.4"/>`
+    :`<circle cx="${cx}" cy="35" r="18" fill="#241F52"/><circle cx="${cx+8}" cy="35" r="14.5" fill="#fff"/>`;}return s;};
+demo('d11e',{vb:[300,70],clip:true,extraB:12,aria:'Faixa com estrela e lua se repetindo',draw:strip11e,
+  tests:[{kind:'slide',label:'Deslizar',d:[120,0],ok:true,msg:'Deslizando uma estrela + uma lua, a faixa fica igual.'},
+         {kind:'fold',label:'Dobrar na vertical',line:[150,0,150,70],ok:false,msg:'As luas ficaram viradas para o outro lado.'},
+         {kind:'rot',label:'Girar 180°',c:[150,35],deg:180,ok:false,msg:'As estrelas ficaram de ponta-cabeça e as luas, viradas para o outro lado.'}]});
+demo('d11f',{vb:[120,130],aria:'Triângulo com faixa, bolinha e quadradinho',draw:()=>`
+  <polygon points="60,8 8,122 112,122" fill="#fff" stroke="#241F52" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M40 46 Q60 58 80 46" fill="none" stroke="#111" stroke-width="8" stroke-linecap="butt"/>
+  <circle cx="32" cy="108" r="7" fill="#111"/><rect x="80" y="100" width="14" height="14" fill="#111"/>`,
+  tests:[{kind:'fold',label:'Dobrar na vertical',line:[60,0,60,130],ok:false,msg:'A bolinha caiu onde estava o quadradinho.'},
+         {kind:'rot',label:'Girar 180°',c:[60,74],deg:180,ok:false,msg:'O triângulo ficou de ponta-cabeça.'}]});
+
+/* ======== ATIVIDADE 16 ======== */
+const G16={xmin:0,xmax:13,ymin:0,ymax:11,u:28,p:30};
+const X=x=>G16.p+(x-G16.xmin)*G16.u,Y=y=>G16.p+(G16.ymax-y)*G16.u;
+const POL16=[[5,10],[10,9],[12,3],[9,0],[3,2],[2,7]],f16=([x,y])=>x+y-12;
+function clipPoly(Pp,f){const out=[];for(let i=0;i<Pp.length;i++){const a=Pp[i],b=Pp[(i+1)%Pp.length],fa=f(a),fb=f(b);if(fa>=0)out.push(a);if((fa>=0)!==(fb>=0)){const t=fa/(fa-fb);out.push([a[0]+t*(b[0]-a[0]),a[1]+t*(b[1]-a[1])]);}}return out;}
+function edgeSegs(Pp,f,sg){const s=[];for(let i=0;i<Pp.length;i++){const a=Pp[i],b=Pp[(i+1)%Pp.length],fa=sg*f(a),fb=sg*f(b);
+  if(fa>=0&&fb>=0)s.push([a,b]);else if(fa>=0||fb>=0){const t=fa/(fa-fb),m=[a[0]+t*(b[0]-a[0]),a[1]+t*(b[1]-a[1])];s.push(fa>=0?[a,m]:[m,b]);}}return s;}
+const sp=pts=>pts.map(([x,y])=>`${X(x).toFixed(1)},${Y(y).toFixed(1)}`).join(' ');
+function grid(g,extra=''){const W=(g.xmax-g.xmin)*g.u+2*g.p,H=(g.ymax-g.ymin)*g.u+2*g.p;
+  const Xg=x=>g.p+(x-g.xmin)*g.u,Yg=y=>g.p+(g.ymax-y)*g.u;
+  let s=`<defs><marker id="ax${g.id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${C.deep}"/></marker>${extra}</defs><g stroke="#DDD7F3" stroke-width="1">`;
+  for(let x=g.xmin;x<=g.xmax;x++)s+=`<line x1="${Xg(x)}" y1="${Yg(g.ymax)}" x2="${Xg(x)}" y2="${Yg(g.ymin)}"/>`;
+  for(let y=g.ymin;y<=g.ymax;y++)s+=`<line x1="${Xg(g.xmin)}" y1="${Yg(y)}" x2="${Xg(g.xmax)}" y2="${Yg(y)}"/>`;
+  s+=`</g><line x1="${Xg(g.xmin)-12}" y1="${Yg(0)}" x2="${Xg(g.xmax)+12}" y2="${Yg(0)}" stroke="${C.deep}" stroke-width="1.6" marker-start="url(#ax${g.id})" marker-end="url(#ax${g.id})"/>`;
+  s+=`<line x1="${Xg(0)}" y1="${Yg(g.ymax)-12}" x2="${Xg(0)}" y2="${Yg(g.ymin)+12}" stroke="${C.deep}" stroke-width="1.6" marker-start="url(#ax${g.id})" marker-end="url(#ax${g.id})"/>`;
+  s+=`<text x="${Xg(g.xmax)+6}" y="${Yg(0)-8}" font-style="italic" font-size="13" fill="${C.deep}">x</text><text x="${Xg(0)+8}" y="${Yg(g.ymax)-4}" font-style="italic" font-size="13" fill="${C.deep}">y</text><g font-size="11" fill="#5B5686">`;
+  for(let k=g.xmin+1;k<g.xmax;k++)if(k)s+=`<text x="${Xg(k)}" y="${Yg(0)+15}" text-anchor="middle">${fmt(k)}</text>`;
+  for(let k=g.ymin+1;k<g.ymax;k++)if(k)s+=`<text x="${Xg(0)-6}" y="${Yg(k)+4}" text-anchor="end">${fmt(k)}</text>`;
+  return {s:s+'</g>',W,H};}
+(function(){
+  G16.id='16';const g=grid(G16);
+  const given=clipPoly(POL16,f16),miss=clipPoly(POL16,p=>-f16(p));
+  const kEdges=edgeSegs(POL16,f16,1),mEdges=edgeSegs(POL16,f16,-1);
+  const segs=(E,c)=>E.map(([a,b])=>`<line x1="${X(a[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(b[1])}" stroke="${c}" stroke-width="3" stroke-linecap="round"/>`).join('');
+  const dots=(L,c)=>L.map(([x,y])=>`<circle cx="${X(x)}" cy="${Y(y)}" r="5.5" fill="${c}" stroke="#fff" stroke-width="1.6"/>`).join('');
+  let s=`<div class="stage"><svg viewBox="0 0 ${g.W} ${g.H}" role="img" aria-label="Polígono com linha de simetria r" xmlns="http://www.w3.org/2000/svg" font-family="Atkinson Hyperlegible">${g.s}`;
+  s+=`<g id="miss16" style="opacity:0;transition:opacity .5s"><polygon points="${sp(miss)}" fill="#3D5BC0" fill-opacity=".12"/>${segs(mEdges,C.ans)}${dots([[9,0],[3,2],[2,7]],C.ans)}</g>`;
+  s+=`<polygon points="${sp(given)}" fill="#8FD3A8" fill-opacity=".45"/>${segs(kEdges,C.black)}`;
+  s+=`<g id="fold16" style="display:none"><polygon points="${sp(given)}" fill="#8FD3A8" fill-opacity=".55"/>${segs(kEdges,'#1E7A4C')}${dots([[5,10],[10,9],[12,3]],'#1E7A4C')}</g>`;
+  s+=`<line x1="${X(1.6)}" y1="${Y(10.4)}" x2="${X(12.4)}" y2="${Y(-0.4)}" stroke="${C.red}" stroke-width="2.2" stroke-dasharray="6 5"/><text x="${X(1.6)-4}" y="${Y(10.4)-6}" font-style="italic" font-weight="700" font-size="15" fill="${C.red}">r</text>`;
+  s+=dots([[5,10],[10,9],[12,3]],C.black);
+  s+=`<g id="hop16"></g></svg></div><div class="ctrls"><button class="btn primary" id="f16b">🪞 Dobrar na reta r</button><button class="btn ghost" id="f16r">↺ Voltar</button></div><p class="verdict" id="f16t" aria-live="polite"></p>`;
+  document.getElementById('d16').innerHTML=s;
+  const fg=document.getElementById('fold16'),ms=document.getElementById('miss16'),ft=document.getElementById('f16t'),hop=document.getElementById('hop16');
+  const px=X(6),py=Y(6);let busy=false;
+  document.getElementById('f16b').onclick=()=>{if(busy)return;busy=true;hop.innerHTML='';fg.style.display='';ft.className='verdict';ft.textContent='';
+    animate(1800,k=>fg.setAttribute('transform',`translate(${px} ${py}) rotate(45) scale(1 ${(1-2*k).toFixed(3)}) rotate(-45) translate(${-px} ${-py})`),
+      ()=>{ms.style.opacity=1;ft.className='verdict ok';ft.textContent='✓ Dobrando na reta r, a parte verde cai exatamente onde fica a parte que falta. Os vértices pararam em (2, 7), (3, 2) e (9, 0).';busy=false;});};
+  document.getElementById('f16r').onclick=()=>{if(busy)return;fg.style.display='none';fg.setAttribute('transform','');ms.style.opacity=0;hop.innerHTML='';ft.className='verdict';ft.textContent='';
+    document.getElementById('hopTxt').className='verdict';document.getElementById('hopTxt').textContent='';};
+  /* saltos na diagonal */
+  const hb=document.getElementById('hopBtns'),ht=document.getElementById('hopTxt');
+  const half=n=>n%2?`${(n-1)/2} passo${(n-1)/2>1?'s':''} e meio`:`${n/2} passos`;
+  [[5,10],[10,9],[12,3]].forEach(([x0,y0])=>{
+    const b=document.createElement('button');b.className='btn';b.textContent=`(${x0}, ${y0})`;
+    b.onclick=()=>{if(busy)return;busy=true;const n=x0+y0-12;
+      let s=`<polyline id="trail" points="${X(x0)},${Y(y0)}" fill="none" stroke="${C.coral}" stroke-width="2.6" stroke-dasharray="2 4" stroke-linecap="round"/>`;
+      const m=[x0-n/2,y0-n/2];
+      s+=`<rect x="${X(m[0])-6}" y="${Y(m[1])-6}" width="12" height="12" fill="none" stroke="${C.red}" stroke-width="1.8" transform="rotate(45 ${X(m[0])} ${Y(m[1])})" opacity="0" id="mid"/>`;
+      s+=`<g id="nums" font-family="Baloo 2" font-weight="700" font-size="12" fill="${C.coral}"></g><circle id="hp" cx="${X(x0)}" cy="${Y(y0)}" r="7" fill="${C.coral}" stroke="#fff" stroke-width="2"/>`;
+      hop.innerHTML=s;ht.className='verdict info';ht.textContent=`Saindo de (${x0}, ${y0})…`;
+      const hp=document.getElementById('hp'),tr=document.getElementById('trail'),nums=document.getElementById('nums');let i=0,pts=`${X(x0)},${Y(y0)}`;
+      const next=()=>{if(i>=n){
+          ht.className='verdict ok';ht.textContent=`✓ ${n} passos na diagonal: ${half(n)} até a reta r e mais ${half(n)} depois dela. Chegou em (${x0-n}, ${y0-n}).`;busy=false;return;}
+        const ax=x0-i,ay=y0-i;
+        animate(reduce?0:420,k=>{const cx=X(ax-k),cy=Y(ay-k);hp.setAttribute('cx',cx);hp.setAttribute('cy',cy);tr.setAttribute('points',pts+` ${cx},${cy}`);},
+          ()=>{i++;pts+=` ${X(x0-i)},${Y(y0-i)}`;nums.insertAdjacentHTML('beforeend',`<text x="${X(x0-i)+9}" y="${Y(y0-i)-4}">${i}</text>`);
+            if(i>=n/2)document.getElementById('mid').setAttribute('opacity',1);setTimeout(next,reduce?0:120);});};
+      next();};
+    hb.appendChild(b);});
+})();
+
+/* ======== ATIVIDADE 17 (3D) ======== */
+const V3={yaw:-30*Math.PI/180,pitch:24*Math.PI/180};
+function pj([x,y,z],S){const c=Math.cos(V3.yaw),s=Math.sin(V3.yaw),x1=x*c+z*s,z1=-x*s+z*c;
+  const cp=Math.cos(V3.pitch),sp=Math.sin(V3.pitch),yy=y*cp-z1*sp,zz=y*sp+z1*cp;
+  return [S.cx+S.s*x1,S.cy-S.s*yy,zz];}
+const hx=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+const mix=(a,b,t)=>{const A=hx(a),B=hx(b);return 'rgb('+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(',')+')';};
+const area=p=>{let s=0;for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length];s+=a[0]*b[1]-b[0]*a[1];}return s/2;};
+const pp=(L)=>L.map(([x,y])=>`${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+function partSVG(S,pt){
+  const c=Math.cos(pt.th||0),s=Math.sin(pt.th||0),[ox,oy,oz]=pt.off||[0,0,0];
+  const b=pt.poly.map(([x,y])=>[x*c-y*s+ox,x*s+y*c+oy]),sg=area(b)>0?1:-1;
+  const B=b.map(([x,y])=>pj([x,y,pt.z0+oz],S)),F=b.map(([x,y])=>pj([x,y,pt.z1+oz],S));
+  const sides=[];
+  for(let i=0;i<b.length;i++){const j=(i+1)%b.length,ex=b[j][0]-b[i][0],ey=b[j][1]-b[i][1],L=Math.hypot(ex,ey)||1;
+    const nx=sg*ey/L,ny=-sg*ex/L;
+    const onCut=pt.cut&&Math.abs(pt.cut(pt.poly[i]))<1e-7&&Math.abs(pt.cut(pt.poly[j]))<1e-7;
+    const fill=onCut?'#FFC9B8':mix(pt.col.dark,pt.col.side,Math.max(0,Math.min(1,(nx*.75+ny*.65+1)/2)));
+    const q=[B[i],B[j],F[j],F[i]];sides.push({d:(q[0][2]+q[1][2]+q[2][2]+q[3][2])/4,s:`<polygon points="${pp(q)}" fill="${fill}" stroke="${fill}" stroke-width=".7"/>`});}
+  sides.sort((a,b)=>a.d-b.d);
+  const frontFill=pt.cutFront?'#FFC9B8':pt.col.face,backFill=pt.cutBack?'#FFC9B8':pt.col.dark;
+  return {d:F.reduce((a,p)=>a+p[2],0)/F.length,s:`<polygon points="${pp(B)}" fill="${backFill}"/>`+sides.map(x=>x.s).join('')+
+    `<polygon points="${pp(F)}" fill="${frontFill}" stroke="${pt.col.dark}" stroke-width="1.2" stroke-linejoin="round"/>`};}
+function clipBy(poly,f){const o=[];for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length],fa=f(a),fb=f(b);
+  if(fa>=0)o.push(a);if((fa>0&&fb<0)||(fa<0&&fb>0)){const t=fa/(fa-fb);o.push([a[0]+t*(b[0]-a[0]),a[1]+t*(b[1]-a[1])]);}}return o;}
+function demo3d(id,o){
+  const el=document.getElementById(id),[W,H]=o.vb,S={cx:o.c[0],cy:o.c[1],s:o.s},D=o.D,z0=-D/2,z1=D/2,uid='p3'+id;
+  el.innerHTML=`<div class="stage"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria}" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="${uid}"><rect x="0" y="0" width="${W}" height="${H}"/></clipPath></defs><g clip-path="url(#${uid})" class="scene"></g></svg></div><div class="ctrls"></div><p class="verdict" aria-live="polite"></p>`;
+  const sc=el.querySelector('.scene'),ctr=el.querySelector('.ctrls'),ver=el.querySelector('.verdict');let busy=false;
+  function draw(st){
+    let parts=[],pre='',post='';
+    const base={poly:o.poly,z0,z1,col:o.col,th:st.th||0,off:[st.slide||0,0,0]};
+    if(st.cut){const {n,c,gap}=st.cut,f=p=>(p[0]-c[0])*n[0]+(p[1]-c[1])*n[1];
+      const A=clipBy(o.poly,f),Bp=clipBy(o.poly,p=>-f(p));
+      parts.push({poly:A,z0,z1,col:o.col,cut:f,off:[n[0]*gap,n[1]*gap,0]},{poly:Bp,z0,z1,col:o.col,cut:p=>-f(p),off:[-n[0]*gap,-n[1]*gap,0]});
+    }else if(st.mid){const g=st.mid.gap;
+      parts.push({poly:o.poly,z0,z1:0,col:o.col,cutFront:g>0.01,off:[0,0,-g]},{poly:o.poly,z0:0,z1,col:o.col,cutBack:g>0.01,off:[0,0,g]});
+    }else parts.push(base);
+    let rendered=parts.filter(p=>p.poly.length>2).map(p=>partSVG(S,p)).sort((a,b)=>a.d-b.d).map(p=>p.s).join('');
+    const midParts=st.mid?parts.map(p=>partSVG(S,p).s):null;
+    if(st.axis){const E=.95,a=pj([0,0,z0-E],S),a2=pj([0,0,z0],S),b2=pj([0,0,z1],S),b=pj([0,0,z1+E],S);
+      pre=`<line x1="${a[0]}" y1="${a[1]}" x2="${a2[0]}" y2="${a2[1]}" stroke="#E4694F" stroke-width="5" stroke-linecap="round"/>`;
+      post=`<line x1="${b2[0]}" y1="${b2[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#E4694F" stroke-width="5" stroke-linecap="round"/><circle cx="${b[0]}" cy="${b[1]}" r="5" fill="#E4694F"/><circle cx="${b2[0]}" cy="${b2[1]}" r="4" fill="#fff" stroke="#E4694F" stroke-width="2"/>`;}
+    if(st.plane&&st.plane.a>0){const pl=st.plane,m=.25;let Q;
+      if(pl.mid){const L=o.planeR;Q=[[-L,-L,0],[L,-L,0],[L,L,0],[-L,L,0]].map(p=>pj([p[0]+(o.pc||[0,0])[0],p[1]+(o.pc||[0,0])[1],0],S));}
+      else{const L=o.planeR,[dx,dy]=pl.d,[cx,cy]=pl.c;Q=[[cx-L*dx,cy-L*dy,z0-m],[cx+L*dx,cy+L*dy,z0-m],[cx+L*dx,cy+L*dy,z1+m],[cx-L*dx,cy-L*dy,z1+m]].map(p=>pj(p,S));}
+      const plS=`<polygon points="${pp(Q)}" fill="#E4694F" fill-opacity="${(.32*pl.a).toFixed(2)}" stroke="#E4694F" stroke-opacity="${pl.a.toFixed(2)}" stroke-width="2" stroke-dasharray="6 4"/>`;
+      if(midParts)rendered=midParts[0]+plS+midParts[1];else post+=plS;}
+    if(o.marker&&!st.cut&&!st.mid){const [mx,my]=o.marker,t=st.th||0,q=pj([mx*Math.cos(t)-my*Math.sin(t)+(st.slide||0),mx*Math.sin(t)+my*Math.cos(t),z1],S);
+      post+=`<circle cx="${q[0]}" cy="${q[1]}" r="6" fill="${o.markerCol||'#FFDD73'}" stroke="#241F52" stroke-width="1.5"/>`;}
+    if(o.dots)post+=`<text x="6" y="${H/2}" font-family="Baloo 2" font-weight="800" font-size="22" fill="#6C63B5">…</text><text x="${W-24}" y="${H/2}" font-family="Baloo 2" font-weight="800" font-size="22" fill="#6C63B5">…</text>`;
+    sc.innerHTML=pre+rendered+post;}
+  const reset=()=>{draw({});ver.className='verdict';ver.textContent='';};reset();
+  o.tests.forEach(t=>{const b=document.createElement('button');b.className='btn';
+    b.textContent=(t.kind==='rot'?'🔄 ':t.kind==='slide'?'➡️ ':'🔪 ')+t.label;
+    b.onclick=()=>{if(busy)return;busy=true;ver.className='verdict';ver.textContent='';
+      let fr;
+      if(t.kind==='rot')fr=k=>({th:t.deg*Math.PI/180*k,axis:true});
+      else if(t.kind==='slide')fr=k=>({slide:t.dx*k});
+      else if(t.kind==='mid')fr=k=>{const a=Math.min(1,k/.35),g=k<.4?0:(k-.4)/.6*o.gap;return {mid:{gap:g},plane:{mid:true,a:k<.4?a:1-(k-.4)/.6*.8}};};
+      else{const L=Math.hypot(...t.d),d=[t.d[0]/L,t.d[1]/L],n=[-d[1],d[0]];
+        fr=k=>{const a=Math.min(1,k/.35),g=k<.4?0:(k-.4)/.6*o.gap;return k<.4?{plane:{d,c:t.c,a}}:{cut:{n,c:t.c,gap:g},plane:{d,c:t.c,a:1-(k-.4)/.6*.8}};};}
+      if(t.kind==='rot')draw({axis:true});
+      animate(t.dur||(t.kind==='rot'?1800:2000),k=>draw(fr(k)),()=>{ver.className='verdict '+(t.ok?'ok':'no');
+        ver.textContent=(t.ok?'✓ ':'✗ ')+t.msg;busy=false;});};
+    ctr.appendChild(b);});
+  const r=document.createElement('button');r.className='btn ghost';r.textContent='↺ Voltar';r.onclick=()=>{if(!busy)reset();};ctr.appendChild(r);}
+
+const flower3=[];for(let k=0;k<160;k++){const t=2*Math.PI*k/160,r=1+.12*Math.cos(8*t);flower3.push([r*Math.cos(t),r*Math.sin(t)]);}
+const hex3=[0,1,2,3,4,5].map(k=>[Math.cos(Math.PI/3*k),Math.sin(Math.PI/3*k)]);
+const gear3=[];for(let k=0;k<32;k++){const t=2*Math.PI*k/32,r=k%2?.78:1;gear3.push([r*Math.cos(t),r*Math.sin(t)]);}
+demo3d('d17a',{vb:[300,250],c:[150,128],s:78,D:.5,gap:.32,planeR:1.45,aria:'Peça com oito ondas',poly:flower3,
+  col:{face:'#1E8A4C',side:'#8FD1A9',dark:'#146B39'},marker:[1.12,0],
+  tests:[{kind:'rot',label:'Girar 45° no eixo',deg:45,ok:true,msg:'Coincidiu! 8 ondas: 360° ÷ 8 = 45°.'},
+         {kind:'cut',label:'Cortar pelo centro',d:[1,0],c:[0,0],ok:true,msg:'As duas metades são o reflexo uma da outra.'},
+         {kind:'mid',label:'Cortar ao meio na espessura',ok:true,msg:'As duas fatias são o reflexo uma da outra.'}]});
+demo3d('d17b',{vb:[300,250],c:[150,128],s:82,D:.55,gap:.32,planeR:1.4,aria:'Peça hexagonal',poly:hex3,
+  col:{face:'#FFF0A0',side:'#FFF8D2',dark:'#C9B44A'},marker:[.82,0],markerCol:'#E4694F',
+  tests:[{kind:'rot',label:'Girar 60° no eixo',deg:60,ok:true,msg:'Coincidiu! 6 lados: 360° ÷ 6 = 60°.'},
+         {kind:'cut',label:'Cortar pelos vértices',d:[1,0],c:[0,0],ok:true,msg:'As duas metades são o reflexo uma da outra.'},
+         {kind:'mid',label:'Cortar ao meio na espessura',ok:true,msg:'As duas fatias são o reflexo uma da outra.'},
+         {kind:'cut',label:'Cortar fora do centro',d:[0,1],c:[.45,0],ok:false,msg:'As duas partes ficaram diferentes: esse corte não é de simetria.'}]});
+const wave3=(()=>{const P=[[3.4,0],[-3.4,0]];for(let k=0;k<=136;k++){const x=-3.4+6.8*k/136;P.push([x,.85+.2*Math.sin(2*Math.PI*x)]);}return P;})();
+demo3d('d17c',{vb:[340,230],c:[175,150],s:72,D:.9,gap:.3,planeR:1.6,pc:[0,.5],aria:'Bloco com borda ondulada',poly:wave3,dots:true,
+  col:{face:'#7DCBEA',side:'#D4F0FA',dark:'#3A8FB3'},marker:[.25,1.05],markerCol:'#E4694F',
+  tests:[{kind:'slide',label:'Deslizar 1 onda',dx:1,ok:true,msg:'Coincidiu! Com as ondas se repetindo, deslizar uma onda inteira deixa tudo igual.'},
+         {kind:'cut',label:'Cortar no alto da onda',d:[0,1],c:[.25,.5],ok:true,msg:'As duas partes são o reflexo uma da outra.'},
+         {kind:'mid',label:'Cortar ao meio na espessura',ok:true,msg:'As duas fatias são o reflexo uma da outra.'},
+         {kind:'cut',label:'Cortar na horizontal',d:[1,0],c:[0,.5],ok:false,msg:'A parte de cima tem ondas e a de baixo é reta: não são reflexo uma da outra.'}]});
+demo3d('d17d',{vb:[300,250],c:[150,128],s:80,D:.5,gap:.32,planeR:1.4,aria:'Peça em forma de engrenagem',poly:gear3,
+  col:{face:'#B8642A',side:'#E6A877',dark:'#7E3F14'},marker:[.9,0],
+  tests:[{kind:'rot',label:'Girar 22,5° no eixo',deg:22.5,ok:true,msg:'Coincidiu! 16 dentes: 360° ÷ 16 = 22,5°.'},
+         {kind:'cut',label:'Cortar pela ponta de um dente',d:[1,0],c:[0,0],ok:true,msg:'As duas metades são o reflexo uma da outra.'},
+         {kind:'mid',label:'Cortar ao meio na espessura',ok:true,msg:'As duas fatias são o reflexo uma da outra.'}]});
+
+/* ======== ATIVIDADE 20 ======== */
+(function(){
+  const g={xmin:-2,xmax:5,ymin:0,ymax:6,u:44,p:30,id:'20'},gr=grid(g);
+  const Xg=x=>g.p+(x-g.xmin)*g.u,Yg=y=>g.p+(g.ymax-y)*g.u,T=[[1,1],[-1,1],[0,3]];
+  const tri=(pts,fill,stroke,dash,op)=>`<polygon points="${pts.map(([x,y])=>`${Xg(x)},${Yg(y)}`).join(' ')}" fill="${fill}" fill-opacity="${op}" stroke="${stroke}" stroke-width="2.6" stroke-linejoin="round"${dash?' stroke-dasharray="6 4"':''}/>`;
+  const dts=(pts,c)=>pts.map(([x,y])=>`<circle cx="${Xg(x)}" cy="${Yg(y)}" r="5.5" fill="${c}" stroke="#fff" stroke-width="1.6"/>`).join('');
+  let s=`<div class="stage"><svg viewBox="0 0 ${gr.W} ${gr.H}" role="img" aria-label="Triângulo sendo transladado" xmlns="http://www.w3.org/2000/svg" font-family="Atkinson Hyperlegible">${gr.s}`;
+  s+=tri(T,'#362F78',C.ind,false,.12)+dts(T,C.ind);
+  s+=`<g id="mid20" style="opacity:0;transition:opacity .4s">${tri(T.map(([x,y])=>[x+3,y]),'#6C63B5',C.soft,true,.05)}</g>`;
+  s+=`<g id="mv20">${tri(T,'#E4694F',C.coral,false,.25)}${dts(T,C.coral)}</g><g id="cnt20" font-family="Baloo 2" font-weight="800" font-size="20" fill="${C.coral}"></g></svg></div>`;
+  document.getElementById('d20').innerHTML=s;
+  const mv=document.getElementById('mv20'),mid=document.getElementById('mid20'),cnt=document.getElementById('cnt20'),tx=document.getElementById('t20txt');
+  const bA=document.getElementById('t20a'),bB=document.getElementById('t20b');let busy=false;
+  function hops(n,dx,dy,base,label,done){let i=0;const go=()=>{if(i>=n){done();return;}
+      animate(reduce?0:480,k=>mv.setAttribute('transform',`translate(${(base[0]+dx*(i+k))*g.u} ${-(base[1]+dy*(i+k))*g.u})`),
+        ()=>{i++;const vx=1+base[0]+dx*i,vy=1+base[1]+dy*i;cnt.insertAdjacentHTML('beforeend',`<text x="${Xg(vx)+(dx?-6:10)}" y="${Yg(vy)+(dx?22:6)}">${i}</text>`);
+          tx.className='verdict info';tx.textContent=`${i} ${label}…`;setTimeout(go,reduce?0:150);});};go();}
+  bA.onclick=()=>{if(busy)return;busy=true;bA.disabled=true;cnt.innerHTML='';
+    hops(3,1,0,[0,0],'para a direita',()=>{tx.className='verdict ok';tx.textContent='✓ Andou 3 para a direita: somamos 3 no x de cada vértice. Agora os vértices estão em (4, 1), (2, 1) e (3, 3).';bB.disabled=false;busy=false;});};
+  bB.onclick=()=>{if(busy)return;busy=true;bB.disabled=true;mid.style.opacity=1;cnt.innerHTML='';
+    hops(2,0,1,[3,0],'para cima',()=>{tx.className='verdict ok';tx.textContent='✓ Andou 2 para cima: somamos 2 no y de cada vértice. Resultado final: (4, 3), (2, 3) e (3, 5).';busy=false;});};
+  document.getElementById('t20r').onclick=()=>{if(busy)return;mv.setAttribute('transform','');mid.style.opacity=0;cnt.innerHTML='';tx.className='verdict';tx.textContent='';bA.disabled=false;bB.disabled=true;};
+  /* correntes */
+  const rows=[['(1, 1)','(4, 1)','(4, 3)','1 + 3','1 + 2'],['(−1, 1)','(2, 1)','(2, 3)','−1 + 3','1 + 2'],['(0, 3)','(3, 3)','(3, 5)','0 + 3','3 + 2']];
+  document.getElementById('chains20').innerHTML=rows.map(r=>`<div class="chain"><span class="node">${r[0]}</span>
+    <button class="op" data-op="+3 no x: ${r[3]}" data-res="${r[1]}" aria-label="Mostrar a conta">?</button><span class="node q">?</span>
+    <button class="op" data-op="+2 no y: ${r[4]}" data-res="${r[2]}" aria-label="Mostrar a conta">?</button><span class="node q">?</span></div>`).join('');
+  document.querySelectorAll('#chains20 .op').forEach(b=>b.onclick=()=>{b.textContent=b.dataset.op;b.classList.add('shown');
+    const n=b.nextElementSibling;n.textContent=b.dataset.res;n.classList.remove('q');});
+})();
+
+/* respostas */
+document.querySelectorAll('.reveal').forEach(b=>{b.setAttribute('aria-expanded','false');
+  b.onclick=()=>{const a=document.getElementById(b.dataset.ans),on=!a.classList.contains('shown');
+    a.classList.toggle('shown',on);b.textContent=on?'Esconder resposta':'Ver resposta';b.setAttribute('aria-expanded',on);};});
+
+/* navegação */
+const parts=[...document.querySelectorAll('.part')],tabs=document.getElementById('tabs');let cur=0;
+parts.forEach((p,i)=>{const b=document.createElement('button');b.className='tab';b.textContent=(i+1)+'. '+p.dataset.name;b.onclick=()=>show(i);tabs.appendChild(b);});
+function show(i){cur=i;parts.forEach((p,j)=>p.classList.toggle('active',j===i));
+  [...tabs.children].forEach((t,j)=>{t.classList.toggle('active',j===i);t.setAttribute('aria-current',j===i?'step':'false');});
+  document.getElementById('fill').style.width=((i+1)/parts.length*100)+'%';
+  document.getElementById('plabel').textContent=`Parte ${i+1} de ${parts.length} — ${parts[i].dataset.name}`;
+  document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===parts.length-1;
+  window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});}
+document.getElementById('prev').onclick=()=>cur>0&&show(cur-1);
+document.getElementById('next').onclick=()=>cur<parts.length-1&&show(cur+1);
+show(0);
+</script>
+</body>
+</html>
