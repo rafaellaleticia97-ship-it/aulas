@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Probabilidade — 8º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F4FC; --ind:#362F78; --ind-d:#241F52; --ind-s:#6C63B5;
+  --mint:#A9E5D0; --coral:#FFB3A0; --coral-d:#E4694F; --yel:#FFDD73;
+  --tx:#2A2650; --tx2:#5B5686; --bd:#E3DEF7; --white:#fff;
+  --ok:#1E7A4F; --okbg:#E6F7EE; --no:#A8402E; --nobg:#FDECE8;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+@media (min-width:900px){html{font-size:19px}}
+@media (min-width:1500px){html{font-size:24px}}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:'Atkinson Hyperlegible',sans-serif;line-height:1.55;overflow-x:hidden}
+h1,h2,h3,.baloo{font-family:'Baloo 2',cursive;color:var(--ind-d);line-height:1.2}
+h1{font-size:1.8rem;margin:.4rem 0 .2rem;font-weight:800}
+h2{font-size:1.4rem;margin:.2rem 0 .6rem;font-weight:800}
+h3{font-size:1.1rem;margin:1rem 0 .4rem;font-weight:700}
+p{margin:.5rem 0}
+
+/* fundo */
+.bg-sym{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-sym span{position:absolute;font-family:'Baloo 2',cursive;font-weight:700;color:var(--ind);opacity:.08;animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(30px,-40px) rotate(18deg)}}
+@media (prefers-reduced-motion:reduce){.bg-sym span{animation:none}*{transition:none!important}}
+
+/* progresso */
+.progress{position:sticky;top:0;z-index:10;background:rgba(246,244,252,.94);backdrop-filter:blur(4px);padding:8px 16px 6px;border-bottom:1px solid var(--bd)}
+.track{height:7px;background:var(--bd);border-radius:99px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--ind-s),var(--ind));width:0;transition:width .4s}
+.plabel{font-family:'Baloo 2',cursive;font-weight:600;font-size:.8rem;color:var(--tx2);margin-top:3px}
+
+.wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:12px 16px 40px}
+@media (min-width:1500px){.wrap{max-width:1100px}}
+.subtitle{color:var(--tx2);margin:0 0 .6rem}
+
+/* abas */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:.4rem 0 1rem}
+.tab{font-family:'Baloo 2',cursive;font-weight:600;font-size:11px;padding:4px 9px;border-radius:99px;border:1.5px solid var(--bd);background:#fff;color:var(--ind);cursor:pointer}
+@media (min-width:900px){.tab{font-size:13px}}
+@media (min-width:1500px){.tab{font-size:16px;padding:5px 12px}}
+.tab.active{background:var(--ind);color:#fff;border-color:var(--ind)}
+.tab:focus-visible,.btn:focus-visible,.navbtn:focus-visible,.opt:focus-visible{outline:3px solid var(--yel);outline-offset:2px}
+
+/* cartões */
+.section{display:none}
+.section.active{display:block}
+.card{background:#fff;border:1px solid var(--bd);border-radius:18px;padding:18px 18px 16px;box-shadow:0 6px 20px rgba(54,47,120,.07);margin-bottom:14px}
+.eyebrow{display:inline-block;font-family:'Baloo 2',cursive;font-weight:700;font-size:.75rem;letter-spacing:.03em;text-transform:uppercase;padding:2px 10px;border-radius:99px;background:var(--mint);color:var(--ind-d)}
+.eyebrow.rev{background:var(--yel)}
+.eyebrow.quiz{background:var(--coral)}
+
+.think{background:#EEEBFA;border-radius:14px;padding:12px 14px;margin:12px 0}
+.think b.t,.tip b.t,.copy b.t{font-family:'Baloo 2',cursive;font-weight:700;display:block;color:var(--ind-d)}
+.tip{background:#FFF8E6;border-left:7px solid var(--yel);border-radius:10px;padding:12px 14px;margin:12px 0}
+.copy{background:#F1FBF6;border:2.5px dashed #3BAA7E;border-radius:14px;padding:12px 14px;margin:12px 0}
+.algo{background:#F1EEFC;border:1.5px solid #CFC8F0;border-radius:14px;padding:12px 14px;margin:12px 0}
+.algo div{margin:3px 0}
+.algo b{color:var(--ind)}
+
+.formula{font-family:'Baloo 2',cursive;font-weight:700;font-size:1.15rem;color:var(--ind-d);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:10px 0}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-family:'Baloo 2',cursive;font-weight:700;line-height:1.1;margin:0 2px}
+.frac>span:first-child{border-bottom:2px solid currentColor;padding:0 4px}
+.frac>span:last-child{padding:0 4px}
+.big{font-size:1.25rem}
+
+/* slots (princípio multiplicativo) */
+.slots{display:flex;align-items:flex-end;justify-content:center;flex-wrap:wrap;gap:6px;margin:12px 0}
+.slot{text-align:center;min-width:60px}
+.slot .n{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.4rem;color:#fff;background:var(--ind);border-radius:12px;padding:2px 12px;display:inline-block;min-width:46px}
+.slot .l{font-size:.75rem;color:var(--tx2);margin-top:3px}
+.op{font-family:'Baloo 2',cursive;font-weight:700;background:var(--coral);color:var(--ind-d);border-radius:99px;padding:0 10px;margin-bottom:22px}
+.eq{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.4rem;color:var(--ind-d);margin-bottom:18px}
+
+/* tabelas */
+table{border-collapse:collapse;margin:10px auto;font-size:.95rem}
+th,td{border:1px solid var(--bd);padding:6px 9px;text-align:center}
+th{background:#EEEBFA;font-family:'Baloo 2',cursive;color:var(--ind-d)}
+td.hit{background:var(--mint);font-weight:700}
+tr.hit td{background:var(--mint);font-weight:700}
+.scroll{overflow-x:auto}
+
+/* botões */
+.btn{font-family:'Baloo 2',cursive;font-weight:700;font-size:.95rem;background:var(--ind);color:#fff;border:none;border-radius:12px;padding:6px 14px;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--ind);border:1.5px solid var(--ind)}
+.reveal{display:none;margin-top:8px}
+.reveal.show{display:block}
+
+/* try-box */
+.try{border:2.5px dashed var(--ind-s);border-radius:16px;padding:12px 14px;margin:14px 0;background:#fff}
+.try .q{font-weight:700}
+.try .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.try input{font-family:'Atkinson Hyperlegible',sans-serif;font-size:1rem;padding:6px 10px;border:1.5px solid var(--bd);border-radius:10px;width:9rem}
+.fb{margin-top:8px;padding:8px 12px;border-radius:10px;display:none}
+.fb.ok{display:block;background:var(--okbg);color:var(--ok)}
+.fb.no{display:block;background:var(--nobg);color:var(--no)}
+.small{font-size:.85rem;color:var(--tx2)}
+
+/* figuras */
+.fig{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:10px 0}
+.fig svg{max-width:100%;height:auto}
+.dice{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:10px 0}
+.die{text-align:center;font-size:.8rem;color:var(--tx2)}
+.die svg{width:3.2rem;height:3.2rem;display:block;margin:0 auto 2px}
+
+/* quiz */
+.score{font-family:'Baloo 2',cursive;font-weight:700;background:var(--ind);color:#fff;border-radius:12px;padding:6px 14px;display:inline-block;margin-bottom:10px}
+.qcard{border:1px solid var(--bd);border-radius:16px;padding:14px;margin:12px 0;background:#fff}
+.qcard .qn{font-family:'Baloo 2',cursive;font-weight:700;color:var(--ind-s);font-size:.9rem}
+.opts{display:grid;gap:7px;margin-top:8px}
+.opt{text-align:left;font-family:'Atkinson Hyperlegible',sans-serif;font-size:1rem;background:#F9F8FE;border:1.5px solid var(--bd);border-radius:12px;padding:8px 12px;cursor:pointer;color:var(--tx)}
+.opt:hover:not(:disabled){border-color:var(--ind-s)}
+.opt.right{background:var(--okbg);border-color:var(--ok);color:var(--ok);font-weight:700}
+.opt.wrong{background:var(--nobg);border-color:var(--no);color:var(--no)}
+.opt:disabled{cursor:default}
+.expl{display:none;margin-top:8px;background:#EEEBFA;border-radius:10px;padding:8px 12px;font-size:.95rem}
+.expl.show{display:block}
+.final{display:none;margin-top:12px;background:var(--mint);border-radius:14px;padding:12px 14px;font-weight:700}
+
+/* navegação */
+.nav{display:flex;justify-content:space-between;margin-top:10px}
+.navbtn{font-family:'Baloo 2',cursive;font-weight:600;font-size:11px;padding:4px 9px;border-radius:99px;border:1.5px solid var(--ind);background:#fff;color:var(--ind);cursor:pointer}
+@media (min-width:900px){.navbtn{font-size:13px}}
+@media (min-width:1500px){.navbtn{font-size:16px;padding:5px 12px}}
+.navbtn.fwd{background:var(--ind);color:#fff}
+.navbtn:disabled{opacity:.35;cursor:default}
+.summary p{text-align:justify}
+.book{border-top:1.5px solid var(--bd);padding-top:12px;margin-top:14px}
+.book:first-of-type{border-top:none;margin-top:6px}
+.bq{margin-bottom:6px}
+.bn{display:inline-block;font-family:'Baloo 2',cursive;font-weight:800;background:var(--coral-d);color:#fff;border-radius:6px;padding:0 8px;margin-right:4px}
+.bi{margin:10px 0 10px 12px}
+.btn.sm{font-size:.8rem;padding:2px 10px;margin-left:6px;vertical-align:middle}
+.ans{background:var(--okbg);color:var(--ok);border-radius:10px;padding:6px 12px}
+</style>
+</head>
+<body>
+
+<div class="bg-sym" aria-hidden="true" id="bgSym"></div>
+
+<div class="progress" role="navigation" aria-label="Progresso da aula">
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div class="plabel" id="plabel">Parte 1 de 7</div>
+</div>
+
+<main class="wrap">
+  <h1>Probabilidade</h1>
+  <p class="subtitle">8º ano · Matemática · Qual é a chance de algo acontecer?</p>
+  <div class="tabs" id="tabs" role="tablist"></div>
+
+  <!-- PARTE 1 -->
+  <section class="section" data-name="Aquecimento">
+    <div class="card">
+      <span class="eyebrow">Parte 1 · Aquecimento</span>
+      <h2>Qual é a chance?</h2>
+      <p>Você joga uma moeda para cima. Ela pode cair de dois jeitos: <b>cara</b> ou <b>coroa</b>.</p>
+      <div class="fig">
+        <svg viewBox="0 0 260 110" width="260" role="img" aria-label="Duas faces de uma moeda: cara e coroa">
+          <circle cx="65" cy="50" r="40" fill="#FFDD73" stroke="#C99A1E" stroke-width="3"/>
+          <circle cx="65" cy="50" r="31" fill="none" stroke="#C99A1E" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text x="65" y="57" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="20" fill="#241F52">C</text>
+          <text x="65" y="106" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="13" fill="#5B5686">cara</text>
+          <circle cx="195" cy="50" r="40" fill="#FFDD73" stroke="#C99A1E" stroke-width="3"/>
+          <circle cx="195" cy="50" r="31" fill="none" stroke="#C99A1E" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text x="195" y="57" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="20" fill="#241F52">K</text>
+          <text x="195" y="106" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="13" fill="#5B5686">coroa</text>
+        </svg>
+      </div>
+      <p><b>Qual é a chance de cair cara?</b> Pense um pouco antes de clicar.</p>
+      <button class="btn ghost" onclick="toggleReveal('r1',this)">Ver resposta</button>
+      <div class="reveal" id="r1">
+        <p>É <b>1 chance em 2</b>: um resultado que queremos (cara) entre dois possíveis. Em fração, fica <span class="frac"><span>1</span><span>2</span></span>, que é o mesmo que 50%.</p>
+        <p>Você acabou de calcular uma <b>probabilidade</b>! Hoje vamos fazer isso com dados, urnas e senhas.</p>
+      </div>
+      <div class="try" data-answer="1/6" data-type="frac" data-hint="Quase! Quantas faces tem um dado? E quantas delas mostram o 5?">
+        <div class="q">Agora é sua vez: num dado comum, qual é a chance de sair o número 5?</div>
+        <div class="small">Responda em fração, como 1/2.</div>
+        <div class="row"><input type="text" aria-label="Sua resposta"><button class="btn" onclick="checkTry(this)">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 2 -->
+  <section class="section" data-name="Revisão: contagem">
+    <div class="card">
+      <span class="eyebrow rev">Parte 2 · Revisão</span>
+      <h2>Princípio multiplicativo</h2>
+      <p>Você já viu isto: quando fazemos <b>escolhas em sequência</b>, multiplicamos o número de opções de cada escolha.</p>
+      <div class="think">
+        <b class="t">Pense assim</b>
+        Você vai montar um lanche. Escolhe <b>1 pão</b> (francês ou integral) e <b>1 recheio</b> (queijo, frango ou ovo). Cada pão combina com cada recheio.
+      </div>
+      <div class="fig">
+        <svg viewBox="0 0 370 232" width="370" role="img" aria-label="Árvore: 2 pães, cada um com 3 recheios, total 6 caminhos">
+          <g stroke="#362F78" stroke-width="2" fill="none">
+            <path d="M74 116 H100 V60 H118"/><path d="M100 116 V172 H118"/>
+            <path d="M206 60 H222 V25 H246"/><path d="M222 60 H246"/><path d="M222 60 V95 H246"/>
+            <path d="M206 172 H222 V137 H246"/><path d="M222 172 H246"/><path d="M222 172 V207 H246"/>
+          </g>
+          <ellipse cx="40" cy="116" rx="34" ry="18" fill="#EEEBFA" stroke="#362F78" stroke-width="2"/>
+          <text x="40" y="121" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="14" fill="#241F52">início</text>
+          <g font-family="Baloo 2" font-weight="700" font-size="14" text-anchor="middle">
+            <rect x="118" y="45" width="88" height="30" rx="9" fill="#362F78"/><text x="162" y="65" fill="#fff">francês</text>
+            <rect x="118" y="157" width="88" height="30" rx="9" fill="#362F78"/><text x="162" y="177" fill="#fff">integral</text>
+          </g>
+          <g font-family="Atkinson Hyperlegible" font-size="13" fill="#2A2650">
+            <text x="252" y="30">queijo</text><text x="252" y="65">frango</text><text x="252" y="100">ovo</text>
+            <text x="252" y="142">queijo</text><text x="252" y="177">frango</text><text x="252" y="212">ovo</text>
+          </g>
+          <g font-family="Baloo 2" font-weight="700" font-size="12" fill="#E4694F">
+            <text x="318" y="30">1</text><text x="318" y="65">2</text><text x="318" y="100">3</text>
+            <text x="318" y="142">4</text><text x="318" y="177">5</text><text x="318" y="212">6</text>
+          </g>
+        </svg>
+      </div>
+      <p>São 6 caminhos. Sem desenhar a árvore, fazemos a conta direto:</p>
+      <div class="slots">
+        <div class="slot"><div class="n">2</div><div class="l">pães</div></div>
+        <div class="op">×</div>
+        <div class="slot"><div class="n">3</div><div class="l">recheios</div></div>
+        <div class="eq">= 6</div>
+      </div>
+      <h3>E quando não pode repetir?</h3>
+      <p>Quatro corredores disputam o pódio (1º, 2º e 3º lugar). Quem ficou em 1º não pode ficar também em 2º. Por isso, a cada posição sobra uma pessoa a menos:</p>
+      <div class="slots">
+        <div class="slot"><div class="n">4</div><div class="l">1º lugar</div></div>
+        <div class="op">×</div>
+        <div class="slot"><div class="n">3</div><div class="l">2º lugar</div></div>
+        <div class="op">×</div>
+        <div class="slot"><div class="n">2</div><div class="l">3º lugar</div></div>
+        <div class="eq">= 24</div>
+      </div>
+      <div class="tip">
+        <b class="t">Dica: repete ou não repete?</b>
+        Leia o enunciado procurando essa informação. <b>Pode repetir</b> → o número de opções é o mesmo em todos os traços (verdadeiro ou falso, por exemplo, dá 2 · 2 · 2 · …). <b>Não pode repetir</b> → o número diminui de 1 em 1, porque quem já foi escolhido sai da lista.
+      </div>
+      <div class="try" data-answer="16" data-type="num" data-hint="Quase! Cada questão tem 2 opções (V ou F). Desenhe 4 traços e coloque 2 em cada um.">
+        <div class="q">Agora é sua vez: um teste tem 4 questões de verdadeiro ou falso. De quantas maneiras diferentes ele pode ser respondido?</div>
+        <div class="row"><input type="text" inputmode="numeric" aria-label="Sua resposta"><button class="btn" onclick="checkTry(this)">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 3 -->
+  <section class="section" data-name="Probabilidade">
+    <div class="card">
+      <span class="eyebrow">Parte 3 · Conceito novo</span>
+      <h2>Calculando a probabilidade</h2>
+      <p>Na revisão, você <b>contou</b> possibilidades. Agora vamos usar essa contagem para medir a <b>chance</b> de algo acontecer.</p>
+      <p>Lançar um dado é um <b>experimento aleatório</b>: não dá para saber o resultado antes. Todos os resultados possíveis formam o <b>espaço amostral</b>. Os resultados que nos interessam formam o <b>evento</b>.</p>
+      <div class="think">
+        <b class="t">Pense assim</b>
+        Um pote tem 10 balas, e 3 delas são de morango. Você pega uma de olhos fechados. A chance de pegar morango é 3 em 10, ou seja, <span class="frac"><span>3</span><span>10</span></span>. Você divide o que <b>quer</b> pelo <b>total</b>.
+      </div>
+      <div class="formula">P(evento) = <span class="frac big"><span>casos favoráveis</span><span>casos possíveis</span></span></div>
+
+      <h3>Exemplo: número ímpar e maior que 1</h3>
+      <p>Lançamos um dado. Qual a probabilidade de sair um número <b>ímpar e maior que 1</b>?</p>
+      <div class="dice" id="diceEx"></div>
+      <div class="scroll"><table>
+        <tr><th>Número</th><th>É ímpar?</th><th>É maior que 1?</th><th>Serve?</th></tr>
+        <tr><td>1</td><td>sim</td><td>não</td><td>✗</td></tr>
+        <tr><td>2</td><td>não</td><td>sim</td><td>✗</td></tr>
+        <tr class="hit"><td>3</td><td>sim</td><td>sim</td><td>✓</td></tr>
+        <tr><td>4</td><td>não</td><td>sim</td><td>✗</td></tr>
+        <tr class="hit"><td>5</td><td>sim</td><td>sim</td><td>✓</td></tr>
+        <tr><td>6</td><td>não</td><td>sim</td><td>✗</td></tr>
+      </table></div>
+      <div class="formula">P = <span class="frac"><span>2</span><span>6</span></span> = <span class="frac"><span>1</span><span>3</span></span> ≈ 33%</div>
+      <div class="tip">
+        <b class="t">Dica: duas condições juntas</b>
+        Quando aparece "ímpar <b>e</b> maior que 1", o número precisa cumprir <b>as duas</b> ao mesmo tempo. Um erro comum é olhar só a primeira (ímpares: 1, 3, 5) e responder 3/6. Risque todo número que falha em qualquer uma das condições.
+      </div>
+      <div class="copy">
+        <b class="t">Copie no caderno</b>
+        <b>Espaço amostral</b>: todos os resultados possíveis de um experimento.<br>
+        <b>Evento</b>: os resultados que nos interessam (casos favoráveis).<br>
+        <b>Probabilidade</b> = casos favoráveis ÷ casos possíveis.<br>
+        A probabilidade sempre fica entre 0 e 1. Vale <b>0</b> no <b>evento impossível</b> (sair 7 num dado) e <b>1</b> no <b>evento certo</b> (sair um número menor que 7).
+      </div>
+      <div class="algo" aria-label="Passos para calcular uma probabilidade">
+        <div><b>Passo 1.</b> Conte todos os resultados possíveis (espaço amostral).</div>
+        <div><b>Passo 2.</b> Conte os resultados que cumprem o que foi pedido (casos favoráveis).</div>
+        <div><b>Passo 3.</b> Monte a fração: favoráveis em cima, possíveis embaixo.</div>
+        <div><b>Passo 4.</b> Simplifique a fração (e escreva em %, se pedirem).</div>
+      </div>
+      <div class="try" data-answer="1/2" data-type="frac" data-hint="Quase! Liste os números primos de 1 a 6. Lembre: o 1 não é primo.">
+        <div class="q">Agora é sua vez: num dado comum, qual a probabilidade de sair um número primo?</div>
+        <div class="small">Responda em fração.</div>
+        <div class="row"><input type="text" aria-label="Sua resposta"><button class="btn" onclick="checkTry(this)">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 4 -->
+  <section class="section" data-name="Dois experimentos">
+    <div class="card">
+      <span class="eyebrow">Parte 4 · Conceito novo</span>
+      <h2>Moeda e dado ao mesmo tempo</h2>
+      <div class="think" style="background:#FFF8E6;border:1.5px solid #FFDD73">
+        <b class="t">Situação</b>
+        <b>Lançamos uma moeda e um dado ao mesmo tempo.</b> A moeda pode dar cara ou coroa (2 resultados). O dado pode dar 1, 2, 3, 4, 5 ou 6 (6 resultados). Quantos resultados diferentes podem sair juntando os dois?
+      </div>
+      <p>Aqui acontecem dois experimentos juntos. Para contar o espaço amostral, usamos o princípio multiplicativo da revisão.</p>
+      <div class="think">
+        <b class="t">Pense assim</b>
+        É igual ao lanche: cada pão combinava com cada recheio. Aqui, cada lado da moeda combina com cada face do dado.
+      </div>
+      <div class="slots">
+        <div class="slot"><div class="n">2</div><div class="l">moeda</div></div>
+        <div class="op">×</div>
+        <div class="slot"><div class="n">6</div><div class="l">dado</div></div>
+        <div class="eq">= 12 resultados</div>
+      </div>
+      <h3>Exemplo: cara e número par</h3>
+      <p><b>Agora, lançando a moeda e o dado, qual a probabilidade de sair cara e um número par?</b></p>
+      <p>Na tabela, C = cara e K = coroa. As casas marcadas com ✓ são as que têm cara <b>e</b> número par.</p>
+      <div class="scroll"><table>
+        <tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+        <tr><th>C</th><td>C1</td><td class="hit">C2 ✓</td><td>C3</td><td class="hit">C4 ✓</td><td>C5</td><td class="hit">C6 ✓</td></tr>
+        <tr><th>K</th><td>K1</td><td>K2</td><td>K3</td><td>K4</td><td>K5</td><td>K6</td></tr>
+      </table></div>
+      <div class="formula">P = <span class="frac"><span>3</span><span>12</span></span> = <span class="frac"><span>1</span><span>4</span></span> = 25%</div>
+      <div class="tip">
+        <b class="t">Dica: multiplique, não some</b>
+        O total é <b>2 · 6 = 12</b>, e não 2 + 6 = 8. Cada resultado é um <b>par</b> (moeda, dado). Depois, conte só as casas que cumprem as duas condições juntas.
+      </div>
+      <div class="try" data-answer="5/12" data-type="frac" data-hint="Quase! Olhe só a linha da coroa (K). Quantas casas dela não têm o 6? E qual é o total de casas da tabela?">
+        <div class="q">Agora é sua vez: lançando uma moeda e um dado, qual a probabilidade de sair coroa e um número diferente de 6?</div>
+        <div class="row"><input type="text" aria-label="Sua resposta"><button class="btn" onclick="checkTry(this)">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 5 -->
+  <section class="section" data-name="Urna">
+    <div class="card">
+      <span class="eyebrow">Parte 5 · Conceito novo</span>
+      <h2>Quantas bolas acrescentar?</h2>
+      <p>Uma urna tem <b>4 bolas azuis (A)</b> e <b>2 vermelhas (V)</b>. Hoje, a chance de tirar vermelha é <span class="frac"><span>2</span><span>6</span></span> = <span class="frac"><span>1</span><span>3</span></span>.</p>
+      <p><b>Quantas bolas vermelhas devemos acrescentar para essa chance virar <span class="frac"><span>1</span><span>2</span></span>?</b></p>
+      <div class="think">
+        <b class="t">Pense assim</b>
+        Chance de <span class="frac"><span>1</span><span>2</span></span> é "meio a meio", como numa moeda. Para isso, a urna precisa ter <b>a mesma quantidade</b> de vermelhas e de azuis.
+      </div>
+      <p>Vamos testar, acrescentando uma bola de cada vez:</p>
+      <div class="scroll"><table>
+        <tr><th>Acrescentei</th><th>Vermelhas</th><th>Total</th><th>P(vermelha)</th></tr>
+        <tr><td>0</td><td>2</td><td>6</td><td>2/6 = 1/3</td></tr>
+        <tr><td>1</td><td>3</td><td>7</td><td>3/7</td></tr>
+        <tr class="hit"><td>2</td><td>4</td><td>8</td><td>4/8 = 1/2 ✓</td></tr>
+      </table></div>
+      <div class="fig" id="urns"></div>
+      <p>Resposta: <b>2 bolas vermelhas</b>.</p>
+      <div class="tip">
+        <b class="t">Dica: o total também cresce!</b>
+        Cada bola nova entra na urna, então ela soma nas vermelhas <b>e</b> no total. Se você mudar só a parte de cima da fração (4/6), a resposta sai errada. Atualize sempre as duas partes.
+      </div>
+      <div class="try" data-answer="6" data-type="num" data-hint="Quase! Para dar 1/2, as amarelas precisam ficar iguais às verdes. Quantas faltam para 3 virar 9?">
+        <div class="q">Agora é sua vez: uma urna tem 9 bolas verdes e 3 amarelas. Quantas bolas amarelas devemos acrescentar para a probabilidade de tirar amarela ser 1/2?</div>
+        <div class="row"><input type="text" inputmode="numeric" aria-label="Sua resposta"><button class="btn" onclick="checkTry(this)">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE 6 -->
+  <section class="section" data-name="Quiz">
+    <div class="card">
+      <span class="eyebrow quiz">Parte 6 · Prática</span>
+      <h2>Quiz</h2>
+      <div class="score" id="score">Acertos: 0 de 8</div>
+      <div id="quiz"></div>
+      <div class="final" id="final"></div>
+    </div>
+  </section>
+
+  <!-- PARTE 7 -->
+  <section class="section" data-name="Resumo">
+    <div class="card summary">
+      <span class="eyebrow">Parte 7 · Resumo pro caderno</span>
+      <h2>O que aprendemos hoje</h2>
+      <p>Probabilidade é a medida da chance de algo acontecer em um experimento aleatório, isto é, uma situação em que não dá para saber o resultado antes, como lançar uma moeda, lançar um dado ou sortear uma bola de uma urna. Para calcular, primeiro contamos todos os resultados possíveis, que formam o espaço amostral. Depois contamos quantos desses resultados nos interessam, que formam o evento (os casos favoráveis). A probabilidade é a fração dos casos favoráveis sobre os casos possíveis, que podemos simplificar ou escrever em porcentagem. Por exemplo, ao lançar um dado, a probabilidade de sair um número ímpar e maior que 1 é 2/6 = 1/3, porque só o 3 e o 5 cumprem as duas condições ao mesmo tempo. A probabilidade sempre fica entre 0 e 1: vale 0 quando o evento é impossível, como tirar 7 em um dado comum, e vale 1 quando o evento é certo, como tirar um número menor que 7.</p>
+      <p>Quando há muitos resultados, usamos o princípio multiplicativo para contá-los: se fazemos escolhas em sequência, multiplicamos as opções de cada escolha. Se pode repetir, o número de opções é o mesmo em cada etapa, como em um teste de verdadeiro ou falso (2 · 2 · 2 · …). Se não pode repetir, o número diminui de um em um, como no pódio com 4 corredores (4 · 3 · 2 = 24). Quando dois experimentos acontecem juntos, como lançar uma moeda e um dado, o total de resultados é 2 · 6 = 12, e não 2 + 6, porque cada lado da moeda combina com cada face do dado. Assim, a probabilidade de sair cara e número par é 3/12 = 1/4.</p>
+      <p>Em problemas de urna que perguntam quantas bolas acrescentar para chegar a uma probabilidade, é preciso lembrar que cada bola nova também aumenta o total. Um jeito seguro é testar, acrescentando uma bola por vez e recalculando a fração até chegar ao valor pedido. Numa urna com 4 bolas azuis e 2 vermelhas, por exemplo, ao acrescentar 2 vermelhas ficamos com 4 vermelhas em 8 bolas, e a probabilidade de tirar vermelha passa a ser 4/8 = 1/2.</p>
+    </div>
+  </section>
+
+  <div class="nav">
+    <button class="navbtn" id="prev" onclick="go(cur-1)">← Voltar</button>
+    <button class="navbtn fwd" id="next" onclick="go(cur+1)">Avançar →</button>
+  </div>
+</main>
+
+<script>
+/* ---------- fundo ---------- */
+(function(){
+  const s=['+','−','×','÷','=','%','½','⅓','π','?','√','∑'];
+  const box=document.getElementById('bgSym');
+  for(let i=0;i<22;i++){
+    const e=document.createElement('span');
+    e.textContent=s[i%s.length];
+    e.style.left=(Math.random()*95)+'%';
+    e.style.top=(Math.random()*95)+'%';
+    e.style.fontSize=(1.4+Math.random()*2.6)+'rem';
+    e.style.animationDelay=(-Math.random()*26)+'s';
+    box.appendChild(e);
+  }
+})();
+
+/* ---------- navegação ---------- */
+const secs=[...document.querySelectorAll('.section')];
+const tabs=document.getElementById('tabs');
+let cur=0;
+secs.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.className='tab';b.setAttribute('role','tab');
+  b.textContent=(i+1)+'. '+s.dataset.name;
+  b.onclick=()=>go(i);
+  tabs.appendChild(b);
+});
+function go(i){
+  if(i<0||i>=secs.length)return;
+  cur=i;
+  secs.forEach((s,k)=>s.classList.toggle('active',k===i));
+  [...tabs.children].forEach((t,k)=>{t.classList.toggle('active',k===i);t.setAttribute('aria-selected',k===i)});
+  document.getElementById('fill').style.width=((i+1)/secs.length*100)+'%';
+  document.getElementById('plabel').textContent='Parte '+(i+1)+' de '+secs.length+' — '+secs[i].dataset.name;
+  document.getElementById('prev').disabled=i===0;
+  document.getElementById('next').disabled=i===secs.length-1;
+  window.scrollTo({top:0,behavior:'auto'});
+}
+
+function toggleReveal(id,btn){
+  const r=document.getElementById(id);
+  r.classList.toggle('show');
+  btn.textContent=r.classList.contains('show')?'Esconder resposta':'Ver resposta';
+}
+
+/* ---------- dados (SVG) ---------- */
+function dieSVG(n,hit){
+  const P={1:[[30,30]],2:[[17,17],[43,43]],3:[[17,17],[30,30],[43,43]],
+    4:[[17,17],[43,17],[17,43],[43,43]],5:[[17,17],[43,17],[30,30],[17,43],[43,43]],
+    6:[[17,15],[17,30],[17,45],[43,15],[43,30],[43,45]]};
+  const fill=hit?'#A9E5D0':'#fff', st=hit?'#1E7A4F':'#6C63B5';
+  let c=P[n].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#241F52"/>`).join('');
+  return `<svg viewBox="0 0 60 60" aria-hidden="true"><rect x="3" y="3" width="54" height="54" rx="11" fill="${fill}" stroke="${st}" stroke-width="3"/>${c}</svg>`;
+}
+document.getElementById('diceEx').innerHTML=[1,2,3,4,5,6].map(n=>{
+  const h=(n===3||n===5);
+  return `<div class="die">${dieSVG(n,h)}${h?'<b style="color:#1E7A4F">✓ serve</b>':'não serve'}</div>`;
+}).join('');
+
+/* ---------- urnas (SVG) ---------- */
+function urnSVG(blue,red,newRed,title){
+  const balls=[];for(let i=0;i<blue;i++)balls.push('A');for(let i=0;i<red;i++)balls.push('V');for(let i=0;i<newRed;i++)balls.push('N');
+  let out='';
+  balls.forEach((b,i)=>{
+    const col=i%4,row=Math.floor(i/4);
+    const x=42+col*26,y=128-row*26;
+    const f=b==='A'?'#6C63B5':'#E4694F';
+    const dash=b==='N'?' stroke="#241F52" stroke-width="2.5" stroke-dasharray="4 3"':' stroke="#fff" stroke-width="1.5"';
+    const t=b==='A'?'A':'V';
+    out+=`<circle cx="${x}" cy="${y}" r="11" fill="${f}"${dash}/><text x="${x}" y="${y+5}" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="13" fill="#fff">${t}</text>`;
+  });
+  return `<svg viewBox="0 0 160 190" width="160" role="img" aria-label="${title}">
+    <path d="M28 40 Q20 40 22 52 L30 140 Q32 152 46 152 L114 152 Q128 152 130 140 L138 52 Q140 40 132 40 Z" fill="#F1EEFC" stroke="#362F78" stroke-width="2.5"/>
+    <rect x="22" y="32" width="116" height="10" rx="5" fill="#362F78"/>
+    ${out}
+    <text x="80" y="176" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="13" fill="#241F52">${title}</text>
+  </svg>`;
+}
+document.getElementById('urns').innerHTML=
+  urnSVG(4,2,0,'Antes: 2 V em 6')+urnSVG(4,2,2,'Depois: 4 V em 8');
+
+/* ---------- try-box ---------- */
+function parseVal(s){
+  s=s.trim().replace(/\s/g,'').replace(',','.');
+  if(!s)return NaN;
+  if(s.endsWith('%'))return parseFloat(s)/100;
+  if(s.includes('/')){const [a,b]=s.split('/').map(Number);return b?a/b:NaN;}
+  return Number(s);
+}
+function gcd(a,b){return b?gcd(b,a%b):a}
+function checkTry(btn){
+  const box=btn.closest('.try'), inp=box.querySelector('input'), fb=box.querySelector('.fb');
+  const raw=inp.value, v=parseVal(raw), ans=parseVal(box.dataset.answer);
+  fb.className='fb';
+  if(isNaN(v)){fb.classList.add('no');fb.textContent='↺ Escreva sua resposta no campo antes de conferir.';return;}
+  if(Math.abs(v-ans)<1e-9){
+    let msg='✓ Isso aí! A resposta é '+box.dataset.answer+'.';
+    const m=raw.replace(/\s/g,'').match(/^(\d+)\/(\d+)$/);
+    if(m){const g=gcd(+m[1],+m[2]); if(g>1)msg='✓ Certo! E dá para simplificar: '+raw.trim()+' = '+box.dataset.answer+'.';}
+    fb.classList.add('ok');fb.textContent=msg;
+  }else{
+    fb.classList.add('no');fb.textContent='↺ '+box.dataset.hint;
+  }
+}
+document.querySelectorAll('.try input').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')checkTry(i.parentElement.querySelector('button'))}));
+
+/* ---------- quiz ---------- */
+const Q=[
+ {q:'Uma pizzaria vende pizza em 2 tamanhos, com 4 sabores, e com ou sem borda recheada. Quantas pizzas diferentes podem ser pedidas?',
+  o:['8','10','14','16','18'],c:3,
+  e:'São 3 escolhas em sequência: tamanho (2), sabor (4) e borda (2: com ou sem). Multiplicando: 2 · 4 · 2 = 16.'},
+ {q:'Uma senha tem 3 letras escolhidas entre A, B, C, D e E, sem repetir letras. Quantas senhas são possíveis?',
+  o:['15','60','75','120','125'],c:1,
+  e:'Sem repetição, o número diminui a cada traço: 5 · 4 · 3 = 60. (Com repetição seria 5 · 5 · 5 = 125.)'},
+ {q:'Uma prova tem 6 questões de verdadeiro ou falso. De quantas maneiras diferentes ela pode ser respondida?',
+  o:['12','32','36','64','128'],c:3,
+  e:'Cada questão tem 2 opções: 2 · 2 · 2 · 2 · 2 · 2 = 64. Cuidado: não é 2 · 6 = 12.'},
+ {q:'Ao lançar um dado comum, qual a probabilidade de sair um número par e menor que 5?',
+  o:['1/6','1/3','1/2','2/3','5/6'],c:1,
+  e:'Pares: 2, 4, 6. Menores que 5: só o 2 e o 4 cumprem as duas condições. P = 2/6 = 1/3.'},
+ {q:'Uma urna tem 7 bolas brancas e 3 pretas. Quantas bolas pretas devem ser acrescentadas para que a probabilidade de tirar uma preta seja 1/2?',
+  o:['2','3','4','7','10'],c:2,
+  e:'Para dar 1/2, as pretas precisam ficar iguais às brancas (7). De 3 para 7 faltam 4. Conferindo: 7 pretas em 14 bolas → 7/14 = 1/2.'},
+ {q:'Lançamos uma moeda e um dado ao mesmo tempo. Qual a probabilidade de sair coroa e um múltiplo de 3?',
+  o:['1/12','1/6','1/4','1/3','1/2'],c:1,
+  e:'Total: 2 · 6 = 12 resultados. Coroa com múltiplo de 3: K3 e K6, ou seja, 2 casos. P = 2/12 = 1/6.'},
+ {q:'Uma urna tem 20 bolas numeradas de 1 a 20. Sorteando uma bola, qual a probabilidade de sair um múltiplo de 5?',
+  o:['1/20','1/10','1/5','1/4','1/2'],c:2,
+  e:'Múltiplos de 5 até 20: 5, 10, 15 e 20, ou seja, 4 casos. P = 4/20 = 1/5.'},
+ {q:'Ao lançar um dado comum, qual a probabilidade de sair um número maior que 6?',
+  o:['0','1/6','1/2','5/6','1'],c:0,
+  e:'Nenhuma face do dado é maior que 6. São 0 casos favoráveis: P = 0/6 = 0. É um evento impossível.'}
+];
+let hits=0, answered=0;
+const qz=document.getElementById('quiz');
+Q.forEach((it,k)=>{
+  const d=document.createElement('div');d.className='qcard';
+  d.innerHTML=`<div class="qn">Questão ${k+1}</div><div>${it.q}</div><div class="opts"></div><div class="expl"></div>`;
+  const op=d.querySelector('.opts');
+  it.o.forEach((t,j)=>{
+    const b=document.createElement('button');b.className='opt';
+    b.textContent=String.fromCharCode(65+j)+') '+t;
+    b.onclick=()=>{
+      const all=op.querySelectorAll('.opt');all.forEach(x=>x.disabled=true);
+      all[it.c].classList.add('right');all[it.c].textContent='✓ '+all[it.c].textContent;
+      const ex=d.querySelector('.expl');
+      if(j===it.c){hits++;ex.innerHTML='<b>Isso aí!</b> '+it.e;}
+      else{b.classList.add('wrong');b.textContent='↺ '+b.textContent;ex.innerHTML='<b>Quase! Revê este passo:</b> '+it.e;}
+      ex.classList.add('show');answered++;
+      document.getElementById('score').textContent='Acertos: '+hits+' de '+Q.length;
+      if(answered===Q.length){
+        const f=document.getElementById('final');f.style.display='block';
+        f.textContent= hits>=7?'Excelente! Você acertou '+hits+' de '+Q.length+'. Você está pronto para a prova!'
+          : hits>=5?'Muito bem! '+hits+' de '+Q.length+'. Releia as explicações das questões que ficaram marcadas com ↺.'
+          : 'Você acertou '+hits+' de '+Q.length+'. Volte às partes 2 a 5, refaça os "Agora é sua vez" e tente o quiz de novo. Você consegue!';
+      }
+    };
+    op.appendChild(b);
+  });
+  qz.appendChild(d);
+});
+
+go(0);
+</script>
+</body>
+</html>
