@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisão AV1 7º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F4FC; --indigo:#362F78; --deep:#241F52; --soft:#6C63B5;
+  --mint:#A9E5D0; --coral:#FFB3A0; --coral-d:#E4694F; --yellow:#FFDD73;
+  --text:#2A2650; --text2:#5B5686; --border:#E3DEF7; --white:#fff;
+  --lilac:#EEEAFB; --indigo-l:#ECEAF8; --cream:#FFF8E1;
+  --ok:#1E7A55; --ok-bg:#E3F6EE; --no:#B23A26; --no-bg:#FDECE8;
+  --progh:46px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3{font-family:'Baloo 2',system-ui,sans-serif;color:var(--deep);line-height:1.2}
+h1{font-size:1.65rem;font-weight:800;margin:.3em 0 .1em}
+h2{font-size:1.38rem;font-weight:800;margin:.25em 0 .5em}
+h3{font-size:1.1rem;font-weight:700;margin:1.2em 0 .4em}
+p{margin:.55em 0}
+strong,b{color:var(--deep)}
+sup{line-height:0}
+.sub{color:var(--text2);margin:0 0 .6em;font-size:.95em}
+.n{font-family:'Baloo 2';font-weight:700}
+
+/* fundo */
+.bgsym{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bgsym span{position:absolute;font-family:'Baloo 2';font-weight:700;color:var(--indigo);opacity:.08;animation:drift 28s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(30px,-38px) rotate(12deg)}}
+@media (prefers-reduced-motion:reduce){.bgsym span{animation:none}html{scroll-behavior:auto}}
+
+/* progresso */
+.prog{position:sticky;top:0;z-index:20;background:rgba(246,244,252,.94);backdrop-filter:blur(6px);padding:8px 16px 7px;border-bottom:1px solid var(--border)}
+.prog-label{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 12px;font-family:'Baloo 2';font-weight:700;font-size:.85rem;color:var(--indigo);margin-bottom:4px;line-height:1.35}
+.prog-label #alabel{color:var(--text2);font-weight:600}
+.track{height:7px;background:var(--border);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--soft),var(--indigo));border-radius:99px;transition:width .35s}
+
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:14px 16px 40px}
+
+/* abas (tamanho original preservado) */
+.tabs{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 14px}
+.tab{font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:99px;border:1px solid var(--border);background:var(--white);color:var(--indigo);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--indigo);color:#fff;border-color:var(--indigo)}
+.tab.tog{border-style:dashed;border-color:var(--soft);color:var(--soft)}
+.tabs.closed .tab:not(.tog){display:none}
+.tab:focus-visible,.btn:focus-visible,.navbtn:focus-visible,.opt:focus-visible,.op:focus-visible{outline:3px solid var(--coral-d);outline-offset:2px}
+
+/* seções */
+.sec{display:none}
+.sec.on{display:block;animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.sec.on{animation:none}}
+.card{background:var(--white);border:1px solid var(--border);border-radius:18px;box-shadow:0 4px 18px rgba(54,47,120,.07);padding:18px 18px 20px;margin-bottom:14px}
+.card>:last-child{margin-bottom:0}
+.eyebrow{display:inline-block;font-family:'Baloo 2';font-weight:700;font-size:.78em;letter-spacing:.03em;padding:2px 11px;border-radius:99px;background:var(--mint);color:var(--deep)}
+.eyebrow.c{background:var(--coral)} .eyebrow.y{background:var(--yellow)} .eyebrow.l{background:var(--lilac)}
+
+/* caixas */
+.box,.think,.tip,.formula,.algo{border-radius:14px;padding:.75em .95em;margin:1em 0;line-height:1.6}
+:is(.box,.think,.tip,.formula,.algo)>:first-child{margin-top:0}
+:is(.box,.think,.tip,.formula,.algo)>:last-child{margin-bottom:0}
+.lbl{display:block;font-family:'Baloo 2';font-weight:700;font-size:.92em;line-height:1.3;margin-bottom:.35em;color:var(--deep)}
+.think{background:var(--indigo-l)}
+.tip{background:var(--cream);border-left:6px solid var(--yellow)}
+.formula{background:var(--white);border:2px solid var(--indigo);text-align:center}
+.formula .f{font-family:'Baloo 2';font-weight:700;font-size:1.35rem;line-height:1.35;color:var(--indigo);display:block}
+.formula .f+.f{margin-top:.15em}
+.algo{background:var(--lilac);border:1px solid #D6CFF3}
+.algo>div{margin:0;padding:.4em 0}
+.algo>div+div{border-top:1px dashed #D6CFF3}
+.algo>.lbl+div,.algo>div:first-child{padding-top:0}
+.algo>div:last-child{padding-bottom:0}
+.hl{background:var(--yellow);padding:0 5px;border-radius:5px;font-weight:700;color:var(--deep);white-space:nowrap}
+
+/* tabelas */
+.tblwrap{overflow-x:auto;margin:10px 0;-webkit-overflow-scrolling:touch}
+table.tbl{border-collapse:collapse;width:100%;font-size:.95em;min-width:300px}
+.tbl th{background:var(--indigo);color:#fff;font-family:'Baloo 2';font-weight:600;padding:.4em .55em;text-align:left}
+.tbl td{border-bottom:1px solid var(--border);padding:.4em .55em}
+.tbl tr:nth-child(even) td{background:#FAF9FE}
+.tbl td.ok{background:var(--ok-bg)!important;font-weight:700;color:var(--ok)}
+
+/* chain */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0}
+.node{font-family:'Baloo 2';font-weight:700;background:var(--indigo);color:#fff;border-radius:12px;padding:5px 11px;font-size:1.05rem}
+.op{font-family:'Baloo 2';font-weight:700;background:var(--coral);color:var(--deep);border:none;border-radius:99px;padding:2px 10px;font-size:.9rem;cursor:pointer;min-width:42px}
+.op.shown{background:var(--coral-d);color:#fff;cursor:default}
+
+/* slots (contagem) */
+.slots{display:flex;flex-wrap:wrap;align-items:flex-end;gap:6px;margin:12px 0}
+.slot{text-align:center;min-width:62px}
+.slot .num{font-family:'Baloo 2';font-weight:800;font-size:1.6rem;color:var(--indigo)}
+.slot .ln{height:3px;background:var(--indigo);border-radius:2px}
+.slot small{display:block;color:var(--text2);font-size:.78em;margin-top:2px}
+.slots .x,.slots .eq{font-family:'Baloo 2';font-weight:700;font-size:1.4rem;color:var(--coral-d);padding-bottom:16px}
+.slots .eq{color:var(--deep)}
+
+/* try-box */
+.try{border:2px dashed var(--soft);border-radius:14px;padding:.75em .95em;margin:1.1em 0;background:#FDFCFF}
+.try.done{border-color:var(--ok)}
+.try-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.try input{font-family:'Baloo 2';font-weight:600;font-size:1.05em;padding:.3em .55em;border:2px solid var(--border);border-radius:10px;width:8em;max-width:100%;color:var(--deep)}
+.btn{font-family:'Baloo 2';font-weight:700;background:var(--indigo);color:#fff;border:none;border-radius:10px;padding:.4em .95em;font-size:.95em;cursor:pointer}
+.btn.ghost{background:var(--white);color:var(--indigo);border:2px solid var(--indigo)}
+.fb{margin-top:8px;border-radius:10px;font-size:.95em}
+.fb.good{background:var(--ok-bg);color:var(--ok);padding:.5em .7em}
+.fb.bad{background:var(--no-bg);color:var(--no);padding:.5em .7em}
+
+/* figuras */
+.fig{display:flex;justify-content:center;margin:10px 0}
+.fig svg{max-width:100%;height:auto}
+.dice{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+.dice .d{text-align:center;font-size:.8em;color:var(--text2)}
+.dice .d.on{color:var(--ok);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chip{font-family:'Baloo 2';font-weight:600;border:1px solid var(--border);border-radius:10px;padding:3px 9px;background:var(--white)}
+.chip.on{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.grid2{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;max-width:360px;margin:10px auto;font-family:'Baloo 2';font-weight:600;text-align:center;font-size:.9rem}
+.grid2 div{padding:4px 0;border-radius:6px;background:#FAF9FE;border:1px solid var(--border)}
+.grid2 .h{background:var(--indigo);color:#fff;border-color:var(--indigo)}
+.grid2 .on{background:var(--ok-bg);border-color:var(--ok);color:var(--ok);font-weight:800}
+.map{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.map div{border-radius:14px;padding:10px;font-family:'Baloo 2';font-weight:700;color:var(--deep);font-size:.95em}
+.map small{display:block;font-family:'Atkinson Hyperlegible';font-weight:400;color:var(--text2);font-size:.85em}
+
+/* quiz */
+.score{position:sticky;top:var(--progh);z-index:5;background:var(--indigo);color:#fff;font-family:'Baloo 2';font-weight:700;border-radius:12px;padding:6px 12px;margin:6px 0 12px;display:flex;justify-content:space-between;gap:2px 10px;flex-wrap:wrap;font-size:.95em}
+.qgroup{font-family:'Baloo 2';font-weight:800;color:var(--soft);font-size:1.05em;margin:22px 0 4px;border-bottom:2px solid var(--border);padding-bottom:2px}
+.q{border:1px solid var(--border);border-radius:16px;padding:.75em .95em;margin:12px 0;background:var(--white)}
+.q.done-ok{border-color:var(--ok)}
+.q .qn{font-family:'Baloo 2';font-weight:800;color:var(--indigo)}
+.opts{display:grid;gap:6px;margin-top:8px}
+.opt{display:flex;align-items:center;gap:.55em;text-align:left;font-family:'Atkinson Hyperlegible';font-size:.98em;background:#FAF9FE;border:2px solid var(--border);border-radius:12px;padding:.45em .65em;cursor:pointer;color:var(--text)}
+.opt .let{font-family:'Baloo 2';font-weight:800;flex:0 0 auto;width:1.65em;height:1.65em;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--lilac);color:var(--indigo)}
+.opt:hover:not(:disabled){border-color:var(--soft)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok);font-weight:700}
+.opt.right .let{background:var(--ok);color:#fff}
+.opt.wrong{background:var(--no-bg);border-color:var(--no);color:var(--no)}
+.opt.wrong .let{background:var(--no);color:#fff}
+.opt.dim{opacity:.55}
+.opt .mk{margin-left:auto;font-weight:700;font-size:.85em;white-space:nowrap;padding-left:.4em}
+.qhint{display:none;margin-top:10px;background:var(--cream);border-left:6px solid var(--yellow);border-radius:12px;padding:.6em .9em}
+.qhint.on{display:block}
+.res{display:none;margin-top:10px}
+.res.on{display:block}
+.res .head{border-radius:10px;padding:.45em .7em;font-weight:700;margin-bottom:.6em}
+.res .head.good{background:var(--ok-bg);color:var(--ok)}
+.res .head.bad{background:var(--no-bg);color:var(--no)}
+.res .box{margin:.6em 0 0}
+.final{display:none;background:var(--indigo-l);border-radius:14px;padding:14px;margin-top:16px}
+.final.on{display:block}
+.resetrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
+.confirm{display:none;align-items:center;flex-wrap:wrap;gap:8px;background:var(--no-bg);color:var(--no);border-radius:12px;padding:.4em .7em;font-weight:700}
+.confirm.on{display:flex}
+
+/* resumo */
+.summary h3{margin:1.3em 0 .3em;padding-bottom:2px;border-bottom:2px solid var(--border)}
+.summary h3:first-of-type{margin-top:.6em}
+.summary p{margin:.45em 0}
+.sf{font-family:'Baloo 2';font-weight:700;color:var(--indigo);background:var(--indigo-l);border-radius:10px;padding:.25em .7em;display:inline-block;margin:.25em .3em .25em 0;font-size:1.05em}
+
+/* navegação (tamanho original preservado) */
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:6px}
+.navbtn{font-family:'Baloo 2';font-weight:700;font-size:11px;padding:4px 9px;border-radius:99px;border:1px solid var(--indigo);background:var(--white);color:var(--indigo);cursor:pointer}
+.navbtn.fwd{background:var(--indigo);color:#fff}
+.navbtn:disabled{opacity:.35;cursor:default}
+
+@media (min-width:900px){
+  body{font-size:20px}
+  .wrap{max-width:980px;padding:22px 24px 50px}
+  h1{font-size:2.3rem} h2{font-size:1.8rem} h3{font-size:1.3rem}
+  .tab,.navbtn{font-size:15px;padding:5px 14px}
+  .prog-label{font-size:1rem}
+  .card{padding:26px 30px}
+  .node{font-size:1.3rem;padding:6px 14px} .op{font-size:1.05rem}
+  .slot{min-width:90px} .slot .num{font-size:2.3rem} .slots .x,.slots .eq{font-size:2rem}
+  .grid2{max-width:480px;font-size:1.05rem}
+  .formula .f{font-size:1.8rem}
+}
+@media (min-width:1500px){
+  body{font-size:25px}
+  .wrap{max-width:1260px}
+  h1{font-size:3rem} h2{font-size:2.2rem} h3{font-size:1.6rem}
+  .tab,.navbtn{font-size:19px}
+  .node{font-size:1.6rem} .op{font-size:1.3rem}
+  .slot{min-width:110px} .slot .num{font-size:3rem} .slots .x,.slots .eq{font-size:2.6rem}
+  .grid2{max-width:640px;font-size:1.3rem}
+  .formula .f{font-size:2.3rem}
+  .dice svg{width:84px;height:84px}
+}
+
+/* 7º ano: listas de passos simples, planos e tags */
+.steps{list-style:none;counter-reset:st;padding:0;margin:.8em 0}
+.steps li{counter-increment:st;position:relative;padding:.3em 0 .3em 2.1em;line-height:1.55}
+.steps li::before{content:counter(st);position:absolute;left:0;top:.32em;width:1.55em;height:1.55em;border-radius:50%;background:var(--indigo);color:#fff;font-family:'Baloo 2';font-weight:700;font-size:.88em;display:flex;align-items:center;justify-content:center;line-height:1}
+.algo .steps{margin:.1em 0 0}
+.algo .fig{margin-top:.6em}
+ul.plain{margin:.4em 0;padding-left:1.3em}
+ul.plain li{margin:.2em 0}
+.plane{width:min(100%,380px);height:auto;display:block;border-radius:12px;border:1px solid var(--border)}
+.plane text{font-family:'Baloo 2',system-ui,sans-serif}
+.try .fig{margin:.6em 0}
+.figcap{text-align:center;color:var(--text2);font-size:.88em;margin:.3em 0 0}
+.qtag{display:inline-block;font-family:'Baloo 2';font-weight:700;font-size:.78em;color:var(--soft);background:var(--lilac);border-radius:99px;padding:1px 10px;margin-bottom:.35em}
+.map div:last-child:nth-child(odd){grid-column:1/-1}
+@media (min-width:900px){.plane{width:min(100%,460px)}}
+@media (min-width:1500px){.plane{width:min(100%,580px)}}
+</style>
+</head>
+<body>
+<div class="bgsym" id="bgSym" aria-hidden="true"></div>
+
+<div class="prog">
+  <div class="prog-label"><span id="plabel">Parte 1</span><span id="alabel" aria-live="polite"></span></div>
+  <div class="track" role="progressbar" aria-label="Progresso na aula" aria-valuemin="1" id="ptrack"><div class="fill" id="fill"></div></div>
+</div>
+
+<main class="wrap">
+  <h1>Revisão para a AV1</h1>
+  <p class="sub">Matemática · 7º ano · Plano cartesiano, simetrias, ampliação e redução</p>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Partes da aula"></nav>
+
+  <!-- 1 AQUECIMENTO -->
+  <section class="sec on" data-name="Aquecimento">
+    <div class="card">
+      <span class="eyebrow y">Parte 1 · Aquecimento</span>
+      <h2>A ordem faz diferença</h2>
+      <p>No cinema, o seu ingresso diz: <b>fileira 4, poltrona 7</b>. Se você sentar na fileira 7, poltrona 4, está no lugar certo?</p>
+      <p><b>Não.</b> São os mesmos dois números, mas, em outra ordem, mostram outro lugar.</p>
+      <p>O plano cartesiano funciona do mesmo jeito. Cada ponto é indicado por dois números, sempre na mesma ordem. É com essa ideia que vamos revisar tudo o que cai na prova:</p>
+      <div class="map">
+        <div style="background:var(--mint)">📍 Pontos e quadrantes<small>ler e marcar pontos</small></div>
+        <div style="background:var(--coral)">🚶 Andar no plano<small>direita, esquerda, cima, baixo</small></div>
+        <div style="background:var(--yellow)">🔷 Polígonos<small>ligar os vértices</small></div>
+        <div style="background:var(--lilac)">🪞 Simetrias<small>eixo x, eixo y e origem</small></div>
+        <div style="background:var(--indigo-l)">🔍 Ampliação e redução<small>multiplicar as coordenadas</small></div>
+      </div>
+      <div class="try" data-pair="7,4" data-ok="Isso! Trocando a ordem, o lugar muda: o par (7, 4) é diferente de (4, 7)." data-hint="Quase! Troque os dois números de lugar: o que vinha primeiro passa a vir depois.">
+        <span class="lbl">Aquecimento</span>
+        Seu amigo sentou na fileira 7, poltrona 4. Escreva o lugar dele como um par (fileira, poltrona).
+        <div class="try-row"><input inputmode="text" aria-label="Resposta em par ordenado" placeholder="( , )"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 PONTOS -->
+  <section class="sec" data-name="Pontos no plano">
+    <div class="card">
+      <span class="eyebrow">Parte 2 · Revisão</span>
+      <h2>Pontos no plano</h2>
+      <p>O plano cartesiano é formado por duas retas numeradas que se cruzam: o <strong>eixo x</strong> (horizontal) e o <strong>eixo y</strong> (vertical). Elas se cruzam no ponto <strong>(0, 0)</strong>, chamado <strong>origem</strong>.</p>
+      <p>Cada ponto é escrito como um <strong>par ordenado (x, y)</strong>: primeiro o x, depois o y.</p>
+      <div class="fig" data-plane="p2"></div>
+      <h3>Como marcar o ponto (x, y)</h3>
+      <ol class="steps">
+        <li>Comece na origem (0, 0).</li>
+        <li>Ande na horizontal o valor de <b>x</b>: para a <b>direita</b> se for positivo, para a <b>esquerda</b> se for negativo.</li>
+        <li>Depois ande na vertical o valor de <b>y</b>: para <b>cima</b> se for positivo, para <b>baixo</b> se for negativo.</li>
+        <li>Marque o ponto onde você parou.</li>
+      </ol>
+      <p>Por exemplo, para marcar C(2, −3): 2 para a direita e 3 para baixo.</p>
+      <div class="think"><span class="lbl">💭 Pense assim</span>
+        Para chegar a um apartamento, primeiro você anda pela rua até o prédio certo (horizontal, o x). Só depois sobe ou desce até o andar (vertical, o y).
+      </div>
+
+      <h3>Mesmos números, ordem diferente</h3>
+      <div class="fig" data-plane="p2b"></div>
+      <div class="tip"><span class="lbl">⚠️ Dica: a ordem importa</span>
+        (3, −1) e (−1, 3) usam os mesmos números, mas são pontos <b>diferentes</b>. O ponto (3, −1) fica à direita e embaixo (4º quadrante). Já o (−1, 3) fica à esquerda e em cima (2º quadrante).
+      </div>
+
+      <div class="try" data-pair="-2,-4" data-ok="Isso! D fica 2 para a esquerda (x = −2) e 4 para baixo (y = −4)." data-hint="Quase! Da origem, conte quantas unidades D está para a esquerda (esse é o x, negativo). Depois conte quantas para baixo (esse é o y, negativo).">
+        <span class="lbl">Agora é sua vez</span>
+        Quais são as coordenadas do ponto D?
+        <div class="fig" data-plane="p2try"></div>
+        <div class="try-row"><input inputmode="text" aria-label="Resposta em par ordenado" placeholder="( , )"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 QUADRANTES -->
+  <section class="sec" data-name="Quadrantes">
+    <div class="card">
+      <span class="eyebrow">Parte 3 · Revisão</span>
+      <h2>Quadrantes</h2>
+      <p>Os dois eixos dividem o plano em <strong>quatro partes</strong>, chamadas <strong>quadrantes</strong>. A contagem começa em cima, à direita, e gira para a esquerda (sentido anti-horário).</p>
+      <div class="fig" data-plane="p3"></div>
+      <div class="tblwrap"><table class="tbl">
+        <tr><th>Quadrante</th><th>Sinal de x</th><th>Sinal de y</th><th>Exemplo</th></tr>
+        <tr><td class="n">1º</td><td>+ (direita)</td><td>+ (cima)</td><td>(2, 5)</td></tr>
+        <tr><td class="n">2º</td><td>− (esquerda)</td><td>+ (cima)</td><td>(−3, 1)</td></tr>
+        <tr><td class="n">3º</td><td>− (esquerda)</td><td>− (baixo)</td><td>(−4, −2)</td></tr>
+        <tr><td class="n">4º</td><td>+ (direita)</td><td>− (baixo)</td><td>(5, −1)</td></tr>
+      </table></div>
+      <h3>Como descobrir o quadrante</h3>
+      <ol class="steps">
+        <li>Olhe o sinal do x: positivo é direita, negativo é esquerda.</li>
+        <li>Olhe o sinal do y: positivo é cima, negativo é baixo.</li>
+        <li>Junte as duas informações e procure na tabela.</li>
+      </ol>
+      <div class="tip"><span class="lbl">⚠️ Dica: não confunda o 3º com o 4º</span>
+        Os dois ficam embaixo. O que muda é o lado: o <b>3º</b> fica embaixo à <b>esquerda</b> (x negativo) e o <b>4º</b> fica embaixo à <b>direita</b> (x positivo).
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: ponto em cima de um eixo</span>
+        Se uma coordenada é zero, como em (0, 4) ou (−3, 0), o ponto fica <b>em cima de um eixo</b> e não pertence a nenhum quadrante.
+      </div>
+      <div class="try" data-ans="4" data-ok="Isso! x = 6 é positivo (direita) e y = −3 é negativo (baixo): 4º quadrante." data-hint="Quase! Veja o sinal de cada número: 6 é positivo, então é direita; −3 é negativo, então é baixo. Qual quadrante fica embaixo à direita?">
+        <span class="lbl">Agora é sua vez</span>
+        Em qual quadrante está o ponto (6, −3)? (escreva só o número)
+        <div class="try-row"><input inputmode="numeric" aria-label="Número do quadrante"><span>º quadrante</span><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 ANDAR -->
+  <section class="sec" data-name="Andar no plano">
+    <div class="card">
+      <span class="eyebrow">Parte 4 · Revisão</span>
+      <h2>Andar no plano</h2>
+      <p>Cada movimento muda só uma das coordenadas:</p>
+      <div class="tblwrap"><table class="tbl">
+        <tr><th>Movimento</th><th>O que muda</th></tr>
+        <tr><td>→ direita</td><td><b>soma</b> no x</td></tr>
+        <tr><td>← esquerda</td><td><b>tira</b> do x</td></tr>
+        <tr><td>↑ cima</td><td><b>soma</b> no y</td></tr>
+        <tr><td>↓ baixo</td><td><b>tira</b> do y</td></tr>
+      </table></div>
+
+      <h3>Exemplo 1: saindo da origem</h3>
+      <p>Um ciclista sai da origem, anda <b>2 unidades para a direita</b> e depois <b>5 para baixo</b>. Onde ele para?</p>
+      <div class="fig" data-plane="p4a"></div>
+      <ol class="steps">
+        <li>Começa em (0, 0).</li>
+        <li>2 para a direita: x = 0 + 2 = 2.</li>
+        <li>5 para baixo: y = 0 − 5 = −5.</li>
+        <li>Ele para em <span class="hl">(2, −5)</span>.</li>
+      </ol>
+
+      <h3>Exemplo 2: saindo de outro ponto</h3>
+      <p>Agora o ciclista sai do ponto (1, 2), anda <b>3 para a esquerda</b> e <b>4 para cima</b>.</p>
+      <div class="fig" data-plane="p4b"></div>
+      <ol class="steps">
+        <li>Começa em (1, 2): x = 1 e y = 2.</li>
+        <li>3 para a esquerda: x = 1 − 3 = −2.</li>
+        <li>4 para cima: y = 2 + 4 = 6.</li>
+        <li>Ele para em <span class="hl">(−2, 6)</span>.</li>
+      </ol>
+      <div class="tip"><span class="lbl">⚠️ Dica: esquerda e baixo deixam o número negativo</span>
+        Saindo da origem, quem anda para a <b>esquerda</b> fica com x negativo e quem anda para <b>baixo</b> fica com y negativo. E, mesmo que o enunciado fale primeiro do movimento vertical, a resposta é escrita sempre com o <b>x primeiro</b>.
+      </div>
+      <div class="try" data-pair="-5,1" data-ok="Isso! 5 para a esquerda: x = −5. 1 para cima: y = 1. O carrinho para em (−5, 1)." data-hint="Quase! Esquerda deixa o x negativo e cima deixa o y positivo. Escreva primeiro o x.">
+        <span class="lbl">Agora é sua vez</span>
+        Um carrinho sai da origem, anda 5 unidades para a esquerda e 1 para cima. Em que ponto ele para?
+        <div class="try-row"><input inputmode="text" aria-label="Resposta em par ordenado" placeholder="( , )"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 POLIGONOS -->
+  <section class="sec" data-name="Polígonos no plano">
+    <div class="card">
+      <span class="eyebrow">Parte 5 · Revisão</span>
+      <h2>Polígonos no plano</h2>
+      <p>Um polígono pode ser dado pelos seus <strong>vértices</strong>. Marcamos cada vértice e ligamos os pontos <b>na ordem dada</b>, voltando ao primeiro no final.</p>
+      <p>Exemplo: ligando (−3, −1) → (2, −1) → (2, 3) → (−3, 3) → (−3, −1).</p>
+      <div class="fig" data-plane="p5"></div>
+      <h3>Como descobrir que figura é</h3>
+      <ol class="steps">
+        <li>Marque os vértices no plano.</li>
+        <li>Ligue os pontos na ordem dada.</li>
+        <li>Conte os lados: 3 lados formam um triângulo; 4 lados, um quadrilátero.</li>
+        <li>Se for quadrilátero, conte os quadradinhos de cada lado para comparar as medidas.</li>
+      </ol>
+      <p>No exemplo, o lado de baixo vai de x = −3 até x = 2: são <b>5</b> quadradinhos. O lado da direita vai de y = −1 até y = 3: são <b>4</b> quadradinhos. Os lados formam cantos retos, mas as medidas são diferentes, então a figura é um <span class="hl">retângulo</span>.</p>
+      <div class="think"><span class="lbl">💭 Pense assim</span>
+        Se todos os 4 lados tivessem a mesma medida (por exemplo, 4, 4, 4 e 4), com cantos retos, a figura seria um <b>quadrado</b>.
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: conte antes de responder</span>
+        Muitos desenhos de 4 lados “parecem” quadrados. Só chame de quadrado se você <b>contar</b> e os quatro lados tiverem a mesma medida.
+      </div>
+      <div class="try" data-word="quadrado" data-ok="Isso! O lado de baixo vai de −1 a 2 (3 quadradinhos) e o da direita vai de −2 a 1 (3 quadradinhos). Lados iguais e cantos retos: quadrado." data-hint="Quase! Conte os quadradinhos do lado de baixo (de x = −1 até x = 2) e do lado da direita (de y = −2 até y = 1). As medidas são iguais ou diferentes?">
+        <span class="lbl">Agora é sua vez</span>
+        Ligando (−1, −2) → (2, −2) → (2, 1) → (−1, 1) → (−1, −2), que figura obtemos?
+        <div class="try-row"><input inputmode="text" aria-label="Nome da figura"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 SIMETRIA EIXOS -->
+  <section class="sec" data-name="Simetria nos eixos">
+    <div class="card">
+      <span class="eyebrow">Parte 6 · Revisão</span>
+      <h2>Simetria em relação aos eixos</h2>
+      <p>O <strong>simétrico</strong> de um ponto em relação a um eixo fica do outro lado do eixo, <b>à mesma distância</b>, como a imagem num espelho.</p>
+      <div class="think"><span class="lbl">💭 Pense assim</span>
+        Dobre a folha exatamente em cima do eixo. O ponto “carimba” do outro lado da dobra. Esse carimbo é o simétrico.
+      </div>
+      <div class="fig" data-plane="p6a"></div>
+      <div class="tblwrap"><table class="tbl">
+        <tr><th>Simétrico em relação ao…</th><th>Regra</th><th>Exemplo com P(2, 3)</th></tr>
+        <tr><td><b>eixo x</b></td><td>troca o sinal do <b>y</b></td><td>(2, 3) → (2, −3)</td></tr>
+        <tr><td><b>eixo y</b></td><td>troca o sinal do <b>x</b></td><td>(2, 3) → (−2, 3)</td></tr>
+      </table></div>
+      <div class="tip"><span class="lbl">⚠️ Dica: “eixo x” muda o y</span>
+        Parece estranho, mas é isso mesmo. No simétrico em relação ao <b>eixo x</b>, o espelho é o eixo deitado: o ponto passa de cima para baixo (ou de baixo para cima). Então muda a altura, que é o <b>y</b>. A posição para os lados, que é o x, continua igual.
+      </div>
+
+      <h3>Simétrico de um polígono</h3>
+      <p>O triângulo de vértices (2, 1), (5, 1) e (2, 3) foi refletido em relação ao eixo x.</p>
+      <ol class="steps">
+        <li>Aplique a regra em cada vértice (troque o sinal do y): (2, −1), (5, −1) e (2, −3).</li>
+        <li>Marque os novos vértices.</li>
+        <li>Ligue na mesma ordem.</li>
+      </ol>
+      <div class="fig" data-plane="p6b"></div>
+      <p>A figura simétrica tem a <b>mesma forma e o mesmo tamanho</b>. Ela só fica “de cabeça para baixo”.</p>
+      <div class="try" data-pair="-4,-1" data-ok="Isso! Em relação ao eixo y, troca o sinal do x: (4, −1) → (−4, −1)." data-hint="Quase! No simétrico em relação ao eixo y, só o x troca de sinal. O y fica igual.">
+        <span class="lbl">Agora é sua vez</span>
+        Qual é o simétrico do ponto (4, −1) em relação ao <b>eixo y</b>?
+        <div class="try-row"><input inputmode="text" aria-label="Resposta em par ordenado" placeholder="( , )"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 SIMETRIA ORIGEM -->
+  <section class="sec" data-name="Simetria na origem (× −1)">
+    <div class="card">
+      <span class="eyebrow">Parte 7 · Revisão</span>
+      <h2>Simetria em relação à origem (multiplicar por −1)</h2>
+      <p>Quando multiplicamos as <b>duas</b> coordenadas por −1, os dois sinais trocam. O novo ponto é o <strong>simétrico em relação à origem</strong>.</p>
+      <div class="box formula"><span class="f">(x, y) × (−1) → (−x, −y)</span></div>
+      <p>O ponto vai para o quadrante <b>oposto</b>: do 1º para o 3º, do 2º para o 4º, e vice-versa.</p>
+      <div class="think"><span class="lbl">💭 Pense assim</span>
+        O ponto atravessa a origem em linha reta e para do outro lado, à mesma distância. É como dar meia-volta em torno da origem.
+      </div>
+      <h3>Exemplo</h3>
+      <p>Triângulo com vértices (1, 2), (5, 2) e (1, 4), no 1º quadrante. Multiplicando tudo por −1:</p>
+      <ol class="steps">
+        <li>(1, 2) → (−1, −2)</li>
+        <li>(5, 2) → (−5, −2)</li>
+        <li>(1, 4) → (−1, −4)</li>
+      </ol>
+      <div class="fig" data-plane="p7"></div>
+      <p>O novo triângulo está no <span class="hl">3º quadrante</span>, com a mesma forma e o mesmo tamanho.</p>
+      <h3>As três simetrias lado a lado</h3>
+      <div class="tblwrap"><table class="tbl">
+        <tr><th>Simétrico em relação ao…</th><th>O que troca de sinal</th><th>Exemplo com (3, −2)</th></tr>
+        <tr><td>eixo x</td><td>só o y</td><td>(3, 2)</td></tr>
+        <tr><td>eixo y</td><td>só o x</td><td>(−3, −2)</td></tr>
+        <tr><td>origem (× −1)</td><td>os dois</td><td>(−3, 2)</td></tr>
+      </table></div>
+      <div class="tip"><span class="lbl">⚠️ Dica: × (−1) troca os dois sinais</span>
+        Quando a questão diz “multiplicando as coordenadas por −1”, os <b>dois</b> sinais trocam. Por isso a figura é simétrica em relação à <b>origem</b>, e não a um dos eixos. O tamanho da figura não muda.
+      </div>
+      <div class="try" data-pair="5,-2" data-ok="Isso! (−5) × (−1) = 5 e 2 × (−1) = −2. O ponto vai do 2º para o 4º quadrante." data-hint="Quase! Multiplique cada número por −1. Lembre: negativo vezes negativo dá positivo.">
+        <span class="lbl">Agora é sua vez</span>
+        Multiplicando por −1 as coordenadas do ponto (−5, 2), qual ponto obtemos?
+        <div class="try-row"><input inputmode="text" aria-label="Resposta em par ordenado" placeholder="( , )"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 AMPLIACAO -->
+  <section class="sec" data-name="Ampliação e redução">
+    <div class="card">
+      <span class="eyebrow">Parte 8 · Revisão</span>
+      <h2>Ampliação e redução</h2>
+      <p>Para ampliar ou reduzir uma figura, multiplicamos <b>as duas coordenadas de todos os vértices</b> pelo mesmo número.</p>
+      <ul class="plain">
+        <li>Número maior que 1 (como 2 ou 3): a figura <b>aumenta</b>.</li>
+        <li>Número entre 0 e 1 (como ½ ou ⅓): a figura <b>diminui</b>.</li>
+      </ul>
+      <p>A nova figura é <strong>semelhante</strong> à original: tem a mesma forma, os mesmos ângulos, e todos os lados mudam na mesma proporção.</p>
+      <div class="think"><span class="lbl">💭 Pense assim</span>
+        É como ampliar uma foto no celular com os dois dedos: tudo cresce na mesma proporção, e a foto não fica esticada nem achatada.
+      </div>
+      <h3>Exemplo: multiplicar por 2</h3>
+      <p>Triângulo A com vértices (2, 1), (3, 1) e (2, 3).</p>
+      <ol class="steps">
+        <li>Multiplique o x de cada vértice por 2.</li>
+        <li>Multiplique o y de cada vértice por 2.</li>
+        <li>Novos vértices: (4, 2), (6, 2) e (4, 6).</li>
+        <li>Ligue na mesma ordem.</li>
+      </ol>
+      <div class="fig" data-plane="p8a"></div>
+      <p>O lado de baixo media 1 e passou a medir <b>2</b>. O lado vertical media 2 e passou a medir <b>4</b>. Todos os lados <b>dobraram</b>: o triângulo B é semelhante ao A.</p>
+      <div class="tip"><span class="lbl">⚠️ Dica: multiplicar não é somar</span>
+        (1, 1) × 2 = <b>(2, 2)</b>. Se você somar 2, encontra (3, 3), e a figura só muda de lugar, sem aumentar. Lembre também que o zero continua zero e o sinal se mantém: (0, −1) × 2 = (0, −2).
+      </div>
+
+      <h3>Fazendo o caminho de volta</h3>
+      <p>A figura B, de vértices (2, −2), (−4, 4) e (−4, −2), foi obtida multiplicando por 2 as coordenadas de uma figura A. Para descobrir A, fazemos a operação <b>inversa</b>: dividimos por 2.</p>
+      <ol class="steps">
+        <li>(2, −2) ÷ 2 → (1, −1)</li>
+        <li>(−4, 4) ÷ 2 → (−2, 2)</li>
+        <li>(−4, −2) ÷ 2 → (−2, −1)</li>
+        <li>Confira: multiplicando (1, −1) por 2, voltamos a (2, −2). ✓</li>
+      </ol>
+      <div class="fig" data-plane="p8b"></div>
+      <div class="tip"><span class="lbl">⚠️ Dica: para voltar, divida</span>
+        Se B foi obtida <b>multiplicando</b> por 2, A é obtida <b>dividindo</b> por 2. Se você multiplicar de novo, vai ampliar a figura mais uma vez, em vez de voltar.
+      </div>
+      <div class="try" data-pair="-9,6" data-ok="Isso! (−3) × 3 = −9 e 2 × 3 = 6. O ponto novo é (−9, 6)." data-hint="Quase! Multiplique cada coordenada por 3 e mantenha o sinal: (−3) × 3 é negativo.">
+        <span class="lbl">Agora é sua vez (1/2)</span>
+        Multiplicando por 3 as coordenadas do ponto (−3, 2), qual é o novo ponto?
+        <div class="try-row"><input inputmode="text" aria-label="Resposta em par ordenado" placeholder="( , )"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+      <div class="try" data-pair="4,-3" data-ok="Isso! 8 ÷ 2 = 4 e (−6) ÷ 2 = −3. P é o ponto (4, −3)." data-hint="Quase! Para voltar, divida cada coordenada por 2. O sinal continua o mesmo.">
+        <span class="lbl">Agora é sua vez (2/2)</span>
+        O ponto (8, −6) foi obtido multiplicando por 2 as coordenadas de um ponto P. Quais são as coordenadas de P?
+        <div class="try-row"><input inputmode="text" aria-label="Resposta em par ordenado" placeholder="( , )"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 QUIZ -->
+  <section class="sec" data-name="Quiz">
+    <div class="card">
+      <span class="eyebrow c">Parte 9 · Quiz</span>
+      <h2>Quiz de prática</h2>
+      <div class="score" id="score"><span id="sc1">Acertos: 0 de 10</span><span id="sc2">Respondidas: 0</span></div>
+      <div id="quiz"></div>
+      <div class="final" id="final" role="status"></div>
+      <div class="resetrow">
+        <button class="btn ghost" id="reset">Recomeçar o quiz</button>
+        <span class="confirm" id="confirm" role="group" aria-label="Confirmar recomeço">
+          Apagar todas as respostas?
+          <button class="btn" id="yes">Sim, recomeçar</button>
+          <button class="btn ghost" id="no">Cancelar</button>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 RESUMO -->
+  <section class="sec" data-name="Resumo pro caderno">
+    <div class="card summary">
+      <span class="eyebrow l">Parte 10 · Resumo pro caderno</span>
+      <h2>Resumo pro caderno</h2>
+
+      <h3>1. Pontos e quadrantes</h3>
+      <p><span class="sf">(x, y): primeiro o x (horizontal), depois o y (vertical)</span></p>
+      <p>Os eixos se cruzam na origem (0, 0). x positivo fica à direita e x negativo à esquerda. y positivo fica em cima e y negativo embaixo. A ordem importa: (3, −1) e (−1, 3) são pontos diferentes. Os quadrantes são contados no sentido anti-horário, começando em cima à direita: 1º (+, +), 2º (−, +), 3º (−, −) e 4º (+, −). Um ponto com coordenada zero fica em cima de um eixo e não está em nenhum quadrante.</p>
+
+      <h3>2. Andar no plano</h3>
+      <p><span class="sf">direita/esquerda mudam o x</span><span class="sf">cima/baixo mudam o y</span></p>
+      <p>Direita soma no x, esquerda tira do x, cima soma no y e baixo tira do y. Saindo da origem, 2 para a direita e 5 para baixo levam a (2, −5).</p>
+
+      <h3>3. Polígonos no plano</h3>
+      <p>Marcamos os vértices e ligamos os pontos na ordem dada, voltando ao primeiro. Contamos os quadradinhos de cada lado para comparar as medidas. Com 4 lados iguais e cantos retos, é um quadrado. Com cantos retos e lados de medidas diferentes, é um retângulo.</p>
+
+      <h3>4. Simetrias</h3>
+      <p><span class="sf">eixo x: (x, y) → (x, −y)</span><span class="sf">eixo y: (x, y) → (−x, y)</span><span class="sf">origem (× −1): (x, y) → (−x, −y)</span></p>
+      <p>O simétrico fica do outro lado, à mesma distância. Em relação ao eixo x, troca só o sinal do y. Em relação ao eixo y, troca só o sinal do x. Multiplicar por −1 troca os dois sinais: é a simetria em relação à origem, e o ponto vai para o quadrante oposto. Nas três simetrias, a figura mantém a mesma forma e o mesmo tamanho.</p>
+
+      <h3>5. Ampliação e redução</h3>
+      <p><span class="sf">multiplicar por k: (x, y) → (k · x, k · y)</span><span class="sf">para voltar: dividir por k</span></p>
+      <p>Multiplicamos as duas coordenadas de todos os vértices pelo mesmo número. Com número maior que 1, a figura aumenta; com número entre 0 e 1, diminui. A figura nova é semelhante à original: mesma forma, mesmos ângulos e lados na mesma proporção. Multiplicando por 2, todos os lados dobram. Para descobrir a figura original, dividimos as coordenadas pelo mesmo número.</p>
+    </div>
+  </section>
+
+  <div class="nav">
+    <button class="navbtn" id="prev">← Voltar</button>
+    <button class="navbtn fwd" id="next">Avançar →</button>
+  </div>
+</main>
+
+<script>
+/* ---------- fundo ---------- */
+(function(){
+  const s=['+','−','×','(x, y)','=','↔','↕','?','0','(0, 0)','−1','×2'];
+  const box=document.getElementById('bgSym');
+  for(let i=0;i<22;i++){
+    const e=document.createElement('span');
+    e.textContent=s[i%s.length];
+    e.style.left=(Math.random()*94)+'%';
+    e.style.top=(Math.random()*94)+'%';
+    e.style.fontSize=(1.3+Math.random()*2.2)+'rem';
+    e.style.animationDelay=(-Math.random()*28)+'s';
+    box.appendChild(e);
+  }
+})();
+
+/* ---------- armazenamento leve (opcional) ---------- */
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
+
+/* ---------- altura da barra de progresso ---------- */
+const progEl=document.querySelector('.prog');
+function setProgH(){document.documentElement.style.setProperty('--progh',progEl.offsetHeight+'px');}
+window.addEventListener('resize',setProgH);
+if(window.ResizeObserver)new ResizeObserver(setProgH).observe(progEl);
+
+/* ---------- plano cartesiano em SVG ---------- */
+let planeId=0;
+const C={ind:'#362F78',deep:'#241F52',soft:'#6C63B5',coral:'#E4694F',grid:'#E3DEF7',ok:'#1E7A55'};
+function fmt(n){return n<0?'−'+Math.abs(n):String(n);}
+function plane(cfg){
+  const id=++planeId;
+  const mn=cfg.min??-6, mx=cfg.max??6, u=30, pad=30;
+  const W=(mx-mn)*u+pad*2;
+  const X=x=>pad+(x-mn)*u, Y=y=>pad+(mx-y)*u;
+  let s=`<svg class="plane" viewBox="0 0 ${W} ${W}" width="${W}" role="img" aria-label="${cfg.label||'Plano cartesiano'}">`;
+  s+=`<defs><marker id="ax${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${C.ind}"/></marker>`;
+  s+=`<marker id="mv${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="${C.coral}"/></marker></defs>`;
+  s+=`<rect x="0" y="0" width="${W}" height="${W}" fill="#fff"/>`;
+  if(cfg.quads){
+    const q=[[1,'1º','(+, +)',1,1],[2,'2º','(−, +)',-1,1],[3,'3º','(−, −)',-1,-1],[4,'4º','(+, −)',1,-1]];
+    const fills=['#E3F6EE','#ECEAF8','#FFF8E1','#FDECE8'];
+    q.forEach(([n,t,sg,sx,sy],i)=>{
+      const x0=sx>0?X(0):X(mn), y0=sy>0?Y(mx):Y(0);
+      s+=`<rect x="${x0}" y="${y0}" width="${mx*u}" height="${mx*u}" fill="${fills[i]}"/>`;
+    });
+  }
+  for(let i=mn;i<=mx;i++){
+    s+=`<line x1="${X(i)}" y1="${Y(mn)}" x2="${X(i)}" y2="${Y(mx)}" stroke="${C.grid}" stroke-width="1"/>`;
+    s+=`<line x1="${X(mn)}" y1="${Y(i)}" x2="${X(mx)}" y2="${Y(i)}" stroke="${C.grid}" stroke-width="1"/>`;
+  }
+  (cfg.hiAxis||[]).forEach(a=>{
+    if(a==='x')s+=`<line x1="${X(mn)}" y1="${Y(0)}" x2="${X(mx)}" y2="${Y(0)}" stroke="#FFDD73" stroke-width="9" stroke-linecap="round"/>`;
+    if(a==='y')s+=`<line x1="${X(0)}" y1="${Y(mn)}" x2="${X(0)}" y2="${Y(mx)}" stroke="#FFDD73" stroke-width="9" stroke-linecap="round"/>`;
+  });
+  s+=`<line x1="${X(mn)-12}" y1="${Y(0)}" x2="${X(mx)+14}" y2="${Y(0)}" stroke="${C.ind}" stroke-width="2" marker-end="url(#ax${id})"/>`;
+  s+=`<line x1="${X(0)}" y1="${Y(mn)+12}" x2="${X(0)}" y2="${Y(mx)-14}" stroke="${C.ind}" stroke-width="2" marker-end="url(#ax${id})"/>`;
+  s+=`<text x="${X(mx)+12}" y="${Y(0)-8}" font-size="15" font-weight="800" fill="${C.ind}" text-anchor="end">x</text>`;
+  s+=`<text x="${X(0)+9}" y="${Y(mx)-6}" font-size="15" font-weight="800" fill="${C.ind}">y</text>`;
+  for(let i=mn;i<=mx;i++){
+    if(i===0)continue;
+    s+=`<line x1="${X(i)}" y1="${Y(0)-3}" x2="${X(i)}" y2="${Y(0)+3}" stroke="${C.ind}" stroke-width="1.5"/>`;
+    s+=`<line x1="${X(0)-3}" y1="${Y(i)}" x2="${X(0)+3}" y2="${Y(i)}" stroke="${C.ind}" stroke-width="1.5"/>`;
+    s+=`<text x="${X(i)}" y="${Y(0)+15}" font-size="11" fill="${C.soft}" text-anchor="middle">${fmt(i)}</text>`;
+    s+=`<text x="${X(0)-6}" y="${Y(i)+4}" font-size="11" fill="${C.soft}" text-anchor="end">${fmt(i)}</text>`;
+  }
+  s+=`<text x="${X(0)-6}" y="${Y(0)+15}" font-size="11" fill="${C.soft}" text-anchor="end">0</text>`;
+  if(cfg.quads){
+    [['1º','(+, +)',mx/2,mx/2],['2º','(−, +)',mn/2,mx/2],['3º','(−, −)',mn/2,mn/2],['4º','(+, −)',mx/2,mn/2]].forEach(([t,sg,x,y])=>{
+      s+=`<text x="${X(x)}" y="${Y(y)}" font-size="26" font-weight="800" fill="${C.ind}" text-anchor="middle">${t}</text>`;
+      s+=`<text x="${X(x)}" y="${Y(y)+20}" font-size="14" font-weight="700" fill="${C.soft}" text-anchor="middle">${sg}</text>`;
+    });
+  }
+  (cfg.polys||[]).forEach(p=>{
+    const pts=p.pts.map(([x,y])=>X(x)+','+Y(y)).join(' ');
+    const img=p.kind==='img';
+    s+=`<polygon points="${pts}" fill="${img?'rgba(255,179,160,.45)':'rgba(108,99,181,.22)'}" stroke="${img?C.coral:C.ind}" stroke-width="2.5" ${img?'stroke-dasharray="7 4"':''} stroke-linejoin="round"/>`;
+    if(p.name){const cx=p.nx??p.pts.reduce((a,b)=>a+b[0],0)/p.pts.length,cy=p.ny??p.pts.reduce((a,b)=>a+b[1],0)/p.pts.length;
+      s+=`<text x="${X(cx)}" y="${Y(cy)+6}" font-size="17" font-weight="800" fill="${img?C.coral:C.ind}" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="3">${p.name}</text>`;}
+  });
+  (cfg.dash||[]).forEach(([a,b])=>{
+    s+=`<line x1="${X(a[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(b[1])}" stroke="${C.soft}" stroke-width="1.6" stroke-dasharray="4 4"/>`;
+  });
+  if(cfg.path){
+    for(let i=0;i<cfg.path.length-1;i++){
+      const [a,b]=[cfg.path[i],cfg.path[i+1]];
+      s+=`<line x1="${X(a[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(b[1])}" stroke="${C.coral}" stroke-width="3" marker-end="url(#mv${id})"/>`;
+    }
+  }
+  (cfg.notes||[]).forEach(n=>{
+    s+=`<text x="${X(n.x)}" y="${Y(n.y)+5}" font-size="14" font-weight="800" fill="${n.c||C.coral}" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="4">${n.t}</text>`;
+  });
+  (cfg.pts||[]).forEach(p=>{
+    const col=p.c==='ind'?C.ind:(p.c==='ok'?C.ok:C.coral);
+    s+=`<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="6" fill="${col}" stroke="#fff" stroke-width="2"/>`;
+    if(p.l){
+      const dx=p.dx??9, dy=p.dy??-9;
+      s+=`<text x="${X(p.x)+dx}" y="${Y(p.y)+dy}" font-size="14" font-weight="700" fill="${C.deep}" text-anchor="${p.a||(dx<0?'end':'start')}" paint-order="stroke" stroke="#fff" stroke-width="4">${p.l}</text>`;
+    }
+  });
+  return s+'</svg>';
+}
+function verts(pts,c,labels,offs){return pts.map(([x,y],i)=>({x,y,c,l:labels?labels[i]:`(${fmt(x)}, ${fmt(y)})`,...(offs&&offs[i]||{})}));}
+const PLANES={
+  p2:{label:'Plano com os pontos A(3, 2), B(−4, 1), C(2, −3) e a origem O',pts:[{x:0,y:0,c:'ind',l:'O(0, 0)',dx:-6,dy:-8},{x:3,y:2,l:'A(3, 2)'},{x:-4,y:1,l:'B(−4, 1)'},{x:2,y:-3,l:'C(2, −3)'}],dash:[[[2,0],[2,-3]],[[3,0],[3,2]],[[-4,0],[-4,1]]]},
+  p2b:{label:'Os pontos (3, −1) e (−1, 3) em lugares diferentes',pts:[{x:3,y:-1,l:'(3, −1)'},{x:-1,y:3,l:'(−1, 3)',c:'ind'}]},
+  p2try:{label:'Plano com o ponto D marcado no 3º quadrante',pts:[{x:-2,y:-4,l:'D'}]},
+  p3:{label:'Os quatro quadrantes com os sinais de x e y',quads:true},
+  p4a:{label:'Caminho da origem até (2, −5)',path:[[0,0],[2,0],[2,-5]],pts:[{x:0,y:0,c:'ind',l:'início',dx:-8,dy:-8},{x:2,y:-5,l:'(2, −5)'}],notes:[{x:1,y:.6,t:'+2'},{x:3.1,y:-2.5,t:'−5'}]},
+  p4b:{label:'Caminho de (1, 2) até (−2, 6)',min:-6,max:7,path:[[1,2],[-2,2],[-2,6]],pts:[{x:1,y:2,c:'ind',l:'início (1, 2)',dy:16},{x:-2,y:6,l:'(−2, 6)'}],notes:[{x:-.5,y:1.3,t:'−3'},{x:-3,y:4,t:'+4'}]},
+  p5:{label:'Retângulo de vértices (−3, −1), (2, −1), (2, 3) e (−3, 3)',polys:[{pts:[[-3,-1],[2,-1],[2,3],[-3,3]]}],pts:verts([[-3,-1],[2,-1],[2,3],[-3,3]],'ind',null,[{dx:-8,dy:18},{dy:18},{},{dx:-8}]),notes:[{x:-.5,y:-1.75,t:'5 quadradinhos',c:'#E4694F'},{x:3.4,y:1,t:'4'}]},
+  p6a:{label:'P(2, 3) e seus simétricos em relação aos eixos',hiAxis:['x','y'],pts:[{x:2,y:3,c:'ind',l:'P(2, 3)'},{x:2,y:-3,l:'(2, −3): eixo x'},{x:-2,y:3,l:'(−2, 3): eixo y',dx:-9}],dash:[[[2,3],[2,-3]],[[2,3],[-2,3]]]},
+  p6b:{label:'Triângulo e seu simétrico em relação ao eixo x',hiAxis:['x'],polys:[{pts:[[2,1],[5,1],[2,3]],name:'A'},{pts:[[2,-1],[5,-1],[2,-3]],kind:'img',name:'A′'}],pts:[...verts([[2,1],[5,1],[2,3]],'ind',null,[{dx:-8,dy:-6},{dy:-6},{}]),...verts([[2,-1],[5,-1],[2,-3]],'coral',null,[{dx:-8,dy:18},{dy:18},{}])]},
+  p7:{label:'Triângulo no 1º quadrante e seu simétrico em relação à origem, no 3º',polys:[{pts:[[1,2],[5,2],[1,4]],name:'T'},{pts:[[-1,-2],[-5,-2],[-1,-4]],kind:'img',name:'T′'}],dash:[[[1,2],[-1,-2]],[[5,2],[-5,-2]],[[1,4],[-1,-4]]],pts:[...verts([[1,2],[5,2],[1,4]],'ind',null,[{dy:18},{dy:18},{}]),...verts([[-1,-2],[-5,-2],[-1,-4]],'coral',null,[{dx:-9},{dx:0,dy:-11,a:'middle'},{dx:9,dy:16}])]},
+  p8a:{label:'Triângulo A e triângulo B, ampliado 2 vezes',polys:[{pts:[[4,2],[6,2],[4,6]],kind:'img',name:'B'},{pts:[[2,1],[3,1],[2,3]],name:'A',nx:2.35,ny:1.5}],pts:[...verts([[2,1],[3,1],[2,3]],'ind',null,[{dx:-9,dy:18},{dx:4,dy:20},{dx:-9,dy:-4}]),...verts([[4,2],[6,2],[4,6]],'coral',null,[{dx:0,dy:22,a:'middle'},{dx:-4,dy:22,a:'end'},{dx:-9,dy:-4}])]},
+  p8b:{label:'Figura B e a figura A obtida dividindo por 2',polys:[{pts:[[2,-2],[-4,4],[-4,-2]],kind:'img',name:'B',nx:-3.3,ny:.7},{pts:[[1,-1],[-2,2],[-2,-1]],name:'A',nx:-1.3,ny:.55}],pts:[...verts([[2,-2],[-4,4],[-4,-2]],'coral',null,[{dx:0,dy:22,a:'middle'},{dx:9},{dx:-8,dy:18}]),...verts([[1,-1],[-2,2],[-2,-1]],'ind',null,[{dx:10,dy:5},{dx:9,dy:-4},{dx:9,dy:18}])]}
+};
+document.querySelectorAll('[data-plane]').forEach(el=>{el.innerHTML=plane(PLANES[el.dataset.plane]);});
+
+/* ---------- navegação ---------- */
+const secs=[...document.querySelectorAll('.sec')];
+const tabs=document.getElementById('tabs');
+const N=secs.length;
+let cur=0;
+const tog=document.createElement('button');
+tog.className='tab tog';tog.type='button';tog.setAttribute('aria-expanded','true');
+tabs.appendChild(tog);
+secs.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.className='tab';b.type='button';b.setAttribute('role','tab');
+  b.textContent=(i+1)+'. '+s.dataset.name;
+  b.onclick=()=>go(i);
+  tabs.appendChild(b);
+});
+const tabBtns=[...tabs.querySelectorAll('.tab:not(.tog)')];
+function setTabs(open){
+  tabs.classList.toggle('closed',!open);
+  tog.textContent=open?'▴ Ocultar abas':'▾ Mostrar abas';
+  tog.setAttribute('aria-expanded',open?'true':'false');
+  store('rev7-abas',open?'1':'0');
+  setProgH();
+}
+tog.onclick=()=>setTabs(tabs.classList.contains('closed'));
+setTabs(store('rev7-abas')!=='0');
+
+document.getElementById('ptrack').setAttribute('aria-valuemax',N);
+function go(i){
+  if(i<0||i>=N)return;
+  cur=i;
+  secs.forEach((s,k)=>s.classList.toggle('on',k===i));
+  tabBtns.forEach((b,k)=>b.setAttribute('aria-selected',k===i?'true':'false'));
+  document.getElementById('plabel').textContent='Parte '+(i+1)+' de '+N+' — '+secs[i].dataset.name;
+  document.getElementById('fill').style.width=((i+1)/N*100)+'%';
+  document.getElementById('ptrack').setAttribute('aria-valuenow',i+1);
+  document.getElementById('prev').disabled=i===0;
+  document.getElementById('next').disabled=i===N-1;
+  window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  setProgH();
+}
+document.getElementById('prev').onclick=()=>go(cur-1);
+document.getElementById('next').onclick=()=>go(cur+1);
+
+/* ---------- progresso das atividades ---------- */
+const tries=[...document.querySelectorAll('.try')];
+let triesDone=0,answered=0;
+function updAct(){
+  document.getElementById('alabel').textContent='✓ Atividades feitas: '+(triesDone+answered)+' de '+(tries.length+Q.length);
+}
+
+/* ---------- try-box ---------- */
+function parseNum(str){
+  let s=String(str).replace(/[−–]/g,'-').replace(/[^0-9,.\-]/g,'');
+  if(!s)return NaN;
+  if(s.includes(','))s=s.replace(/\./g,'').replace(',','.');
+  return parseFloat(s);
+}
+function nums(str){return (String(str).replace(/[−–—]/g,'-').match(/-?\d+/g)||[]).map(Number);}
+function norm(str){return String(str).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();}
+tries.forEach(t=>{
+  const inp=t.querySelector('input'),btn=t.querySelector('.btn'),fb=t.querySelector('.fb');
+  const check=()=>{
+    if(!inp.value.trim()){fb.className='fb bad';fb.textContent='Escreva sua resposta no campo antes de conferir.';return;}
+    let ok,extra='';
+    if(t.dataset.pair){
+      const [a,b]=t.dataset.pair.split(',').map(Number);const n=nums(inp.value);
+      ok=n.length===2&&n[0]===a&&n[1]===b;
+      if(!ok&&n.length===2&&n[0]===b&&n[1]===a&&a!==b)extra='Os números estão certos, mas a ordem não: primeiro o x, depois o y. ';
+      else if(!ok&&n.length===2&&Math.abs(n[0])===Math.abs(a)&&Math.abs(n[1])===Math.abs(b))extra='Os números estão certos, mas confira os sinais. ';
+    }else if(t.dataset.word){ok=norm(inp.value).includes(norm(t.dataset.word));}
+    else ok=Math.abs(parseNum(inp.value)-parseFloat(t.dataset.ans))<0.005;
+    fb.className='fb '+(ok?'good':'bad');
+    fb.textContent=ok?'✓ '+t.dataset.ok:'↺ '+extra+t.dataset.hint;
+    if(ok&&!t.classList.contains('done')){t.classList.add('done');triesDone++;updAct();}
+  };
+  btn.addEventListener('click',check);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+});
+
+/* ---------- quiz ---------- */
+const GROUPS={pq:{t:'Pontos e quadrantes',p:'nas Partes 2 e 3'},mv:{t:'Andar no plano',p:'na Parte 4'},pg:{t:'Polígonos no plano',p:'na Parte 5'},sm:{t:'Simetrias',p:'nas Partes 6 e 7'},am:{t:'Ampliação e redução',p:'na Parte 8'}};
+const Q=[
+ {g:'pq',q:'A professora pediu que Júlia marcasse o ponto (1, −4), mas ela marcou o ponto (−4, 1). O que aconteceu?',
+  o:['Ela acertou, pois usou os mesmos números.','Ela errou: marcou um ponto do 2º quadrante, e o ponto pedido fica no 4º.','Ela errou, mas os dois pontos ficam no 4º quadrante.','Ela acertou, pois os dois pontos estão sobre o eixo x.'],a:1,
+  h:'Os mesmos números em outra ordem formam o mesmo ponto? Veja o sinal do x e do y de cada par.',
+  r:['No par (x, y), o primeiro número é sempre o x (horizontal) e o segundo é o y (vertical).','(1, −4): x = 1 positivo (direita) e y = −4 negativo (baixo) → 4º quadrante.','(−4, 1): x = −4 negativo (esquerda) e y = 1 positivo (cima) → 2º quadrante.','São pontos diferentes, em quadrantes diferentes. Júlia errou.'],
+  w:'Usar os mesmos números não basta: a ordem muda o lugar do ponto. E nenhum dos dois está sobre o eixo x, porque nenhum tem y = 0.'},
+ {g:'pq',q:'Qual destes pontos está no 4º quadrante?',
+  o:['(−2, 3)','(−3, −2)','(3, −2)','(2, 3)'],a:2,
+  h:'O 4º quadrante fica embaixo e à direita. Qual sinal o x precisa ter? E o y?',
+  r:['4º quadrante: embaixo (y negativo) e à direita (x positivo), ou seja, (+, −).','(−2, 3) é (−, +): 2º quadrante.','(−3, −2) é (−, −): 3º quadrante.','(3, −2) é (+, −): 4º quadrante. ✓','(2, 3) é (+, +): 1º quadrante.'],
+  w:'(−3, −2) também fica embaixo, mas à esquerda: é o 3º quadrante. A contagem é anti-horária, então o 4º fica embaixo à direita.'},
+ {g:'mv',q:'Um robô sai da origem, anda 2 unidades para a direita, 5 para cima e, depois, 6 para a esquerda. Em que ponto ele para?',
+  o:['(−4, 5)','(8, 5)','(4, 5)','(5, −4)'],a:0,
+  h:'Faça o x em duas etapas: primeiro +2 (direita), depois −6 (esquerda). O movimento para cima muda só o y.',
+  r:['Começa em (0, 0).','2 para a direita: x = 0 + 2 = 2.','5 para cima: y = 0 + 5 = 5.','6 para a esquerda: x = 2 − 6 = −4.','Ele para em (−4, 5).'],
+  w:'(8, 5) soma o 6 em vez de tirar: esquerda diminui o x. E (5, −4) troca a ordem dos números: o x vem sempre primeiro.',
+  fig:{label:'Caminho do robô da origem até (−4, 5)',path:[[0,0],[2,0],[2,5],[-4,5]],pts:[{x:0,y:0,c:'ind',l:'início',dx:-8,dy:16},{x:-4,y:5,l:'(−4, 5)',dy:-10}]}},
+ {g:'pg',q:'Lucas ligou, nesta ordem, os pontos (−1, −3) → (3, −3) → (3, 1) → (−1, 1) e voltou ao primeiro. Que polígono ele desenhou?',
+  o:['Triângulo.','Retângulo com lados de medidas diferentes.','Quadrado.','Trapézio.'],a:2,
+  h:'São 4 vértices. Conte os quadradinhos do lado de baixo e do lado da direita. As medidas são iguais?',
+  r:['São 4 vértices, então é um quadrilátero.','Lado de baixo: de x = −1 até x = 3 → 4 quadradinhos.','Lado da direita: de y = −3 até y = 1 → 4 quadradinhos.','Os outros dois lados também medem 4, e todos os cantos são retos.','4 lados iguais com cantos retos: quadrado.'],
+  w:'Muita gente marca “retângulo” sem contar. Aqui os lados medem 4 e 4, então a figura é um quadrado.',
+  fig:{label:'Quadrado de lado 4',polys:[{pts:[[-1,-3],[3,-3],[3,1],[-1,1]]}],pts:verts([[-1,-3],[3,-3],[3,1],[-1,1]],'ind',null,[{dx:-8,dy:18},{dy:18},{},{dx:-8}]),notes:[{x:1,y:-3.8,t:'4'},{x:3.6,y:-1,t:'4'}]}},
+ {g:'sm',q:'O ponto Q(4, −2) foi refletido em relação ao eixo y. Em que ponto ficou o simétrico?',
+  o:['(4, 2)','(−4, −2)','(−4, 2)','(−2, 4)'],a:1,
+  h:'Em relação ao eixo y, só uma das coordenadas troca de sinal. Qual delas?',
+  r:['Em relação ao eixo y, troca o sinal do x e o y continua igual.','x: 4 → −4.','y: −2 continua −2.','O simétrico é (−4, −2).'],
+  w:'(4, 2) é o simétrico em relação ao eixo x (trocou o y). (−4, 2) trocou os dois sinais: é o simétrico em relação à origem.',
+  fig:{label:'Q(4, −2) e seu simétrico (−4, −2) em relação ao eixo y',hiAxis:['y'],pts:[{x:4,y:-2,c:'ind',l:'Q(4, −2)',dy:18},{x:-4,y:-2,l:'(−4, −2)',dx:-9,dy:18}],dash:[[[4,-2],[-4,-2]]]}},
+ {g:'sm',q:'Os vértices de um triângulo são (−2, 1), (−5, 1) e (−2, 4), no 2º quadrante. Multiplicando por −1 as coordenadas de todos os vértices, obtemos uma figura:',
+  o:['Simétrica em relação à origem, no 4º quadrante.','Simétrica em relação ao eixo x, no 3º quadrante.','Simétrica em relação ao eixo y, no 1º quadrante.','Maior que a original, pois os números mudaram.'],a:0,
+  h:'Multiplicar por −1 troca quantos sinais? Calcule um vértice novo e veja em que quadrante ele fica.',
+  r:['Multiplicar por −1 troca os dois sinais: (x, y) → (−x, −y).','(−2, 1) → (2, −1); (−5, 1) → (5, −1); (−2, 4) → (2, −4).','Os novos vértices são (+, −): ficam no 4º quadrante.','Trocar os dois sinais é a simetria em relação à origem. O tamanho não muda.'],
+  w:'Simetria em relação a um eixo troca só um sinal. Como × (−1) troca os dois, a simetria é em relação à origem, e o 2º quadrante vai para o oposto, o 4º.',
+  fig:{label:'Triângulo no 2º quadrante e seu simétrico em relação à origem, no 4º',polys:[{pts:[[-2,1],[-5,1],[-2,4]],name:'T'},{pts:[[2,-1],[5,-1],[2,-4]],kind:'img',name:'T′'}],dash:[[[-2,1],[2,-1]],[[-5,1],[5,-1]],[[-2,4],[2,-4]]],pts:[...verts([[-2,1],[-5,1],[-2,4]],'ind',null,[{dx:9,dy:16},{dx:-9,dy:16},{dx:9}]),...verts([[2,-1],[5,-1],[2,-4]],'coral',null,[{dx:-9,dy:18},{dx:0,dy:22,a:'middle'},{dx:-9,dy:16}])]}},
+ {g:'am',q:'Para ampliar um triângulo, Pedro multiplicou por 3 as coordenadas de cada vértice. Os vértices eram (0, 1), (2, −1) e (−1, 0). Quais são os novos vértices?',
+  o:['(3, 4), (5, 2) e (2, 3)','(0, 3), (6, −3) e (−3, 0)','(0, 1), (6, −1) e (−3, 0)','(0, 3), (6, 3) e (3, 0)'],a:1,
+  h:'Multiplique as DUAS coordenadas de cada vértice por 3. O zero continua zero, e o sinal se mantém.',
+  r:['(0, 1) × 3: 0 × 3 = 0 e 1 × 3 = 3 → (0, 3).','(2, −1) × 3: 2 × 3 = 6 e (−1) × 3 = −3 → (6, −3).','(−1, 0) × 3: (−1) × 3 = −3 e 0 × 3 = 0 → (−3, 0).','Novos vértices: (0, 3), (6, −3) e (−3, 0).'],
+  w:'(3, 4), (5, 2) e (2, 3) somam 3 em vez de multiplicar. (0, 1), (6, −1) e (−3, 0) multiplicam só o x. E a última alternativa perde os sinais negativos.',
+  fig:{label:'Triângulo original e triângulo ampliado 3 vezes',cap:'Azul, linha cheia: triângulo original. Coral, tracejado: triângulo ampliado.',polys:[{pts:[[0,3],[6,-3],[-3,0]],kind:'img'},{pts:[[0,1],[2,-1],[-1,0]]}],pts:[...verts([[0,1],[2,-1],[-1,0]],'ind',null,[{dx:9,dy:-2},{dx:0,dy:22,a:'middle'},{dx:-9,dy:-9}]),...verts([[0,3],[6,-3],[-3,0]],'coral',null,[{dx:9},{dx:-9,dy:18},{dx:-9,dy:-9}])]}},
+ {g:'sm',q:'O triângulo T tem vértices (2, 3), (5, 1) e (4, 6). Desenhando o triângulo simétrico a T em relação ao eixo x, quais serão os vértices?',
+  o:['(−2, 3), (−5, 1) e (−4, 6)','(−2, −3), (−5, −1) e (−4, −6)','(3, 2), (1, 5) e (6, 4)','(2, −3), (5, −1) e (4, −6)'],a:3,
+  h:'Em relação ao eixo x, o ponto passa de cima para baixo. Qual coordenada muda: a dos lados (x) ou a da altura (y)?',
+  r:['Em relação ao eixo x, troca o sinal do y e o x continua igual.','(2, 3) → (2, −3).','(5, 1) → (5, −1).','(4, 6) → (4, −6).'],
+  w:'A primeira alternativa é o simétrico em relação ao eixo y (trocou o x). A segunda trocou os dois sinais (origem). A terceira só trocou a ordem dos números.',
+  fig:{label:'Triângulo T e seu simétrico em relação ao eixo x',hiAxis:['x'],polys:[{pts:[[2,3],[5,1],[4,6]],name:'T'},{pts:[[2,-3],[5,-1],[4,-6]],kind:'img',name:'T′'}],pts:[...verts([[2,3],[5,1],[4,6]],'ind',null,[{dx:-9},{dx:-4,dy:18},{dx:-9,dy:4}]),...verts([[2,-3],[5,-1],[4,-6]],'coral',null,[{dx:-9},{dx:-6,dy:22},{dx:-9,dy:4}])]}},
+ {g:'am',q:'Ana multiplicou por 2 as coordenadas dos vértices do retângulo (0, 0), (3, 0), (3, 1) e (0, 1). O que ela obteve?',
+  o:['Um retângulo de lados 5 e 3, semelhante ao original.','Um quadrado de lado 6.','Um retângulo de lados 6 e 2, mas não semelhante ao original.','Um retângulo de lados 6 e 2, semelhante ao original.'],a:3,
+  h:'Calcule os novos vértices (multiplique por 2) e depois conte os quadradinhos dos lados. Os dois lados mudaram na mesma proporção?',
+  r:['Novos vértices: (0, 0), (6, 0), (6, 2) e (0, 2).','Lado de baixo: de 0 até 6 → 6. Lado vertical: de 0 até 2 → 2.','O original tinha lados 3 e 1. Os dois lados dobraram (3 → 6 e 1 → 2).','Mesma forma, lados na mesma proporção: retângulo de lados 6 e 2, semelhante ao original.'],
+  w:'Lados 5 e 3 aparecem quando somamos 2 em vez de multiplicar. E multiplicar todas as coordenadas pelo mesmo número sempre gera uma figura semelhante.',
+  fig:{label:'Retângulo original e retângulo ampliado 2 vezes',min:-1,max:7,polys:[{pts:[[0,0],[6,0],[6,2],[0,2]],kind:'img',name:'novo'},{pts:[[0,0],[3,0],[3,1],[0,1]],name:'A'}],notes:[{x:4.5,y:2.5,t:'6'},{x:6.5,y:1,t:'2'}]}},
+ {g:'am',q:'Uma professora ampliou um triângulo A multiplicando por 3 as coordenadas dos seus vértices e obteve o triângulo B, de vértices (6, −3), (0, 9) e (−3, 0). Quais eram os vértices do triângulo A?',
+  o:['(18, −9), (0, 27) e (−9, 0)','(3, −6), (−3, 6) e (−6, −3)','(2, −1), (0, 3) e (−1, 0)','(−2, 1), (0, −3) e (1, 0)'],a:2,
+  h:'B foi obtido multiplicando por 3. Para voltar para A, qual é a operação inversa?',
+  r:['Para voltar, fazemos a operação inversa: dividir por 3.','(6, −3) ÷ 3 → (2, −1).','(0, 9) ÷ 3 → (0, 3).','(−3, 0) ÷ 3 → (−1, 0).','Confira: (2, −1) × 3 = (6, −3). ✓'],
+  w:'A primeira alternativa multiplica de novo, e a figura fica ainda maior. A segunda subtrai 3. A última troca os sinais, o que não acontece quando dividimos por um número positivo.'}
+];
+const quiz=document.getElementById('quiz');
+const L='ABCD';
+let right=0,first=0,errs={};
+function build(){
+  quiz.innerHTML='';answered=0;right=0;first=0;errs={};
+  Q.forEach((it,idx)=>{
+    const d=document.createElement('div');d.className='q';
+    d.innerHTML=`<div class="qtag">${GROUPS[it.g].t}</div><div><span class="qn">${idx+1})</span> ${it.q}</div><div class="opts"></div><div class="qhint" role="status"></div><div class="res" role="status"></div>`;
+    const opts=d.querySelector('.opts');
+    const st={tries:0,done:false};
+    it.o.forEach((t,k)=>{
+      const b=document.createElement('button');b.className='opt';b.type='button';
+      b.innerHTML=`<span class="let">${L[k]}</span><span>${t}</span><span class="mk"></span>`;
+      b.onclick=()=>pick(it,d,k,st);
+      opts.appendChild(b);
+    });
+    quiz.appendChild(d);
+  });
+  document.getElementById('final').className='final';
+  upd();
+}
+function pick(it,d,k,st){
+  if(st.done)return;
+  const bs=[...d.querySelectorAll('.opt')];
+  const hint=d.querySelector('.qhint');
+  const ok=k===it.a;
+  st.tries++;
+  if(!ok&&st.tries===1){
+    bs[k].classList.add('wrong');bs[k].disabled=true;bs[k].querySelector('.mk').textContent='✗ tente outra';
+    hint.innerHTML=`<span class="lbl">💡 Quase! Releia com esta dica e tente de novo:</span>${it.h}`;
+    hint.classList.add('on');
+    return;
+  }
+  st.done=true;
+  hint.classList.remove('on');
+  bs.forEach(b=>{b.disabled=true;if(!b.classList.contains('wrong'))b.classList.add('dim');});
+  bs[it.a].classList.remove('dim');bs[it.a].classList.add('right');bs[it.a].querySelector('.mk').textContent='✓ correta';
+  if(!ok){bs[k].classList.remove('dim');bs[k].classList.add('wrong');bs[k].querySelector('.mk').textContent='✗ 2ª escolha';}
+  if(ok){right++;if(st.tries===1)first++;d.classList.add('done-ok');}
+  if(st.tries>1)errs[it.g]=(errs[it.g]||0)+1;
+  answered++;
+  const ans=`${L[it.a]}) ${it.o[it.a]}`;
+  const head=ok
+    ?(st.tries===1?`✓ Isso mesmo, de primeira! Resposta: ${ans}`:`✓ Isso! Você acertou na segunda tentativa. Resposta: ${ans}`)
+    :`↺ Ainda não foi dessa vez. A resposta certa é ${ans}. Acompanhe a resolução:`;
+  const res=d.querySelector('.res');
+  res.innerHTML=`<div class="head ${ok?'good':'bad'}">${head}</div>
+    <div class="box algo"><span class="lbl">📝 Resolução comentada</span><ol class="steps">${it.r.map(s=>`<li>${s}</li>`).join('')}</ol>${it.fig?`<div class="fig">${plane(it.fig)}</div>${it.fig.cap?`<p class="figcap">${it.fig.cap}</p>`:''}`:''}</div>
+    <div class="box tip"><span class="lbl">⚠️ Pegadinha</span>${it.w}</div>`;
+  res.classList.add('on');
+  upd();
+  if(answered===Q.length)fin();
+}
+function upd(){
+  document.getElementById('sc1').textContent='Acertos: '+right+' de '+Q.length+' (de primeira: '+first+')';
+  document.getElementById('sc2').textContent='Respondidas: '+answered+' de '+Q.length;
+  updAct();
+}
+function fin(){
+  const f=document.getElementById('final');
+  let msg=`<span class="lbl">Resultado: ${right} de ${Q.length} (${first} de primeira)</span>`;
+  const ks=Object.keys(errs);
+  if(!ks.length)msg+='Excelente! Você acertou tudo de primeira. Revise o resumo e chegue tranquilo na prova.';
+  else{
+    msg+='Muito bom ter feito o quiz inteiro! As questões em que você precisou da dica, ou que ficaram erradas, mostram o que vale revisar:<br>';
+    msg+=ks.map(g=>`• ${GROUPS[g].t}: ${errs[g]} ${errs[g]>1?'questões':'questão'} → volte ${GROUPS[g].p}.`).join('<br>');
+  }
+  f.innerHTML=msg;f.className='final on';
+}
+
+/* ---------- recomeçar com confirmação ---------- */
+const conf=document.getElementById('confirm'),rst=document.getElementById('reset');
+rst.onclick=()=>{if(answered===0){build();return;}conf.classList.add('on');rst.hidden=true;document.getElementById('no').focus();};
+document.getElementById('no').onclick=()=>{conf.classList.remove('on');rst.hidden=false;rst.focus();};
+document.getElementById('yes').onclick=()=>{conf.classList.remove('on');rst.hidden=false;build();document.getElementById('score').scrollIntoView({block:'center'});};
+
+build();
+go(0);
+</script>
+</body>
+</html>
