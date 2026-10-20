@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisão 8º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F4FC; --indigo:#362F78; --deep:#241F52; --soft:#6C63B5;
+  --mint:#A9E5D0; --coral:#FFB3A0; --coral-d:#E4694F; --yellow:#FFDD73;
+  --text:#2A2650; --text2:#5B5686; --border:#E3DEF7; --white:#fff;
+  --lilac:#EEEAFB; --indigo-l:#ECEAF8; --cream:#FFF8E1;
+  --ok:#1E7A55; --ok-bg:#E3F6EE; --no:#B23A26; --no-bg:#FDECE8;
+  --progh:46px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3{font-family:'Baloo 2',system-ui,sans-serif;color:var(--deep);line-height:1.2}
+h1{font-size:1.65rem;font-weight:800;margin:.3em 0 .1em}
+h2{font-size:1.38rem;font-weight:800;margin:.25em 0 .5em}
+h3{font-size:1.1rem;font-weight:700;margin:1.2em 0 .4em}
+p{margin:.55em 0}
+strong,b{color:var(--deep)}
+sup{line-height:0}
+.sub{color:var(--text2);margin:0 0 .6em;font-size:.95em}
+.n{font-family:'Baloo 2';font-weight:700}
+
+/* fundo */
+.bgsym{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bgsym span{position:absolute;font-family:'Baloo 2';font-weight:700;color:var(--indigo);opacity:.08;animation:drift 28s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(30px,-38px) rotate(12deg)}}
+@media (prefers-reduced-motion:reduce){.bgsym span{animation:none}html{scroll-behavior:auto}}
+
+/* progresso */
+.prog{position:sticky;top:0;z-index:20;background:rgba(246,244,252,.94);backdrop-filter:blur(6px);padding:8px 16px 7px;border-bottom:1px solid var(--border)}
+.prog-label{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 12px;font-family:'Baloo 2';font-weight:700;font-size:.85rem;color:var(--indigo);margin-bottom:4px;line-height:1.35}
+.prog-label #alabel{color:var(--text2);font-weight:600}
+.track{height:7px;background:var(--border);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--soft),var(--indigo));border-radius:99px;transition:width .35s}
+
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:14px 16px 40px}
+
+/* abas (tamanho original preservado) */
+.tabs{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 14px}
+.tab{font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:99px;border:1px solid var(--border);background:var(--white);color:var(--indigo);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--indigo);color:#fff;border-color:var(--indigo)}
+.tab.tog{border-style:dashed;border-color:var(--soft);color:var(--soft)}
+.tabs.closed .tab:not(.tog){display:none}
+.tab:focus-visible,.btn:focus-visible,.navbtn:focus-visible,.opt:focus-visible,.op:focus-visible{outline:3px solid var(--coral-d);outline-offset:2px}
+
+/* seções */
+.sec{display:none}
+.sec.on{display:block;animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.sec.on{animation:none}}
+.card{background:var(--white);border:1px solid var(--border);border-radius:18px;box-shadow:0 4px 18px rgba(54,47,120,.07);padding:18px 18px 20px;margin-bottom:14px}
+.card>:last-child{margin-bottom:0}
+.eyebrow{display:inline-block;font-family:'Baloo 2';font-weight:700;font-size:.78em;letter-spacing:.03em;padding:2px 11px;border-radius:99px;background:var(--mint);color:var(--deep)}
+.eyebrow.c{background:var(--coral)} .eyebrow.y{background:var(--yellow)} .eyebrow.l{background:var(--lilac)}
+
+/* caixas */
+.box,.think,.tip,.formula,.algo{border-radius:14px;padding:.75em .95em;margin:1em 0;line-height:1.6}
+:is(.box,.think,.tip,.formula,.algo)>:first-child{margin-top:0}
+:is(.box,.think,.tip,.formula,.algo)>:last-child{margin-bottom:0}
+.lbl{display:block;font-family:'Baloo 2';font-weight:700;font-size:.92em;line-height:1.3;margin-bottom:.35em;color:var(--deep)}
+.think{background:var(--indigo-l)}
+.tip{background:var(--cream);border-left:6px solid var(--yellow)}
+.formula{background:var(--white);border:2px solid var(--indigo);text-align:center}
+.formula .f{font-family:'Baloo 2';font-weight:700;font-size:1.35rem;line-height:1.35;color:var(--indigo);display:block}
+.formula .f+.f{margin-top:.15em}
+.algo{background:var(--lilac);border:1px solid #D6CFF3}
+.algo>div{margin:0;padding:.4em 0}
+.algo>div+div{border-top:1px dashed #D6CFF3}
+.algo>.lbl+div,.algo>div:first-child{padding-top:0}
+.algo>div:last-child{padding-bottom:0}
+.hl{background:var(--yellow);padding:0 5px;border-radius:5px;font-weight:700;color:var(--deep);white-space:nowrap}
+
+/* tabelas */
+.tblwrap{overflow-x:auto;margin:10px 0;-webkit-overflow-scrolling:touch}
+table.tbl{border-collapse:collapse;width:100%;font-size:.95em;min-width:300px}
+.tbl th{background:var(--indigo);color:#fff;font-family:'Baloo 2';font-weight:600;padding:.4em .55em;text-align:left}
+.tbl td{border-bottom:1px solid var(--border);padding:.4em .55em}
+.tbl tr:nth-child(even) td{background:#FAF9FE}
+.tbl td.ok{background:var(--ok-bg)!important;font-weight:700;color:var(--ok)}
+
+/* chain */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0}
+.node{font-family:'Baloo 2';font-weight:700;background:var(--indigo);color:#fff;border-radius:12px;padding:5px 11px;font-size:1.05rem}
+.op{font-family:'Baloo 2';font-weight:700;background:var(--coral);color:var(--deep);border:none;border-radius:99px;padding:2px 10px;font-size:.9rem;cursor:pointer;min-width:42px}
+.op.shown{background:var(--coral-d);color:#fff;cursor:default}
+
+/* slots (contagem) */
+.slots{display:flex;flex-wrap:wrap;align-items:flex-end;gap:6px;margin:12px 0}
+.slot{text-align:center;min-width:62px}
+.slot .num{font-family:'Baloo 2';font-weight:800;font-size:1.6rem;color:var(--indigo)}
+.slot .ln{height:3px;background:var(--indigo);border-radius:2px}
+.slot small{display:block;color:var(--text2);font-size:.78em;margin-top:2px}
+.slots .x,.slots .eq{font-family:'Baloo 2';font-weight:700;font-size:1.4rem;color:var(--coral-d);padding-bottom:16px}
+.slots .eq{color:var(--deep)}
+
+/* try-box */
+.try{border:2px dashed var(--soft);border-radius:14px;padding:.75em .95em;margin:1.1em 0;background:#FDFCFF}
+.try.done{border-color:var(--ok)}
+.try-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.try input{font-family:'Baloo 2';font-weight:600;font-size:1.05em;padding:.3em .55em;border:2px solid var(--border);border-radius:10px;width:8em;max-width:100%;color:var(--deep)}
+.btn{font-family:'Baloo 2';font-weight:700;background:var(--indigo);color:#fff;border:none;border-radius:10px;padding:.4em .95em;font-size:.95em;cursor:pointer}
+.btn.ghost{background:var(--white);color:var(--indigo);border:2px solid var(--indigo)}
+.fb{margin-top:8px;border-radius:10px;font-size:.95em}
+.fb.good{background:var(--ok-bg);color:var(--ok);padding:.5em .7em}
+.fb.bad{background:var(--no-bg);color:var(--no);padding:.5em .7em}
+
+/* figuras */
+.fig{display:flex;justify-content:center;margin:10px 0}
+.fig svg{max-width:100%;height:auto}
+.dice{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+.dice .d{text-align:center;font-size:.8em;color:var(--text2)}
+.dice .d.on{color:var(--ok);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chip{font-family:'Baloo 2';font-weight:600;border:1px solid var(--border);border-radius:10px;padding:3px 9px;background:var(--white)}
+.chip.on{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.grid2{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;max-width:360px;margin:10px auto;font-family:'Baloo 2';font-weight:600;text-align:center;font-size:.9rem}
+.grid2 div{padding:4px 0;border-radius:6px;background:#FAF9FE;border:1px solid var(--border)}
+.grid2 .h{background:var(--indigo);color:#fff;border-color:var(--indigo)}
+.grid2 .on{background:var(--ok-bg);border-color:var(--ok);color:var(--ok);font-weight:800}
+.map{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.map div{border-radius:14px;padding:10px;font-family:'Baloo 2';font-weight:700;color:var(--deep);font-size:.95em}
+.map small{display:block;font-family:'Atkinson Hyperlegible';font-weight:400;color:var(--text2);font-size:.85em}
+
+/* quiz */
+.score{position:sticky;top:var(--progh);z-index:5;background:var(--indigo);color:#fff;font-family:'Baloo 2';font-weight:700;border-radius:12px;padding:6px 12px;margin:6px 0 12px;display:flex;justify-content:space-between;gap:2px 10px;flex-wrap:wrap;font-size:.95em}
+.qgroup{font-family:'Baloo 2';font-weight:800;color:var(--soft);font-size:1.05em;margin:22px 0 4px;border-bottom:2px solid var(--border);padding-bottom:2px}
+.q{border:1px solid var(--border);border-radius:16px;padding:.75em .95em;margin:12px 0;background:var(--white)}
+.q.done-ok{border-color:var(--ok)}
+.q .qn{font-family:'Baloo 2';font-weight:800;color:var(--indigo)}
+.opts{display:grid;gap:6px;margin-top:8px}
+.opt{display:flex;align-items:center;gap:.55em;text-align:left;font-family:'Atkinson Hyperlegible';font-size:.98em;background:#FAF9FE;border:2px solid var(--border);border-radius:12px;padding:.45em .65em;cursor:pointer;color:var(--text)}
+.opt .let{font-family:'Baloo 2';font-weight:800;flex:0 0 auto;width:1.65em;height:1.65em;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--lilac);color:var(--indigo)}
+.opt:hover:not(:disabled){border-color:var(--soft)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--ok-bg);border-color:var(--ok);color:var(--ok);font-weight:700}
+.opt.right .let{background:var(--ok);color:#fff}
+.opt.wrong{background:var(--no-bg);border-color:var(--no);color:var(--no)}
+.opt.wrong .let{background:var(--no);color:#fff}
+.opt.dim{opacity:.55}
+.opt .mk{margin-left:auto;font-weight:700;font-size:.85em;white-space:nowrap;padding-left:.4em}
+.qhint{display:none;margin-top:10px;background:var(--cream);border-left:6px solid var(--yellow);border-radius:12px;padding:.6em .9em}
+.qhint.on{display:block}
+.res{display:none;margin-top:10px}
+.res.on{display:block}
+.res .head{border-radius:10px;padding:.45em .7em;font-weight:700;margin-bottom:.6em}
+.res .head.good{background:var(--ok-bg);color:var(--ok)}
+.res .head.bad{background:var(--no-bg);color:var(--no)}
+.res .box{margin:.6em 0 0}
+.final{display:none;background:var(--indigo-l);border-radius:14px;padding:14px;margin-top:16px}
+.final.on{display:block}
+.resetrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
+.confirm{display:none;align-items:center;flex-wrap:wrap;gap:8px;background:var(--no-bg);color:var(--no);border-radius:12px;padding:.4em .7em;font-weight:700}
+.confirm.on{display:flex}
+
+/* resumo */
+.summary h3{margin:1.3em 0 .3em;padding-bottom:2px;border-bottom:2px solid var(--border)}
+.summary h3:first-of-type{margin-top:.6em}
+.summary p{margin:.45em 0}
+.sf{font-family:'Baloo 2';font-weight:700;color:var(--indigo);background:var(--indigo-l);border-radius:10px;padding:.25em .7em;display:inline-block;margin:.25em .3em .25em 0;font-size:1.05em}
+
+/* navegação (tamanho original preservado) */
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:6px}
+.navbtn{font-family:'Baloo 2';font-weight:700;font-size:11px;padding:4px 9px;border-radius:99px;border:1px solid var(--indigo);background:var(--white);color:var(--indigo);cursor:pointer}
+.navbtn.fwd{background:var(--indigo);color:#fff}
+.navbtn:disabled{opacity:.35;cursor:default}
+
+@media (min-width:900px){
+  body{font-size:20px}
+  .wrap{max-width:980px;padding:22px 24px 50px}
+  h1{font-size:2.3rem} h2{font-size:1.8rem} h3{font-size:1.3rem}
+  .tab,.navbtn{font-size:15px;padding:5px 14px}
+  .prog-label{font-size:1rem}
+  .card{padding:26px 30px}
+  .node{font-size:1.3rem;padding:6px 14px} .op{font-size:1.05rem}
+  .slot{min-width:90px} .slot .num{font-size:2.3rem} .slots .x,.slots .eq{font-size:2rem}
+  .grid2{max-width:480px;font-size:1.05rem}
+  .formula .f{font-size:1.8rem}
+}
+@media (min-width:1500px){
+  body{font-size:25px}
+  .wrap{max-width:1260px}
+  h1{font-size:3rem} h2{font-size:2.2rem} h3{font-size:1.6rem}
+  .tab,.navbtn{font-size:19px}
+  .node{font-size:1.6rem} .op{font-size:1.3rem}
+  .slot{min-width:110px} .slot .num{font-size:3rem} .slots .x,.slots .eq{font-size:2.6rem}
+  .grid2{max-width:640px;font-size:1.3rem}
+  .formula .f{font-size:2.3rem}
+  .dice svg{width:84px;height:84px}
+  .fig svg{width:min(100%,300px)}
+}
+</style>
+</head>
+<body>
+<div class="bgsym" id="bgSym" aria-hidden="true"></div>
+
+<div class="prog">
+  <div class="prog-label"><span id="plabel">Parte 1</span><span id="alabel" aria-live="polite"></span></div>
+  <div class="track" role="progressbar" aria-label="Progresso na aula" aria-valuemin="1" id="ptrack"><div class="fill" id="fill"></div></div>
+</div>
+
+<main class="wrap">
+  <h1>Revisão para a avaliação mensal</h1>
+  <p class="sub">Matemática · 8º ano · Juros, porcentagem, contagem e probabilidade</p>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Partes da aula"></nav>
+
+  <!-- 1 AQUECIMENTO -->
+  <section class="sec on" data-name="Aquecimento">
+    <div class="card">
+      <span class="eyebrow y">Parte 1 · Aquecimento</span>
+      <h2>Você já sabe mais do que imagina</h2>
+      <p>Esta revisão passa por quatro assuntos. Todos eles você já estudou em aula. Aqui vamos relembrar cada um com calma, um de cada vez.</p>
+      <div class="map">
+        <div style="background:var(--mint)">💰 Juros<small>simples e compostos</small></div>
+        <div style="background:var(--coral)">🏷️ Porcentagem<small>aumentos e descontos</small></div>
+        <div style="background:var(--yellow)">🔢 Contagem<small>princípio multiplicativo</small></div>
+        <div style="background:var(--lilac)">🎲 Probabilidade<small>chance de um evento</small></div>
+      </div>
+      <p>Antes de começar, duas perguntas rápidas. Responda de cabeça.</p>
+
+      <div class="try" data-ans="4" data-ok="Isso! 10% é a décima parte: 40 ÷ 10 = 4." data-hint="10% é a mesma coisa que dividir o valor por 10.">
+        <span class="lbl">Aquecimento 1</span>
+        Uma camiseta de R$ 40,00 está com 10% de desconto. Quantos reais você economiza?
+        <div class="try-row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+      <div class="try" data-ans="6" data-ok="Isso! Para cada uma das 2 capas há 3 tamanhos: 2 · 3 = 6." data-hint="Pense: capa 1 com cada tamanho, depois capa 2 com cada tamanho. Quantas combinações aparecem?">
+        <span class="lbl">Aquecimento 2</span>
+        Um caderno vem em 2 cores de capa e em 3 tamanhos. Quantos cadernos diferentes existem?
+        <div class="try-row"><input inputmode="numeric" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+      <p>Essas duas ideias (calcular uma porcentagem e multiplicar opções) são a base de quase tudo o que vem a seguir.</p>
+    </div>
+  </section>
+
+  <!-- 2 PORCENTAGEM -->
+  <section class="sec" data-name="Porcentagem">
+    <div class="card">
+      <span class="eyebrow">Parte 2 · Revisão</span>
+      <h2>Porcentagem</h2>
+      <p><strong>Porcentagem</strong> quer dizer “por cem”. Quando dizemos 15%, estamos dizendo “15 partes em cada 100”.</p>
+      <div class="fig"><svg id="grid100" viewBox="0 0 210 210" width="190" role="img" aria-label="Quadrado dividido em 100 quadradinhos, com 15 pintados"></svg></div>
+      <p style="text-align:center;color:var(--text2);font-size:.9rem">15 quadradinhos pintados em 100 → <b>15%</b> do quadrado.</p>
+
+      <h3>Calcular x% de um valor</h3>
+      <p>Escreva a porcentagem como fração de denominador 100 e multiplique pelo valor.</p>
+      <div class="algo">
+        <div><b>Exemplo.</b> Quanto é 15% de R$ 60,00?</div>
+        <div><b>Passo 1.</b> 15% = 15/100.</div>
+        <div><b>Passo 2.</b> 15/100 · 60 = 900/100.</div>
+        <div><b>Passo 3.</b> 900 ÷ 100 = <span class="hl">R$ 9,00</span>.</div>
+      </div>
+      <div class="think"><span class="lbl">💭 Pense assim</span>
+        10% é a décima parte (divide por 10). 5% é a metade de 10%. Assim, 15% de 60 = 6 + 3 = 9. Esse atalho serve para conferir a conta de cabeça.
+      </div>
+
+      <h3>Descobrir o percentual</h3>
+      <p>Um livro custava R$ 50,00 e passou a custar R$ 42,00. De quantos por cento foi o desconto?</p>
+      <div class="algo">
+        <div><b>Passo 1.</b> Quanto diminuiu: 50 − 42 = 8 reais.</div>
+        <div><b>Passo 2.</b> Monte a fração “parte sobre o valor original”: 8/50.</div>
+        <div><b>Passo 3.</b> Multiplique por 100: 8/50 · 100 = 800 ÷ 50 = <span class="hl">16%</span>.</div>
+        <div><b>Passo 4.</b> Confira: 16% de 50 = 16/100 · 50 = 8 ✓.</div>
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: reais não são porcentagem</span>
+        O desconto foi de <b>8 reais</b>, e não de 8%. Para virar porcentagem, você sempre compara a diferença com o <b>preço original</b> (o de antes da mudança).
+      </div>
+
+      <div class="try" data-ans="20" data-ok="Muito bem! Diminuiu 12 reais: 12/60 · 100 = 1.200 ÷ 60 = 20%." data-hint="Primeiro calcule quanto diminuiu (60 − 48). Depois divida pelo preço original (60) e multiplique por 100.">
+        <span class="lbl">Agora é sua vez</span>
+        Um estojo de R$ 60,00 passou a custar R$ 48,00. Qual foi o percentual de desconto?
+        <div class="try-row"><input inputmode="decimal" aria-label="Resposta"><span>%</span><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 JUROS SIMPLES -->
+  <section class="sec" data-name="Juros simples">
+    <div class="card">
+      <span class="eyebrow">Parte 3 · Revisão</span>
+      <h2>Juros simples</h2>
+      <p>Quando alguém aplica (ou empresta) dinheiro, recebe (ou paga) um valor extra pelo tempo em que o dinheiro ficou guardado. Esse extra é o <strong>juro</strong>. Antes das contas, relembre o nome de cada parte:</p>
+      <div class="tblwrap"><table class="tbl">
+        <tr><th>Letra</th><th>Nome</th><th>O que é</th></tr>
+        <tr><td class="n">c</td><td>capital</td><td>o dinheiro aplicado no começo</td></tr>
+        <tr><td class="n">i</td><td>taxa</td><td>a porcentagem de cada período (ao mês, ao ano)</td></tr>
+        <tr><td class="n">t</td><td>tempo</td><td>quantos períodos o dinheiro ficou aplicado</td></tr>
+        <tr><td class="n">J</td><td>juros</td><td>só o que o dinheiro rendeu</td></tr>
+        <tr><td class="n">M</td><td>montante</td><td>o total no final: capital + juros</td></tr>
+      </table></div>
+      <p>Nos <strong>juros simples</strong>, o juro de cada período é sempre calculado sobre o <strong>capital inicial</strong>. Por isso o juro é o mesmo em todos os períodos.</p>
+      <div class="box formula"><span class="f">J = c · i · t</span><span class="f">M = c + J</span></div>
+      <div class="think"><span class="lbl">💭 Pense assim</span>
+        É como uma mesada fixa: todo mês entra a mesma quantia, não importa quanto você já juntou.
+      </div>
+
+      <h3>Exemplo passo a passo</h3>
+      <p>R$ 2.500,00 aplicados a juros simples de 3% ao mês, durante 4 meses. Clique nos “?” para ver o juro de cada mês.</p>
+      <div class="chain">
+        <span class="node">2.500</span><button class="op" data-op="+75" aria-label="Revelar juro do mês 1">?</button>
+        <span class="node">2.575</span><button class="op" data-op="+75" aria-label="Revelar juro do mês 2">?</button>
+        <span class="node">2.650</span><button class="op" data-op="+75" aria-label="Revelar juro do mês 3">?</button>
+        <span class="node">2.725</span><button class="op" data-op="+75" aria-label="Revelar juro do mês 4">?</button>
+        <span class="node">2.800</span>
+      </div>
+      <div class="algo">
+        <div><b>Passo 1.</b> Dados: c = 2.500, i = 3% = 3/100 = 0,03 ao mês, t = 4 meses.</div>
+        <div><b>Passo 2.</b> J = 2.500 · 0,03 · 4.</div>
+        <div><b>Passo 3.</b> 2.500 · 0,03 = 75 (juro de 1 mês). 75 · 4 = 300. Então J = R$ 300,00.</div>
+        <div><b>Passo 4.</b> M = 2.500 + 300 = <span class="hl">R$ 2.800,00</span>.</div>
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica de prova: juros ou montante?</span>
+        Leia com atenção o que a pergunta pede. <b>Juros</b> é só o que rendeu (R$ 300). <b>Montante</b> é o total no final (R$ 2.800). As duas respostas costumam aparecer nas alternativas.
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: taxa e tempo na mesma unidade</span>
+        Se a taxa é <b>ao mês</b>, o tempo tem que estar em <b>meses</b>. Se a taxa é <b>ao ano</b>, o tempo tem que estar em <b>anos</b>.
+      </div>
+
+      <div class="try" data-ans="1344" data-ok="Isso! J = 1.200 · 0,06 · 2 = 72 · 2 = 144. M = 1.200 + 144 = R$ 1.344,00." data-hint="Quase! Calcule J = 1.200 · 0,06 · 2 e depois some o capital (R$ 1.200,00). Lembre: a pergunta pede o montante.">
+        <span class="lbl">Agora é sua vez</span>
+        R$ 1.200,00 a juros simples de 6% ao ano, durante 2 anos. Qual é o <strong>montante</strong>?
+        <div class="try-row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 DESCOBRIR O QUE FALTA -->
+  <section class="sec" data-name="Juros simples: o que falta">
+    <div class="card">
+      <span class="eyebrow">Parte 4 · Revisão</span>
+      <h2>Juros simples: descobrindo o que falta</h2>
+      <p>Às vezes a questão já dá os juros e pergunta o capital, a taxa ou o tempo. Não precisa de fórmula nova: use a <strong>mesma fórmula J = c · i · t</strong>, coloque os números que você conhece e isole o que falta.</p>
+      <div class="algo">
+        <div><b>Passo 1.</b> Escreva o que você sabe e marque o que falta.</div>
+        <div><b>Passo 2.</b> Se a questão deu o montante, calcule primeiro os juros: J = M − c.</div>
+        <div><b>Passo 3.</b> Substitua os números em J = c · i · t.</div>
+        <div><b>Passo 4.</b> Multiplique os números conhecidos que estão do mesmo lado.</div>
+        <div><b>Passo 5.</b> Isole o que falta, passando para o outro lado dividindo.</div>
+        <div><b>Passo 6.</b> Confira colocando a resposta de volta na fórmula.</div>
+      </div>
+
+      <h3>Exemplo 1: descobrir o tempo</h3>
+      <p>R$ 3.000,00 a juros simples de 4% ao mês renderam R$ 600,00. Por quantos meses?</p>
+      <div class="algo">
+        <div><b>Passo 1.</b> c = 3.000, i = 0,04, J = 600. Falta o t.</div>
+        <div><b>Passo 2.</b> 600 = 3.000 · 0,04 · t.</div>
+        <div><b>Passo 3.</b> 3.000 · 0,04 = 120 (juro de cada mês). Fica 600 = 120 · t.</div>
+        <div><b>Passo 4.</b> t = 600 ÷ 120 = <span class="hl">5 meses</span>.</div>
+      </div>
+
+      <h3>Exemplo 2: descobrir a taxa (com montante)</h3>
+      <p>R$ 2.000,00 a juros simples viraram um montante de R$ 2.360,00 em 3 anos. Qual a taxa anual?</p>
+      <div class="algo">
+        <div><b>Passo 1.</b> R$ 2.360 é o montante. Juros: J = 2.360 − 2.000 = 360.</div>
+        <div><b>Passo 2.</b> 360 = 2.000 · i · 3.</div>
+        <div><b>Passo 3.</b> 2.000 · 3 = 6.000. Fica 360 = 6.000 · i.</div>
+        <div><b>Passo 4.</b> i = 360 ÷ 6.000 = 0,06.</div>
+        <div><b>Passo 5.</b> 0,06 · 100 = <span class="hl">6% ao ano</span>.</div>
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica de prova: não esqueça o tempo</span>
+        Se você fizer só 360 ÷ 2.000 = 0,18, vai achar 18%. Mas isso é o que rendeu nos <b>3 anos juntos</b>. A taxa pedida é a de <b>cada ano</b>, então o tempo precisa entrar na conta.
+      </div>
+
+      <h3>Exemplo 3: descobrir o capital</h3>
+      <p>Qual capital, a juros simples de 4% ao mês, rende R$ 240,00 em 3 meses?</p>
+      <div class="algo">
+        <div><b>Passo 1.</b> J = 240, i = 0,04, t = 3. Falta o c.</div>
+        <div><b>Passo 2.</b> 240 = c · 0,04 · 3.</div>
+        <div><b>Passo 3.</b> 0,04 · 3 = 0,12. Fica 240 = c · 0,12.</div>
+        <div><b>Passo 4.</b> c = 240 ÷ 0,12 = <span class="hl">R$ 2.000,00</span>.</div>
+        <div><b>Passo 5.</b> Confira: 2.000 · 0,04 · 3 = 80 · 3 = 240 ✓.</div>
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: dividir por um número com vírgula</span>
+        Para fazer 240 ÷ 0,12, multiplique os dois números por 100 até a vírgula sumir: 24.000 ÷ 12 = 2.000. O resultado não muda.
+      </div>
+
+      <div class="try" data-ans="1000" data-ok="Perfeito! 120 = c · 0,02 · 6 → 120 = c · 0,12 → c = 12.000 ÷ 12 = R$ 1.000,00." data-hint="Quase! Escreva 120 = c · 0,02 · 6. Junte 0,02 · 6 = 0,12 e depois faça 120 ÷ 0,12.">
+        <span class="lbl">Agora é sua vez</span>
+        Qual capital, aplicado a juros simples de 2% ao mês, rende R$ 120,00 de juros em 6 meses?
+        <div class="try-row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 JUROS COMPOSTOS -->
+  <section class="sec" data-name="Juros compostos">
+    <div class="card">
+      <span class="eyebrow">Parte 5 · Revisão</span>
+      <h2>Juros compostos</h2>
+      <p>Nos <strong>juros compostos</strong>, o juro de cada período é calculado sobre o <strong>valor do final do período anterior</strong>, que já inclui os juros ganhos antes. Por isso dizemos “juros sobre juros”.</p>
+      <p>Compare com a Parte 3: nos simples, a base da conta é sempre o capital inicial. Nos compostos, a base muda a cada período.</p>
+      <div class="think"><span class="lbl">💭 Pense assim</span>
+        Uma bola de neve rolando morro abaixo: quanto maior ela fica, mais neve gruda na volta seguinte. Quanto mais dinheiro acumulado, maior o juro do próximo período.
+      </div>
+
+      <h3>Exemplo passo a passo</h3>
+      <p>R$ 400,00 a juros compostos de 10% ao ano, durante 3 anos. Clique nos “?”.</p>
+      <div class="chain">
+        <span class="node">400</span><button class="op" data-op="+40" aria-label="Revelar juro do ano 1">?</button>
+        <span class="node">440</span><button class="op" data-op="+44" aria-label="Revelar juro do ano 2">?</button>
+        <span class="node">484</span><button class="op" data-op="+48,40" aria-label="Revelar juro do ano 3">?</button>
+        <span class="node">532,40</span>
+      </div>
+      <div class="tblwrap"><table class="tbl">
+        <tr><th>Ano</th><th>Início</th><th>10% desse valor</th><th>Fim</th></tr>
+        <tr><td class="n">1º</td><td>R$ 400,00</td><td>R$ 40,00</td><td>R$ 440,00</td></tr>
+        <tr><td class="n">2º</td><td>R$ 440,00</td><td>R$ 44,00</td><td>R$ 484,00</td></tr>
+        <tr><td class="n">3º</td><td>R$ 484,00</td><td>R$ 48,40</td><td class="ok">R$ 532,40</td></tr>
+      </table></div>
+      <p>Repare: o valor do <b>fim</b> de um ano vira o valor do <b>início</b> do ano seguinte. O montante é <strong>R$ 532,40</strong>, e os juros são 532,40 − 400 = <strong>R$ 132,40</strong>.</p>
+      <div class="tip"><span class="lbl">⚠️ Dica: a pegadinha mais comum</span>
+        Se você calcular os 10% sempre sobre os R$ 400 (40 + 40 + 40), chega a R$ 520,00. Isso é juros <b>simples</b>, e essa resposta quase sempre aparece nas alternativas. Nos compostos, a porcentagem é sempre sobre o <b>último valor</b> encontrado.
+      </div>
+
+      <h3>Simples × compostos, com os mesmos números</h3>
+      <div class="tblwrap"><table class="tbl">
+        <tr><th></th><th>Simples</th><th>Compostos</th></tr>
+        <tr><td>Juro do 1º ano</td><td>R$ 40,00</td><td>R$ 40,00</td></tr>
+        <tr><td>Juro do 2º ano</td><td>R$ 40,00</td><td>R$ 44,00</td></tr>
+        <tr><td>Juro do 3º ano</td><td>R$ 40,00</td><td>R$ 48,40</td></tr>
+        <tr><td><b>Montante</b></td><td><b>R$ 520,00</b></td><td><b>R$ 532,40</b></td></tr>
+      </table></div>
+      <p>A <b>diferença entre os montantes</b> é 532,40 − 520,00 = R$ 12,40. No 1º período os dois dão o mesmo valor; a diferença só aparece a partir do 2º.</p>
+      <div class="tip"><span class="lbl">⚠️ Dica: leia a última palavra da pergunta</span>
+        A mesma aplicação pode gerar três perguntas diferentes: o <b>montante</b> (532,40), os <b>juros</b> (132,40) ou a <b>diferença</b> entre compostos e simples (12,40). Sublinhe o que está sendo pedido antes de começar.
+      </div>
+
+      <div class="try" data-ans="864" data-ok="Isso! Mês 1: 600 + 120 = 720. Mês 2: 20% de 720 = 144, então 720 + 144 = R$ 864,00." data-hint="Quase! No 2º mês, calcule 20% de 720 (o valor novo), e não de 600.">
+        <span class="lbl">Agora é sua vez (1/2)</span>
+        R$ 600,00 a juros compostos de 20% ao mês, durante 2 meses. Qual é o montante?
+        <div class="try-row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+      <div class="try" data-ans="264" data-ok="Muito bem! Juros = montante − capital = 864 − 600 = R$ 264,00." data-hint="Quase! Os juros são só o que rendeu: tire o capital (600) do montante que você achou.">
+        <span class="lbl">Agora é sua vez (2/2)</span>
+        Na mesma aplicação, quanto rendeu de <strong>juros</strong>?
+        <div class="try-row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 SUCESSIVOS -->
+  <section class="sec" data-name="Aumentos e descontos sucessivos">
+    <div class="card">
+      <span class="eyebrow">Parte 6 · Revisão</span>
+      <h2>Aumentos e descontos sucessivos</h2>
+      <p><strong>Sucessivos</strong> quer dizer “um depois do outro”. Cada novo aumento ou desconto é calculado sobre o <strong>preço que acabou de sair</strong> da etapa anterior. É a mesma ideia dos juros compostos.</p>
+      <div class="think"><span class="lbl">💭 Pense assim</span>
+        Você usa um cupom no aplicativo e o preço cai. Depois, no caixa, ganha outro desconto. O caixa não sabe qual era o preço original: ele só vê o preço que está na tela agora.
+      </div>
+
+      <h3>Exemplo 1: dois descontos iguais</h3>
+      <p>Um fone de R$ 400,00 recebe dois descontos sucessivos de 25%.</p>
+      <div class="chain">
+        <span class="node">400</span><button class="op" data-op="−100" aria-label="Revelar primeiro desconto">?</button>
+        <span class="node">300</span><button class="op" data-op="−75" aria-label="Revelar segundo desconto">?</button>
+        <span class="node">225</span>
+      </div>
+      <div class="algo">
+        <div><b>Passo 1.</b> 25% de 400 = 25/100 · 400 = 100. Preço: 400 − 100 = 300.</div>
+        <div><b>Passo 2.</b> 25% de <b>300</b> = 25/100 · 300 = 75. Preço: 300 − 75 = <span class="hl">R$ 225,00</span>.</div>
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: nunca some as porcentagens</span>
+        Dois descontos de 25% <b>não</b> são 50%. Com 50% o fone sairia por R$ 200,00, mas o preço certo é R$ 225,00. O segundo desconto é menor porque é calculado sobre um preço menor.
+      </div>
+
+      <h3>Exemplo 2: aumento e depois desconto</h3>
+      <p>Uma mochila de R$ 250,00 sobe 20% e, no mês seguinte, recebe 20% de desconto.</p>
+      <div class="chain">
+        <span class="node">250</span><button class="op" data-op="+50" aria-label="Revelar aumento">?</button>
+        <span class="node">300</span><button class="op" data-op="−60" aria-label="Revelar desconto">?</button>
+        <span class="node">240</span>
+      </div>
+      <p>O preço <b>não volta</b> para R$ 250,00. O desconto foi calculado sobre 300, que é maior, então tirou mais do que o aumento colocou.</p>
+
+      <h3>Exemplo 3: qual é o percentual total?</h3>
+      <p>Quando a questão não dá preço, <b>invente um preço fácil: R$ 100,00</b>. Dois descontos sucessivos de 30% equivalem a um único desconto de quanto?</p>
+      <div class="algo">
+        <div><b>Passo 1.</b> 30% de 100 = 30. Preço: 70.</div>
+        <div><b>Passo 2.</b> 30% de 70 = 30/100 · 70 = 21. Preço: 70 − 21 = 49.</div>
+        <div><b>Passo 3.</b> De 100 para 49, caiu 51 em 100 → desconto único de <span class="hl">51%</span> (e não 60%).</div>
+      </div>
+
+      <div class="try" data-ans="693" data-ok="Isso! 5% de 600 = 30 → 630. Depois, 10% de 630 = 63 → 630 + 63 = R$ 693,00." data-hint="Quase! Primeiro aplique os 5% sobre 600. O segundo aumento (10%) é sobre o preço novo, não sobre 600.">
+        <span class="lbl">Agora é sua vez</span>
+        Uma bicicleta de R$ 600,00 teve um aumento de 5% e, depois, outro aumento de 10%. Qual é o preço final?
+        <div class="try-row"><span>R$</span><input inputmode="decimal" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 CONTAGEM -->
+  <section class="sec" data-name="Contagem">
+    <div class="card">
+      <span class="eyebrow">Parte 7 · Revisão</span>
+      <h2>Princípio multiplicativo</h2>
+      <p>Quando uma situação exige várias decisões em sequência, o total de possibilidades é o <strong>produto</strong> do número de opções de cada decisão.</p>
+      <div class="algo">
+        <div><b>Passo 1.</b> Identifique cada decisão.</div>
+        <div><b>Passo 2.</b> Faça um traço para cada decisão.</div>
+        <div><b>Passo 3.</b> Escreva sobre cada traço quantas opções existem.</div>
+        <div><b>Passo 4.</b> Multiplique.</div>
+      </div>
+      <h3>Exemplo 1: decisões diferentes</h3>
+      <p>Uma papelaria monta kits com 1 caderno (3 modelos), 1 caneta (5 cores) e 1 mochila (2 tipos).</p>
+      <div class="slots" aria-label="3 vezes 5 vezes 2 igual a 30">
+        <div class="slot"><div class="num">3</div><div class="ln"></div><small>caderno</small></div><div class="x">×</div>
+        <div class="slot"><div class="num">5</div><div class="ln"></div><small>caneta</small></div><div class="x">×</div>
+        <div class="slot"><div class="num">2</div><div class="ln"></div><small>mochila</small></div><div class="eq">= 30</div>
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: multiplica, não soma</span>
+        Você escolhe o caderno <b>e</b> a caneta <b>e</b> a mochila: as decisões acontecem juntas, então multiplicamos. 3 + 5 + 2 = 10 está errado.
+      </div>
+
+      <h3>Exemplo 2: com e sem repetição</h3>
+      <p>Uma senha tem 3 letras escolhidas entre A, B, C, D, E e F.</p>
+      <p><b>Se pode repetir</b> (por exemplo, AAB): cada traço tem as 6 letras.</p>
+      <div class="slots" aria-label="6 vezes 6 vezes 6 igual a 216">
+        <div class="slot"><div class="num">6</div><div class="ln"></div><small>1ª letra</small></div><div class="x">×</div>
+        <div class="slot"><div class="num">6</div><div class="ln"></div><small>2ª letra</small></div><div class="x">×</div>
+        <div class="slot"><div class="num">6</div><div class="ln"></div><small>3ª letra</small></div><div class="eq">= 216</div>
+      </div>
+      <p><b>Se as letras são distintas</b> (não pode repetir): a cada traço sobra uma letra a menos.</p>
+      <div class="slots" aria-label="6 vezes 5 vezes 4 igual a 120">
+        <div class="slot"><div class="num">6</div><div class="ln"></div><small>1ª letra</small></div><div class="x">×</div>
+        <div class="slot"><div class="num">5</div><div class="ln"></div><small>2ª letra</small></div><div class="x">×</div>
+        <div class="slot"><div class="num">4</div><div class="ln"></div><small>3ª letra</small></div><div class="eq">= 120</div>
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: procure as palavras-chave</span>
+        “Distintos”, “diferentes” ou “sem repetir” → o número <b>diminui</b> de um em um. “Podendo repetir” → o número <b>fica igual</b> em todos os traços. Quando são algarismos de 0 a 9, lembre que o <b>0 também conta</b>: são 10 opções.
+      </div>
+
+      <h3>Exemplo 3: números com três ou mais algarismos</h3>
+      <p>Quantos <b>números</b> de 3 algarismos podemos formar com os algarismos de 0 a 9?</p>
+      <div class="tip"><span class="lbl">⚠️ Dica: o zero não pode ficar na primeira posição</span>
+        Ao formar <b>números</b> de três ou mais algarismos, o <b>0 não pode ocupar a primeira posição</b>. Por exemplo, 045 não é um número de 3 algarismos: é o número 45, que tem só 2. Por isso, no primeiro traço, tiramos o 0 das opções.
+      </div>
+      <p><b>Podendo repetir:</b> o 1º traço tem 9 opções (de 1 a 9). Nos outros, o 0 volta a valer, então são 10 opções.</p>
+      <div class="slots" aria-label="9 vezes 10 vezes 10 igual a 900">
+        <div class="slot"><div class="num">9</div><div class="ln"></div><small>1º (sem o 0)</small></div><div class="x">×</div>
+        <div class="slot"><div class="num">10</div><div class="ln"></div><small>2º</small></div><div class="x">×</div>
+        <div class="slot"><div class="num">10</div><div class="ln"></div><small>3º</small></div><div class="eq">= 900</div>
+      </div>
+      <p><b>Com algarismos distintos:</b> o 1º traço continua com 9 opções. No 2º, o 0 volta a valer, mas sai o algarismo já usado: 10 − 1 = 9. No 3º sobram 8.</p>
+      <div class="slots" aria-label="9 vezes 9 vezes 8 igual a 648">
+        <div class="slot"><div class="num">9</div><div class="ln"></div><small>1º (sem o 0)</small></div><div class="x">×</div>
+        <div class="slot"><div class="num">9</div><div class="ln"></div><small>2º</small></div><div class="x">×</div>
+        <div class="slot"><div class="num">8</div><div class="ln"></div><small>3º</small></div><div class="eq">= 648</div>
+      </div>
+      <div class="think"><span class="lbl">💭 Pense assim: número × senha</span>
+        Com <b>senhas</b> e <b>cadeados</b> é diferente. A senha 0457 existe e funciona, porque ela não é um número: é só uma sequência de dígitos. Então, numa senha, o 0 <b>pode</b> ficar na frente. Antes de começar, pergunte-se: “isto é um número ou uma senha?”.
+      </div>
+
+      <h3>Exemplo 4: mesmo número de opções → potência</h3>
+      <p>Um painel tem 4 lâmpadas, e cada uma pode estar acesa ou apagada. Cada lâmpada tem 2 opções:</p>
+      <p style="text-align:center" class="n">2 · 2 · 2 · 2 = 2<sup>4</sup> = 16 maneiras</p>
+      <p>Isso vale para moedas (cara ou coroa), questões de verdadeiro ou falso e tudo que tenha 2 opções repetidas várias vezes.</p>
+
+      <h3>Exemplo 5: anagramas</h3>
+      <p>Um <strong>anagrama</strong> é qualquer troca de lugar das letras de uma palavra, com sentido ou não. Os anagramas de SOL são:</p>
+      <div class="chips"><span class="chip">SOL</span><span class="chip">SLO</span><span class="chip">OSL</span><span class="chip">OLS</span><span class="chip">LSO</span><span class="chip">LOS</span></div>
+      <p>Cada letra é usada <b>uma vez só</b>, então é uma contagem sem repetição: 3 · 2 · 1 = <b>6</b>.</p>
+
+      <div class="try" data-ans="120" data-ok="Isso! LIVRO tem 5 letras diferentes: 5 · 4 · 3 · 2 · 1 = 120." data-hint="Quase! Faça 5 traços, um para cada posição. No 1º cabem 5 letras, no 2º sobram 4, e assim por diante até 1.">
+        <span class="lbl">Agora é sua vez</span>
+        Quantos anagramas tem a palavra LIVRO?
+        <div class="try-row"><input inputmode="numeric" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 PROBABILIDADE -->
+  <section class="sec" data-name="Probabilidade">
+    <div class="card">
+      <span class="eyebrow">Parte 8 · Revisão</span>
+      <h2>Probabilidade</h2>
+      <p>A <strong>probabilidade</strong> mede a chance de algo acontecer. Primeiro contamos todos os resultados possíveis (o <strong>espaço amostral</strong>). Depois contamos os resultados que nos interessam (os <strong>casos favoráveis</strong>).</p>
+      <div class="box formula"><span class="f">P = casos favoráveis ÷ casos possíveis</span></div>
+      <div class="think"><span class="lbl">💭 Pense assim</span>
+        Num pote com 10 papeizinhos, 3 têm o seu nome. Sua chance de ser sorteado é 3 em 10, ou seja, 3/10.
+      </div>
+
+      <h3>Exemplo: um dado</h3>
+      <p>Ao lançar um dado comum, qual a probabilidade de sair um <b>múltiplo de 3</b>?</p>
+      <div class="dice" id="dice1"></div>
+      <div class="algo">
+        <div><b>Passo 1.</b> Casos possíveis: 1, 2, 3, 4, 5, 6 → 6 casos.</div>
+        <div><b>Passo 2.</b> Casos favoráveis (múltiplos de 3): 3 e 6 → 2 casos.</div>
+        <div><b>Passo 3.</b> P = 2/6 = <span class="hl">1/3</span>.</div>
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: o número 1 não é primo</span>
+        Um número primo tem <b>exatamente dois</b> divisores: o 1 e ele mesmo. O 1 só tem um divisor, então não é primo. Num dado, os primos são só 2, 3 e 5.
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: duas condições juntas</span>
+        Se a questão pede, por exemplo, “ímpar <b>e</b> maior que 2”, o número precisa cumprir <b>as duas</b> ao mesmo tempo. Só o 3 e o 5 servem. Confira cada número com as duas condições.
+      </div>
+
+      <h3>Exemplo: uma urna</h3>
+      <p>Uma urna tem 4 bolas azuis, 1 amarela e 3 vermelhas. Qual a chance de tirar uma azul?</p>
+      <div class="algo">
+        <div><b>Passo 1.</b> Total: 4 + 1 + 3 = 8 casos possíveis.</div>
+        <div><b>Passo 2.</b> Azuis: 4 casos favoráveis.</div>
+        <div><b>Passo 3.</b> P = 4/8 = <span class="hl">1/2</span>.</div>
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: o denominador é o total</span>
+        Embaixo da fração vai o <b>total de bolas</b>, incluindo as que você quer. Não compare azuis com “as outras” (4/4): compare azuis com <b>todas</b> (4/8).
+      </div>
+
+      <div class="try" data-frac="1/2" data-ok="Isso! Ímpares: 1, 3, 5, 7, 9 → 5 de 10. P = 5/10 = 1/2." data-hint="Quase! Liste os números de 1 a 10 e marque os ímpares. Depois monte favoráveis sobre 10.">
+        <span class="lbl">Agora é sua vez</span>
+        Um número de 1 a 10 é sorteado. Qual a probabilidade de ser ímpar? (escreva como fração, por exemplo 2/7)
+        <div class="try-row"><input inputmode="text" aria-label="Resposta em fração"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 DOIS EXPERIMENTOS -->
+  <section class="sec" data-name="Dois ou mais experimentos">
+    <div class="card">
+      <span class="eyebrow">Parte 9 · Revisão</span>
+      <h2>Dois ou mais experimentos juntos</h2>
+      <p>Quando lançamos dois dados, ou várias moedas, o espaço amostral é contado com o <strong>princípio multiplicativo</strong> da Parte 7.</p>
+
+      <h3>Exemplo 1: dois dados</h3>
+      <p>Dois dados: 6 · 6 = 36 resultados possíveis. Na tabela, cada casa mostra a <b>soma</b> dos dois dados. Qual a chance de a soma ser <b>10</b>?</p>
+      <div class="grid2" id="grid2" role="img" aria-label="Tabela de somas de dois dados, com as somas iguais a 10 destacadas"></div>
+      <div class="algo">
+        <div><b>Passo 1.</b> Casos possíveis: 36.</div>
+        <div><b>Passo 2.</b> Soma 10: (4, 6), (5, 5) e (6, 4) → 3 casos (marcados com ✓).</div>
+        <div><b>Passo 3.</b> P = 3/36 = <span class="hl">1/12</span>.</div>
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: a ordem importa</span>
+        (4, 6) e (6, 4) são resultados <b>diferentes</b>: no primeiro, o dado A deu 4; no segundo, deu 6. Conte os dois.
+      </div>
+
+      <h3>Exemplo 2: três moedas</h3>
+      <p>Três moedas: 2 · 2 · 2 = 8 resultados. (Ca = cara, Co = coroa.) Qual a chance de saírem as três <b>iguais</b>?</p>
+      <div class="chips" id="coins"></div>
+      <div class="algo">
+        <div><b>Passo 1.</b> Casos possíveis: 8.</div>
+        <div><b>Passo 2.</b> Todas iguais: Ca Ca Ca e Co Co Co → 2 casos (marcados com ✓).</div>
+        <div><b>Passo 3.</b> P = 2/8 = <span class="hl">1/4</span>.</div>
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: “exatamente” × “pelo menos”</span>
+        “<b>Exatamente</b> 1 cara” quer dizer uma cara e só uma. “<b>Pelo menos</b> 1 cara” aceita 1, 2 ou 3 caras. Releia a palavra antes de contar.
+      </div>
+      <p>O mesmo vale para moeda e dado juntos: 2 · 6 = 12 resultados, e não 2 + 6.</p>
+
+      <div class="try" data-frac="1/12" data-ok="Isso! Soma 4: (1, 3), (2, 2) e (3, 1) → 3 de 36 = 1/12." data-hint="Quase! Procure na tabela as casas com soma 4. Lembre que (1, 3) e (3, 1) são diferentes.">
+        <span class="lbl">Agora é sua vez</span>
+        Dois dados são lançados. Qual a probabilidade de a soma ser 4? (em fração)
+        <div class="try-row"><input inputmode="text" aria-label="Resposta em fração"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 URNA -->
+  <section class="sec" data-name="Urna: quantas acrescentar?">
+    <div class="card">
+      <span class="eyebrow">Parte 10 · Revisão</span>
+      <h2>Urna: quantas bolas acrescentar?</h2>
+      <p>Uma urna tem <b>3 bolas azuis</b> e <b>1 vermelha</b>. Quantas bolas <b>vermelhas</b> devemos acrescentar para que a probabilidade de tirar uma <b>azul</b> seja 1/3?</p>
+      <div class="fig"><svg id="urna" viewBox="0 0 200 120" width="220" role="img" aria-label="Urna com 3 bolas azuis marcadas com A e 1 vermelha marcada com V"></svg></div>
+      <p>Cada bola vermelha nova <b>aumenta o total</b>, mas o número de azuis continua 3. Vamos testar, uma bola por vez:</p>
+      <div class="tblwrap"><table class="tbl">
+        <tr><th>Vermelhas acrescentadas</th><th>Total</th><th>P(azul)</th></tr>
+        <tr><td>0</td><td>4</td><td>3/4</td></tr>
+        <tr><td>1</td><td>5</td><td>3/5</td></tr>
+        <tr><td>2</td><td>6</td><td>3/6 = 1/2</td></tr>
+        <tr><td>3</td><td>7</td><td>3/7</td></tr>
+        <tr><td>4</td><td>8</td><td>3/8</td></tr>
+        <tr><td class="ok">5 ✓</td><td class="ok">9</td><td class="ok">3/9 = 1/3</td></tr>
+      </table></div>
+      <p>Resposta: devemos acrescentar <span class="hl">5 bolas vermelhas</span>.</p>
+      <div class="think"><span class="lbl">💭 Pense assim (para conferir)</span>
+        P(azul) = 1/3 quer dizer “1 azul em cada 3 bolas”. Como são 3 azuis, o total tem que ser 3 · 3 = 9 bolas. Hoje são 4, então faltam 9 − 4 = 5.
+      </div>
+      <div class="tip"><span class="lbl">⚠️ Dica: o que a pergunta quer?</span>
+        No final há 6 vermelhas (1 + 5) e 9 bolas no total, mas a pergunta é quantas foram <b>acrescentadas</b>: 5. Os números 6 e 9 costumam aparecer como alternativas erradas.
+      </div>
+
+      <div class="try" data-ans="4" data-ok="Isso! P(branca) = 1/4 → 2 brancas precisam ser 1 em cada 4, então o total é 8. Hoje são 4 bolas: 8 − 4 = 4 pretas." data-hint="Quase! Teste acrescentando uma preta por vez: 2/5, 2/6, 2/7… até chegar a uma fração igual a 1/4.">
+        <span class="lbl">Agora é sua vez</span>
+        Uma urna tem 2 bolas brancas e 2 pretas. Quantas bolas pretas devem ser acrescentadas para que a probabilidade de tirar uma branca seja 1/4?
+        <div class="try-row"><input inputmode="numeric" aria-label="Resposta"><button class="btn">Conferir</button></div>
+        <div class="fb" role="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 QUIZ -->
+  <section class="sec" data-name="Quiz: lista de revisão">
+    <div class="card">
+      <span class="eyebrow c">Parte 11 · Lista de revisão</span>
+      <h2>Quiz: lista de revisão</h2>
+      <div class="score" id="score"><span id="sc1">Acertos: 0 de 24</span><span id="sc2">Respondidas: 0</span></div>
+      <div id="quiz"></div>
+      <div class="final" id="final" role="status"></div>
+      <div class="resetrow">
+        <button class="btn ghost" id="reset">Recomeçar o quiz</button>
+        <span class="confirm" id="confirm" role="group" aria-label="Confirmar recomeço">
+          Apagar todas as respostas?
+          <button class="btn" id="yes">Sim, recomeçar</button>
+          <button class="btn ghost" id="no">Cancelar</button>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 RESUMO -->
+  <section class="sec" data-name="Resumo pro caderno">
+    <div class="card summary">
+      <span class="eyebrow l">Parte 12 · Resumo pro caderno</span>
+      <h2>Resumo pro caderno</h2>
+
+      <h3>1. Porcentagem</h3>
+      <p><span class="sf">x% de um valor = x/100 · valor</span><span class="sf">percentual = diferença ÷ valor original · 100</span></p>
+      <p>Porcentagem quer dizer “por cem”. Exemplo: 15% de 60 = 15/100 · 60 = 9. Para achar o percentual de um aumento ou desconto, comparamos a diferença com o preço <b>original</b>: de R$ 50 para R$ 42, a diferença é 8, e 8 ÷ 50 · 100 = 16%.</p>
+
+      <h3>2. Juros simples</h3>
+      <p><span class="sf">J = c · i · t</span><span class="sf">M = c + J</span></p>
+      <p>c é o capital, i é a taxa, t é o tempo, J são os juros (só o que rendeu) e M é o montante (o total no final). O juro é sempre calculado sobre o capital inicial. A taxa e o tempo precisam estar na mesma unidade (ao mês com meses, ao ano com anos). Para achar c, i ou t, usamos a mesma fórmula e isolamos o que falta. Se a questão der o montante, calculamos antes J = M − c.</p>
+
+      <h3>3. Juros compostos</h3>
+      <p><span class="sf">valor novo = valor anterior + i% do valor anterior</span><span class="sf">J = M − c</span></p>
+      <p>O juro de cada período é calculado sobre o valor do final do período anterior (“juros sobre juros”). Por isso fazemos um período de cada vez: R$ 400 a 10% ao ano viram 440, 484 e 532,40. Em juros simples, daria 520. Antes de responder, veja se a pergunta pede o montante, os juros ou a diferença entre compostos e simples.</p>
+
+      <h3>4. Aumentos e descontos sucessivos</h3>
+      <p><span class="sf">cada % é calculada sobre o preço novo</span></p>
+      <p>As porcentagens <b>nunca</b> se somam. Dois descontos de 25% sobre R$ 400 dão R$ 225, e não R$ 200. Um aumento seguido de um desconto com a mesma porcentagem não devolve o preço original. Quando a questão não dá preço, usamos R$ 100.</p>
+
+      <h3>5. Princípio multiplicativo</h3>
+      <p><span class="sf">total = produto das opções de cada decisão</span></p>
+      <p>Fazemos um traço para cada decisão, escrevemos quantas opções cada uma tem e multiplicamos (nunca somamos). Se pode repetir, o número de opções é o mesmo em todos os traços: 2 · 2 · 2 · 2 = 2⁴ = 16. Se os elementos são distintos, o número diminui de um em um: 6 · 5 · 4 = 120. Os algarismos de 0 a 9 são 10 opções. Ao formar <b>números</b> de três ou mais algarismos, o 0 não pode ocupar a primeira posição (9 · 10 · 10 = 900). Numa <b>senha</b>, o 0 pode vir na frente. Anagramas de uma palavra com letras diferentes: SOL tem 3 · 2 · 1 = 6.</p>
+
+      <h3>6. Probabilidade</h3>
+      <p><span class="sf">P = casos favoráveis ÷ casos possíveis</span></p>
+      <p>No dado, P(múltiplo de 3) = 2/6 = 1/3. O 1 não é primo, o denominador é sempre o total e, com “e”, o resultado precisa cumprir as duas condições. Com dois ou mais experimentos, contamos os resultados multiplicando: dois dados dão 6 · 6 = 36 resultados, e (4, 6) é diferente de (6, 4); três moedas dão 2 · 2 · 2 = 8 resultados. Na urna, cada bola acrescentada também aumenta o total. Testamos uma bola por vez até chegar à fração pedida e respondemos quantas bolas foram <b>acrescentadas</b>.</p>
+    </div>
+  </section>
+
+  <div class="nav">
+    <button class="navbtn" id="prev">← Voltar</button>
+    <button class="navbtn fwd" id="next">Avançar →</button>
+  </div>
+</main>
+
+<script>
+/* ---------- fundo ---------- */
+(function(){
+  const s=['+','−','×','÷','=','%','½','π','?','√','R$','⅓'];
+  const box=document.getElementById('bgSym');
+  for(let i=0;i<22;i++){
+    const e=document.createElement('span');
+    e.textContent=s[i%s.length];
+    e.style.left=(Math.random()*94)+'%';
+    e.style.top=(Math.random()*94)+'%';
+    e.style.fontSize=(1.4+Math.random()*2.6)+'rem';
+    e.style.animationDelay=(-Math.random()*28)+'s';
+    box.appendChild(e);
+  }
+})();
+
+/* ---------- armazenamento leve (opcional) ---------- */
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
+
+/* ---------- altura da barra de progresso (para o placar do quiz grudar logo abaixo) ---------- */
+const progEl=document.querySelector('.prog');
+function setProgH(){document.documentElement.style.setProperty('--progh',progEl.offsetHeight+'px');}
+window.addEventListener('resize',setProgH);
+if(window.ResizeObserver)new ResizeObserver(setProgH).observe(progEl);
+
+/* ---------- navegação ---------- */
+const secs=[...document.querySelectorAll('.sec')];
+const tabs=document.getElementById('tabs');
+const N=secs.length;
+let cur=0;
+const tog=document.createElement('button');
+tog.className='tab tog';tog.type='button';tog.setAttribute('aria-expanded','true');
+tabs.appendChild(tog);
+secs.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.className='tab';b.type='button';b.setAttribute('role','tab');
+  b.textContent=(i+1)+'. '+s.dataset.name;
+  b.onclick=()=>go(i);
+  tabs.appendChild(b);
+});
+const tabBtns=[...tabs.querySelectorAll('.tab:not(.tog)')];
+function setTabs(open){
+  tabs.classList.toggle('closed',!open);
+  tog.textContent=open?'▴ Ocultar abas':'▾ Mostrar abas';
+  tog.setAttribute('aria-expanded',open?'true':'false');
+  store('rev8-abas',open?'1':'0');
+  setProgH();
+}
+tog.onclick=()=>setTabs(tabs.classList.contains('closed'));
+setTabs(store('rev8-abas')!=='0');
+
+document.getElementById('ptrack').setAttribute('aria-valuemax',N);
+function go(i){
+  if(i<0||i>=N)return;
+  cur=i;
+  secs.forEach((s,k)=>s.classList.toggle('on',k===i));
+  tabBtns.forEach((b,k)=>b.setAttribute('aria-selected',k===i?'true':'false'));
+  document.getElementById('plabel').textContent='Parte '+(i+1)+' de '+N+' — '+secs[i].dataset.name;
+  document.getElementById('fill').style.width=((i+1)/N*100)+'%';
+  document.getElementById('ptrack').setAttribute('aria-valuenow',i+1);
+  document.getElementById('prev').disabled=i===0;
+  document.getElementById('next').disabled=i===N-1;
+  window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  setProgH();
+}
+document.getElementById('prev').onclick=()=>go(cur-1);
+document.getElementById('next').onclick=()=>go(cur+1);
+
+/* ---------- progresso das atividades (separado do progresso da navegação) ---------- */
+const tries=[...document.querySelectorAll('.try')];
+let triesDone=0,answered=0;
+function updAct(){
+  const tot=tries.length+Q.length;
+  document.getElementById('alabel').textContent='✓ Atividades feitas: '+(triesDone+answered)+' de '+tot;
+}
+
+/* ---------- chain ---------- */
+document.querySelectorAll('.op').forEach(b=>b.addEventListener('click',()=>{
+  b.textContent=b.dataset.op;b.classList.add('shown');
+}));
+
+/* ---------- try-box ---------- */
+function parseNum(str){
+  let s=String(str).replace(/[^0-9,.\-]/g,'');
+  if(!s)return NaN;
+  if(s.includes(',')){s=s.replace(/\./g,'').replace(',','.');}
+  else if(/^\d{1,3}(\.\d{3})+$/.test(s)){s=s.replace(/\./g,'');}
+  return parseFloat(s);
+}
+function parseFrac(str){
+  const s=String(str).replace(/\s/g,'');
+  const m=s.match(/^(\d+)\/(\d+)$/);
+  if(m){const d=+m[2];return d?(+m[1])/d:NaN;}
+  return parseNum(s);
+}
+tries.forEach(t=>{
+  const inp=t.querySelector('input'),btn=t.querySelector('.btn'),fb=t.querySelector('.fb');
+  const check=()=>{
+    if(!inp.value.trim()){fb.className='fb bad';fb.textContent='Escreva sua resposta no campo antes de conferir.';return;}
+    let ok;
+    if(t.dataset.frac){const [a,b]=t.dataset.frac.split('/').map(Number);ok=Math.abs(parseFrac(inp.value)-a/b)<1e-9;}
+    else ok=Math.abs(parseNum(inp.value)-parseFloat(t.dataset.ans))<0.005;
+    fb.className='fb '+(ok?'good':'bad');
+    fb.textContent=ok?'✓ '+t.dataset.ok:'↺ '+t.dataset.hint;
+    if(ok&&!t.classList.contains('done')){t.classList.add('done');triesDone++;updAct();}
+  };
+  btn.addEventListener('click',check);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+});
+
+/* ---------- figuras ---------- */
+(function(){
+  const g=document.getElementById('grid100');let h='';let k=0;
+  for(let r=0;r<10;r++)for(let c=0;c<10;c++){
+    const on=k<15;k++;
+    h+=`<rect x="${5+c*20}" y="${5+r*20}" width="18" height="18" rx="3" fill="${on?'#6C63B5':'#EEEAFB'}" stroke="#E3DEF7"/>`;
+  }
+  g.innerHTML=h;
+})();
+function dieSVG(n,on){
+  const P={1:[[2,2]],2:[[1,1],[3,3]],3:[[1,1],[2,2],[3,3]],4:[[1,1],[3,1],[1,3],[3,3]],5:[[1,1],[3,1],[2,2],[1,3],[3,3]],6:[[1,1],[3,1],[1,2],[3,2],[1,3],[3,3]]};
+  let d=P[n].map(([x,y])=>`<circle cx="${x*13+2}" cy="${y*13+2}" r="4.4" fill="${on?'#fff':'#362F78'}"/>`).join('');
+  return `<svg width="54" height="54" viewBox="0 0 56 56" aria-hidden="true"><rect x="2" y="2" width="52" height="52" rx="10" fill="${on?'#1E7A55':'#fff'}" stroke="${on?'#1E7A55':'#6C63B5'}" stroke-width="2.5"/>${d}</svg>`;
+}
+(function(){
+  const box=document.getElementById('dice1');
+  for(let n=1;n<=6;n++){
+    const on=n%3===0;
+    box.insertAdjacentHTML('beforeend',`<div class="d${on?' on':''}">${dieSVG(n,on)}<br>${n}${on?' ✓':''}</div>`);
+  }
+  const g=document.getElementById('grid2');
+  let h='<div class="h">+</div>';
+  for(let c=1;c<=6;c++)h+=`<div class="h">${c}</div>`;
+  for(let r=1;r<=6;r++){
+    h+=`<div class="h">${r}</div>`;
+    for(let c=1;c<=6;c++){const s=r+c;h+=`<div class="${s===10?'on':''}">${s}${s===10?'✓':''}</div>`;}
+  }
+  g.innerHTML=h;
+  const co=document.getElementById('coins');
+  ['Ca Ca Ca','Ca Ca Co','Ca Co Ca','Co Ca Ca','Ca Co Co','Co Ca Co','Co Co Ca','Co Co Co'].forEach(x=>{
+    const on=x==='Ca Ca Ca'||x==='Co Co Co';
+    co.insertAdjacentHTML('beforeend',`<span class="chip${on?' on':''}">${x}${on?' ✓':''}</span>`);
+  });
+  const u=document.getElementById('urna');
+  let s='<path d="M30 20 Q30 112 100 112 Q170 112 170 20" fill="#FAF9FE" stroke="#6C63B5" stroke-width="3"/>';
+  const balls=[[62,88,'A'],[94,92,'A'],[126,88,'A'],[100,62,'V']];
+  balls.forEach(([x,y,t])=>{
+    s+=`<circle cx="${x}" cy="${y}" r="14" fill="${t==='A'?'#362F78':'#E4694F'}" stroke="#fff" stroke-width="2"/><text x="${x}" y="${y+5}" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="14" fill="#fff">${t}</text>`;
+  });
+  u.innerHTML=s;
+})();
+
+/* ---------- quiz ---------- */
+const GROUPS={js:{t:'Juros simples',p:'nas Partes 3 e 4'},jc:{t:'Juros compostos',p:'na Parte 5'},pc:{t:'Porcentagem, aumentos e descontos',p:'nas Partes 2 e 6'},ct:{t:'Contagem',p:'na Parte 7'},pb:{t:'Probabilidade',p:'nas Partes 8, 9 e 10'}};
+const Q=[
+ {g:'js',q:'Paulo aplicou R$ 1.500,00 a juros simples de 4% ao mês, durante 6 meses. Qual foi o montante ao final?',
+  o:['R$ 360,00','R$ 1.524,00','R$ 1.560,00','R$ 1.860,00','R$ 2.100,00'],a:3,
+  r:['Dados: c = 1.500, i = 4% = 4/100 = 0,04 ao mês, t = 6 meses.','J = c · i · t = 1.500 · 0,04 · 6.','1.500 · 0,04 = 60 (juro de 1 mês). 60 · 6 = 360. Então J = R$ 360,00.','M = c + J = 1.500 + 360 = R$ 1.860,00.'],
+  w:'R$ 360,00 é só o juro. A pergunta pede o montante, que é o total no final (capital + juros).'},
+ {g:'js',q:'Qual capital, aplicado a juros simples de 3% ao mês, rende R$ 270,00 de juros em 5 meses?',
+  o:['R$ 810,00','R$ 1.350,00','R$ 1.800,00','R$ 5.400,00','R$ 9.000,00'],a:2,
+  r:['Dados: J = 270, i = 3% = 0,03 ao mês, t = 5 meses. Falta o c.','Mesma fórmula: 270 = c · 0,03 · 5.','Junte os números conhecidos: 0,03 · 5 = 0,15. Fica 270 = c · 0,15.','Isole o c: c = 270 ÷ 0,15. Tirando a vírgula (× 100 nos dois): 27.000 ÷ 15 = 1.800.','Confira: 1.800 · 0,03 = 54 por mês; 54 · 5 = 270 ✓. Capital: R$ 1.800,00.'],
+  w:'R$ 9.000,00 aparece quando esquecemos o tempo (270 ÷ 0,03). Os 270 reais foram juntados em 5 meses, não em 1.'},
+ {g:'js',q:'Um capital de R$ 4.000,00 foi aplicado a juros simples de 2% ao mês e rendeu R$ 560,00. Por quantos meses ficou aplicado?',
+  o:['5 meses','6 meses','7 meses','8 meses','14 meses'],a:2,
+  r:['Dados: c = 4.000, i = 2% = 0,02 ao mês, J = 560. Falta o t.','560 = 4.000 · 0,02 · t.','4.000 · 0,02 = 80 (juro de cada mês). Fica 560 = 80 · t.','t = 560 ÷ 80 = 7 meses.','Confira: 80 por mês durante 7 meses = 560 ✓.'],
+  w:'Comece sempre calculando o juro de 1 mês (2% de 4.000 = 80). Daí é só ver quantas vezes 80 cabe em 560.'},
+ {g:'js',q:'Uma aplicação de R$ 5.000,00 a juros simples gerou um montante de R$ 6.200,00 em 4 anos. Qual foi a taxa anual?',
+  o:['3%','6%','12%','24%','30%'],a:1,
+  r:['Atenção: R$ 6.200,00 é o montante, não os juros.','Juros: J = M − c = 6.200 − 5.000 = 1.200.','Mesma fórmula: 1.200 = 5.000 · i · 4.','5.000 · 4 = 20.000. Fica 1.200 = 20.000 · i.','i = 1.200 ÷ 20.000 = 0,06 → 0,06 · 100 = 6% ao ano.'],
+  w:'24% (1.200 ÷ 5.000) é o que rendeu nos 4 anos juntos. A taxa anual é a de cada ano, então o tempo entra na conta.'},
+ {g:'jc',q:'Um investimento de R$ 1.000,00 rende juros compostos de 10% ao mês. Qual será o valor após 2 meses?',
+  o:['R$ 1.020,00','R$ 1.100,00','R$ 1.200,00','R$ 1.210,00','R$ 1.221,00'],a:3,
+  r:['Mês 1: 10% de 1.000 = 100 → 1.000 + 100 = 1.100.','Mês 2: 10% de 1.100 (não de 1.000!) = 110 → 1.100 + 110 = 1.210.','Valor após 2 meses: R$ 1.210,00.'],
+  w:'R$ 1.200,00 seria juros simples (100 + 100). Nos compostos, o juro do 2º mês é calculado sobre 1.100.'},
+ {g:'jc',q:'Ana deixou R$ 2.000,00 aplicados a juros compostos de 5% ao ano. Qual será o montante após 2 anos?',
+  o:['R$ 2.010,00','R$ 2.100,00','R$ 2.200,00','R$ 2.205,00','R$ 2.250,00'],a:3,
+  r:['Ano 1: 5% de 2.000 = 5/100 · 2.000 = 100 → 2.000 + 100 = 2.100.','Ano 2: 5% de 2.100 = 5/100 · 2.100 = 105 → 2.100 + 105 = 2.205.','Montante: R$ 2.205,00.'],
+  w:'R$ 2.200,00 é o resultado em juros simples. Nos compostos, o 2º juro (105) é um pouco maior que o 1º (100).'},
+ {g:'jc',q:'R$ 800,00 foram aplicados por 3 anos a 10% ao ano. Qual é a diferença entre o montante a juros compostos e o montante a juros simples?',
+  o:['R$ 0,00 (são iguais)','R$ 24,00','R$ 24,80','R$ 240,00','R$ 264,80'],a:2,
+  r:['Juros simples: J = 800 · 0,10 · 3 = 80 · 3 = 240 → M = 800 + 240 = 1.040,00.','Juros compostos, ano 1: 10% de 800 = 80 → 880.','Ano 2: 10% de 880 = 88 → 968.','Ano 3: 10% de 968 = 96,80 → 1.064,80.','Diferença: 1.064,80 − 1.040,00 = R$ 24,80.'],
+  w:'R$ 264,80 são os juros compostos e R$ 240,00 os juros simples. A pergunta pede a diferença entre os dois montantes.'},
+ {g:'jc',q:'Um capital de R$ 3.000,00 foi aplicado a juros compostos de 20% ao ano durante 2 anos. Quanto rendeu de JUROS nesse período?',
+  o:['R$ 600,00','R$ 1.200,00','R$ 1.320,00','R$ 4.200,00','R$ 4.320,00'],a:2,
+  r:['Ano 1: 20% de 3.000 = 600 → 3.600.','Ano 2: 20% de 3.600 = 720 → 4.320 (esse é o montante).','Juros = M − c = 4.320 − 3.000 = R$ 1.320,00.'],
+  w:'JUROS está em letras maiúsculas de propósito: R$ 4.320,00 é o montante. E R$ 1.200,00 seriam os juros simples.'},
+ {g:'pc',q:'Uma bicicleta de R$ 300,00 recebeu dois descontos sucessivos de 20%. Qual é o preço final?',
+  o:['R$ 180,00','R$ 192,00','R$ 196,00','R$ 200,00','R$ 240,00'],a:1,
+  r:['1º desconto: 20% de 300 = 20/100 · 300 = 60 → 300 − 60 = 240.','2º desconto: 20% de 240 (o preço novo) = 48 → 240 − 48 = 192.','Preço final: R$ 192,00.'],
+  w:'R$ 180,00 aparece quando somamos os descontos (20% + 20% = 40%). Cada desconto é sobre o preço que acabou de sair.'},
+ {g:'pc',q:'Um tênis de R$ 500,00 teve aumento de 10% e, no mês seguinte, desconto de 10% sobre o novo preço. Qual é o preço final?',
+  o:['R$ 450,00','R$ 495,00','R$ 500,00','R$ 505,00','R$ 550,00'],a:1,
+  r:['Aumento: 10% de 500 = 50 → 500 + 50 = 550.','Desconto sobre o novo preço: 10% de 550 = 55 → 550 − 55 = 495.','Preço final: R$ 495,00.'],
+  w:'O preço não volta para R$ 500,00. O desconto foi sobre 550, que é maior, então tirou 55 reais, mais do que os 50 do aumento.'},
+ {g:'pc',q:'Dois aumentos sucessivos de 20% equivalem a um único aumento de:',
+  o:['22%','24%','40%','44%','48%'],a:3,
+  r:['A questão não dá preço, então use um preço fácil: R$ 100,00.','1º aumento: 20% de 100 = 20 → 120.','2º aumento: 20% de 120 = 24 → 144.','De 100 para 144, aumentou 44 em cada 100 → aumento único de 44%.'],
+  w:'40% seria somar as porcentagens. O 2º aumento é sobre 120, então rende 24, e não 20.'},
+ {g:'pc',q:'Uma camiseta custava R$ 80,00 e, na promoção, passou a custar R$ 68,00. Qual foi o percentual de desconto?',
+  o:['12%','15%','20%','68%','85%'],a:1,
+  r:['Quanto diminuiu: 80 − 68 = 12 reais.','Fração “parte sobre o preço original”: 12/80.','12/80 · 100 = 1.200 ÷ 80 = 15%.','Confira: 15% de 80 = 15/100 · 80 = 12 ✓.'],
+  w:'12% confunde reais com porcentagem: o desconto foi de 12 reais. E 85% é o quanto a camiseta passou a valer em relação ao preço antigo, não o desconto.'},
+ {g:'ct',q:'Uma lanchonete oferece 4 tipos de pão, 3 tipos de recheio e 2 tipos de bebida. Quantos lanches diferentes (pão + recheio + bebida) podem ser montados?',
+  o:['9','12','18','24','36'],a:3,
+  r:['São 3 decisões: pão, recheio e bebida → 3 traços.','Opções em cada traço: 4, 3 e 2.','4 · 3 · 2 = 12 · 2 = 24 lanches.'],
+  w:'9 é a soma (4 + 3 + 2). Como escolhemos pão E recheio E bebida, multiplicamos.'},
+ {g:'ct',q:'Quantos números de 3 algarismos DISTINTOS podem ser formados usando apenas os algarismos 1, 2, 3, 4 e 5?',
+  o:['10','15','60','120','125'],a:2,
+  r:['3 traços: centena, dezena e unidade.','Centena: 5 opções. Dezena: sobram 4 (não pode repetir). Unidade: sobram 3.','5 · 4 · 3 = 60 números.'],
+  w:'125 = 5 · 5 · 5 seria com repetição. A palavra DISTINTOS avisa que não pode repetir.'},
+ {g:'ct',q:'Uma senha de celular tem 4 dígitos, que podem ser algarismos de 0 a 9, podendo repetir. Quantas senhas são possíveis?',
+  o:['40','1.000','5.040','9.999','10.000'],a:4,
+  r:['4 traços, um para cada dígito.','De 0 a 9 são 10 algarismos (o 0 também conta).','Pode repetir, então cada traço tem 10 opções: 10 · 10 · 10 · 10 = 10.000 senhas.'],
+  w:'5.040 = 10 · 9 · 8 · 7 seria sem repetição. E 9.999 esquece a senha 0000, que também vale.'},
+ {g:'ct',q:'Uma moeda é lançada 5 vezes e anotamos a sequência de resultados (cara ou coroa). Quantas sequências diferentes são possíveis?',
+  o:['10','16','25','32','64'],a:3,
+  r:['5 lançamentos → 5 traços.','Cada lançamento tem 2 resultados: cara ou coroa.','2 · 2 · 2 · 2 · 2 = 2⁵ = 32 sequências.'],
+  w:'10 = 2 · 5 multiplica a quantidade de lançamentos pelo 2. O certo é multiplicar o 2 por ele mesmo 5 vezes.'},
+ {g:'ct',q:'Quantos anagramas tem a palavra AMOR?',
+  o:['4','12','16','24','256'],a:3,
+  r:['Anagrama é cada troca de lugar das letras, com sentido ou não (ROMA, MORA, RAMO, OMRA…).','AMOR tem 4 letras diferentes → 4 traços.','1ª posição: 4 letras; 2ª: sobram 3; 3ª: sobram 2; 4ª: sobra 1.','4 · 3 · 2 · 1 = 24 anagramas.'],
+  w:'256 = 4 · 4 · 4 · 4 seria se pudesse repetir letras. Cada letra de AMOR só pode ser usada uma vez.'},
+ {g:'ct',q:'Um código é formado por 2 letras diferentes, escolhidas entre A, B, C, D e E, seguidas de 1 algarismo ímpar. Quantos códigos são possíveis?',
+  o:['14','50','100','125','200'],a:2,
+  r:['3 traços: letra, letra, algarismo.','1ª letra: 5 opções. 2ª letra: 4 opções (tem que ser diferente).','Algarismos ímpares: 1, 3, 5, 7, 9 → 5 opções.','5 · 4 · 5 = 100 códigos.'],
+  w:'125 = 5 · 5 · 5 esquece que as letras são diferentes. E 200 = 5 · 4 · 10 usa todos os algarismos, não só os ímpares.'},
+ {g:'pb',q:'Ao lançar um dado comum, qual é a probabilidade de sair um número primo?',
+  o:['1/6','1/3','1/2','2/3','5/6'],a:2,
+  r:['Casos possíveis: 1, 2, 3, 4, 5, 6 → 6 casos.','Primos: 2, 3 e 5 → 3 casos favoráveis. (O 1 não é primo.)','P = 3/6 = 1/2.'],
+  w:'2/3 aparece quando o 1 é contado como primo. Primo tem exatamente dois divisores; o 1 só tem um.'},
+ {g:'pb',q:'Uma urna tem 3 bolas brancas, 5 pretas e 2 verdes. Retirando uma bola ao acaso, qual é a probabilidade de ela ser verde?',
+  o:['1/10','1/5','1/4','3/10','1/2'],a:1,
+  r:['Total de bolas: 3 + 5 + 2 = 10 casos possíveis.','Verdes: 2 casos favoráveis.','P = 2/10 = 1/5.'],
+  w:'1/4 (= 2/8) compara as verdes só com as outras bolas. O denominador é o total, incluindo as verdes.'},
+ {g:'pb',q:'Dois dados comuns são lançados. Qual é a probabilidade de a soma dos resultados ser 7?',
+  o:['1/36','1/12','1/11','1/6','7/36'],a:3,
+  r:['Casos possíveis: 6 · 6 = 36 pares.','Soma 7: (1, 6), (2, 5), (3, 4), (4, 3), (5, 2), (6, 1) → 6 casos.','P = 6/36 = 1/6.'],
+  w:'1/12 (= 3/36) conta só (1, 6), (2, 5) e (3, 4), esquecendo que a ordem importa. E 1/11 pensa em 11 somas possíveis, mas elas não têm a mesma chance.'},
+ {g:'pb',q:'Uma caixa tem 5 bolas amarelas e 3 roxas. Quantas bolas roxas devem ser acrescentadas para que a probabilidade de retirar uma bola amarela seja 1/3?',
+  o:['2','5','7','10','12'],a:2,
+  r:['Hoje: 5 amarelas em 8 bolas → P(amarela) = 5/8.','Cada roxa nova aumenta o total, mas as amarelas continuam 5.','Testando: +1 → 5/9; +2 → 5/10; +3 → 5/11; +4 → 5/12; +5 → 5/13; +6 → 5/14; +7 → 5/15 = 1/3 ✓.','Conferindo: 1/3 = “1 amarela em cada 3 bolas”. Com 5 amarelas, o total precisa ser 15. 15 − 8 = 7 roxas.'],
+  w:'10 é o número de roxas no final (3 + 7), e 15 seria o total de bolas. A pergunta é quantas foram acrescentadas: 7.'},
+ {g:'pb',q:'Três moedas são lançadas ao mesmo tempo. Qual é a probabilidade de saírem exatamente 2 caras?',
+  o:['1/8','1/4','3/8','1/2','2/3'],a:2,
+  r:['Casos possíveis: 2 · 2 · 2 = 8.','Liste (Ca = cara, Co = coroa): Ca Ca Ca, Ca Ca Co, Ca Co Ca, Co Ca Ca, Ca Co Co, Co Ca Co, Co Co Ca, Co Co Co.','Exatamente 2 caras: Ca Ca Co, Ca Co Ca, Co Ca Ca → 3 casos.','P = 3/8.'],
+  w:'“Exatamente 2” não inclui Ca Ca Ca (3 caras). E 1/4 pensa em só 4 resultados (0, 1, 2 ou 3 caras), que não têm a mesma chance.'},
+ {g:'pb',q:'Um número de 1 a 20 é sorteado. Qual é a probabilidade de ser múltiplo de 4?',
+  o:['1/20','1/5','1/4','1/2','4/5'],a:2,
+  r:['Casos possíveis: 20 números.','Múltiplos de 4 até 20: 4, 8, 12, 16 e 20 → 5 casos. (O 20 também conta.)','P = 5/20 = 1/4.'],
+  w:'1/5 (= 4/20) esquece o 20. Liste os múltiplos até o fim do intervalo.'}
+];
+const H=[
+ 'Calcule os juros com J = c · i · t. Depois releia: a pergunta pede os juros ou o montante?',
+ 'Escreva 270 = c · 0,03 · 5. Os 270 reais foram juntados em 5 meses, então o tempo também entra na conta.',
+ 'Descubra primeiro quanto rende em 1 mês: 2% de 4.000. Quantas vezes esse valor cabe em 560?',
+ 'R$ 6.200,00 é o montante. Calcule antes os juros (M − c) e lembre que foram 4 anos.',
+ 'No 2º mês, os 10% são calculados sobre o valor do fim do 1º mês, e não sobre os R$ 1.000,00.',
+ 'Ano 1: 5% de 2.000. Ano 2: 5% do valor novo, e não de 2.000 de novo.',
+ 'Calcule os dois montantes separadamente (simples e compostos) e depois subtraia um do outro.',
+ 'Encontre o montante ano a ano e depois tire o capital: a pergunta é sobre os JUROS.',
+ 'O 2º desconto é calculado sobre o preço que sobrou depois do 1º, e não sobre os R$ 300,00.',
+ 'Faça em duas etapas: primeiro o aumento sobre 500, depois o desconto sobre o preço novo.',
+ 'Use um preço fácil, R$ 100,00, e aplique os dois aumentos, um depois do outro.',
+ 'Calcule quanto diminuiu em reais e compare essa diferença com o preço original (80).',
+ 'São três escolhas feitas juntas: pão E recheio E bebida. Nesse caso, somamos ou multiplicamos?',
+ 'DISTINTOS quer dizer que não pode repetir: a cada traço sobra um algarismo a menos.',
+ 'Conte quantos algarismos existem de 0 a 9. Como pode repetir, todos os traços têm o mesmo número de opções.',
+ 'Cada lançamento tem 2 resultados. Faça 5 traços e escreva o número de opções em cada um.',
+ 'As 4 letras são diferentes e cada uma aparece uma vez só: a cada posição, sobra uma letra a menos.',
+ 'Faça 3 traços. As letras não podem se repetir, e o algarismo precisa ser ímpar: quantos ímpares há de 0 a 9?',
+ 'Liste os primos de 1 a 6. Lembre: primo tem exatamente dois divisores.',
+ 'O denominador é o total de bolas da urna, contando todas as cores.',
+ 'Liste todos os pares com soma 7. Lembre que (1, 6) e (6, 1) são resultados diferentes.',
+ 'As amarelas continuam sendo 5. Acrescente uma roxa por vez e recalcule a fração até chegar a 1/3.',
+ 'Liste os 8 resultados das 3 moedas e conte os que têm exatamente 2 caras (nem 1, nem 3).',
+ 'Liste os múltiplos de 4 de 1 a 20 e não esqueça de conferir o último número do intervalo.'
+];
+Q.forEach((q,i)=>q.h=H[i]);
+const quiz=document.getElementById('quiz');
+const L='ABCDE';
+let right=0,first=0,errs={};
+function build(){
+  quiz.innerHTML='';answered=0;right=0;first=0;errs={};
+  let last='';
+  Q.forEach((it,idx)=>{
+    if(it.g!==last){quiz.insertAdjacentHTML('beforeend',`<div class="qgroup">${GROUPS[it.g].t}</div>`);last=it.g;}
+    const d=document.createElement('div');d.className='q';
+    d.innerHTML=`<div><span class="qn">${idx+1})</span> ${it.q}</div><div class="opts"></div><div class="qhint" role="status"></div><div class="res" role="status"></div>`;
+    const opts=d.querySelector('.opts');
+    const st={tries:0,done:false};
+    it.o.forEach((t,k)=>{
+      const b=document.createElement('button');b.className='opt';b.type='button';
+      b.innerHTML=`<span class="let">${L[k]}</span><span>${t}</span><span class="mk"></span>`;
+      b.onclick=()=>pick(it,d,k,st);
+      opts.appendChild(b);
+    });
+    quiz.appendChild(d);
+  });
+  document.getElementById('final').className='final';
+  upd();
+}
+function pick(it,d,k,st){
+  if(st.done)return;
+  const bs=[...d.querySelectorAll('.opt')];
+  const hint=d.querySelector('.qhint');
+  const ok=k===it.a;
+  st.tries++;
+  if(!ok&&st.tries===1){
+    /* 1ª tentativa errada: dica e nova chance */
+    bs[k].classList.add('wrong');bs[k].disabled=true;bs[k].querySelector('.mk').textContent='✗ tente outra';
+    hint.innerHTML=`<span class="lbl">💡 Quase! Releia com esta dica e tente de novo:</span>${it.h}`;
+    hint.classList.add('on');
+    return;
+  }
+  st.done=true;
+  hint.classList.remove('on');
+  bs.forEach(b=>{b.disabled=true;if(!b.classList.contains('wrong'))b.classList.add('dim');});
+  bs[it.a].classList.remove('dim');bs[it.a].classList.add('right');bs[it.a].querySelector('.mk').textContent='✓ correta';
+  if(!ok){bs[k].classList.remove('dim');bs[k].classList.add('wrong');bs[k].querySelector('.mk').textContent='✗ 2ª escolha';}
+  if(ok){right++;if(st.tries===1)first++;}
+  if(st.tries>1)errs[it.g]=(errs[it.g]||0)+1;
+  if(ok)d.classList.add('done-ok');
+  answered++;
+  const ans=`${L[it.a]}) ${it.o[it.a]}`;
+  const head=ok
+    ?(st.tries===1?`✓ Isso mesmo, de primeira! Resposta: ${ans}`:`✓ Isso! Você acertou na segunda tentativa. Resposta: ${ans}`)
+    :`↺ Ainda não foi dessa vez. A resposta certa é ${ans}. Acompanhe a resolução:`;
+  const res=d.querySelector('.res');
+  res.innerHTML=`<div class="head ${ok?'good':'bad'}">${head}</div>
+    <div class="box algo"><span class="lbl">📝 Resolução comentada</span>${it.r.map((s,i)=>`<div><b>Passo ${i+1}.</b> ${s}</div>`).join('')}</div>
+    <div class="box tip"><span class="lbl">⚠️ Pegadinha</span>${it.w}</div>`;
+  res.classList.add('on');
+  upd();
+  if(answered===Q.length)fin();
+}
+function upd(){
+  document.getElementById('sc1').textContent='Acertos: '+right+' de '+Q.length+' (de primeira: '+first+')';
+  document.getElementById('sc2').textContent='Respondidas: '+answered+' de '+Q.length;
+  updAct();
+}
+function fin(){
+  const f=document.getElementById('final');
+  let msg=`<span class="lbl">Resultado: ${right} de ${Q.length} (${first} de primeira)</span>`;
+  const ks=Object.keys(errs);
+  if(!ks.length)msg+='Excelente! Você acertou tudo de primeira. Revise o resumo e chegue tranquilo na prova.';
+  else{
+    msg+='Muito bom ter feito a lista inteira! As questões em que você precisou da dica, ou que ficaram erradas, mostram o que vale revisar:<br>';
+    msg+=ks.map(g=>`• ${GROUPS[g].t}: ${errs[g]} ${errs[g]>1?'questões':'questão'} → volte ${GROUPS[g].p}.`).join('<br>');
+  }
+  f.innerHTML=msg;f.className='final on';
+}
+
+/* ---------- recomeçar com confirmação ---------- */
+const conf=document.getElementById('confirm'),rst=document.getElementById('reset');
+rst.onclick=()=>{if(answered===0){build();return;}conf.classList.add('on');rst.hidden=true;document.getElementById('no').focus();};
+document.getElementById('no').onclick=()=>{conf.classList.remove('on');rst.hidden=false;rst.focus();};
+document.getElementById('yes').onclick=()=>{conf.classList.remove('on');rst.hidden=false;build();document.getElementById('score').scrollIntoView({block:'center'});};
+
+build();
+go(0);
+</script>
+</body>
+</html>
