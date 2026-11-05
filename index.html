@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8º ano · Polinômios — Aulas 1 e 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F4FC; --ind:#362F78; --ind-d:#241F52; --ind-s:#6C63B5;
+  --mint:#A9E5D0; --coral:#FFB3A0; --coral-d:#E4694F; --yel:#FFDD73;
+  --txt:#2A2650; --txt2:#5B5686; --line:#E3DEF7;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:'Atkinson Hyperlegible',sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3,.baloo{font-family:'Baloo 2',sans-serif}
+.bg-sym{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-sym span{position:absolute;font-family:'Baloo 2';font-weight:700;color:var(--ind);opacity:.08;animation:drift 38s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(30px,-40px) rotate(12deg)}}
+@media (prefers-reduced-motion:reduce){.bg-sym span{animation:none}*{transition:none!important;animation:none!important}}
+
+.progress{position:sticky;top:0;z-index:10;background:rgba(246,244,252,.94);backdrop-filter:blur(6px);padding:8px 16px 7px;border-bottom:1px solid var(--line)}
+.progress .track{height:6px;background:var(--line);border-radius:6px;overflow:hidden}
+.progress .fill{height:100%;background:var(--ind-s);border-radius:6px;transition:width .35s}
+.progress .lbl{font-family:'Baloo 2';font-weight:600;font-size:13px;color:var(--txt2);margin-top:3px}
+
+main{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:18px 14px 40px}
+header.top{text-align:center;margin:8px 0 12px}
+header.top .kicker{font-family:'Baloo 2';font-weight:600;color:var(--ind-s);font-size:14px;letter-spacing:.4px}
+header.top h1{margin:0;color:var(--ind-d);font-size:30px;font-weight:800;line-height:1.15}
+
+.tabs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0 16px}
+.tabs button{font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--ind);cursor:pointer}
+.tabs button.active{background:var(--ind);border-color:var(--ind);color:#fff}
+
+section.part{display:none}
+section.part.active{display:block;animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 18px 16px;margin:0 0 16px;box-shadow:0 4px 16px rgba(54,47,120,.07)}
+.eyebrow{display:inline-block;font-family:'Baloo 2';font-weight:700;font-size:12px;padding:2px 11px;border-radius:999px;background:var(--mint);color:var(--ind-d);margin-bottom:6px}
+.eyebrow.coral{background:var(--coral)} .eyebrow.yel{background:var(--yel)}
+.card h2{margin:0 0 8px;color:var(--ind-d);font-size:24px;line-height:1.2}
+.card h3{margin:14px 0 6px;color:var(--ind);font-size:19px}
+p{margin:0 0 10px}
+.m{font-family:'Baloo 2';font-weight:700;color:var(--ind);white-space:nowrap}
+.big{font-family:'Baloo 2';font-weight:800;font-size:26px;color:var(--ind-d);text-align:center;margin:8px 0}
+
+.think{background:#EEEBFA;border-radius:14px;padding:12px 14px;margin:12px 0}
+.think b.t{display:block;font-family:'Baloo 2';color:var(--ind);font-size:16px;margin-bottom:2px}
+.tip{background:#FFF8E6;border-left:6px solid var(--yel);border-radius:10px;padding:12px 14px;margin:12px 0}
+.tip b.t{display:block;font-family:'Baloo 2';color:#8a6400;font-size:16px;margin-bottom:2px}
+
+table.t{width:100%;border-collapse:separate;border-spacing:0;margin:8px 0 12px;font-size:16px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table.t th{background:var(--ind);color:#fff;font-family:'Baloo 2';font-weight:600;padding:6px 8px}
+table.t td{padding:6px 8px;text-align:center;border-top:1px solid var(--line)}
+table.t td:first-child{font-family:'Baloo 2';font-weight:700;color:var(--ind)}
+
+.labelled{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;margin:10px 0}
+.lab{text-align:center}
+.lab .box{font-family:'Baloo 2';font-weight:800;font-size:28px;padding:2px 10px;border-radius:10px}
+.lab .box.c{background:var(--yel)} .lab .box.l{background:var(--mint)}
+.lab small{display:block;color:var(--txt2);font-size:13px;margin-top:2px}
+
+.class-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}
+.class-grid div{background:#F3F1FB;border-radius:12px;padding:8px;text-align:center}
+.class-grid b{display:block;font-family:'Baloo 2';color:var(--ind-s);font-size:13px}
+.class-grid span{font-family:'Baloo 2';font-weight:700;font-size:18px;color:var(--ind-d)}
+.class-grid em{display:block;font-style:normal;font-size:13px;color:var(--txt2)}
+
+.yesno{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.yesno div{border-radius:12px;padding:10px;font-size:15px}
+.yesno .yes{background:#E7F7F0;border:1.5px solid var(--mint)}
+.yesno .no{background:#FFF0EC;border:1.5px solid var(--coral)}
+.yesno b{font-family:'Baloo 2';display:block;font-size:15px}
+
+.steps{background:#F3F1FB;border:1.5px solid #D9D3F2;border-radius:14px;padding:10px 14px;margin:10px 0}
+.step{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;border-bottom:1px dashed #D9D3F2;flex-wrap:wrap}
+.step:last-of-type{border-bottom:none}
+.step .m{font-size:19px;white-space:normal}
+.step .why{font-size:13px;color:#fff;background:var(--coral-d);border-radius:999px;padding:1px 10px;font-family:'Baloo 2';font-weight:600}
+.step.hidden{display:none}
+.btn{font-family:'Baloo 2';font-weight:700;font-size:15px;border:none;border-radius:999px;padding:6px 16px;background:var(--ind);color:#fff;cursor:pointer;margin:6px 6px 0 0}
+.btn.ghost{background:#fff;color:var(--ind);border:1.5px solid var(--ind)}
+.btn:disabled{opacity:.45;cursor:default}
+
+.tiles-wrap{background:#FBFAFF;border:1px solid var(--line);border-radius:14px;padding:10px;margin:10px 0}
+.tiles-row{display:flex;align-items:center;gap:10px;margin:6px 0;flex-wrap:wrap}
+.tiles-row .rl{font-family:'Baloo 2';font-weight:700;color:var(--ind);min-width:110px;font-size:17px}
+.tiles-row svg{max-width:100%;height:auto}
+.tile{transition:opacity .5s}
+.tile.gone{opacity:.12}
+.result-line{font-family:'Baloo 2';font-weight:800;font-size:22px;color:var(--ind-d);text-align:center;min-height:32px;margin-top:6px}
+.legend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:flex-end;margin:6px 0}
+.legend figure{margin:0;text-align:center}
+.legend figcaption{font-size:13px;color:var(--txt2)}
+
+.note{color:var(--txt2);font-size:15px}
+.book{display:grid;grid-template-columns:1fr;gap:12px}
+.q{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#FFFEFB}
+.q p{margin:0 0 6px}
+.qn{display:inline-block;background:#F2A23A;color:#fff;font-family:'Baloo 2';font-weight:800;border-radius:5px;padding:0 7px;margin-right:4px}
+.quadro{display:inline-block;font-family:'Baloo 2';font-weight:600;font-size:11px;color:var(--ind);background:#EEEBFA;border:1px solid #D9D3F2;border-radius:999px;padding:0 7px;vertical-align:middle;white-space:nowrap}
+.ans{display:none;margin-top:8px;background:#E7F7F0;border-left:5px solid #3FAE86;border-radius:10px;padding:10px 12px;line-height:1.7}
+.ans.show{display:block}
+.ans .m{white-space:normal}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.8em;line-height:1.05;margin:0 2px}
+.frac span:first-child{border-bottom:1.5px solid currentColor;padding:0 2px}
+svg.fig{display:block;width:100%;max-width:320px;margin:8px auto}
+.footer-nav{display:flex;justify-content:space-between;margin-top:6px}
+.footer-nav button{font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:999px;border:1.5px solid var(--ind);background:#fff;color:var(--ind);cursor:pointer}
+.footer-nav button:disabled{opacity:.35;cursor:default}
+
+@media (min-width:900px){
+  body{font-size:20px}
+  main{max-width:1000px;padding:24px 28px 50px}
+  header.top h1{font-size:40px}
+  .card{padding:26px 30px 22px}
+  .card h2{font-size:30px} .card h3{font-size:23px}
+  .big{font-size:34px}
+  .lab .box{font-size:38px}
+  .class-grid{grid-template-columns:repeat(4,1fr)}
+  .class-grid span{font-size:22px}
+  .step .m{font-size:24px}
+  table.t{font-size:19px}
+  .tabs button,.footer-nav button{font-size:13px;padding:5px 11px}
+  .tiles-row svg{transform-origin:left center}
+  .result-line{font-size:28px}
+  .yesno div{font-size:18px}
+  .book{grid-template-columns:1fr 1fr;align-items:start}
+  .note{font-size:17px}
+  .quadro{font-size:13px}
+}
+@media (min-width:1500px){
+  body{font-size:24px}
+  main{max-width:1320px}
+  header.top h1{font-size:52px}
+  .card h2{font-size:38px} .card h3{font-size:28px}
+  .big{font-size:44px}
+  .lab .box{font-size:50px}
+  .step .m{font-size:30px}
+  table.t{font-size:23px}
+  .tabs button,.footer-nav button{font-size:16px;padding:6px 14px}
+  .tiles-row .rl{font-size:24px;min-width:170px}
+  .result-line{font-size:36px}
+  .yesno div{font-size:22px}
+  .class-grid span{font-size:28px}
+}
+</style>
+</head>
+<body>
+<div class="bg-sym" aria-hidden="true">
+  <span style="left:6%;top:14%;font-size:60px">x²</span>
+  <span style="left:82%;top:10%;font-size:48px;animation-delay:-8s">+</span>
+  <span style="left:70%;top:48%;font-size:70px;animation-delay:-14s">y</span>
+  <span style="left:12%;top:62%;font-size:54px;animation-delay:-20s">−</span>
+  <span style="left:45%;top:80%;font-size:58px;animation-delay:-5s">3a</span>
+  <span style="left:90%;top:76%;font-size:44px;animation-delay:-26s">( )</span>
+  <span style="left:35%;top:30%;font-size:40px;animation-delay:-11s">k³</span>
+</div>
+
+<div class="progress" role="progressbar" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1">
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div class="lbl" id="plabel">Parte 1 de 4</div>
+</div>
+
+<main>
+<header class="top">
+  <div class="kicker">8º ano · Cap. 10 · Aulas 1 e 2</div>
+  <h1>Polinômios</h1>
+</header>
+
+<nav class="tabs" id="tabs" aria-label="Partes da aula"></nav>
+
+<!-- ============ PARTE 1 ============ -->
+<section class="part" data-name="Monômios">
+  <div class="card">
+    <span class="eyebrow">Para começar</span>
+    <h2>Letras no lugar de números</h2>
+    <p>Um caderno custa um preço que você ainda não sabe. Vamos chamar esse preço de <span class="m">x</span>.</p>
+    <p>Quanto custam 4 cadernos? Custam 4 vezes o preço de um, ou seja, <span class="m">4 · x</span>, que escrevemos <span class="m">4x</span>.</p>
+    <p>Você acabou de escrever uma <b>expressão algébrica</b>: uma expressão com números e letras. As letras são chamadas de <b>variáveis</b>, porque representam números que podem variar.</p>
+  </div>
+
+  <div class="card">
+    <span class="eyebrow">Parte 1</span>
+    <h2>O que é um monômio</h2>
+    <p>Um <b>monômio</b> é um número multiplicado por letras, e os expoentes das letras são números naturais (0, 1, 2, 3, …). Ele é uma "peça" só, sem soma nem subtração no meio.</p>
+    <p>Todo monômio tem duas partes. O número é o <b>coeficiente</b>. As letras, com seus expoentes, formam a <b>parte literal</b>.</p>
+    <div class="labelled" aria-label="No monômio menos 6 x ao quadrado y, o coeficiente é menos 6 e a parte literal é x ao quadrado y">
+      <div class="lab"><div class="box c">−6</div><small>coeficiente</small></div>
+      <div class="lab"><div class="box l">x²y</div><small>parte literal</small></div>
+    </div>
+    <div class="think">
+      <b class="t">Pense assim</b>
+      Em "3 maçãs", o número 3 diz <i>quantas</i> e a palavra "maçãs" diz <i>o quê</i>. No monômio <span class="m">3x²</span> é igual: o coeficiente 3 diz quantas vezes, e a parte literal <span class="m">x²</span> diz o que está sendo contado.
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="eyebrow">Parte 1</span>
+    <h2>O grau do monômio</h2>
+    <p>O <b>grau</b> de um monômio é a soma dos expoentes de todas as letras dele.</p>
+    <p>Em <span class="m">3x²y</span>, o x tem expoente 2 e o y tem expoente 1. Então o grau é <span class="m">2 + 1 = 3</span>.</p>
+    <h3>Exemplo: separando cada pedaço</h3>
+    <table class="t">
+      <tr><th>Monômio</th><th>Coeficiente</th><th>Parte literal</th><th>Grau</th></tr>
+      <tr><td>−7m³n</td><td>−7</td><td>m³n</td><td>3 + 1 = 4</td></tr>
+      <tr><td>5ab</td><td>5</td><td>ab</td><td>1 + 1 = 2</td></tr>
+      <tr><td>−y⁴</td><td>−1</td><td>y⁴</td><td>4</td></tr>
+      <tr><td>12</td><td>12</td><td>—</td><td>0</td></tr>
+    </table>
+    <div class="tip">
+      <b class="t">Dica: o número que "não aparece"</b>
+      Quando uma letra aparece sem expoente, o expoente dela é 1: <span class="m">y = y¹</span>. Quando não aparece número na frente, o coeficiente é 1 (ou −1, se tiver o sinal de menos): <span class="m">−y⁴ = −1 · y⁴</span>. E um número sozinho, como 12, tem grau 0, porque não tem nenhuma letra (é como se fosse <span class="m">12x⁰</span>, e <span class="m">x⁰ = 1</span>).
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARTE 2 ============ -->
+<section class="part" data-name="Polinômios">
+  <div class="card">
+    <span class="eyebrow">Parte 2</span>
+    <h2>Juntando monômios: o polinômio</h2>
+    <p>Um <b>polinômio</b> é uma soma de monômios. Cada monômio dentro dele se chama <b>termo</b>.</p>
+    <p>Em <span class="m">x² + 4x − 5</span> há três termos: <span class="m">x²</span>, <span class="m">4x</span> e <span class="m">−5</span>. Repare que o sinal de menos fica junto com o termo que vem depois dele.</p>
+    <p>O nome muda conforme a quantidade de termos:</p>
+    <div class="class-grid">
+      <div><b>1 termo</b><span>8k²</span><em>monômio</em></div>
+      <div><b>2 termos</b><span>3a − 1</span><em>binômio</em></div>
+      <div><b>3 termos</b><span>x² + 4x − 5</span><em>trinômio</em></div>
+      <div><b>4 ou mais</b><span>2y³ − y² + y + 9</span><em>polinômio</em></div>
+    </div>
+    <div class="think">
+      <b class="t">Pense assim</b>
+      Os prefixos são os mesmos de palavras que você já conhece: <b>mono</b> = um (monociclo), <b>bi</b> = dois (bicicleta), <b>tri</b> = três (triciclo), <b>poli</b> = muitos.
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="eyebrow">Parte 2</span>
+    <h2>Exemplo: analisando um polinômio</h2>
+    <p>Vamos olhar cada termo de <span class="m">2a³ − a + 9</span>:</p>
+    <table class="t">
+      <tr><th>Termo</th><th>Coeficiente</th><th>Parte literal</th><th>Grau</th></tr>
+      <tr><td>2a³</td><td>2</td><td>a³</td><td>3</td></tr>
+      <tr><td>−a</td><td>−1</td><td>a</td><td>1</td></tr>
+      <tr><td>9</td><td>9</td><td>—</td><td>0</td></tr>
+    </table>
+    <p>São 3 termos, então esse polinômio é um <b>trinômio</b>.</p>
+  </div>
+
+  <div class="card">
+    <span class="eyebrow coral">Parte 2</span>
+    <h2>Quando NÃO é polinômio</h2>
+    <p>Para ser polinômio, toda letra precisa ter expoente natural. Por isso, a expressão deixa de ser polinômio quando uma variável tem <b>expoente negativo</b> ou aparece <b>no denominador</b> (embaixo da fração).</p>
+    <div class="yesno">
+      <div class="no"><b>✗ Não é polinômio</b><span class="m">4x⁻² + 1</span> (expoente −2)<br><span class="m">5/y + 3</span> (letra embaixo)</div>
+      <div class="yes"><b>✓ É polinômio</b><span class="m">x/2 − 7</span> (o número 2 é que está embaixo)<br><span class="m">√2 · y</span> (a raiz está no número)</div>
+    </div>
+    <div class="tip">
+      <b class="t">Dica: olhe só para as letras</b>
+      O que decide é a <b>letra</b>, não o número. Fração, raiz ou vírgula no coeficiente não atrapalham nada: <span class="m">x/2</span> é o mesmo que <span class="m">½ · x</span>, que é um monômio comum. O problema só aparece quando a <b>letra</b> vai para o denominador ou ganha expoente negativo.
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="eyebrow">Parte 2</span>
+    <h2>Termos semelhantes</h2>
+    <p>Dois termos são <b>semelhantes</b> quando têm exatamente a mesma parte literal: as mesmas letras, com os mesmos expoentes. O coeficiente pode ser diferente.</p>
+    <div class="yesno">
+      <div class="yes"><b>✓ Semelhantes</b><span class="m">3ab²</span> e <span class="m">−ab²</span><br>(os dois têm ab²)</div>
+      <div class="no"><b>✗ Não semelhantes</b><span class="m">4x²</span> e <span class="m">4x</span><br>(x² é diferente de x)</div>
+    </div>
+    <h3>Exemplo</h3>
+    <p>Em <span class="m">5p²q − 2pq² + p²q</span>, os termos <span class="m">5p²q</span> e <span class="m">p²q</span> são semelhantes. O termo <span class="m">−2pq²</span> não é semelhante a eles, porque nele o expoente 2 está no q, e não no p.</p>
+    <div class="tip">
+      <b class="t">Dica: coeficiente igual não basta</b>
+      Um erro comum é achar que <span class="m">4x²</span> e <span class="m">4x</span> são semelhantes porque os dois têm o número 4. O coeficiente não importa aqui. Compare só a parte literal, letra por letra e expoente por expoente.
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARTE 3 ============ -->
+<section class="part" data-name="Adição">
+  <div class="card">
+    <span class="eyebrow">Parte 3</span>
+    <h2>Somando polinômios</h2>
+    <p>Só podemos somar ou subtrair <b>termos semelhantes</b>. Fazemos a conta com os coeficientes e mantemos a parte literal igual.</p>
+    <p class="big">7x² − 2x² = 5x²</p>
+    <div class="think">
+      <b class="t">Pense assim</b>
+      3 maçãs + 2 maçãs = 5 maçãs. Mas 3 maçãs + 2 laranjas não vira 5 "maçaranjas": fica do jeito que está. Com polinômios é igual: <span class="m">3x + 2x = 5x</span>, mas <span class="m">3x² + 2x</span> não junta, porque x² e x são "frutas" diferentes.
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="eyebrow">Parte 3</span>
+    <h2>As peças dos modelos algébricos</h2>
+    <p>Podemos representar cada termo com peças. A área de cada peça é o valor que ela representa. As peças <b>listradas</b> são negativas.</p>
+    <div class="legend" id="legend"></div>
+    <p>Uma peça positiva e uma negativa do mesmo tipo <b>se anulam</b>, porque juntas valem zero: <span class="m">x + (−x) = 0</span>.</p>
+  </div>
+
+  <div class="card">
+    <span class="eyebrow">Parte 3</span>
+    <h2>Exemplo: somando com as peças</h2>
+    <p class="big" style="font-size:22px">(x² + 2x − 1) + (x² − x + 3)</p>
+    <div class="tiles-wrap">
+      <div class="tiles-row"><span class="rl">x² + 2x − 1</span><span id="row1"></span></div>
+      <div class="tiles-row"><span class="rl">x² − x + 3</span><span id="row2"></span></div>
+      <div class="result-line" id="tileResult" aria-live="polite"></div>
+    </div>
+    <button class="btn" id="tBtn1">1. Marcar os pares que se anulam</button>
+    <button class="btn" id="tBtn2" disabled>2. Tirar os pares</button>
+    <button class="btn ghost" id="tReset">Recomeçar</button>
+    <p id="tileExplain" style="margin-top:10px;color:var(--txt2)"></p>
+  </div>
+
+  <div class="card">
+    <span class="eyebrow">Parte 3</span>
+    <h2>A mesma conta, sem as peças</h2>
+    <p>As peças ajudam a entender, mas a conta escrita segue a mesma ideia: juntamos cada grupo de termos semelhantes.</p>
+    <div class="steps" id="addSteps">
+      <div class="step"><span class="m">(x² + 2x − 1) + (x² − x + 3)</span></div>
+      <div class="step hidden"><span class="m">= x² + 2x − 1 + x² − x + 3</span><span class="why">tiramos os parênteses</span></div>
+      <div class="step hidden"><span class="m">= (x² + x²) + (2x − x) + (−1 + 3)</span><span class="why">agrupamos os semelhantes</span></div>
+      <div class="step hidden"><span class="m">= 2x² + x + 2</span><span class="why">operamos os coeficientes</span></div>
+    </div>
+    <button class="btn" data-reveal="addSteps">Próximo passo</button>
+    <div class="tip">
+      <b class="t">Dica: o sinal anda com o termo</b>
+      Na hora de agrupar, leve o sinal junto: em <span class="m">2x − x</span>, o termo é <span class="m">−x</span>, que vale <span class="m">−1x</span>. Por isso <span class="m">2x − x = 1x = x</span>, e não 2x.
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARTE 4 ============ -->
+<section class="part" data-name="Subtração">
+  <div class="card">
+    <span class="eyebrow">Parte 4</span>
+    <h2>O sinal antes dos parênteses</h2>
+    <p>Antes de juntar os termos, precisamos tirar os parênteses. O que acontece depende do sinal que está na frente deles.</p>
+    <h3>Sinal + na frente</h3>
+    <p>Tiramos os parênteses e <b>mantemos</b> todos os sinais.</p>
+    <p class="big">+(2x − 5) = 2x − 5</p>
+    <h3>Sinal − na frente</h3>
+    <p>Tiramos os parênteses e <b>trocamos todos</b> os sinais de dentro.</p>
+    <p class="big">−(2x − 5) = −2x + 5</p>
+    <div class="think">
+      <b class="t">Pense assim</b>
+      O sinal de menos na frente dos parênteses é como dizer "o contrário de tudo isto". O contrário de ganhar 2x é perder 2x, e o contrário de perder 5 é ganhar 5. Por isso cada sinal de dentro vira o seu oposto.
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="eyebrow">Parte 4</span>
+    <h2>Exemplo: subtraindo polinômios</h2>
+    <p class="big" style="font-size:22px">(4x² + 3x − 5) − (x² − 2x − 6)</p>
+    <div class="steps" id="subSteps">
+      <div class="step"><span class="m">(4x² + 3x − 5) − (x² − 2x − 6)</span></div>
+      <div class="step hidden"><span class="m">= 4x² + 3x − 5 − x² + 2x + 6</span><span class="why">trocamos os 3 sinais do 2º parêntese</span></div>
+      <div class="step hidden"><span class="m">= (4x² − x²) + (3x + 2x) + (−5 + 6)</span><span class="why">agrupamos os semelhantes</span></div>
+      <div class="step hidden"><span class="m">= 3x² + 5x + 1</span><span class="why">operamos os coeficientes</span></div>
+    </div>
+    <button class="btn" data-reveal="subSteps">Próximo passo</button>
+    <div class="tip">
+      <b class="t">Dica: o erro mais comum desta aula</b>
+      Muita gente troca só o sinal do <b>primeiro</b> termo e esquece os outros. Em <span class="m">−(x² − 2x − 6)</span> há três termos dentro, então são <b>três</b> sinais para trocar: <span class="m">−x² + 2x + 6</span>. Conte os termos antes de trocar e confira se trocou todos.
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="eyebrow yel">Parte 4</span>
+    <h2>Mais um detalhe: potência de um produto</h2>
+    <p>Quando um produto inteiro está elevado a um expoente, o expoente vale para <b>cada fator</b> de dentro: para o número e para a letra.</p>
+    <p class="big">(3x)² = 3² · x² = 9x²</p>
+    <div class="tip">
+      <b class="t">Dica: não esqueça o número</b>
+      É comum elevar só a letra e escrever <span class="m">(3x)² = 3x²</span>. Mas <span class="m">(3x)²</span> quer dizer <span class="m">3x · 3x</span>, e <span class="m">3 · 3 = 9</span>. O resultado certo é <span class="m">9x²</span>.
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARTE 5 — LIVRO págs. 36–37 ============ -->
+<section class="part" data-name="Livro: págs. 36 e 37">
+  <div class="card">
+    <span class="eyebrow yel">Direto do livro · págs. 36 e 37</span>
+    <h2>Atividades</h2>
+    <p class="note">Resolva no livro primeiro. Depois clique em <b>Ver resposta</b> para conferir. Os itens marcados com <span class="quadro">no quadro</span> vamos fazer juntos em sala.</p>
+    <div class="book">
+      <div class="q">
+        <p><span class="qn">1</span> As expressões a seguir são polinômios? Se sim, classifique-as em monômios, binômios, trinômios ou polinômios.</p>
+        <p>a) <span class="m">3x</span> <span class="quadro">no quadro</span></p>
+        <p>b) <span class="m">5x³ − 6x + 1</span> <span class="quadro">no quadro</span></p>
+        <p>c) <span class="m">1,8y⁻²</span> <span class="quadro">no quadro</span></p>
+        <p>d) <span class="m">13y² + <span class="frac"><span>1</span><span>25</span></span>ay</span></p>
+        <p>e) <span class="m">−2x² + <span class="frac"><span>1</span><span>6x</span></span></span></p>
+        <button class="btn ghost rv">Ver resposta</button>
+        <div class="ans">a) Monômio (1 termo).<br>b) Trinômio (3 termos).<br>c) Não é polinômio, porque a variável y tem expoente negativo (−2).<br>d) Binômio (2 termos). A fração <span class="m">1/25</span> está no coeficiente, então não atrapalha.<br>e) Não é polinômio, porque a variável x aparece no denominador.</div>
+      </div>
+
+      <div class="q">
+        <p><span class="qn">2</span> Identifique o coeficiente e a parte literal nos termos dos polinômios.</p>
+        <p>a) <span class="m">13x³ + 11x² − 12x</span> <span class="quadro">no quadro</span></p>
+        <p>b) <span class="m">−8x⁴ + 12x³ − 5x² − 0,2x</span></p>
+        <p>c) <span class="m">0,01y</span></p>
+        <button class="btn ghost rv">Ver resposta</button>
+        <div class="ans">a) 13x³ → coeficiente 13, parte literal x³ · 11x² → coeficiente 11, parte literal x² · −12x → coeficiente −12, parte literal x.<br>b) −8x⁴ → coeficiente −8, parte literal x⁴ · 12x³ → coeficiente 12, parte literal x³ · −5x² → coeficiente −5, parte literal x² · −0,2x → coeficiente −0,2, parte literal x.<br>c) 0,01y → coeficiente 0,01, parte literal y.</div>
+      </div>
+
+      <div class="q">
+        <p><span class="qn">3</span> Os termos de cada item são semelhantes? Justifique sua resposta.</p>
+        <p>a) <span class="m">25x² e −7x</span></p>
+        <p>b) <span class="m">8x³ e 1,1x²</span></p>
+        <p>c) <span class="m">3y² e 2y²</span></p>
+        <button class="btn ghost rv">Ver resposta</button>
+        <div class="ans">a) Não são semelhantes, porque não têm a mesma parte literal (x² e x).<br>b) Não são semelhantes, porque não têm a mesma parte literal (x³ e x²).<br>c) Sim, são semelhantes, porque têm a mesma parte literal (y²).</div>
+      </div>
+
+      <div class="q">
+        <p><span class="qn">4</span> Na conta bancária de Marlon, há x reais. Ele sacou metade dessa quantia e ainda deu dois cheques, cada um no valor de y reais. Qual é o seu saldo após ter realizado essas operações financeiras?</p>
+        <button class="btn ghost rv">Ver resposta</button>
+        <div class="ans">Depois de sacar metade, sobra a outra metade: <span class="m"><span class="frac"><span>x</span><span>2</span></span></span>. Os dois cheques tiram <span class="m">2y</span>. Saldo: <span class="m"><span class="frac"><span>x</span><span>2</span></span> − 2y</span>.</div>
+      </div>
+
+      <div class="q">
+        <p><span class="qn">5</span> Com base no retângulo a seguir, faça o que se pede e responda às perguntas.</p>
+        <svg class="fig" viewBox="0 0 300 190" role="img" aria-label="Retângulo de altura x formado por um quadrado laranja de lado x e um retângulo amarelo de largura três quintos">
+          <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#241F52"/></marker></defs>
+          <line x1="42" y1="22" x2="168" y2="22" stroke="#241F52" stroke-width="1.5" marker-start="url(#ah)" marker-end="url(#ah)"/>
+          <line x1="172" y1="22" x2="262" y2="22" stroke="#241F52" stroke-width="1.5" marker-start="url(#ah)" marker-end="url(#ah)"/>
+          <text x="105" y="16" text-anchor="middle" font-family="Atkinson Hyperlegible" font-style="italic" font-size="14" fill="#241F52">x</text>
+          <rect x="207" y="1" width="20" height="18" fill="#fff"/>
+          <text x="217" y="8" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="9" fill="#241F52">3</text>
+          <line x1="212" y1="10" x2="222" y2="10" stroke="#241F52" stroke-width="1"/>
+          <text x="217" y="18" text-anchor="middle" font-family="Atkinson Hyperlegible" font-size="9" fill="#241F52">5</text>
+          <line x1="28" y1="34" x2="28" y2="180" stroke="#241F52" stroke-width="1.5" marker-start="url(#ah)" marker-end="url(#ah)"/>
+          <text x="16" y="112" font-family="Atkinson Hyperlegible" font-style="italic" font-size="14" fill="#241F52">x</text>
+          <rect x="42" y="34" width="128" height="146" fill="#FFC77A" stroke="#241F52" stroke-width="1.5"/>
+          <rect x="170" y="34" width="92" height="146" fill="#FFE57F" stroke="#241F52" stroke-width="1.5"/>
+        </svg>
+        <p>a) A área da figura apresentada é a soma das áreas dos retângulos laranja e amarelo. Usando essa informação, encontre um polinômio que represente a área total da figura.</p>
+        <p>b) A largura do retângulo grande é <span class="m">x + <span class="frac"><span>3</span><span>5</span></span></span> enquanto sua altura é x. Multiplicando a largura pela altura encontramos sua área. A partir dessa afirmação, calcule novamente a área total da figura.</p>
+        <p>c) Os valores encontrados no item "a" são os mesmos do item "b"? Justifique sua resposta.</p>
+        <button class="btn ghost rv">Ver resposta</button>
+        <div class="ans">a) Laranja: <span class="m">x · x = x²</span>. Amarelo: <span class="m"><span class="frac"><span>3</span><span>5</span></span> · x = <span class="frac"><span>3</span><span>5</span></span>x</span>. Área total: <span class="m">x² + <span class="frac"><span>3</span><span>5</span></span>x</span>.<br>b) Área = largura · altura = <span class="m">x · (x + <span class="frac"><span>3</span><span>5</span></span>)</span>.<br>c) Sim, devem ser iguais, porque as duas expressões representam a área da mesma figura. Só calculamos essa área de dois jeitos diferentes.</div>
+      </div>
+
+      <div class="q">
+        <p><span class="qn">6</span> O grau de um monômio é representado pela soma dos expoentes dos termos da parte literal, como mostra a primeira linha da tabela. Com base nela, complete as demais linhas.</p>
+        <table class="t">
+          <tr><th>Monômio</th><th>Grau em relação a x</th><th>Grau em relação a b</th><th>Grau do monômio</th></tr>
+          <tr><td>5bx³</td><td>3</td><td>1</td><td>4</td></tr>
+          <tr><td>−<span class="frac"><span>3</span><span>7</span></span>b²x⁵ <span class="quadro">no quadro</span></td><td>?</td><td>?</td><td>?</td></tr>
+          <tr><td>√3x</td><td>?</td><td>?</td><td>?</td></tr>
+          <tr><td>bx</td><td>?</td><td>?</td><td>?</td></tr>
+        </table>
+        <button class="btn ghost rv">Ver resposta</button>
+        <div class="ans">−<span class="frac"><span>3</span><span>7</span></span>b²x⁵ → x: 5 · b: 2 · grau 5 + 2 = 7.<br>√3x → x: 1 · b: 0 · grau 1. (A raiz está no coeficiente, então é um monômio normal.)<br>bx → x: 1 · b: 1 · grau 1 + 1 = 2.</div>
+      </div>
+
+      <div class="q">
+        <p><span class="qn">7</span> Esta atividade deve ser feita em dupla. Identifique, com a ajuda de um colega, se as expressões são ou não polinômios.</p>
+        <p>a) <span class="m">5x + x⁰</span></p>
+        <p>b) <span class="m">−3y⁴ + 0y + 5x</span></p>
+        <p>c) <span class="m">0x⁵ + 3x⁴ + 2x + 1x⁰ − 5x⁻¹</span></p>
+        <button class="btn ghost rv">Ver resposta</button>
+        <div class="ans">a) Como <span class="m">x⁰ = 1</span>, fica <span class="m">5x + 1</span>. É polinômio.<br>b) Como <span class="m">0y = 0</span>, fica <span class="m">−3y⁴ + 5x</span>. É polinômio.<br>c) Fica <span class="m">3x⁴ + 2x + 1 − <span class="frac"><span>5</span><span>x</span></span></span>. Não é polinômio, por causa do termo com <span class="m">x⁻¹</span> (a variável fica no denominador).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARTE 6 — LIVRO pág. 42 ============ -->
+<section class="part" data-name="Livro: pág. 42">
+  <div class="card">
+    <span class="eyebrow yel">Direto do livro · pág. 42</span>
+    <h2>Atividades</h2>
+    <p class="note">Resolva no livro primeiro. Depois clique em <b>Ver resposta</b> para conferir. Os itens marcados com <span class="quadro">no quadro</span> vamos fazer juntos em sala.</p>
+    <div class="book">
+      <div class="q">
+        <p><span class="qn">8</span> Simplifique os polinômios a seguir, escrevendo-os na forma mais simples.</p>
+        <p>a) <span class="m">4y + 5y =</span></p>
+        <p>b) <span class="m">−3x² − 2x² + 3x + 2 − x =</span> <span class="quadro">no quadro</span></p>
+        <p>c) <span class="m">12x⁶ − 35x⁶ + 2x² − 7 =</span></p>
+        <button class="btn ghost rv">Ver resposta</button>
+        <div class="ans">a) <span class="m">9y</span><br>b) <span class="m">(−3x² − 2x²) + (3x − x) + 2 = −5x² + 2x + 2</span><br>c) <span class="m">(12x⁶ − 35x⁶) + 2x² − 7 = −23x⁶ + 2x² − 7</span></div>
+      </div>
+
+      <div class="q">
+        <p><span class="qn">9</span> O polinômio <span class="m">(2x)² − 5x² + 10x²</span> pode ser simplificado. Para isso, basta usar o que estudamos sobre potências. Observe:</p>
+        <div class="steps">
+          <div class="step"><span class="m">(2x)² − 5x² + 10x² =</span></div>
+          <div class="step"><span class="m">2² · x² − 5x² + 10x² =</span><span class="why">(a · b)² = a² · b²</span></div>
+          <div class="step"><span class="m">4x² − 5x² + 10x² = 9x²</span><span class="why">termos semelhantes</span></div>
+        </div>
+        <p>Agora é com você! Use as propriedades de potenciação e escreva os polinômios na forma mais simples.</p>
+        <p>a) <span class="m">(3x)² + 11x² − 5x² =</span> <span class="quadro">no quadro</span></p>
+        <p>b) <span class="m">(2y)⁴ − (3y²)² =</span></p>
+        <p>c) <span class="m">3x² + 2(x)² − (2x)² · 3 =</span></p>
+        <button class="btn ghost rv">Ver resposta</button>
+        <div class="ans">a) <span class="m">9x² + 11x² − 5x² = 15x²</span><br>b) <span class="m">16y⁴ − 9y⁴ = 7y⁴</span><br>c) <span class="m">3x² + 2x² − 4x² · 3 = 3x² + 2x² − 12x² = −7x²</span></div>
+      </div>
+
+      <div class="q">
+        <p><span class="qn">10</span> Efetue as operações escrevendo o polinômio resultante na forma mais simples.</p>
+        <p>a) <span class="m">2x³ + 3 + (4 − x³) =</span></p>
+        <p>b) <span class="m">5x³ − 7x + 3x² + 1⁷ + (8x² − x³ − 2²) =</span></p>
+        <p>c) <span class="m">20x − 4 + 12x − (−6x + 20 − 15x) =</span> <span class="quadro">no quadro</span></p>
+        <button class="btn ghost rv">Ver resposta</button>
+        <div class="ans">a) <span class="m">2x³ + 3 + 4 − x³ = x³ + 7</span><br>b) <span class="m">5x³ − 7x + 3x² + 1 + 8x² − x³ − 4 = 4x³ + 11x² − 7x − 3</span><br>c) <span class="m">20x − 4 + 12x + 6x − 20 + 15x = 53x − 24</span> (o sinal − troca os <b>três</b> sinais do parêntese)</div>
+      </div>
+
+      <div class="q">
+        <p><span class="qn">11</span> Junte-se a um ou dois colegas para realizar esta atividade.</p>
+        <p>Diversos modelos de refrigerador estão à venda. Como o preço de cada modelo é diferente, a loja usa a seguinte condição para parcelar o valor em três pagamentos: o primeiro é de x reais com desconto de 30%, caso não haja atraso, e os outros dois de m reais. Que polinômio representa essa operação financeira, em função de x e de m, caso seja efetuado o pagamento sem atraso?</p>
+        <p>(<b>Dica</b>: Lembre-se de que 30% de uma quantia é 0,3 vezes a quantidade.)</p>
+        <button class="btn ghost rv">Ver resposta</button>
+        <div class="ans">Com 30% de desconto, a primeira parcela fica <span class="m">x − 0,3x = 0,7x</span>. As outras duas somam <span class="m">2m</span>. Polinômio: <span class="m">0,7x + 2m</span>.</div>
+      </div>
+
+      <div class="q">
+        <p><span class="qn">12</span> Efetue as adições e as subtrações de polinômios.</p>
+        <p>a) <span class="m">(3x + 2) + (2x − 5) =</span></p>
+        <p>b) <span class="m">(7y² + 5) + (−3y² + 4y + 8) + (−5y² − 4y − 12) =</span></p>
+        <p>c) <span class="m">(3x² − 2 + 3x) − (2x − 5 + 11x²) =</span> <span class="quadro">no quadro</span></p>
+        <p>d) <span class="m">(<span class="frac"><span>5</span><span>4</span></span>x² − 3x + <span class="frac"><span>8</span><span>9</span></span>x²) − (<span class="frac"><span>5</span><span>4</span></span>x² − 3x + <span class="frac"><span>8</span><span>9</span></span>x²) =</span></p>
+        <button class="btn ghost rv">Ver resposta</button>
+        <div class="ans">a) <span class="m">5x − 3</span><br>b) <span class="m">(7 − 3 − 5)y² + (4 − 4)y + (5 + 8 − 12) = −y² + 1</span><br>c) <span class="m">3x² − 2 + 3x − 2x + 5 − 11x² = −8x² + x + 3</span><br>d) <span class="m">0</span>, porque estamos tirando um polinômio dele mesmo: cada termo se anula com o seu oposto.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer-nav">
+  <button id="prev">← Voltar</button>
+  <button id="next">Avançar →</button>
+</div>
+</main>
+
+<script>
+(function(){
+  const parts=[...document.querySelectorAll('section.part')];
+  const tabs=document.getElementById('tabs');
+  let cur=0;
+  parts.forEach((p,i)=>{
+    const b=document.createElement('button');
+    b.textContent=(i+1)+'. '+p.dataset.name;
+    b.onclick=()=>go(i);
+    tabs.appendChild(b);
+  });
+  function go(i){
+    cur=i;
+    parts.forEach((p,j)=>p.classList.toggle('active',j===i));
+    [...tabs.children].forEach((b,j)=>{b.classList.toggle('active',j===i);b.setAttribute('aria-current',j===i?'step':'false')});
+    document.getElementById('fill').style.width=((i+1)/parts.length*100)+'%';
+    document.getElementById('plabel').textContent='Parte '+(i+1)+' de '+parts.length+' — '+parts[i].dataset.name;
+    document.querySelector('.progress').setAttribute('aria-valuenow',i+1);
+    document.getElementById('prev').disabled=i===0;
+    document.getElementById('next').disabled=i===parts.length-1;
+    window.scrollTo({top:0});
+  }
+  document.getElementById('prev').onclick=()=>cur>0&&go(cur-1);
+  document.getElementById('next').onclick=()=>cur<parts.length-1&&go(cur+1);
+  go(0);
+
+  document.querySelector('.progress').setAttribute('aria-valuemax',parts.length);
+  // ver resposta
+  document.querySelectorAll('.rv').forEach(b=>{
+    b.onclick=()=>{
+      const a=b.nextElementSibling;
+      const on=a.classList.toggle('show');
+      b.textContent=on?'Esconder resposta':'Ver resposta';
+    };
+  });
+  // revelar passos
+  document.querySelectorAll('[data-reveal]').forEach(btn=>{
+    btn.onclick=()=>{
+      const box=document.getElementById(btn.dataset.reveal);
+      const h=box.querySelector('.step.hidden');
+      if(h)h.classList.remove('hidden');
+      if(!box.querySelector('.step.hidden')){btn.textContent='Pronto ✓';btn.disabled=true;}
+    };
+  });
+
+  // peças algébricas
+  const U=20, X=56; // tamanho da unidade e de x
+  const C={x2:'#FFDD73',x:'#A9E5D0',u:'#FFB3A0'};
+  function dims(t){return t==='x2'?[X,X]:t==='x'?[U,X]:[U,U];}
+  function tileSVG(t,neg,lbl,id){
+    const [w,h]=dims(t);
+    const fill=neg?'url(#hatch-'+t+')':C[t];
+    return `<g class="tile" ${id?'id="'+id+'"':''}>
+      <rect x="0" y="${X-h}" width="${w}" height="${h}" rx="3" fill="${fill}" stroke="#362F78" stroke-width="1.6"/>
+      <text x="${w/2}" y="${X-h/2+4}" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="${t==='u'?10:13}" fill="#241F52">${lbl}</text>
+      <rect class="pair-mark" x="-3" y="${X-h-3}" width="${w+6}" height="${h+6}" rx="5" fill="none" stroke="#E4694F" stroke-width="2.2" stroke-dasharray="5 3" opacity="0"/>
+    </g>`;
+  }
+  const defs=`<defs>${['x2','x','u'].map(t=>`<pattern id="hatch-${t}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="${C[t]}"/><line x1="0" y1="0" x2="0" y2="6" stroke="#5B5686" stroke-width="2.4"/></pattern>`).join('')}</defs>`;
+  function row(list){
+    let x=6, g='';
+    list.forEach(it=>{
+      const [w]=dims(it.t);
+      g+=`<g transform="translate(${x},4)">${tileSVG(it.t,it.neg,it.l,it.id)}</g>`;
+      x+=w+8;
+    });
+    const W=x+2;
+    return `<svg viewBox="0 0 ${W} ${X+8}" width="${W*1.25}" height="${(X+8)*1.25}" role="img" aria-label="${list.map(i=>i.l).join(', ')}">${defs}${g}</svg>`;
+  }
+  // legenda
+  const leg=[{t:'x2',neg:false,l:'x²',c:'área x²'},{t:'x',neg:false,l:'x',c:'área x'},{t:'u',neg:false,l:'1',c:'área 1'},{t:'x',neg:true,l:'−x',c:'negativa: −x'},{t:'u',neg:true,l:'−1',c:'negativa: −1'}];
+  document.getElementById('legend').innerHTML=leg.map(it=>`<figure>${row([it])}<figcaption>${it.c}</figcaption></figure>`).join('');
+
+  const r1=[{t:'x2',l:'x²'},{t:'x',l:'x'},{t:'x',l:'x',id:'pA1'},{t:'u',neg:true,l:'−1',id:'pB1'}];
+  const r2=[{t:'x2',l:'x²'},{t:'x',neg:true,l:'−x',id:'pA2'},{t:'u',l:'1',id:'pB2'},{t:'u',l:'1'},{t:'u',l:'1'}];
+  const res=document.getElementById('tileResult'), ex=document.getElementById('tileExplain');
+  const b1=document.getElementById('tBtn1'), b2=document.getElementById('tBtn2');
+  function draw(){
+    document.getElementById('row1').innerHTML=row(r1);
+    document.getElementById('row2').innerHTML=row(r2);
+    res.textContent=''; ex.textContent='';
+    b1.disabled=false; b2.disabled=true;
+  }
+  draw();
+  const pairIds=['pA1','pA2','pB1','pB2'];
+  b1.onclick=()=>{
+    pairIds.forEach(id=>document.querySelector('#'+id+' .pair-mark').setAttribute('opacity','1'));
+    ex.textContent='Um x positivo forma par com o −x, e um 1 positivo forma par com o −1. Cada par vale zero.';
+    b1.disabled=true; b2.disabled=false;
+  };
+  b2.onclick=()=>{
+    pairIds.forEach(id=>document.getElementById(id).classList.add('gone'));
+    ex.textContent='Sobraram 2 peças x², 1 peça x e 2 peças 1.';
+    res.textContent='Resultado: 2x² + x + 2';
+    b2.disabled=true;
+  };
+  document.getElementById('tReset').onclick=draw;
+})();
+</script>
+</body>
+</html>
