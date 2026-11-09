@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisão AV2 — Matemática 8º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F4FC; --ind:#362F78; --ind-d:#241F52; --ind-s:#6C63B5;
+  --mint:#A9E5D0; --coral:#FFB3A0; --coral-d:#E4694F; --yel:#FFDD73;
+  --txt:#2A2650; --txt2:#5B5686; --border:#E3DEF7; --lil:#EEEAFB;
+  --ok:#1E7A55; --ok-bg:#E3F6EE; --bad:#B23A22; --bad-bg:#FFEDE8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:'Atkinson Hyperlegible',sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3,.baloo{font-family:'Baloo 2',sans-serif}
+.bg-symbols{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-symbols span{position:absolute;font-family:'Baloo 2';font-weight:700;color:var(--ind);opacity:.08;animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(30px,-40px) rotate(14deg)}}
+@media (prefers-reduced-motion:reduce){.bg-symbols span{animation:none}html{scroll-behavior:auto}}
+
+/* progresso */
+.progress{position:sticky;top:0;z-index:20;background:rgba(246,244,252,.94);backdrop-filter:blur(6px);padding:8px 16px 6px;border-bottom:1px solid var(--border)}
+.track{height:7px;background:var(--border);border-radius:9px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--ind-s),var(--ind));border-radius:9px;transition:width .35s}
+.plabel{font-family:'Baloo 2';font-weight:600;font-size:13px;color:var(--txt2);margin-top:3px}
+
+.wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:18px 16px 40px}
+header h1{font-size:28px;line-height:1.15;color:var(--ind-d);margin:6px 0 2px;font-weight:800}
+header p{margin:0 0 12px;color:var(--txt2)}
+
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tab{border:1px solid var(--border);background:#fff;color:var(--ind);font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:999px;cursor:pointer}
+.tab.active{background:var(--ind);color:#fff;border-color:var(--ind)}
+.tab:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--yel);outline-offset:2px}
+
+.section{display:none}
+.section.active{display:block;animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px 18px 16px;margin-bottom:16px;box-shadow:0 4px 18px rgba(54,47,120,.07)}
+.eyebrow{display:inline-block;font-family:'Baloo 2';font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:2px 10px;border-radius:999px;margin-bottom:6px}
+.ey-ind{background:var(--lil);color:var(--ind)} .ey-mint{background:var(--mint);color:#174E3B} .ey-coral{background:var(--coral);color:#6E2414} .ey-yel{background:var(--yel);color:#5A4300}
+.card h2{font-size:24px;color:var(--ind-d);margin:0 0 8px;line-height:1.2;font-weight:800}
+.card h3{font-size:19px;color:var(--ind);margin:14px 0 6px;font-weight:700}
+.card p{margin:8px 0}
+.big{font-family:'Baloo 2';font-weight:700;font-size:22px;color:var(--ind)}
+
+.think{background:#EFEDFA;border-radius:14px;padding:12px 14px;margin:12px 0}
+.think b.t{font-family:'Baloo 2';color:var(--ind);display:block;font-size:16px}
+.tip{background:#FFF9E8;border-left:7px solid var(--yel);border-radius:12px;padding:12px 14px;margin:12px 0}
+.tip b.t{font-family:'Baloo 2';color:#7A5A00;display:block;font-size:16px}
+.copy{border:2.5px dashed #3FAE85;background:#F2FBF7;border-radius:14px;padding:12px 14px;margin:12px 0}
+.copy b.t{font-family:'Baloo 2';color:#1E7A55;display:block;font-size:16px}
+.review{background:#F4F2FD;border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin:12px 0}
+.formula{font-family:'Baloo 2';font-weight:700;font-size:24px;color:var(--ind-d);text-align:center;margin:8px 0;letter-spacing:.02em}
+.hl{background:var(--yel);padding:0 4px;border-radius:5px}
+.co{color:var(--coral-d);font-weight:700}
+
+/* exemplo resolvido passo a passo */
+.worked{border:1.5px solid var(--border);border-radius:16px;margin:14px 0;overflow:hidden}
+.worked .wh{background:var(--ind);color:#fff;font-family:'Baloo 2';font-weight:700;padding:6px 14px;font-size:15px}
+.worked .wq{padding:12px 14px 4px}
+.steps{background:#F3F0FD;border-top:1px solid var(--border);margin:8px 0 0;padding:4px 14px 10px}
+.step{display:none;padding:7px 0;border-bottom:1px dashed #D6D0F0}
+.step:last-child{border-bottom:none}
+.step.show{display:block;animation:fade .3s}
+.step b.p{font-family:'Baloo 2';color:var(--ind)}
+.step.final{background:var(--ok-bg);border-radius:10px;padding:8px 10px;margin-top:6px;border-bottom:none}
+.wbtns{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px 12px}
+.btn{font-family:'Baloo 2';font-weight:700;font-size:15px;border:none;border-radius:999px;padding:6px 16px;cursor:pointer;background:var(--ind);color:#fff}
+.btn.sec{background:#fff;color:var(--ind);border:1.5px solid var(--ind-s)}
+.btn:disabled{opacity:.45;cursor:default}
+.calc{font-family:'Baloo 2';font-weight:600;font-size:19px;color:var(--ind-d);display:block;margin:4px 0 2px 6px}
+
+/* try-box */
+.try{border:2.5px dashed var(--ind-s);border-radius:16px;padding:12px 14px;margin:14px 0;background:#fff}
+.try .tt{font-family:'Baloo 2';font-weight:700;color:var(--coral-d);font-size:16px}
+.try input{font-family:'Baloo 2';font-size:18px;width:110px;padding:4px 8px;border:2px solid var(--border);border-radius:10px;text-align:center;color:var(--ind-d)}
+.try input.sm{width:62px}
+.try .row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
+.fb{margin-top:8px;padding:8px 12px;border-radius:10px;display:none}
+.fb.ok{display:block;background:var(--ok-bg);color:var(--ok)}
+.fb.no{display:block;background:var(--bad-bg);color:var(--bad)}
+
+/* frações */
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-family:'Baloo 2';font-weight:700;line-height:1.05;margin:0 3px}
+.fr span:first-child{border-bottom:2px solid currentColor;padding:0 3px}
+.fr span{padding:0 3px}
+
+/* corrente */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0}
+.chain .box{background:var(--ind);color:#fff;font-family:'Baloo 2';font-weight:700;padding:4px 12px;border-radius:10px;font-size:18px}
+.chain .op{background:var(--coral);color:#6E2414;font-family:'Baloo 2';font-weight:700;padding:1px 9px;border-radius:999px;font-size:14px;cursor:pointer;border:none}
+
+.algo{background:#F1EDFC;border:1.5px solid #CFC7F2;border-radius:14px;padding:10px 14px;margin:12px 0}
+.algo div{padding:3px 0}
+.algo b{font-family:'Baloo 2';color:var(--ind)}
+
+table.t{border-collapse:collapse;margin:10px auto;font-size:16px}
+table.t td,table.t th{border:1px solid var(--border);padding:5px 10px;text-align:center}
+table.t th{background:var(--lil);color:var(--ind);font-family:'Baloo 2'}
+svg text{font-family:'Baloo 2',sans-serif}
+.fig{display:block;margin:10px auto;max-width:100%;height:auto}
+ul.map{padding-left:20px;margin:8px 0} ul.map li{margin:3px 0}
+
+/* quiz */
+.score{position:sticky;top:46px;z-index:5;background:var(--ind);color:#fff;font-family:'Baloo 2';font-weight:700;border-radius:999px;padding:4px 14px;display:inline-block;margin-bottom:10px}
+.q{border:1px solid var(--border);border-radius:16px;padding:12px 14px;margin:12px 0;background:#fff}
+.q .qn{font-family:'Baloo 2';font-weight:800;color:var(--coral-d)}
+.opts{display:grid;gap:7px;margin-top:8px}
+.opt{text-align:left;font-family:'Atkinson Hyperlegible';font-size:16px;background:#FAF9FF;border:1.5px solid var(--border);border-radius:12px;padding:7px 12px;cursor:pointer;color:var(--txt);display:flex;align-items:center;gap:10px}
+.opt .L{font-family:'Baloo 2';font-weight:800;color:var(--ind);min-width:20px}
+.opt.right{background:var(--ok-bg);border-color:#3FAE85}
+.opt.wrong{background:var(--bad-bg);border-color:var(--coral-d)}
+.opt:disabled{cursor:default}
+.exp{display:none;margin-top:10px;background:#F3F0FD;border-radius:12px;padding:10px 12px}
+.exp.show{display:block}
+
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:6px}
+.nav button{font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:999px;border:1px solid var(--border);background:#fff;color:var(--ind);cursor:pointer}
+.nav button:disabled{opacity:.4;cursor:default}
+.mono{display:flex;justify-content:center;align-items:flex-start;gap:14px;margin:14px 0 10px}
+.mpart{display:flex;flex-direction:column;align-items:center}
+.mexp{font-family:'Baloo 2';font-weight:800;font-size:46px;line-height:1.1;color:#241F52;border-bottom:5px solid;padding:0 6px 2px}
+.mexp sup{font-size:.55em}
+.mlab{font-family:'Baloo 2';font-weight:700;font-size:17px;margin-top:4px}
+@media (min-width:1500px){.mexp{font-size:70px}.mlab{font-size:26px}}
+.summary p{text-align:justify}
+
+@media (min-width:900px){
+  body{font-size:19px}
+  .wrap{max-width:980px;padding:26px 28px 50px}
+  header h1{font-size:38px}
+  .card{padding:26px 30px}
+  .card h2{font-size:30px}
+  .card h3{font-size:22px}
+  .formula{font-size:30px}
+  .calc{font-size:22px}
+  .tab{font-size:13px;padding:5px 11px}
+  .nav button{font-size:13px;padding:5px 11px}
+  .fig{max-width:560px}
+  .opts{grid-template-columns:1fr 1fr}
+}
+@media (min-width:1500px){
+  body{font-size:24px}
+  .wrap{max-width:1360px}
+  header h1{font-size:50px}
+  .card h2{font-size:40px}
+  .card h3{font-size:29px}
+  .formula{font-size:40px}
+  .calc{font-size:29px}
+  .btn{font-size:20px;padding:8px 22px}
+  .try input{font-size:24px;width:150px} .try input.sm{width:84px}
+  .opt{font-size:22px}
+  .tab{font-size:16px;padding:6px 14px}
+  .nav button{font-size:16px;padding:6px 14px}
+  .plabel{font-size:17px}
+  .fig{max-width:780px}
+  .score{top:52px}
+}
+</style>
+</head>
+<body>
+<div class="bg-symbols" aria-hidden="true"></div>
+
+<div class="progress" role="navigation" aria-label="Progresso">
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div class="plabel" id="plabel">Parte 1 de 10</div>
+</div>
+
+<div class="wrap">
+<header>
+  <h1>Revisão para a AV2 — 8º ano</h1>
+  <p>Porcentagem e juros · contagem · probabilidade · monômios e polinômios</p>
+</header>
+<nav class="tabs" id="tabs" aria-label="Partes da aula"></nav>
+
+<main id="sections">
+
+<!-- ============ PARTE 1 ============ -->
+<section class="section" data-name="Começando">
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 1 · Aquecimento</span>
+  <h2>Você já sabe mais do que imagina</h2>
+  <p>Antes de começar, responda de cabeça. Não precisa de conta difícil.</p>
+  <div class="try" data-answer="5">
+    <div class="tt">Aquecimento 1</div>
+    <p>Quanto é 10% de R$ 50,00?</p>
+    <div class="row">R$ <input aria-label="resposta"> <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! 10% é a décima parte: 50 ÷ 10 = 5." data-no="Quase. 10% é a mesma coisa que dividir por 10. Quanto é 50 ÷ 10?"></div>
+  </div>
+  <div class="try" data-answer="6">
+    <div class="tt">Aquecimento 2</div>
+    <p>Você tem 2 camisetas e 3 bermudas. Quantas roupas diferentes (camiseta + bermuda) consegue montar?</p>
+    <div class="row"><input aria-label="resposta"> roupas <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Perfeito! Cada camiseta combina com 3 bermudas: 2 × 3 = 6." data-no="Quase. Pense: a primeira camiseta combina com 3 bermudas, a segunda também combina com 3. Quantas no total?"></div>
+  </div>
+  <div class="try" data-answer="7">
+    <div class="tt">Aquecimento 3</div>
+    <p>Quanto é 3x + 4x? Escreva só o número que fica na frente do x.</p>
+    <div class="row"><input aria-label="resposta" class="sm"> x <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! 3 “xis” mais 4 “xis” são 7 “xis”: 7x." data-no="Quase. Pense em 3 maçãs mais 4 maçãs. Quantas maçãs? Com o x é igual."></div>
+  </div>
+  <p>Se você acertou essas três, você já tem a base de tudo o que cai na prova. Agora é só organizar.</p>
+  <h3>O que vamos revisar</h3>
+  <ul class="map">
+    <li><b>Parte 2:</b> porcentagem, juros simples e valor final a pagar.</li>
+    <li><b>Parte 3:</b> princípio fundamental da contagem (montar combinações).</li>
+    <li><b>Parte 4:</b> permutação e fatorial (embaralhar letras, organizar filas).</li>
+    <li><b>Parte 5:</b> probabilidade, inclusive mudando a quantidade de bolas de uma urna.</li>
+    <li><b>Parte 6:</b> monômios e o grau de um monômio.</li>
+    <li><b>Parte 7:</b> somar e subtrair polinômios, e perímetro com letras.</li>
+    <li><b>Parte 8:</b> multiplicar polinômios e área do retângulo com letras.</li>
+    <li><b>Parte 9:</b> quiz misturando tudo. <b>Parte 10:</b> resumo final para reler.</li>
+  </ul>
+</div>
+</section>
+
+<!-- ============ PARTE 2 ============ -->
+<section class="section" data-name="Porcentagem e juros">
+<div class="card">
+  <span class="eyebrow ey-mint">Parte 2 · Revisão</span>
+  <h2>Porcentagem: “por cem”</h2>
+  <p>O símbolo % quer dizer <b>“de cada 100”</b>. Então 15% quer dizer 15 de cada 100. Por isso podemos escrever uma porcentagem de três jeitos que valem a mesma coisa:</p>
+  <div class="formula">15% = <span class="fr"><span>15</span><span>100</span></span> = 0,15</div>
+  <p>Para calcular uma porcentagem de um valor, você multiplica o valor pela porcentagem na forma de fração ou de decimal.</p>
+  <div class="think"><b class="t">Pense assim</b>Imagine R$ 100,00 divididos em 100 moedas de R$ 1,00. Calcular 15% é pegar 15 dessas moedas. Se o valor for R$ 200,00, cada “pedacinho de 1%” vale R$ 2,00, então 15% vale 15 × 2 = R$ 30,00.</div>
+  <div class="tip"><b class="t">Dica: o atalho do 1% e do 10%</b>Para achar 1% de um valor, divida por 100. Para achar 10%, divida por 10. Depois é só multiplicar. Por exemplo, 12% de 2.500: 1% de 2.500 é 25, então 12% é 12 × 25 = 300.</div>
+</div>
+
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 2 · Juros</span>
+  <h2>Juros simples</h2>
+  <p>Quando alguém pega dinheiro emprestado (ou aplica dinheiro no banco), paga ou recebe um valor extra pelo tempo que o dinheiro ficou com outra pessoa. Esse valor extra se chama <b>juros</b>.</p>
+  <p>Nos <b>juros simples</b>, os juros de cada período (cada mês ou cada ano) são sempre calculados sobre o valor inicial. Por isso, os juros de cada período são sempre iguais.</p>
+  <div class="think"><b class="t">Pense assim</b>É como um aluguel do dinheiro. Se o aluguel de uma bicicleta é R$ 5,00 por dia, em 4 dias você paga 4 × 5 = R$ 20,00. Com juros simples é igual: descobre quanto é o “aluguel” de 1 mês e multiplica pela quantidade de meses.</div>
+  <div class="copy"><b class="t">Para lembrar</b>
+    <b>C</b> = capital (o valor emprestado ou aplicado no início).<br>
+    <b>i</b> = taxa de juros (a porcentagem por mês ou por ano).<br>
+    <b>t</b> = tempo (quantos meses ou anos).<br>
+    <b>J</b> = juros (o valor extra).<br>
+    <b>M</b> = montante (o valor total no final, que é o capital mais os juros).
+    <div class="formula">J = C · i · t &nbsp;&nbsp;&nbsp; M = C + J</div>
+  </div>
+  <div class="tip"><b class="t">Dica: “juros” e “valor a pagar” são perguntas diferentes!</b>Se a pergunta for <b>“quanto de juros”</b>, a resposta é só o J. Se a pergunta for <b>“qual o valor a ser pago”</b> ou <b>“quanto terá no final”</b>, a resposta é o montante M = C + J. Leia o final da pergunta com atenção antes de marcar.</div>
+  <div class="tip"><b class="t">Dica: taxa e tempo na mesma unidade</b>Se a taxa é <b>ao mês</b>, o tempo precisa estar em <b>meses</b>. Se a taxa é <b>ao ano</b>, o tempo precisa estar em <b>anos</b>.</div>
+</div>
+
+<div class="card">
+  <span class="eyebrow ey-coral">Parte 2 · Exemplos resolvidos</span>
+  <h2>Vamos resolver juntos</h2>
+
+  <div class="worked">
+    <div class="wh">Exemplo 1 — valor a ser pago</div>
+    <div class="wq">Marina pegou um empréstimo de <b>R$ 6.000,00</b> para comprar uma moto, com taxa de juros de <b>15% ao ano</b>. Qual o valor que ela vai pagar depois de <b>1 ano</b>?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Separe os dados: C = 6.000, i = 15% ao ano = 0,15, t = 1 ano. A pergunta pede o <b>valor a ser pago</b>, ou seja, o montante.</div>
+      <div class="step"><b class="p">Passo 2.</b> Calcule os juros com J = C · i · t.<span class="calc">J = 6.000 · 0,15 · 1 = 900</span>Outro jeito: 1% de 6.000 é 60, então 15% é 15 × 60 = 900.</div>
+      <div class="step"><b class="p">Passo 3.</b> Some os juros ao valor emprestado.<span class="calc">M = 6.000 + 900 = 6.900</span></div>
+      <div class="step final"><b class="p">Resposta:</b> Marina vai pagar <b>R$ 6.900,00</b>. Repare que R$ 900,00 seria só a parte dos juros.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+
+  <div class="worked">
+    <div class="wh">Exemplo 2 — quanto de juros</div>
+    <div class="wq">Calcule os juros simples de uma aplicação de <b>R$ 800,00</b> a uma taxa de <b>3% ao mês</b>, durante <b>12 meses</b>.</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Separe os dados: C = 800, i = 3% ao mês = 0,03, t = 12 meses. A taxa é ao mês e o tempo está em meses, então pode calcular direto.</div>
+      <div class="step"><b class="p">Passo 2.</b> Descubra os juros de <b>1 mês</b>: 3% de 800.<span class="calc">800 · 0,03 = 24</span>Ou: 1% de 800 é 8, então 3% é 3 × 8 = 24.</div>
+      <div class="step"><b class="p">Passo 3.</b> Multiplique pelos 12 meses.<span class="calc">J = 24 · 12 = 288</span></div>
+      <div class="step final"><b class="p">Resposta:</b> os juros são <b>R$ 288,00</b>. Como a pergunta é só sobre os juros, não somamos os R$ 800,00.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+
+  <div class="try" data-answer="2800">
+    <div class="tt">Agora é sua vez</div>
+    <p>Pedro pegou emprestado R$ 2.500,00 com taxa de 12% ao ano. Quanto ele vai pagar depois de 1 ano?</p>
+    <div class="row">R$ <input aria-label="resposta"> <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Muito bem! J = 2.500 · 0,12 = 300 e M = 2.500 + 300 = R$ 2.800,00." data-no="Quase. Primeiro ache 12% de 2.500 (1% é 25). Depois some esse valor aos 2.500, porque a pergunta é o valor a pagar."></div>
+  </div>
+  <div class="try" data-answer="180">
+    <div class="tt">Agora é sua vez</div>
+    <p>Quanto rendem de juros simples R$ 1.200,00 aplicados a 1,5% ao mês durante 10 meses?</p>
+    <div class="row">R$ <input aria-label="resposta"> <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! 1,5% de 1.200 é 18 por mês, e 18 × 10 = R$ 180,00." data-no="Quase. 1% de 1.200 é 12. Então 1,5% é 12 + 6 = 18 por mês. Agora multiplique pelos meses."></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 3 ============ -->
+<section class="section" data-name="Contagem">
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 3 · Contagem</span>
+  <h2>Princípio fundamental da contagem</h2>
+  <p>Quando uma escolha é feita em <b>etapas</b>, e cada etapa tem várias opções, o número total de possibilidades é a <b>multiplicação</b> das opções de cada etapa.</p>
+  <div class="think"><b class="t">Pense assim</b>Volte ao aquecimento: 2 camisetas e 3 bermudas. Cada camiseta pode ir com qualquer uma das 3 bermudas. O desenho abaixo (chamado de <b>árvore de possibilidades</b>) mostra todas as roupas.</div>
+  <svg class="fig" viewBox="0 0 440 260" role="img" aria-label="Árvore: camiseta A e camiseta B, cada uma ligada às bermudas 1, 2 e 3; total de 6 roupas">
+    <g stroke="#6C63B5" stroke-width="2">
+      <line x1="120" y1="65" x2="220" y2="20"/><line x1="120" y1="65" x2="220" y2="65"/><line x1="120" y1="65" x2="220" y2="110"/>
+      <line x1="120" y1="195" x2="220" y2="150"/><line x1="120" y1="195" x2="220" y2="195"/><line x1="120" y1="195" x2="220" y2="240"/>
+    </g>
+    <g font-size="15" font-weight="700" fill="#fff" text-anchor="middle">
+      <rect x="10" y="49" width="110" height="32" rx="10" fill="#362F78"/><text x="65" y="70">Camiseta A</text>
+      <rect x="10" y="179" width="110" height="32" rx="10" fill="#362F78"/><text x="65" y="200">Camiseta B</text>
+    </g>
+    <g font-size="14" fill="#241F52" text-anchor="middle">
+      <rect x="220" y="7" width="100" height="26" rx="8" fill="#A9E5D0"/><text x="270" y="25">Bermuda 1</text>
+      <rect x="220" y="52" width="100" height="26" rx="8" fill="#A9E5D0"/><text x="270" y="70">Bermuda 2</text>
+      <rect x="220" y="97" width="100" height="26" rx="8" fill="#A9E5D0"/><text x="270" y="115">Bermuda 3</text>
+      <rect x="220" y="137" width="100" height="26" rx="8" fill="#A9E5D0"/><text x="270" y="155">Bermuda 1</text>
+      <rect x="220" y="182" width="100" height="26" rx="8" fill="#A9E5D0"/><text x="270" y="200">Bermuda 2</text>
+      <rect x="220" y="227" width="100" height="26" rx="8" fill="#A9E5D0"/><text x="270" y="245">Bermuda 3</text>
+    </g>
+    <text x="380" y="136" text-anchor="middle" font-size="20" font-weight="800" fill="#E4694F">2 × 3 = 6</text>
+  </svg>
+  <div class="copy"><b class="t">Para lembrar</b>Princípio fundamental da contagem: se uma escolha é feita em etapas, e a 1ª etapa tem <i>a</i> opções, a 2ª etapa tem <i>b</i> opções, a 3ª tem <i>c</i> opções, e assim por diante, então o total de possibilidades é <b>a × b × c × …</b></div>
+  <div class="tip"><b class="t">Dica: cuidado com números que não servem para a conta</b>Às vezes o problema dá informações extras, como o <b>preço</b> do combo. O preço não muda a quantidade de combinações. Use só as quantidades de opções de cada etapa.</div>
+  <div class="tip"><b class="t">Dica: multiplica, não soma</b>Um erro muito comum é somar as opções (por exemplo, 2 + 3 = 5). Quando você escolhe uma coisa de cada grupo <b>e</b> junta tudo, a conta é de vezes.</div>
+</div>
+<div class="card">
+  <span class="eyebrow ey-coral">Parte 3 · Exemplo resolvido</span>
+  <div class="worked">
+    <div class="wh">Exemplo — montando uma pizza</div>
+    <div class="wq">Em uma pizzaria, o cliente paga <b>R$ 59,90</b> e monta seu pedido escolhendo 1 tipo de massa, 1 sabor, 1 borda e 1 refrigerante. Há <b>3 massas</b>, <b>6 sabores</b>, <b>4 bordas</b> e <b>2 refrigerantes</b>. Quantos pedidos diferentes podem ser montados?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Identifique as etapas da escolha: massa, sabor, borda e refrigerante. São 4 etapas.</div>
+      <div class="step"><b class="p">Passo 2.</b> Anote quantas opções há em cada etapa: massa 3, sabor 6, borda 4, refrigerante 2.</div>
+      <div class="step"><b class="p">Passo 3.</b> Ignore o preço de R$ 59,90. Ele não muda quantas combinações existem.</div>
+      <div class="step"><b class="p">Passo 4.</b> Multiplique as opções.<span class="calc">3 × 6 × 4 × 2 = 18 × 8 = 144</span></div>
+      <div class="step final"><b class="p">Resposta:</b> podem ser montados <b>144 pedidos diferentes</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="try" data-answer="30">
+    <div class="tt">Agora é sua vez</div>
+    <p>Uma hamburgueria cobra R$ 32,00 por lanche. O cliente escolhe 1 pão, 1 carne e 1 molho. Há 3 tipos de pão, 5 tipos de carne e 2 molhos. Quantos lanches diferentes existem?</p>
+    <div class="row"><input aria-label="resposta"> lanches <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! 3 × 5 × 2 = 30. O preço de R$ 32,00 não entra na conta." data-no="Quase. Use só as quantidades de pão, carne e molho, e multiplique. O preço não entra."></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 4 ============ -->
+<section class="section" data-name="Permutação">
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 4 · Permutação</span>
+  <h2>Embaralhar e organizar: permutação</h2>
+  <p><b>Permutar</b> é trocar de lugar. Quando queremos saber de quantas maneiras podemos <b>organizar em fila</b> alguns objetos diferentes, usando todos eles, estamos contando <b>permutações</b>.</p>
+  <p>Um <b>anagrama</b> é uma nova “palavra” formada trocando as letras de lugar, mesmo que não tenha sentido. Por exemplo, alguns anagramas de AMOR são ROMA, MORA e RAMO, e também OMRA, que não significa nada mas conta do mesmo jeito.</p>
+  <div class="think"><b class="t">Pense assim</b>Pense em 3 lugares em uma fila para as letras A, B e C. Para o 1º lugar você tem 3 letras para escolher. Depois de usar uma, sobram 2 para o 2º lugar. Para o último lugar sobra só 1. Pelo princípio da contagem: 3 × 2 × 1 = 6.</div>
+  <table class="t" aria-label="Os 6 anagramas de ABC">
+    <tr><th colspan="3">Os 6 anagramas de ABC</th></tr>
+    <tr><td>ABC</td><td>BAC</td><td>CAB</td></tr>
+    <tr><td>ACB</td><td>BCA</td><td>CBA</td></tr>
+  </table>
+  <p>Essa multiplicação “descendo até o 1” tem um nome: <b>fatorial</b>, e usa o símbolo de exclamação.</p>
+  <div class="chain" aria-label="5 fatorial">
+    <span class="box">5</span><span class="op">×</span><span class="box">4</span><span class="op">×</span><span class="box">3</span><span class="op">×</span><span class="box">2</span><span class="op">×</span><span class="box">1</span><span class="op">=</span><span class="box">120</span>
+  </div>
+  <div class="copy"><b class="t">Para lembrar</b>Fatorial de um número n (escreve-se <b>n!</b>) é a multiplicação de n por todos os números inteiros positivos menores que ele, até chegar no 1. Por exemplo, 4! = 4 × 3 × 2 × 1 = 24. O número de maneiras de organizar <b>n objetos diferentes</b> em fila é <b>n!</b>. Isso vale para anagramas de palavras <b>sem letras repetidas</b>.</div>
+  <table class="t">
+    <tr><th>n</th><th>n!</th><th>conta</th></tr>
+    <tr><td>3</td><td>6</td><td>3 × 2 × 1</td></tr>
+    <tr><td>4</td><td>24</td><td>4 × 3 × 2 × 1</td></tr>
+    <tr><td>5</td><td>120</td><td>5 × 4 × 3 × 2 × 1</td></tr>
+    <tr><td>6</td><td>720</td><td>6 × 5 × 4 × 3 × 2 × 1</td></tr>
+    <tr><td>7</td><td>5.040</td><td>7 × 6 × 5 × 4 × 3 × 2 × 1</td></tr>
+  </table>
+  <div class="tip"><b class="t">Dica: conte as letras antes de tudo</b>O primeiro passo é contar quantas letras a palavra tem e confirmar que nenhuma se repete. Se a palavra tem 5 letras diferentes, a resposta é 5!. Não confunda 5! (que é 120) com 5 × 5 ou 5 + 4 + 3 + 2 + 1.</div>
+</div>
+<div class="card">
+  <span class="eyebrow ey-coral">Parte 4 · Exemplos resolvidos</span>
+  <div class="worked">
+    <div class="wh">Exemplo 1 — anagramas</div>
+    <div class="wq">A palavra <b>NUVEM</b> não tem letras repetidas. Quantos anagramas ela possui?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Conte as letras: N, U, V, E, M. São <b>5 letras</b>, todas diferentes.</div>
+      <div class="step"><b class="p">Passo 2.</b> Pense nos 5 lugares: o 1º lugar tem 5 opções, o 2º tem 4, o 3º tem 3, o 4º tem 2 e o último tem 1.</div>
+      <div class="step"><b class="p">Passo 3.</b> Multiplique (isso é o 5!).<span class="calc">5 × 4 × 3 × 2 × 1 = 120</span></div>
+      <div class="step final"><b class="p">Resposta:</b> NUVEM tem <b>120 anagramas</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="worked">
+    <div class="wh">Exemplo 2 — palavra maior</div>
+    <div class="wq">Quantos anagramas tem a palavra <b>CAMINHO</b>?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Conte as letras: C, A, M, I, N, H, O. São <b>7 letras</b>, e nenhuma se repete.</div>
+      <div class="step"><b class="p">Passo 2.</b> A resposta é 7!.<span class="calc">7 × 6 × 5 × 4 × 3 × 2 × 1</span></div>
+      <div class="step"><b class="p">Passo 3.</b> Faça a conta aos poucos: 7 × 6 = 42; 42 × 5 = 210; 210 × 4 = 840; 840 × 3 = 2.520; 2.520 × 2 = 5.040; 5.040 × 1 = 5.040.</div>
+      <div class="step final"><b class="p">Resposta:</b> CAMINHO tem <b>5.040 anagramas</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="try" data-answer="24">
+    <div class="tt">Agora é sua vez</div>
+    <p>Quatro amigos vão tirar uma foto lado a lado. De quantas maneiras diferentes eles podem se organizar?</p>
+    <div class="row"><input aria-label="resposta"> maneiras <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! São 4 pessoas diferentes em fila: 4! = 4 × 3 × 2 × 1 = 24." data-no="Quase. É uma fila com 4 pessoas diferentes. Calcule 4 × 3 × 2 × 1."></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 5 ============ -->
+<section class="section" data-name="Probabilidade">
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 5 · Probabilidade</span>
+  <h2>Probabilidade: qual a chance?</h2>
+  <p>Probabilidade é um número que mostra a chance de algo acontecer. Para calcular, comparamos <b>quantos casos nos interessam</b> com <b>quantos casos podem acontecer no total</b>.</p>
+  <div class="copy"><b class="t">Para lembrar</b>
+    O <b>espaço amostral</b> é o conjunto de todos os resultados que podem acontecer. Os <b>casos favoráveis</b> são os resultados que queremos. A probabilidade é:
+    <div class="formula">P = <span class="fr"><span>casos favoráveis</span><span>total de casos possíveis</span></span></div>
+  </div>
+  <div class="think"><b class="t">Pense assim</b>Num dado comum, há 6 faces. A chance de sair o número 5 é de 1 face entre 6, ou seja, <span class="fr"><span>1</span><span>6</span></span>. A chance de sair um número par (2, 4 ou 6) é de 3 faces entre 6, ou seja, <span class="fr"><span>3</span><span>6</span></span>, que simplificando dá <span class="fr"><span>1</span><span>2</span></span>.</div>
+</div>
+
+<div class="card">
+  <span class="eyebrow ey-coral">Parte 5 · Probabilidade + contagem</span>
+  <h2>Quando o total vem de uma contagem</h2>
+  <p>Às vezes o total de casos possíveis não está escrito no problema. Você precisa <b>descobrir o total</b> usando o que aprendeu nas Partes 3 e 4.</p>
+  <div class="worked">
+    <div class="wh">Exemplo 1 — acertar uma senha</div>
+    <div class="wq">Lucas criou uma senha usando as letras <b>A, B, C, D e E</b>, cada uma <b>exatamente uma vez</b>. Sua irmã vai tentar adivinhar a senha chutando uma ordem qualquer. Qual a probabilidade de ela acertar na primeira tentativa?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Descubra o total de senhas possíveis. São 5 letras diferentes organizadas em fila, então o total é 5!.<span class="calc">5 × 4 × 3 × 2 × 1 = 120 senhas</span></div>
+      <div class="step"><b class="p">Passo 2.</b> Descubra os casos favoráveis. Só existe <b>1</b> senha certa.</div>
+      <div class="step"><b class="p">Passo 3.</b> Monte a fração: favoráveis sobre total.<span class="calc">P = <span class="fr"><span>1</span><span>120</span></span></span></div>
+      <div class="step final"><b class="p">Resposta:</b> a probabilidade é <b><span class="fr"><span>1</span><span>120</span></span></b>, ou seja, 1 chance em 120.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="tip"><b class="t">Dica: a senha pode repetir símbolo ou não?</b>Se o problema diz que a senha usa os símbolos dados, <b>cada um uma vez</b>, o total é o fatorial (5 letras → 5! = 120). Se pudesse repetir (por exemplo AAAAA), cada posição teria 5 opções e o total seria 5 × 5 × 5 × 5 × 5. Leia com atenção qual é o caso. Nas questões em que a senha “usa os algarismos dados” sem repetir, use o fatorial.</div>
+</div>
+
+<div class="card">
+  <span class="eyebrow ey-coral">Parte 5 · Mudando o espaço amostral</span>
+  <h2>Tirar bolas para mudar a chance</h2>
+  <p>Se retiramos bolas de uma urna, o <b>total</b> muda, e por isso a probabilidade também muda. Nesse tipo de problema, a cor que <b>não</b> foi mexida é a pista principal.</p>
+  <div class="think"><b class="t">Pense assim</b>A fração <span class="fr"><span>3</span><span>4</span></span> quer dizer: divida o total em 4 partes iguais; 3 dessas partes são da cor que você quer. Se você sabe quantas bolas formam as 3 partes, descobre quanto vale 1 parte, e daí descobre o total.</div>
+  <div class="worked">
+    <div class="wh">Exemplo 2 — retirar bolas</div>
+    <div class="wq">Em uma caixa há <b>6 bolas azuis</b> e <b>12 bolas vermelhas</b>. Júlia quer retirar algumas bolas <b>azuis</b> para que a probabilidade de sortear uma bola vermelha seja <span class="fr"><span>3</span><span>4</span></span>. Quantas bolas azuis ela precisa retirar?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Veja a probabilidade de hoje: são 12 vermelhas em 18 bolas, ou seja, <span class="fr"><span>12</span><span>18</span></span> = <span class="fr"><span>2</span><span>3</span></span>. Ela quer aumentar para <span class="fr"><span>3</span><span>4</span></span>.</div>
+      <div class="step"><b class="p">Passo 2.</b> As vermelhas <b>não mudam</b>: continuam 12. Na fração <span class="fr"><span>3</span><span>4</span></span>, as vermelhas são 3 partes. Então 3 partes = 12 bolas.</div>
+      <div class="step"><b class="p">Passo 3.</b> Descubra quanto vale 1 parte.<span class="calc">12 ÷ 3 = 4 bolas por parte</span></div>
+      <div class="step"><b class="p">Passo 4.</b> O total novo tem 4 partes.<span class="calc">4 × 4 = 16 bolas no total</span></div>
+      <div class="step"><b class="p">Passo 5.</b> Das 16 bolas, 12 são vermelhas. Então sobram 16 − 12 = <b>4 azuis</b>. Antes havia 6 azuis, então ela tira 6 − 4 = <b>2</b>.</div>
+      <div class="step"><b class="p">Passo 6.</b> Confira: 12 vermelhas em 16 bolas dá <span class="fr"><span>12</span><span>16</span></span> = <span class="fr"><span>3</span><span>4</span></span>. Deu certo!</div>
+      <div class="step final"><b class="p">Resposta:</b> Júlia precisa retirar <b>2 bolas azuis</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="tip"><b class="t">Dica: a resposta é quantas você TIRA, não quantas ficam</b>No exemplo, ficaram 4 azuis, mas a pergunta era quantas retirar (2). Esse é o erro mais comum nesse tipo de questão. Sempre termine com a conta “quantas tinha − quantas ficaram”.</div>
+  <div class="try" data-answer="4">
+    <div class="tt">Agora é sua vez</div>
+    <p>Um pote tem 10 balas verdes e 6 balas amarelas. Quantas balas <b>verdes</b> devem ser retiradas para que a probabilidade de pegar uma bala amarela seja <span class="fr"><span>1</span><span>2</span></span>?</p>
+    <div class="row"><input aria-label="resposta"> balas verdes <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! Amarelas = 1 parte = 6, total = 2 partes = 12, então ficam 6 verdes. Tinha 10, retira 10 − 6 = 4." data-no="Quase. As 6 amarelas são 1 parte de 2. O total novo é 12. Quantas verdes ficam? E quantas saíram das 10?"></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 6 ============ -->
+<section class="section" data-name="Monômios">
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 6 · Monômios</span>
+  <h2>O que é um monômio</h2>
+  <p>Um <b>monômio</b> é uma expressão algébrica formada por um único termo: um número multiplicado por letras (que podem ter expoentes). Exemplos: 7x, −3a²b, 5m³n⁴.</p>
+  <div class="mono" role="img" aria-label="No monômio −3x⁵y², o −3 é o coeficiente e x⁵y² é a parte literal">
+    <div class="mpart"><span class="mexp" style="border-color:#E4694F">−3</span><span class="mlab" style="color:#E4694F">coeficiente</span></div>
+    <div class="mpart"><span class="mexp" style="border-color:#6C63B5">x<sup>5</sup>y<sup>2</sup></span><span class="mlab" style="color:#6C63B5">parte literal</span></div>
+  </div>
+  <div class="copy"><b class="t">Para lembrar</b>Em um monômio, o <b>coeficiente</b> é a parte numérica (com o sinal) e a <b>parte literal</b> é formada pelas letras com seus expoentes. O <b>grau</b> de um monômio é a <b>soma dos expoentes de todas as letras</b>. O coeficiente não entra na soma.</div>
+  <div class="think"><b class="t">Pense assim</b>O grau conta quantas letras estão sendo multiplicadas ao todo. Em x⁵y², temos x·x·x·x·x·y·y: são 7 letras multiplicadas. Por isso o grau é 7.</div>
+  <div class="tip"><b class="t">Dica: o expoente 1 que não aparece</b>Quando uma letra aparece sem expoente, como o <b>n</b> em 9m²n, o expoente dela é <b>1</b>. Ele não aparece escrito, mas conta na soma do grau. E lembre: o número da frente (o coeficiente) nunca entra no grau, mesmo que seja grande.</div>
+</div>
+<div class="card">
+  <span class="eyebrow ey-coral">Parte 6 · Exemplos resolvidos</span>
+  <div class="worked">
+    <div class="wh">Exemplo 1</div>
+    <div class="wq">Qual o grau do monômio <b>−3x⁵y²</b>?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Separe as partes: coeficiente −3 e parte literal x⁵y².</div>
+      <div class="step"><b class="p">Passo 2.</b> Olhe os expoentes das letras: x tem expoente 5 e y tem expoente 2. O −3 fica de fora.</div>
+      <div class="step"><b class="p">Passo 3.</b> Some os expoentes.<span class="calc">5 + 2 = 7</span></div>
+      <div class="step final"><b class="p">Resposta:</b> o monômio tem <b>grau 7</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="worked">
+    <div class="wh">Exemplo 2 — com expoente escondido</div>
+    <div class="wq">Qual o grau do monômio <b>9m²n</b>?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Coeficiente 9 (não entra). Parte literal m²n.</div>
+      <div class="step"><b class="p">Passo 2.</b> O m tem expoente 2. O n não mostra expoente, então o expoente dele é 1.</div>
+      <div class="step"><b class="p">Passo 3.</b> Some.<span class="calc">2 + 1 = 3</span></div>
+      <div class="step final"><b class="p">Resposta:</b> <b>grau 3</b>. Quem responde 2 esqueceu o expoente 1 do n, e quem responde 12 somou o coeficiente.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="try" data-answer="6">
+    <div class="tt">Agora é sua vez</div>
+    <p>Qual o grau do monômio 5p²q⁴?</p>
+    <div class="row">grau <input aria-label="resposta" class="sm"> <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! 2 + 4 = 6. O 5 não entra." data-no="Quase. Some só os expoentes das letras p e q. O coeficiente 5 fica de fora."></div>
+  </div>
+  <h3>Termos semelhantes</h3>
+  <p>Dois monômios são <b>semelhantes</b> quando têm <b>a mesma parte literal</b> (mesmas letras com os mesmos expoentes). Só termos semelhantes podem ser somados ou subtraídos, juntando os coeficientes: 4x + 2x = 6x, mas 4x + 2 não pode virar 6x, porque 2 não tem x. Isso vai ser usado na próxima parte.</p>
+</div>
+</section>
+
+<!-- ============ PARTE 7 ============ -->
+<section class="section" data-name="Somar polinômios">
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 7 · Polinômios</span>
+  <h2>Somar e subtrair polinômios</h2>
+  <p>Um <b>polinômio</b> é uma soma de monômios, como 5x + 3 ou 2x² − x + 4. Para somar ou subtrair polinômios, tiramos os parênteses e depois juntamos os <b>termos semelhantes</b>: os termos com x se juntam com termos com x, e os números sem letra se juntam com números sem letra.</p>
+  <div class="think"><b class="t">Pense assim</b>É como organizar uma gaveta: meias com meias, camisetas com camisetas. “x” é um tipo de peça e “número sozinho” é outro tipo. Você nunca junta meia com camiseta.</div>
+  <div class="copy"><b class="t">Para lembrar</b>Para somar ou subtrair polinômios: primeiro eliminamos os parênteses. Se antes do parêntese houver sinal de <b>mais</b>, os termos de dentro continuam com o mesmo sinal. Se antes do parêntese houver sinal de <b>menos</b>, <b>todos</b> os termos de dentro trocam de sinal. Depois, juntamos os termos semelhantes somando seus coeficientes.</div>
+  <div class="tip"><b class="t">Dica: o menos troca TODOS os sinais de dentro</b>−(2x + 5) vira −2x <b>−</b> 5. Muita gente troca só o primeiro sinal e escreve −2x + 5, o que está errado. O menos vale para o parêntese inteiro. E −(x − 4) vira −x <b>+</b> 4.</div>
+  <div class="worked">
+    <div class="wh">Exemplo 1</div>
+    <div class="wq">Efetue: <b>(4x + 7) − (2x + 5) + (x − 3)</b></div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> O primeiro parêntese não tem sinal na frente (é como se fosse +), então fica igual: 4x + 7.</div>
+      <div class="step"><b class="p">Passo 2.</b> Antes de (2x + 5) há um <b>menos</b>: os dois sinais trocam. Fica −2x − 5.</div>
+      <div class="step"><b class="p">Passo 3.</b> Antes de (x − 3) há um <b>mais</b>: tudo fica igual. Fica + x − 3.</div>
+      <div class="step"><b class="p">Passo 4.</b> Escreva tudo sem parênteses.<span class="calc">4x + 7 − 2x − 5 + x − 3</span></div>
+      <div class="step"><b class="p">Passo 5.</b> Junte os termos com x: 4x − 2x + x = 3x. (O x sozinho vale 1x.)</div>
+      <div class="step"><b class="p">Passo 6.</b> Junte os números: 7 − 5 − 3 = −1.</div>
+      <div class="step final"><b class="p">Resposta:</b> <b>3x − 1</b></div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="worked">
+    <div class="wh">Exemplo 2 — com menos antes de um número negativo</div>
+    <div class="wq">Efetue: <b>(6a − 2) + (a + 9) − (3a − 4)</b></div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> (6a − 2) fica 6a − 2. &nbsp; +(a + 9) fica + a + 9.</div>
+      <div class="step"><b class="p">Passo 2.</b> −(3a − 4): os dois sinais trocam. O 3a vira −3a e o −4 vira <b>+4</b>.</div>
+      <div class="step"><b class="p">Passo 3.</b> Sem parênteses:<span class="calc">6a − 2 + a + 9 − 3a + 4</span></div>
+      <div class="step"><b class="p">Passo 4.</b> Termos com a: 6a + a − 3a = 4a. &nbsp; Números: −2 + 9 + 4 = 11.</div>
+      <div class="step final"><b class="p">Resposta:</b> <b>4a + 11</b></div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+</div>
+
+<div class="card">
+  <span class="eyebrow ey-coral">Parte 7 · Perímetro com letras</span>
+  <h2>Perímetro com expressões algébricas</h2>
+  <p>O <b>perímetro</b> é a medida do contorno de uma figura, ou seja, a <b>soma de todos os lados</b>. Quando os lados são expressões com x, somamos as expressões, juntando os termos semelhantes.</p>
+  <div class="worked">
+    <div class="wh">Exemplo 3 — perímetro do triângulo</div>
+    <div class="wq">Qual expressão representa o perímetro do triângulo abaixo?
+      <svg class="fig" viewBox="0 0 420 200" role="img" aria-label="Triângulo com lados 2x + 3, 4x + 5 e x − 1">
+        <polygon points="40,170 300,170 150,30" fill="#EFEDFA" stroke="#362F78" stroke-width="3"/>
+        <text x="170" y="195" text-anchor="middle" font-size="20" font-weight="700" fill="#241F52">4x + 5</text>
+        <text x="58" y="95" font-size="20" font-weight="700" fill="#241F52">x − 1</text>
+        <text x="236" y="92" font-size="20" font-weight="700" fill="#241F52">2x + 3</text>
+      </svg>
+    </div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Perímetro é a soma dos três lados.<span class="calc">(2x + 3) + (x − 1) + (4x + 5)</span></div>
+      <div class="step"><b class="p">Passo 2.</b> Todos os sinais antes dos parênteses são +, então nada troca:<span class="calc">2x + 3 + x − 1 + 4x + 5</span></div>
+      <div class="step"><b class="p">Passo 3.</b> Termos com x: 2x + x + 4x = 7x.</div>
+      <div class="step"><b class="p">Passo 4.</b> Números: 3 − 1 + 5 = 7.</div>
+      <div class="step final"><b class="p">Resposta:</b> o perímetro é <b>7x + 7</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="tip"><b class="t">Dica: 7x + 7 não é 14x</b>Depois de juntar, sobra um termo com x e um número sozinho. Eles não são semelhantes, então a resposta fica com os dois: 7x + 7. Não junte em 14x nem esqueça o número.</div>
+  <div class="try" data-answers="6,2">
+    <div class="tt">Agora é sua vez</div>
+    <p>Um triângulo tem lados x + 5, 2x − 3 e 3x. Qual o perímetro?</p>
+    <div class="row"><input aria-label="número na frente do x" class="sm"> x + <input aria-label="número sozinho" class="sm"> <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! x + 2x + 3x = 6x e 5 − 3 = 2. Perímetro: 6x + 2." data-no="Quase. Some os termos com x (lembre que x é 1x) e, separado, os números: 5 e −3."></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 8 ============ -->
+<section class="section" data-name="Multiplicar polinômios">
+<div class="card">
+  <span class="eyebrow ey-mint">Parte 8 · Revisão</span>
+  <h2>Propriedade distributiva</h2>
+  <p>Você já viu que um número multiplicando um parêntese multiplica <b>cada termo</b> de dentro:</p>
+  <div class="formula">3 · (x + 2) = 3x + 6</div>
+  <p>E também lembre das regras de potência e de sinal que vamos usar: x · x = x², 2x · 3x = 6x², e na multiplicação sinais iguais dão + e sinais diferentes dão −.</p>
+</div>
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 8 · Novo</span>
+  <h2>Multiplicar polinômio por polinômio</h2>
+  <p>Agora são dois parênteses. A ideia é a mesma: <b>cada termo do primeiro parêntese multiplica cada termo do segundo</b>. Depois juntamos os termos semelhantes.</p>
+  <div class="think"><b class="t">Pense assim</b>É como um aperto de mãos: cada pessoa do primeiro grupo cumprimenta cada pessoa do segundo grupo. Se cada grupo tem 2 pessoas, acontecem 4 apertos de mão, então aparecem 4 multiplicações.</div>
+  <div class="copy"><b class="t">Para lembrar</b>A área de um retângulo é base vezes altura. Quando a base e a altura são polinômios, multiplicamos cada termo de um pelo cada termo do outro (propriedade distributiva) e depois juntamos os termos semelhantes. Exemplo: (x + 3)(2x − 1) = 2x² − x + 6x − 3 = 2x² + 5x − 3.</div>
+  <div class="tip"><b class="t">Dica: perímetro soma, área multiplica</b>No perímetro somamos os lados. Na área do retângulo multiplicamos base × altura. Na área aparece x², no perímetro não. Se a questão fala em <b>área</b> e sua resposta não tem x², desconfie.</div>
+  <div class="worked">
+    <div class="wh">Exemplo 1 — área do retângulo</div>
+    <div class="wq">Represente a área do retângulo abaixo por meio de um polinômio.
+      <svg class="fig" viewBox="0 0 420 200" role="img" aria-label="Retângulo de altura x + 3 e base 2x − 1">
+        <rect x="90" y="20" width="280" height="140" fill="#EFEDFA" stroke="#362F78" stroke-width="3" rx="2"/>
+        <text x="230" y="190" text-anchor="middle" font-size="20" font-weight="700" fill="#241F52">2x − 1</text>
+        <text x="80" y="96" text-anchor="end" font-size="20" font-weight="700" fill="#241F52">x + 3</text>
+      </svg>
+    </div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Área = base × altura.<span class="calc">(x + 3) · (2x − 1)</span></div>
+      <div class="step"><b class="p">Passo 2.</b> O <b>x</b> multiplica cada termo do segundo parêntese: x · 2x = 2x² e x · (−1) = −x.</div>
+      <div class="step"><b class="p">Passo 3.</b> O <b>+3</b> multiplica cada termo do segundo parêntese: 3 · 2x = 6x e 3 · (−1) = −3.</div>
+      <div class="step"><b class="p">Passo 4.</b> Escreva os 4 resultados juntos:<span class="calc">2x² − x + 6x − 3</span></div>
+      <div class="step"><b class="p">Passo 5.</b> Junte os termos semelhantes: −x + 6x = 5x. O 2x² e o −3 não têm semelhantes, ficam como estão.</div>
+      <div class="step final"><b class="p">Resposta:</b> a área é <b>2x² + 5x − 3</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <p>O mesmo cálculo pode ser visto dividindo o retângulo em 4 pedaços. Cada pedaço é uma das multiplicações:</p>
+  <svg class="fig" viewBox="0 0 440 230" role="img" aria-label="Retângulo dividido em 4 partes: 2x², −x, 6x e −3">
+    <text x="190" y="22" text-anchor="middle" font-size="19" font-weight="800" fill="#6C63B5">2x</text>
+    <text x="355" y="22" text-anchor="middle" font-size="19" font-weight="800" fill="#E4694F">−1</text>
+    <text x="60" y="94" text-anchor="end" font-size="19" font-weight="800" fill="#6C63B5">x</text>
+    <text x="60" y="180" text-anchor="end" font-size="19" font-weight="800" fill="#E4694F">+3</text>
+    <rect x="70" y="35" width="240" height="105" fill="#E6E1FA" stroke="#362F78" stroke-width="2"/>
+    <rect x="310" y="35" width="90" height="105" fill="#FFE6DF" stroke="#362F78" stroke-width="2"/>
+    <rect x="70" y="140" width="240" height="75" fill="#DDF4EB" stroke="#362F78" stroke-width="2"/>
+    <rect x="310" y="140" width="90" height="75" fill="#FFF3C9" stroke="#362F78" stroke-width="2"/>
+    <text x="190" y="96" text-anchor="middle" font-size="24" font-weight="800" fill="#241F52">2x²</text>
+    <text x="355" y="96" text-anchor="middle" font-size="24" font-weight="800" fill="#241F52">−x</text>
+    <text x="190" y="186" text-anchor="middle" font-size="24" font-weight="800" fill="#241F52">6x</text>
+    <text x="355" y="186" text-anchor="middle" font-size="24" font-weight="800" fill="#241F52">−3</text>
+  </svg>
+  <div class="worked">
+    <div class="wh">Exemplo 2 — com dois coeficientes</div>
+    <div class="wq">Represente a área de um retângulo de lados <b>(2x + 1)</b> e <b>(3x − 2)</b>.</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Área = (2x + 1) · (3x − 2).</div>
+      <div class="step"><b class="p">Passo 2.</b> O 2x multiplica: 2x · 3x = 6x² e 2x · (−2) = −4x.</div>
+      <div class="step"><b class="p">Passo 3.</b> O +1 multiplica: 1 · 3x = 3x e 1 · (−2) = −2.</div>
+      <div class="step"><b class="p">Passo 4.</b> Junte:<span class="calc">6x² − 4x + 3x − 2</span></div>
+      <div class="step"><b class="p">Passo 5.</b> Termos semelhantes: −4x + 3x = −x (ou seja, −1x).</div>
+      <div class="step final"><b class="p">Resposta:</b> a área é <b>6x² − x − 2</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="tip"><b class="t">Dica: 2x · 3x é 6x², não 5x nem 6x</b>Na multiplicação, os números se <b>multiplicam</b> (2 · 3 = 6) e as letras iguais <b>somam os expoentes</b> (x¹ · x¹ = x²). Não some os coeficientes como se fosse adição.</div>
+  <div class="try" data-answers="2,5,-12">
+    <div class="tt">Agora é sua vez</div>
+    <p>Qual o polinômio que representa a área de um retângulo de lados (x + 4) e (2x − 3)?</p>
+    <div class="row"><input aria-label="coeficiente de x ao quadrado" class="sm"> x² + <input aria-label="coeficiente de x" class="sm"> x + <input aria-label="número sozinho" class="sm"> <button class="btn">Conferir</button></div>
+    <p style="font-size:.85em;color:var(--txt2);margin:4px 0 0">Se o número for negativo, digite com o sinal de menos (ex.: −5).</p>
+    <div class="fb" data-ok="Isso! x·2x = 2x², x·(−3) = −3x, 4·2x = 8x, 4·(−3) = −12. Juntando: 2x² + 5x − 12." data-no="Quase. Faça as 4 multiplicações: x·2x, x·(−3), 4·2x e 4·(−3). Depois junte os dois termos com x."></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 9 ============ -->
+<section class="section" data-name="Quiz">
+<div class="card">
+  <span class="eyebrow ey-yel">Parte 9 · Quiz</span>
+  <h2>Hora de treinar tudo junto</h2>
+  <div class="score" id="score">Acertos: 0 de 10</div>
+  <div id="quiz"></div>
+</div>
+</section>
+
+<!-- ============ PARTE 10 ============ -->
+<section class="section" data-name="Resumo final">
+<div class="card summary">
+  <span class="eyebrow ey-mint">Parte 10 · Resumo final</span>
+  <h2>Resumo para reler antes da prova</h2>
+  <p><b>Porcentagem e juros simples.</b> O símbolo % significa “de cada 100”, então 15% é o mesmo que 15/100 ou 0,15. Para calcular uma porcentagem de um valor, multiplicamos o valor pela porcentagem em forma decimal, ou achamos 1% (dividindo por 100) e multiplicamos. Nos juros simples, os juros são calculados sempre sobre o valor inicial, chamado capital (C), e por isso são iguais em todos os períodos. A fórmula é J = C · i · t, em que i é a taxa e t é o tempo, que precisam estar na mesma unidade (taxa ao mês com tempo em meses, taxa ao ano com tempo em anos). O montante é o valor total no final, M = C + J. Quando a pergunta pede “quanto de juros”, a resposta é J; quando pede “o valor a ser pago” ou “quanto terá no final”, a resposta é M.</p>
+  <p><b>Princípio fundamental da contagem.</b> Quando uma escolha é feita em etapas, o total de possibilidades é a multiplicação das quantidades de opções de cada etapa. Por exemplo, com 3 massas, 6 sabores, 4 bordas e 2 bebidas, há 3 × 6 × 4 × 2 = 144 pedidos diferentes. Informações como o preço do combo não entram nessa conta, porque não mudam o número de combinações.</p>
+  <p><b>Permutação e fatorial.</b> Permutar é trocar de lugar. O número de maneiras de organizar n objetos diferentes em fila é n! (lê-se “n fatorial”), que é a multiplicação de n por todos os inteiros positivos menores que ele até o 1. Assim, 4! = 24, 5! = 120 e 7! = 5.040. Os anagramas de uma palavra sem letras repetidas são calculados assim: uma palavra com 5 letras diferentes tem 5! = 120 anagramas, mesmo que a maioria não tenha sentido.</p>
+  <p><b>Probabilidade.</b> A probabilidade de um acontecimento é a fração entre os casos favoráveis (o que queremos) e o total de casos possíveis (o espaço amostral). Às vezes o total precisa ser descoberto com contagem: uma senha que usa 5 letras diferentes, cada uma uma única vez, tem 5! = 120 ordens possíveis, então a chance de acertar na primeira tentativa é 1/120. Quando retiramos bolas de uma urna, o total muda e a probabilidade muda. Para descobrir quantas bolas retirar, usamos a cor que não foi mexida: se as 12 vermelhas devem ser 3/4 do total, então cada quarto vale 12 ÷ 3 = 4 bolas e o total novo é 16; sobram 4 azuis, e se havia 6, retiramos 2. A resposta é sempre quantas bolas saíram, não quantas ficaram.</p>
+  <p><b>Monômios.</b> Um monômio é um número multiplicado por letras, como −3x⁵y². O número é o coeficiente e as letras com expoentes formam a parte literal. O grau do monômio é a soma dos expoentes de todas as letras; o coeficiente não entra nessa soma, e uma letra sem expoente escrito tem expoente 1. Assim, −3x⁵y² tem grau 5 + 2 = 7 e 9m²n tem grau 2 + 1 = 3. Termos semelhantes são os que têm a mesma parte literal, e só eles podem ser somados ou subtraídos.</p>
+  <p><b>Soma e subtração de polinômios.</b> Primeiro eliminamos os parênteses: se antes do parêntese houver sinal de mais, os sinais de dentro continuam iguais; se houver sinal de menos, todos os sinais de dentro trocam. Depois juntamos os termos semelhantes, termos com x com termos com x e números com números. Por exemplo, (4x + 7) − (2x + 5) + (x − 3) = 4x + 7 − 2x − 5 + x − 3 = 3x − 1. O perímetro de uma figura é a soma de todos os lados, então, se os lados são expressões algébricas, somamos as expressões; um triângulo de lados 2x + 3, x − 1 e 4x + 5 tem perímetro 7x + 7.</p>
+  <p><b>Multiplicação de polinômios e área.</b> Para multiplicar dois polinômios, cada termo do primeiro multiplica cada termo do segundo (propriedade distributiva) e depois juntamos os termos semelhantes. Na multiplicação, os coeficientes se multiplicam e os expoentes de letras iguais se somam, então 2x · 3x = 6x². A área de um retângulo é base vezes altura; um retângulo de lados (x + 3) e (2x − 1) tem área (x + 3)(2x − 1) = 2x² − x + 6x − 3 = 2x² + 5x − 3. Uma forma de não se confundir é lembrar que perímetro é soma e área é multiplicação, e por isso na área costuma aparecer x².</p>
+</div>
+</section>
+
+</main>
+
+<div class="nav">
+  <button id="prev">← Voltar</button>
+  <button id="next">Avançar →</button>
+</div>
+</div>
+
+<script>
+/* símbolos de fundo */
+(function(){
+  const s=['+','−','×','÷','%','x²','=','π','n!','√','∑','½'];
+  const box=document.querySelector('.bg-symbols');
+  for(let i=0;i<22;i++){
+    const e=document.createElement('span');
+    e.textContent=s[i%s.length];
+    e.style.left=(Math.random()*95)+'%'; e.style.top=(Math.random()*95)+'%';
+    e.style.fontSize=(22+Math.random()*34)+'px';
+    e.style.animationDelay=(-Math.random()*26)+'s';
+    box.appendChild(e);
+  }
+})();
+
+/* navegação */
+const secs=[...document.querySelectorAll('.section')];
+const tabs=document.getElementById('tabs');
+let cur=0;
+secs.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.className='tab'; b.textContent=(i+1)+'. '+s.dataset.name;
+  b.onclick=()=>go(i); tabs.appendChild(b);
+});
+function go(i){
+  cur=i;
+  secs.forEach((s,j)=>s.classList.toggle('active',j===i));
+  [...tabs.children].forEach((t,j)=>{t.classList.toggle('active',j===i);t.setAttribute('aria-current',j===i?'page':'false')});
+  document.getElementById('fill').style.width=((i+1)/secs.length*100)+'%';
+  document.getElementById('plabel').textContent='Parte '+(i+1)+' de '+secs.length+' — '+secs[i].dataset.name;
+  document.getElementById('prev').disabled=i===0;
+  document.getElementById('next').disabled=i===secs.length-1;
+  window.scrollTo({top:0});
+}
+document.getElementById('prev').onclick=()=>cur>0&&go(cur-1);
+document.getElementById('next').onclick=()=>cur<secs.length-1&&go(cur+1);
+
+/* exemplos passo a passo */
+document.querySelectorAll('.worked').forEach(w=>{
+  const st=[...w.querySelectorAll('.step')];
+  const nx=w.querySelector('.nx'), all=w.querySelector('.all');
+  let k=0;
+  const upd=()=>{nx.disabled=k>=st.length; all.disabled=k>=st.length; nx.textContent=k===0?'Começar resolução →':'Próximo passo →';};
+  nx.onclick=()=>{if(k<st.length){st[k].classList.add('show');k++;upd();}};
+  all.onclick=()=>{st.forEach(s=>s.classList.add('show'));k=st.length;upd();};
+  upd();
+});
+
+/* try-boxes */
+const norm=v=>v.trim().replace(/\s/g,'').replace(/[−–]/g,'-').replace(/^R\$/i,'').replace(/\.(?=\d{3}(\D|$))/g,'').replace(',','.');
+document.querySelectorAll('.try').forEach(t=>{
+  const btn=t.querySelector('.btn'), fb=t.querySelector('.fb'), ins=[...t.querySelectorAll('input')];
+  const ans=(t.dataset.answers||t.dataset.answer).split(',');
+  const check=()=>{
+    const ok=ins.every((inp,i)=>{
+      let v=norm(inp.value); if(v===''||v==='+') v= v===''?'':'1';
+      if(v==='-') v='-1';
+      return v!=='' && Math.abs(parseFloat(v)-parseFloat(ans[i]))<1e-9;
+    });
+    fb.className='fb '+(ok?'ok':'no');
+    fb.textContent=(ok?'✓ ':'↻ ')+(ok?fb.dataset.ok:fb.dataset.no);
+  };
+  btn.onclick=check;
+  ins.forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')check();}));
+});
+
+/* quiz */
+const F=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const Q=[
+ {q:'Rafael fez um empréstimo de R$ 5.000,00 para reformar a cozinha, com taxa de juros de 18% ao ano. Qual o valor que ele vai pagar depois de 1 ano?',
+  o:['R$ 5.018,00','R$ 5.090,00','R$ 5.180,00','R$ 5.900,00','R$ 6.800,00'],c:3,
+  e:'<b>Passo 1.</b> 1% de 5.000 é 50, então 18% é 18 × 50 = 900 (esses são os juros).<br><b>Passo 2.</b> A pergunta é o valor a pagar: M = 5.000 + 900 = <b>R$ 5.900,00</b>.'},
+ {q:'Calcule os juros simples de uma aplicação de R$ 1.500,00 a uma taxa de 4% ao mês durante 5 meses.',
+  o:['R$ 60,00','R$ 150,00','R$ 300,00','R$ 600,00','R$ 1.800,00'],c:2,
+  e:'<b>Passo 1.</b> Juros de 1 mês: 4% de 1.500 = 1.500 · 0,04 = 60.<br><b>Passo 2.</b> Em 5 meses: 60 × 5 = <b>R$ 300,00</b>. A pergunta é só sobre os juros, então não somamos o capital.'},
+ {q:'Em uma sorveteria, o cliente paga R$ 15,00 e escolhe 1 sabor de sorvete, 1 cobertura e 1 tipo de casquinha. Há 4 sabores, 3 coberturas e 2 tipos de casquinha. Quantas combinações diferentes são possíveis?',
+  o:['9','15','24','36','60'],c:2,
+  e:'<b>Passo 1.</b> São 3 etapas: sabor (4), cobertura (3) e casquinha (2).<br><b>Passo 2.</b> O preço não entra. Multiplique: 4 × 3 × 2 = <b>24</b>.'},
+ {q:'A palavra PALMITO não tem letras repetidas. Quantos anagramas ela possui?',
+  o:['7','49','720','2.520','5.040'],c:4,
+  e:'<b>Passo 1.</b> Conte: P, A, L, M, I, T, O = 7 letras diferentes.<br><b>Passo 2.</b> 7! = 7 × 6 × 5 × 4 × 3 × 2 × 1 = <b>5.040</b>.'},
+ {q:'Bia criou a senha do cadeado usando os algarismos 3, 6 e 9, cada um uma única vez. Se alguém tentar adivinhar a senha, qual a probabilidade de acertar na primeira tentativa?',
+  o:[F(1,3),F(1,6),F(1,9),F(1,12),F(1,27)],c:1,
+  e:'<b>Passo 1.</b> Total de senhas: 3 algarismos diferentes em fila = 3! = 3 × 2 × 1 = 6.<br><b>Passo 2.</b> Só 1 é a certa. P = <b>'+F(1,6)+'</b>.'},
+ {q:'Um saco tem 9 balas de menta e 15 balas de morango. Quantas balas de menta devem ser retiradas para que a probabilidade de pegar uma bala de morango seja '+F(5,6)+'?',
+  o:['2','3','4','5','6'],c:4,
+  e:'<b>Passo 1.</b> As de morango não mudam: 15 balas = 5 partes, então 1 parte = 15 ÷ 5 = 3.<br><b>Passo 2.</b> Total novo = 6 partes = 6 × 3 = 18 balas.<br><b>Passo 3.</b> Menta que fica: 18 − 15 = 3. Havia 9, então retiramos 9 − 3 = <b>6</b>.<br><b>Confira:</b> 15 em 18 = '+F(15,18)+' = '+F(5,6)+'.'},
+ {q:'Um triângulo tem lados medindo 2x + 1, x + 6 e 4x − 2. Qual expressão representa o seu perímetro?',
+  o:['7x','6x + 5','7x + 5','7x + 9','8x + 5'],c:2,
+  e:'<b>Passo 1.</b> Some os lados: 2x + 1 + x + 6 + 4x − 2.<br><b>Passo 2.</b> Termos com x: 2x + x + 4x = 7x. Números: 1 + 6 − 2 = 5.<br><b>Resposta:</b> <b>7x + 5</b>.'},
+ {q:'Qual o grau do monômio 6a³b²c⁴?',
+  o:['3','6','9','15','24'],c:2,
+  e:'<b>Passo 1.</b> O coeficiente 6 não entra.<br><b>Passo 2.</b> Some os expoentes: 3 + 2 + 4 = <b>9</b>.'},
+ {q:'Qual o resultado de (7x + 4) − (2x − 3) + (x + 1)?',
+  o:['6x','6x + 2','4x + 8','6x + 8','10x + 8'],c:3,
+  e:'<b>Passo 1.</b> O menos troca os dois sinais de (2x − 3): fica −2x + 3.<br><b>Passo 2.</b> 7x + 4 − 2x + 3 + x + 1.<br><b>Passo 3.</b> Com x: 7x − 2x + x = 6x. Números: 4 + 3 + 1 = 8.<br><b>Resposta:</b> <b>6x + 8</b>. (Quem marcou 6x + 2 trocou só o primeiro sinal.)'},
+ {q:'Um retângulo tem lados (x + 2) e (3x − 1). Qual polinômio representa a sua área?',
+  o:['4x + 1','3x² − 2','3x² + 5x − 2','3x² + 5x + 2','3x² + 7x − 2'],c:2,
+  e:'<b>Passo 1.</b> x · 3x = 3x² e x · (−1) = −x.<br><b>Passo 2.</b> 2 · 3x = 6x e 2 · (−1) = −2.<br><b>Passo 3.</b> 3x² − x + 6x − 2 = <b>3x² + 5x − 2</b>. (4x + 1 seria a soma dos lados, não a área.)'}
+];
+let score=0;
+const qz=document.getElementById('quiz'), sc=document.getElementById('score');
+const L='ABCDE';
+Q.forEach((it,n)=>{
+  const d=document.createElement('div'); d.className='q';
+  d.innerHTML=`<div><span class="qn">Questão ${n+1}.</span> ${it.q}</div><div class="opts"></div><div class="exp"></div>`;
+  const os=d.querySelector('.opts'), ex=d.querySelector('.exp');
+  it.o.forEach((t,i)=>{
+    const b=document.createElement('button'); b.className='opt';
+    b.innerHTML=`<span class="L">${L[i]}</span><span>${t}</span>`;
+    b.onclick=()=>{
+      const bs=[...os.children]; bs.forEach(x=>x.disabled=true);
+      bs[it.c].classList.add('right'); bs[it.c].querySelector('.L').textContent='✓ '+L[it.c];
+      if(i===it.c){score++;ex.innerHTML='<b>✓ Isso mesmo!</b><br>'+it.e;}
+      else{b.classList.add('wrong');b.querySelector('.L').textContent='↻ '+L[i];ex.innerHTML='<b>Quase! Revê os passos:</b><br>'+it.e;}
+      ex.classList.add('show'); sc.textContent='Acertos: '+score+' de '+Q.length;
+    };
+    os.appendChild(b);
+  });
+  qz.appendChild(d);
+});
+
+go(0);
+</script>
+</body>
+</html>
