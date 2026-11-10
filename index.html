@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisão AV2 — Matemática 7º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --bg:#F6F4FC; --ind:#362F78; --ind-d:#241F52; --ind-s:#6C63B5;
+  --mint:#A9E5D0; --coral:#FFB3A0; --coral-d:#E4694F; --yel:#FFDD73;
+  --txt:#2A2650; --txt2:#5B5686; --border:#E3DEF7; --lil:#EEEAFB;
+  --ok:#1E7A55; --ok-bg:#E3F6EE; --bad:#B23A22; --bad-bg:#FFEDE8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:'Atkinson Hyperlegible',sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3,.baloo{font-family:'Baloo 2',sans-serif}
+.bg-symbols{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-symbols span{position:absolute;font-family:'Baloo 2';font-weight:700;color:var(--ind);opacity:.08;animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(30px,-40px) rotate(14deg)}}
+@media (prefers-reduced-motion:reduce){.bg-symbols span{animation:none}html{scroll-behavior:auto}}
+
+/* progresso */
+.progress{position:sticky;top:0;z-index:20;background:rgba(246,244,252,.94);backdrop-filter:blur(6px);padding:8px 16px 6px;border-bottom:1px solid var(--border)}
+.track{height:7px;background:var(--border);border-radius:9px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--ind-s),var(--ind));border-radius:9px;transition:width .35s}
+.plabel{font-family:'Baloo 2';font-weight:600;font-size:13px;color:var(--txt2);margin-top:3px}
+
+.wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:18px 16px 40px}
+header h1{font-size:28px;line-height:1.15;color:var(--ind-d);margin:6px 0 2px;font-weight:800}
+header p{margin:0 0 12px;color:var(--txt2)}
+
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tab{border:1px solid var(--border);background:#fff;color:var(--ind);font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:999px;cursor:pointer}
+.tab.active{background:var(--ind);color:#fff;border-color:var(--ind)}
+.tab:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--yel);outline-offset:2px}
+
+.section{display:none}
+.section.active{display:block;animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px 18px 16px;margin-bottom:16px;box-shadow:0 4px 18px rgba(54,47,120,.07)}
+.eyebrow{display:inline-block;font-family:'Baloo 2';font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:2px 10px;border-radius:999px;margin-bottom:6px}
+.ey-ind{background:var(--lil);color:var(--ind)} .ey-mint{background:var(--mint);color:#174E3B} .ey-coral{background:var(--coral);color:#6E2414} .ey-yel{background:var(--yel);color:#5A4300}
+.card h2{font-size:24px;color:var(--ind-d);margin:0 0 8px;line-height:1.2;font-weight:800}
+.card h3{font-size:19px;color:var(--ind);margin:14px 0 6px;font-weight:700}
+.card p{margin:8px 0}
+.big{font-family:'Baloo 2';font-weight:700;font-size:22px;color:var(--ind)}
+
+.think{background:#EFEDFA;border-radius:14px;padding:12px 14px;margin:12px 0}
+.think b.t{font-family:'Baloo 2';color:var(--ind);display:block;font-size:16px}
+.tip{background:#FFF9E8;border-left:7px solid var(--yel);border-radius:12px;padding:12px 14px;margin:12px 0}
+.tip b.t{font-family:'Baloo 2';color:#7A5A00;display:block;font-size:16px}
+.copy{border:2.5px dashed #3FAE85;background:#F2FBF7;border-radius:14px;padding:12px 14px;margin:12px 0}
+.copy b.t{font-family:'Baloo 2';color:#1E7A55;display:block;font-size:16px}
+.review{background:#F4F2FD;border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin:12px 0}
+.formula{font-family:'Baloo 2';font-weight:700;font-size:24px;color:var(--ind-d);text-align:center;margin:8px 0;letter-spacing:.02em}
+.hl{background:var(--yel);padding:0 4px;border-radius:5px}
+.co{color:var(--coral-d);font-weight:700}
+
+/* exemplo resolvido passo a passo */
+.worked{border:1.5px solid var(--border);border-radius:16px;margin:14px 0;overflow:hidden}
+.worked .wh{background:var(--ind);color:#fff;font-family:'Baloo 2';font-weight:700;padding:6px 14px;font-size:15px}
+.worked .wq{padding:12px 14px 4px}
+.steps{background:#F3F0FD;border-top:1px solid var(--border);margin:8px 0 0;padding:4px 14px 10px}
+.step{display:none;padding:7px 0;border-bottom:1px dashed #D6D0F0}
+.step:last-child{border-bottom:none}
+.step.show{display:block;animation:fade .3s}
+.step b.p{font-family:'Baloo 2';color:var(--ind)}
+.step.final{background:var(--ok-bg);border-radius:10px;padding:8px 10px;margin-top:6px;border-bottom:none}
+.wbtns{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px 12px}
+.btn{font-family:'Baloo 2';font-weight:700;font-size:15px;border:none;border-radius:999px;padding:6px 16px;cursor:pointer;background:var(--ind);color:#fff}
+.btn.sec{background:#fff;color:var(--ind);border:1.5px solid var(--ind-s)}
+.btn:disabled{opacity:.45;cursor:default}
+.calc{font-family:'Baloo 2';font-weight:600;font-size:19px;color:var(--ind-d);display:block;margin:4px 0 2px 6px}
+
+/* try-box */
+.try{border:2.5px dashed var(--ind-s);border-radius:16px;padding:12px 14px;margin:14px 0;background:#fff}
+.try .tt{font-family:'Baloo 2';font-weight:700;color:var(--coral-d);font-size:16px}
+.try input{font-family:'Baloo 2';font-size:18px;width:110px;padding:4px 8px;border:2px solid var(--border);border-radius:10px;text-align:center;color:var(--ind-d)}
+.try input.sm{width:62px}
+.try .row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
+.fb{margin-top:8px;padding:8px 12px;border-radius:10px;display:none}
+.fb.ok{display:block;background:var(--ok-bg);color:var(--ok)}
+.fb.no{display:block;background:var(--bad-bg);color:var(--bad)}
+
+/* frações */
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-family:'Baloo 2';font-weight:700;line-height:1.05;margin:0 3px}
+.fr span:first-child{border-bottom:2px solid currentColor;padding:0 3px}
+.fr span{padding:0 3px}
+
+/* corrente */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0}
+.chain .box{background:var(--ind);color:#fff;font-family:'Baloo 2';font-weight:700;padding:4px 12px;border-radius:10px;font-size:18px}
+.chain .op{background:var(--coral);color:#6E2414;font-family:'Baloo 2';font-weight:700;padding:1px 9px;border-radius:999px;font-size:14px;cursor:pointer;border:none}
+
+.algo{background:#F1EDFC;border:1.5px solid #CFC7F2;border-radius:14px;padding:10px 14px;margin:12px 0}
+.algo div{padding:3px 0}
+.algo b{font-family:'Baloo 2';color:var(--ind)}
+
+table.t{border-collapse:collapse;margin:10px auto;font-size:16px}
+table.t td,table.t th{border:1px solid var(--border);padding:5px 10px;text-align:center}
+table.t th{background:var(--lil);color:var(--ind);font-family:'Baloo 2'}
+svg text{font-family:'Baloo 2',sans-serif}
+.fig{display:block;margin:10px auto;max-width:100%;height:auto}
+ul.map{padding-left:20px;margin:8px 0} ul.map li{margin:3px 0}
+
+/* quiz */
+.score{position:sticky;top:46px;z-index:5;background:var(--ind);color:#fff;font-family:'Baloo 2';font-weight:700;border-radius:999px;padding:4px 14px;display:inline-block;margin-bottom:10px}
+.q{border:1px solid var(--border);border-radius:16px;padding:12px 14px;margin:12px 0;background:#fff}
+.q .qn{font-family:'Baloo 2';font-weight:800;color:var(--coral-d)}
+.opts{display:grid;gap:7px;margin-top:8px}
+.opt{text-align:left;font-family:'Atkinson Hyperlegible';font-size:16px;background:#FAF9FF;border:1.5px solid var(--border);border-radius:12px;padding:7px 12px;cursor:pointer;color:var(--txt);display:flex;align-items:center;gap:10px}
+.opt .L{font-family:'Baloo 2';font-weight:800;color:var(--ind);min-width:20px}
+.opt.right{background:var(--ok-bg);border-color:#3FAE85}
+.opt.wrong{background:var(--bad-bg);border-color:var(--coral-d)}
+.opt:disabled{cursor:default}
+.exp{display:none;margin-top:10px;background:#F3F0FD;border-radius:12px;padding:10px 12px}
+.exp.show{display:block}
+
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:6px}
+.nav button{font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:999px;border:1px solid var(--border);background:#fff;color:var(--ind);cursor:pointer}
+.nav button:disabled{opacity:.4;cursor:default}
+.mono{display:flex;justify-content:center;align-items:flex-start;gap:14px;margin:14px 0 10px}
+.mpart{display:flex;flex-direction:column;align-items:center}
+.mexp{font-family:'Baloo 2';font-weight:800;font-size:46px;line-height:1.1;color:#241F52;border-bottom:5px solid;padding:0 6px 2px}
+.mexp sup{font-size:.55em}
+.mlab{font-family:'Baloo 2';font-weight:700;font-size:17px;margin-top:4px}
+@media (min-width:1500px){.mexp{font-size:70px}.mlab{font-size:26px}}
+.summary p{text-align:justify}
+
+@media (min-width:900px){
+  body{font-size:19px}
+  .wrap{max-width:980px;padding:26px 28px 50px}
+  header h1{font-size:38px}
+  .card{padding:26px 30px}
+  .card h2{font-size:30px}
+  .card h3{font-size:22px}
+  .formula{font-size:30px}
+  .calc{font-size:22px}
+  .tab{font-size:13px;padding:5px 11px}
+  .nav button{font-size:13px;padding:5px 11px}
+  .fig{max-width:560px}
+  .opts{grid-template-columns:1fr 1fr}
+}
+@media (min-width:1500px){
+  body{font-size:24px}
+  .wrap{max-width:1360px}
+  header h1{font-size:50px}
+  .card h2{font-size:40px}
+  .card h3{font-size:29px}
+  .formula{font-size:40px}
+  .calc{font-size:29px}
+  .btn{font-size:20px;padding:8px 22px}
+  .try input{font-size:24px;width:150px} .try input.sm{width:84px}
+  .opt{font-size:22px}
+  .tab{font-size:16px;padding:6px 14px}
+  .nav button{font-size:16px;padding:6px 14px}
+  .plabel{font-size:17px}
+  .fig{max-width:780px}
+  .score{top:52px}
+}
+
+.plane svg,.bars svg{display:block;margin:10px auto;width:100%;max-width:400px;height:auto}
+.plane.click svg{cursor:crosshair;touch-action:manipulation}
+.target{font-family:'Baloo 2';font-weight:700;font-size:20px;color:var(--ind-d);text-align:center;margin-top:6px}
+.target .pt{background:var(--yel);padding:1px 10px;border-radius:8px}
+.olsteps{margin:10px 0;padding-left:1.5em}.olsteps li{margin:.35em 0}.olsteps li::marker{font-family:'Baloo 2';font-weight:800;color:#362F78}
+.review div{padding:2px 0}
+.try input.txt{width:150px;text-transform:uppercase}
+.q .plane svg,.q .bars svg{max-width:320px}
+@media (min-width:900px){.plane svg,.bars svg{max-width:520px}.q .plane svg,.q .bars svg{max-width:400px}.target{font-size:24px}}
+@media (min-width:1500px){.plane svg,.bars svg{max-width:740px}.q .plane svg,.q .bars svg{max-width:560px}.target{font-size:32px}}
+</style>
+</head>
+<body>
+<div class="bg-symbols" aria-hidden="true"></div>
+
+<div class="progress" role="navigation" aria-label="Progresso">
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div class="plabel" id="plabel">Parte 1</div>
+</div>
+
+<div class="wrap">
+<header>
+  <h1>Revisão para a AV2 — 7º ano</h1>
+  <p>Plano cartesiano · porcentagem e desconto · amplitude e média · probabilidade</p>
+</header>
+<nav class="tabs" id="tabs" aria-label="Partes da aula"></nav>
+
+<main id="sections">
+
+<!-- ============ PARTE 1 ============ -->
+<section class="section" data-name="Começando">
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 1 · Aquecimento</span>
+  <h2>Três perguntas rápidas</h2>
+  <p>Responda de cabeça. Se acertar, você já tem a base para tudo o que vem depois.</p>
+  <div class="try" data-answer="8">
+    <div class="tt">Aquecimento 1</div>
+    <p>Quanto é 10% de R$ 80,00?</p>
+    <div class="row">R$ <input aria-label="resposta"> <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! 10% é a décima parte: 80 ÷ 10 = 8." data-no="Quase. 10% é o mesmo que dividir por 10. Quanto é 80 ÷ 10?"></div>
+  </div>
+  <div class="try" data-answer="6">
+    <div class="tt">Aquecimento 2</div>
+    <p>Qual a média entre os números 4 e 8?</p>
+    <div class="row"><input aria-label="resposta" class="sm"> <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! 4 + 8 = 12, e 12 ÷ 2 = 6." data-no="Quase. Some os dois números e divida por 2, porque são 2 números."></div>
+  </div>
+  <div class="try" data-answer="3">
+    <div class="tt">Aquecimento 3</div>
+    <p>Um dado comum tem as faces 1, 2, 3, 4, 5 e 6. Quantas faces têm número par?</p>
+    <div class="row"><input aria-label="resposta" class="sm"> faces <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! Os pares são 2, 4 e 6: três faces." data-no="Quase. Os números pares são os que dividem por 2 sem sobrar. Quais são, de 1 a 6?"></div>
+  </div>
+  <h3>O que vamos revisar</h3>
+  <ul class="map">
+    <li><b>Parte 2:</b> ler as coordenadas de um ponto no plano cartesiano.</li>
+    <li><b>Parte 3:</b> marcar pontos no plano cartesiano.</li>
+    <li><b>Parte 4:</b> porcentagem e desconto (valor final a pagar).</li>
+    <li><b>Parte 5:</b> amplitude e média, inclusive lendo gráfico de colunas.</li>
+    <li><b>Parte 6:</b> probabilidade em porcentagem e com tabela de frequência.</li>
+    <li><b>Parte 7:</b> quiz misturando tudo. <b>Parte 8:</b> resumo final para reler.</li>
+  </ul>
+</div>
+</section>
+
+<!-- ============ PARTE 2 ============ -->
+<section class="section" data-name="Ler coordenadas">
+<div class="card">
+  <span class="eyebrow ey-mint">Parte 2 · Revisão</span>
+  <h2>O plano cartesiano</h2>
+  <div class="review">
+    <div><b>Eixo x:</b> a reta deitada (horizontal).</div>
+    <div><b>Eixo y:</b> a reta em pé (vertical).</div>
+    <div><b>Origem (0, 0):</b> onde os eixos se cruzam. É o ponto de partida.</div>
+    <div><b>Par ordenado (x, y):</b> primeiro o x (anda para o lado), depois o y (anda para cima ou para baixo).</div>
+  </div>
+  <p>Os eixos continuam depois do zero, com os números negativos. O <b>sinal</b> diz para que lado ir:</p>
+  <table class="t">
+    <tr><td>x positivo → <b>direita</b></td><td>x negativo ← <b>esquerda</b></td></tr>
+    <tr><td>y positivo ↑ <b>cima</b></td><td>y negativo ↓ <b>baixo</b></td></tr>
+  </table>
+  <div class="think"><b class="t">Pense assim</b>É como o elevador de um shopping: o térreo é 0, os andares de cima são positivos e o subsolo é negativo.</div>
+</div>
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 2 · Lendo pontos</span>
+  <h2>Do ponto para o par</h2>
+  <p>O ponto já está marcado e você descobre as coordenadas dele.</p>
+  <ol class="olsteps">
+    <li>Desça (ou suba) reto do ponto até o eixo x e leia o número: esse é o x.</li>
+    <li>Vá reto do ponto até o eixo y e leia o número: esse é o y.</li>
+    <li>Escreva o par (x, y).</li>
+  </ol>
+  <div class="worked">
+    <div class="wh">Exemplo 1 — qual a coordenada do ponto P?</div>
+    <div class="wq"><div class="plane" data-pts='[[-3,2,"P"]]' data-read="-3,2"></div></div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Desça reto de P até o eixo x. Você chega no <b>−3</b>. Então x = −3.</div>
+      <div class="step"><b class="p">Passo 2.</b> Vá reto de P até o eixo y. Você chega no <b>2</b>. Então y = 2.</div>
+      <div class="step final"><b class="p">Resposta:</b> <b>P (−3, 2)</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="worked">
+    <div class="wh">Exemplo 2 — ponto em cima de um eixo</div>
+    <div class="wq">Qual a coordenada do ponto Q?<div class="plane" data-pts='[[0,-3,"Q"]]'></div></div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Q já está em cima do eixo y. Para chegar ao eixo x, você não sai do lugar na horizontal: x = 0.</div>
+      <div class="step"><b class="p">Passo 2.</b> No eixo y, Q está no <b>−3</b>. Então y = −3.</div>
+      <div class="step final"><b class="p">Resposta:</b> <b>Q (0, −3)</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="tip"><b class="t">Dica: confira o sinal</b>À esquerda do eixo y, o x é negativo. Abaixo do eixo x, o y é negativo.</div>
+  <div class="tip"><b class="t">Dica: a ordem importa</b>(3, −1) e (−1, 3) são pontos <b>diferentes</b>. O 1º número é sempre o x.</div>
+  <div class="try" data-answers="-3,-2">
+    <div class="tt">Agora é sua vez</div>
+    <p>Qual a coordenada do ponto T?</p>
+    <div class="plane" data-pts='[[-3,-2,"T"]]'></div>
+    <div class="row">T ( <input aria-label="x" class="sm"> , <input aria-label="y" class="sm"> ) <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! Subindo até o eixo x você chega no −3, e indo até o eixo y chega no −2: T (−3, −2)." data-no="Quase. Suba reto de T até o eixo x e leia o número (x). Depois vá reto até o eixo y (y). Os dois são negativos? Confira o sinal."></div>
+  </div>
+</div>
+<div class="card">
+  <span class="eyebrow ey-coral">Parte 2 · Formando palavras</span>
+  <h2>Trocar coordenadas por letras</h2>
+  <p>Cada ponto do plano tem uma letra. Troque cada par pela letra que está naquele ponto, na ordem dada.</p>
+  <div class="plane" data-pts='[[1,2,"R"],[2,3,"A"],[-1,-2,"T"],[3,-1,"O"],[2,1,"E"],[-2,-3,"S"],[0,-2,"C"],[-3,1,"G"],[-2,-1,"M"]]'></div>
+  <div class="worked">
+    <div class="wh">Exemplo 3 — qual palavra se forma?</div>
+    <div class="wq">Usando o plano acima, qual palavra é formada por <b>(1, 2); (2, 3); (−1, −2); (3, −1)</b>?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> (1, 2): 1 para a direita e 2 para cima → <b>R</b>.</div>
+      <div class="step"><b class="p">Passo 2.</b> Volte para a origem. (2, 3): 2 para a direita e 3 para cima → <b>A</b>.</div>
+      <div class="step"><b class="p">Passo 3.</b> Volte para a origem. (−1, −2): 1 para a esquerda e 2 para baixo → <b>T</b>.</div>
+      <div class="step"><b class="p">Passo 4.</b> Volte para a origem. (3, −1): 3 para a direita e 1 para baixo → <b>O</b>.</div>
+      <div class="step final"><b class="p">Resposta:</b> <b>RATO</b>. Quem inverte (1, 2) e procura (2, 1) cai no E.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="tip"><b class="t">Dica: cada ponto começa na origem</b>Para achar o próximo ponto, volte ao (0, 0). Não comece de onde o ponto anterior parou.</div>
+  <div class="try" data-text="SACO">
+    <div class="tt">Agora é sua vez</div>
+    <p>Usando o mesmo plano, qual palavra é formada por <b>(−2, −3); (2, 3); (0, −2); (3, −1)</b>?</p>
+    <div class="row"><input aria-label="palavra" class="txt"> <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! S, A, C, O: SACO." data-no="Quase. Faça um par de cada vez, sempre saindo da origem: primeiro o x (para o lado), depois o y (para cima ou para baixo)."></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 3 ============ -->
+<section class="section" data-name="Marcar pontos">
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 3 · Marcar pontos</span>
+  <h2>Do par para o ponto</h2>
+  <p>Agora é o caminho contrário: você recebe o par (x, y) e marca o ponto.</p>
+  <ol class="olsteps">
+    <li>Comece na origem (0, 0).</li>
+    <li>Olhe o 1º número (x) e ande para a direita ou para a esquerda.</li>
+    <li>Olhe o 2º número (y) e ande para cima ou para baixo.</li>
+    <li>Marque o ponto.</li>
+  </ol>
+  <div class="worked">
+    <div class="wh">Exemplo — marcar o ponto A (3, −2)</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Comece na origem (0, 0).</div>
+      <div class="step"><b class="p">Passo 2.</b> O x é 3, positivo: ande <b>3 para a direita</b>.</div>
+      <div class="step"><b class="p">Passo 3.</b> O y é −2, negativo: desça <b>2</b>.</div>
+      <div class="step final"><b class="p">Passo 4.</b> Marque o ponto A. O tracejado mostra o caminho.
+        <div class="plane" data-pts='[[3,-2,"A"]]' data-path="3,-2"></div></div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="tip"><b class="t">Dica: e o zero?</b>Zero quer dizer “não anda”. O ponto (0, 2) fica em cima do eixo y. O ponto (−4, 0) fica em cima do eixo x.</div>
+  <div class="try" id="plot">
+    <div class="tt">Agora é sua vez — clique no plano</div>
+    <p>Marque os pontos, um de cada vez, clicando no cruzamento certo das linhas.</p>
+    <div class="target">Marque: <span class="pt" id="plotTarget"></span></div>
+    <div class="plane click" id="plotPlane" data-targets='[[-2,3,"E"],[4,-1,"F"],[0,-3,"G"],[-3,-2,"H"]]'></div>
+    <div class="fb" id="plotFb"></div>
+    <div class="row"><button class="btn sec" id="plotReset">Recomeçar</button></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 4 ============ -->
+<section class="section" data-name="Desconto">
+<div class="card">
+  <span class="eyebrow ey-mint">Parte 4 · Revisão</span>
+  <h2>Porcentagem: “de cada 100”</h2>
+  <p>O símbolo % quer dizer <b>“de cada 100”</b>. Então 15% é 15 de cada 100, e pode ser escrito como <span class="fr"><span>15</span><span>100</span></span> ou 0,15.</p>
+  <div class="think"><b class="t">Pense assim</b>Divida o preço em 100 pedacinhos iguais. Cada pedacinho é 1%. Para achar 15%, junte 15 desses pedacinhos.</div>
+  <div class="copy"><b class="t">Para lembrar</b>Para achar <b>1%</b> de um valor, divida o valor por 100. Para achar <b>10%</b>, divida por 10. Para achar outra porcentagem, ache 1% e multiplique pelo número da porcentagem. Exemplo: 1% de 1.300 é 13, então 20% de 1.300 é 20 × 13 = 260.</div>
+</div>
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 4 · Desconto</span>
+  <h2>Desconto e valor a pagar</h2>
+  <p>Um <b>desconto</b> é uma parte do preço que você não precisa pagar. Primeiro calculamos quanto vale o desconto e depois tiramos esse valor do preço.</p>
+  <div class="copy"><b class="t">Para lembrar</b>Desconto = porcentagem do preço. Valor a pagar = preço − desconto.</div>
+  <div class="tip"><b class="t">Dica: a pergunta quer o desconto ou o valor a pagar?</b>Se a questão pergunta <b>“qual o valor a ser pago”</b>, depois de calcular o desconto você ainda precisa fazer a <b>subtração</b>. O valor do desconto sozinho costuma aparecer nas alternativas para enganar quem parou no meio.</div>
+</div>
+<div class="card">
+  <span class="eyebrow ey-coral">Parte 4 · Exemplos resolvidos</span>
+  <div class="worked">
+    <div class="wh">Exemplo 1 — desconto no PIX</div>
+    <div class="wq">Uma bicicleta custa <b>R$ 1.300,00</b>. Pagando no PIX, o cliente ganha <b>20% de desconto</b>. Qual o valor a ser pago?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Ache 1% do preço: 1.300 ÷ 100 = 13.</div>
+      <div class="step"><b class="p">Passo 2.</b> Ache 20%: 20 × 13 = 260. Esse é o <b>desconto</b>.<span class="calc">desconto = R$ 260,00</span></div>
+      <div class="step"><b class="p">Passo 3.</b> Tire o desconto do preço.<span class="calc">1.300 − 260 = 1.040</span></div>
+      <div class="step final"><b class="p">Resposta:</b> o cliente paga <b>R$ 1.040,00</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="worked">
+    <div class="wh">Exemplo 2 — desconto comprando várias unidades</div>
+    <div class="wq">Uma camiseta custa <b>R$ 45,00</b>. Quem leva <b>4 camisetas</b> ganha <b>10% de desconto no total</b> da compra. Quanto paga quem leva 4 camisetas?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Primeiro calcule o total sem desconto.<span class="calc">4 × 45 = 180</span></div>
+      <div class="step"><b class="p">Passo 2.</b> O desconto é sobre o <b>total</b>: 10% de 180 = 180 ÷ 10 = 18.</div>
+      <div class="step"><b class="p">Passo 3.</b> Tire o desconto do total.<span class="calc">180 − 18 = 162</span></div>
+      <div class="step final"><b class="p">Resposta:</b> paga <b>R$ 162,00</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="tip"><b class="t">Dica: quando o desconto é “no total”</b>Multiplique primeiro o preço pela quantidade de produtos, e só depois calcule a porcentagem. Calcular o desconto de uma camiseta só e tirar do total dá resposta errada.</div>
+  <div class="worked">
+    <div class="wh">Exemplo 3 — quando aparecem centavos</div>
+    <div class="wq">A mensalidade de uma academia é <b>R$ 90,00</b>. Um aluno antigo ganha <b>6% de desconto</b>. Qual será a nova mensalidade?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> 1% de 90 é 90 ÷ 100 = <b>0,90</b> (noventa centavos).</div>
+      <div class="step"><b class="p">Passo 2.</b> 6% é 6 × 0,90 = <b>5,40</b>. O desconto é R$ 5,40.</div>
+      <div class="step"><b class="p">Passo 3.</b> Faça a subtração com vírgula embaixo de vírgula.<span class="calc">90,00 − 5,40 = 84,60</span></div>
+      <div class="step final"><b class="p">Resposta:</b> a nova mensalidade é <b>R$ 84,60</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="tip"><b class="t">Dica: 6% não é tirar R$ 6,00</b>Tirar 6 reais de 90 daria 84,00, que está errado. A porcentagem precisa ser calculada sobre o preço. E na subtração com centavos, escreva 90 como 90,00 para alinhar as vírgulas.</div>
+  <div class="try" data-answer="221">
+    <div class="tt">Agora é sua vez</div>
+    <p>Um tênis custa R$ 260,00. À vista, tem 15% de desconto. Qual o valor a pagar à vista?</p>
+    <div class="row">R$ <input aria-label="resposta"> <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! 1% é 2,60; 15% é 39. Valor: 260 − 39 = R$ 221,00." data-no="Quase. 1% de 260 é 2,60. Multiplique por 15 para achar o desconto e depois tire do preço."></div>
+  </div>
+  <div class="try" data-answer="36">
+    <div class="tt">Agora é sua vez</div>
+    <p>Uma caneta custa R$ 8,00. Levando 5 canetas, há 10% de desconto no total. Quanto se paga pelas 5?</p>
+    <div class="row">R$ <input aria-label="resposta"> <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! Total 5 × 8 = 40; desconto 10% = 4; paga 40 − 4 = R$ 36,00." data-no="Quase. Calcule primeiro o total das 5 canetas. Depois tire 10% desse total."></div>
+  </div>
+  <div class="try" data-answer="111.6">
+    <div class="tt">Agora é sua vez</div>
+    <p>Uma conta de R$ 120,00 recebeu 7% de desconto. Quanto ficou a conta?</p>
+    <div class="row">R$ <input aria-label="resposta"> <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! 1% é 1,20; 7% é 8,40; e 120,00 − 8,40 = R$ 111,60." data-no="Quase. 1% de 120 é 1,20. Multiplique por 7 e depois faça 120,00 menos esse valor, alinhando as vírgulas."></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 5 ============ -->
+<section class="section" data-name="Amplitude e média">
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 5 · Amplitude</span>
+  <h2>Amplitude: a distância entre o maior e o menor</h2>
+  <p>A <b>amplitude</b> de um conjunto de dados mostra o quanto eles estão espalhados. Ela é a diferença entre o <b>maior</b> valor e o <b>menor</b> valor.</p>
+  <div class="copy"><b class="t">Para lembrar</b>Amplitude = maior valor − menor valor.</div>
+  <div class="think"><b class="t">Pense assim</b>Se o aluno mais alto da sala tem 1,62 m e o mais baixo tem 1,40 m, a diferença de altura entre eles é 0,22 m. Essa é a amplitude das alturas: o tamanho da distância entre os dois extremos.</div>
+  <div class="worked">
+    <div class="wh">Exemplo — temperaturas da semana</div>
+    <div class="wq">As temperaturas máximas de uma semana foram:
+      <table class="t"><tr><th>Dia</th><td>Seg</td><td>Ter</td><td>Qua</td><td>Qui</td><td>Sex</td></tr><tr><th>°C</th><td>18</td><td>23</td><td>15</td><td>27</td><td>21</td></tr></table>
+      Qual a amplitude dessas temperaturas?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Procure o <b>maior</b> valor da tabela inteira: 27.</div>
+      <div class="step"><b class="p">Passo 2.</b> Procure o <b>menor</b> valor: 15.</div>
+      <div class="step"><b class="p">Passo 3.</b> Faça maior − menor.<span class="calc">27 − 15 = 12</span></div>
+      <div class="step final"><b class="p">Resposta:</b> a amplitude é <b>12 °C</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="tip"><b class="t">Dica: não use o primeiro e o último da tabela</b>A tabela não está em ordem. Se você fizer o último menos o primeiro (21 − 18), erra. Passe o olho pela tabela inteira e encontre o maior e o menor de verdade.</div>
+  <div class="try" data-answer="33">
+    <div class="tt">Agora é sua vez</div>
+    <p>Em 5 partidas, um time fez estes pontos: 63, 81, 57, 90 e 72. Qual a amplitude?</p>
+    <div class="row"><input aria-label="resposta"> pontos <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! Maior 90, menor 57: 90 − 57 = 33." data-no="Quase. Ache o maior e o menor de todos os cinco valores e subtraia."></div>
+  </div>
+</div>
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 5 · Média</span>
+  <h2>Média aritmética</h2>
+  <p>A <b>média</b> é o valor que cada dado teria se todos fossem iguais. Para calcular, somamos todos os valores e dividimos pela quantidade de valores.</p>
+  <div class="copy"><b class="t">Para lembrar</b>Média = soma de todos os valores ÷ quantidade de valores.</div>
+  <div class="think"><b class="t">Pense assim</b>Três amigos têm 2, 5 e 8 figurinhas. Se eles juntarem tudo (15 figurinhas) e dividirem igualmente entre os 3, cada um fica com 5. A média é 5.</div>
+  <div class="worked">
+    <div class="wh">Exemplo — média lendo um gráfico de colunas</div>
+    <div class="wq">O gráfico mostra quantos bolos uma confeitaria vendeu em 5 dias. Qual a média de bolos vendidos por dia?
+      <div class="bars" data-bars='[["Seg",80],["Ter",150],["Qua",110],["Qui",150],["Sex",210]]' data-max="240"></div></div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Leia cada coluna seguindo a linha tracejada até o eixo: Seg 80, Ter 150, Qua 110, Qui 150, Sex 210.</div>
+      <div class="step"><b class="p">Passo 2.</b> Some todos os valores. Terça e quinta têm o mesmo valor, mas são dias diferentes, então os dois entram na soma.<span class="calc">80 + 150 + 110 + 150 + 210 = 700</span></div>
+      <div class="step"><b class="p">Passo 3.</b> Conte as colunas: são 5 dias. Divida a soma por 5.<span class="calc">700 ÷ 5 = 140</span></div>
+      <div class="step final"><b class="p">Resposta:</b> a média é <b>140 bolos por dia</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="tip"><b class="t">Dica: valores repetidos contam duas vezes</b>No gráfico, a linha tracejada de 150 serve para duas colunas. Mesmo com um só número escrito no eixo, cada coluna é um valor e entra na soma. E divida pela quantidade de colunas, não pelo maior valor.</div>
+  <div class="try" data-answer="230">
+    <div class="tt">Agora é sua vez</div>
+    <p>O gráfico mostra quantas peças uma fábrica produziu em 4 semanas. Qual a média semanal?</p>
+    <div class="bars" data-bars='[["1ª",180],["2ª",260],["3ª",220],["4ª",260]]' data-max="300"></div>
+    <div class="row"><input aria-label="resposta"> peças por semana <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! 180 + 260 + 220 + 260 = 920, e 920 ÷ 4 = 230." data-no="Quase. Leia as 4 colunas (duas delas têm o mesmo valor), some tudo e divida por 4."></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 6 ============ -->
+<section class="section" data-name="Probabilidade">
+<div class="card">
+  <span class="eyebrow ey-ind">Parte 6 · Probabilidade</span>
+  <h2>Qual a chance?</h2>
+  <p>A <b>probabilidade</b> mostra a chance de algo acontecer. Ela é uma fração: em cima vão os casos que nos interessam (<b>favoráveis</b>) e embaixo vai o <b>total</b> de casos.</p>
+  <div class="copy"><b class="t">Para lembrar</b>
+    <div class="formula">P = <span class="fr"><span>casos favoráveis</span><span>total de casos</span></span></div>
+    Para escrever a probabilidade em <b>porcentagem</b>, transforme a fração em uma fração com 100 embaixo, multiplicando o numerador e o denominador pelo mesmo número. O número de cima vira a porcentagem.</div>
+  <table class="t">
+    <tr><th>Denominador</th><th>Multiplique por</th><th>Exemplo</th></tr>
+    <tr><td>4</td><td>25</td><td><span class="fr"><span>1</span><span>4</span></span> = <span class="fr"><span>25</span><span>100</span></span> = 25%</td></tr>
+    <tr><td>5</td><td>20</td><td><span class="fr"><span>2</span><span>5</span></span> = <span class="fr"><span>40</span><span>100</span></span> = 40%</td></tr>
+    <tr><td>20</td><td>5</td><td><span class="fr"><span>3</span><span>20</span></span> = <span class="fr"><span>15</span><span>100</span></span> = 15%</td></tr>
+    <tr><td>25</td><td>4</td><td><span class="fr"><span>9</span><span>25</span></span> = <span class="fr"><span>36</span><span>100</span></span> = 36%</td></tr>
+    <tr><td>50</td><td>2</td><td><span class="fr"><span>3</span><span>50</span></span> = <span class="fr"><span>6</span><span>100</span></span> = 6%</td></tr>
+  </table>
+  <div class="worked">
+    <div class="wh">Exemplo 1 — “a cada tantos, um tem defeito”</div>
+    <div class="wq">Uma fábrica percebeu que, a cada <b>20 lâmpadas</b> produzidas, <b>1</b> sai com defeito. Qual a probabilidade de uma lâmpada escolhida ao acaso ter defeito?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Casos favoráveis (o que a pergunta quer: lâmpada com defeito): 1. Total: 20.<span class="calc">P = <span class="fr"><span>1</span><span>20</span></span></span></div>
+      <div class="step"><b class="p">Passo 2.</b> Para chegar a 100 embaixo, multiplique por 5 em cima e embaixo.<span class="calc"><span class="fr"><span>1 × 5</span><span>20 × 5</span></span> = <span class="fr"><span>5</span><span>100</span></span></span></div>
+      <div class="step final"><b class="p">Resposta:</b> a probabilidade é <b>5%</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="tip"><b class="t">Dica: “a cada 20, 1” não é 20%</b>O número 20 é o total, não a porcentagem. A chance é 1 em 20, que dá 5%. Sempre monte a fração primeiro e só depois transforme em porcentagem.</div>
+  <div class="try" data-answer="6">
+    <div class="tt">Agora é sua vez</div>
+    <p>Em uma loja, a cada 50 copos que chegam, 3 vêm trincados. Qual a probabilidade de um copo chegar trincado?</p>
+    <div class="row"><input aria-label="resposta" class="sm"> % <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! 3/50, multiplicando por 2: 6/100 = 6%." data-no="Quase. Monte a fração 3/50 e multiplique em cima e embaixo pelo número que transforma 50 em 100."></div>
+  </div>
+</div>
+<div class="card">
+  <span class="eyebrow ey-coral">Parte 6 · Tabela de frequência</span>
+  <h2>Probabilidade a partir de resultados anotados</h2>
+  <p>Às vezes alguém faz um experimento várias vezes e anota quantas vezes cada resultado saiu. Esse número se chama <b>frequência</b>. Quando a questão diz <b>“considerando estes resultados”</b>, a probabilidade é calculada com a tabela: os favoráveis são as frequências que interessam e o total é a <b>soma de todas as frequências</b> (o número de vezes que o experimento foi feito).</p>
+  <div class="worked">
+    <div class="wh">Exemplo 2 — dado lançado 25 vezes</div>
+    <div class="wq">Júlia lançou um dado <b>25 vezes</b> e anotou:
+      <table class="t"><tr><th>Face</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr><tr><th>Frequência</th><td>4</td><td>6</td><td>3</td><td>5</td><td>2</td><td>5</td></tr></table>
+      Considerando estes resultados, qual a probabilidade de sair um número <b>ímpar</b>?</div>
+    <div class="steps">
+      <div class="step"><b class="p">Passo 1.</b> Os ímpares são 1, 3 e 5. Some as frequências deles.<span class="calc">4 + 3 + 2 = 9</span></div>
+      <div class="step"><b class="p">Passo 2.</b> O total é a soma de todas as frequências, que é o número de lançamentos.<span class="calc">4 + 6 + 3 + 5 + 2 + 5 = 25</span></div>
+      <div class="step"><b class="p">Passo 3.</b> Monte a fração e transforme em porcentagem (multiplique por 4).<span class="calc"><span class="fr"><span>9</span><span>25</span></span> = <span class="fr"><span>36</span><span>100</span></span> = 36%</span></div>
+      <div class="step final"><b class="p">Resposta:</b> pelos resultados de Júlia, a probabilidade é <b>36%</b>.</div>
+    </div>
+    <div class="wbtns"><button class="btn nx">Próximo passo →</button><button class="btn sec all">Mostrar tudo</button></div>
+  </div>
+  <div class="tip"><b class="t">Dica: o total é a soma das frequências, não 6</b>O dado tem 6 faces, mas a tabela mostra 25 lançamentos. Quando a questão pede para usar os resultados da tabela, o denominador é 25. Se você usar 6, está calculando a chance de um dado ideal, que não é o que foi pedido.</div>
+  <div class="try" data-answer="40">
+    <div class="tt">Agora é sua vez</div>
+    <p>Uma roleta foi girada 20 vezes e parou: azul 7 vezes, verde 5 vezes e vermelho 8 vezes. Considerando estes resultados, qual a probabilidade de parar no vermelho?</p>
+    <div class="row"><input aria-label="resposta" class="sm"> % <button class="btn">Conferir</button></div>
+    <div class="fb" data-ok="Isso! 8/20, multiplicando por 5: 40/100 = 40%." data-no="Quase. Vermelho saiu 8 vezes em 20 giros. Monte 8/20 e multiplique em cima e embaixo por 5."></div>
+  </div>
+</div>
+</section>
+
+<!-- ============ PARTE 7 ============ -->
+<section class="section" data-name="Quiz">
+<div class="card">
+  <span class="eyebrow ey-yel">Parte 7 · Quiz</span>
+  <h2>Hora de treinar tudo junto</h2>
+  <div class="score" id="score">Acertos: 0 de 10</div>
+  <div id="quiz"></div>
+</div>
+</section>
+
+<!-- ============ PARTE 8 ============ -->
+<section class="section" data-name="Resumo final">
+<div class="card summary">
+  <span class="eyebrow ey-mint">Parte 8 · Resumo final</span>
+  <h2>Resumo para reler antes da prova</h2>
+  <p><b>Plano cartesiano.</b> O plano cartesiano é formado por duas retas numéricas que se cruzam no zero: o eixo x, deitado, e o eixo y, em pé. O ponto de cruzamento é a origem, de coordenadas (0, 0). A origem é o ponto de partida. Cada ponto é indicado por um par ordenado (x, y): primeiro o x, que anda para o lado (positivo para a direita, negativo para a esquerda), depois o y, que anda para cima ou para baixo (positivo para cima, negativo para baixo), como num elevador em que o térreo é o zero e o subsolo é negativo. A ordem importa: (3, −1) e (−1, 3) são pontos diferentes. Para ler a coordenada de um ponto, descemos (ou subimos) reto do ponto até o eixo x e lemos o número, que é o x; depois vamos reto do ponto até o eixo y e lemos o número, que é o y. Para marcar um ponto, começamos na origem, andamos para a direita ou para a esquerda de acordo com o x e depois para cima ou para baixo de acordo com o y. Cada ponto começa de novo na origem, e não de onde o ponto anterior parou. Um ponto com x = 0 fica em cima do eixo y, e um ponto com y = 0 fica em cima do eixo x.</p>
+  <p><b>Porcentagem e desconto.</b> O símbolo % significa “de cada 100”. Para calcular uma porcentagem de um valor, achamos 1% dividindo o valor por 100 e multiplicamos pelo número da porcentagem; 10% é o valor dividido por 10. O desconto é a porcentagem calculada sobre o preço, e o valor a pagar é o preço menos o desconto. Por exemplo, 20% de desconto em R$ 1.300,00 é R$ 260,00, e o valor a pagar é R$ 1.040,00. Quando o desconto é sobre o total de uma compra com várias unidades, primeiro multiplicamos o preço pela quantidade e depois calculamos o desconto sobre esse total. Quando aparecem centavos, fazemos a subtração alinhando vírgula embaixo de vírgula, como em 90,00 − 5,40 = 84,60.</p>
+  <p><b>Amplitude e média.</b> A amplitude de um conjunto de dados é a diferença entre o maior e o menor valor, e por isso precisamos procurar esses dois valores na tabela inteira, que nem sempre está em ordem. A média aritmética é a soma de todos os valores dividida pela quantidade de valores. Em um gráfico de colunas, lemos o valor de cada coluna seguindo a linha até o eixo; colunas com o mesmo valor contam separadamente na soma, e dividimos pelo número de colunas.</p>
+  <p><b>Probabilidade.</b> A probabilidade de um acontecimento é a fração entre os casos favoráveis e o total de casos. Para escrevê-la em porcentagem, multiplicamos o numerador e o denominador pelo mesmo número até o denominador virar 100; o numerador passa a ser a porcentagem. Se a cada 20 lâmpadas uma tem defeito, a probabilidade é 1/20 = 5/100 = 5%. Quando a questão pede para considerar os resultados de uma tabela de frequência, os casos favoráveis são a soma das frequências que interessam e o total é a soma de todas as frequências, isto é, o número de vezes que o experimento foi feito. Assim, se um dado foi lançado 25 vezes e saiu número ímpar 9 vezes, a probabilidade pelos resultados é 9/25 = 36/100 = 36%.</p>
+</div>
+</section>
+
+</main>
+
+<div class="nav">
+  <button id="prev">← Voltar</button>
+  <button id="next">Avançar →</button>
+</div>
+</div>
+
+<script>
+/* símbolos de fundo */
+(function(){
+  const s=['+','−','%','(x, y)','=','÷','×','½','y','x','∑'];
+  const box=document.querySelector('.bg-symbols');
+  for(let i=0;i<22;i++){
+    const e=document.createElement('span'); e.textContent=s[i%s.length];
+    e.style.left=(Math.random()*95)+'%'; e.style.top=(Math.random()*95)+'%';
+    e.style.fontSize=(22+Math.random()*34)+'px'; e.style.animationDelay=(-Math.random()*26)+'s';
+    box.appendChild(e);
+  }
+})();
+
+/* ---------- plano cartesiano ---------- */
+const NS='http://www.w3.org/2000/svg';
+function mk(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!==undefined)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+function drawPlane(el){
+  const min=-4,max=4,u=40,pad=26,size=(max-min)*u+pad*2;
+  const X=x=>pad+(x-min)*u, Y=y=>pad+(max-y)*u;
+  const svg=mk('svg',{viewBox:`0 0 ${size} ${size}`,role:'img'});
+  for(let i=min;i<=max;i++){
+    mk('line',{x1:X(i),y1:Y(min),x2:X(i),y2:Y(max),stroke:'#E3DEF7','stroke-width':1.5},svg);
+    mk('line',{x1:X(min),y1:Y(i),x2:X(max),y2:Y(i),stroke:'#E3DEF7','stroke-width':1.5},svg);
+  }
+  mk('line',{x1:X(min)-14,y1:Y(0),x2:X(max)+14,y2:Y(0),stroke:'#362F78','stroke-width':2.5},svg);
+  mk('line',{x1:X(0),y1:Y(min)+14,x2:X(0),y2:Y(max)-14,stroke:'#362F78','stroke-width':2.5},svg);
+  mk('polygon',{points:`${X(max)+20},${Y(0)} ${X(max)+8},${Y(0)-6} ${X(max)+8},${Y(0)+6}`,fill:'#362F78'},svg);
+  mk('polygon',{points:`${X(0)},${Y(max)-20} ${X(0)-6},${Y(max)-8} ${X(0)+6},${Y(max)-8}`,fill:'#362F78'},svg);
+  mk('text',{x:X(max)+8,y:Y(0)-12,'font-size':16,'font-weight':800,fill:'#6C63B5'},svg,'x');
+  mk('text',{x:X(0)+10,y:Y(max)-6,'font-size':16,'font-weight':800,fill:'#6C63B5'},svg,'y');
+  for(let i=min;i<=max;i++){
+    if(i===0)continue;
+    mk('text',{x:X(i),y:Y(0)+17,'font-size':13,'font-weight':700,fill:'#5B5686','text-anchor':'middle'},svg,i<0?'−'+(-i):i);
+    mk('text',{x:X(0)-7,y:Y(i)+5,'font-size':13,'font-weight':700,fill:'#5B5686','text-anchor':'end'},svg,i<0?'−'+(-i):i);
+  }
+  mk('text',{x:X(0)-7,y:Y(0)+17,'font-size':13,'font-weight':700,fill:'#5B5686','text-anchor':'end'},svg,'0');
+  if(el.dataset.path){
+    const [px,py]=el.dataset.path.split(',').map(Number);
+    mk('polyline',{points:`${X(0)},${Y(0)} ${X(px)},${Y(0)} ${X(px)},${Y(py)}`,fill:'none',stroke:'#E4694F','stroke-width':3,'stroke-dasharray':'7 5'},svg);
+    mk('text',{x:(X(0)+X(px))/2,y:Y(0)-8,'font-size':14,'font-weight':800,fill:'#E4694F','text-anchor':'middle'},svg,(px>0?px+' para a direita':(-px)+' para a esquerda'));
+    mk('text',{x:X(px)+8,y:(Y(0)+Y(py))/2+5,'font-size':14,'font-weight':800,fill:'#E4694F'},svg,(py<0?(-py)+' para baixo':py+' para cima'));
+  }
+  if(el.dataset.read){
+    const [rx,ry]=el.dataset.read.split(',').map(Number);
+    mk('line',{x1:X(rx),y1:Y(ry),x2:X(rx),y2:Y(0),stroke:'#E4694F','stroke-width':2.5,'stroke-dasharray':'6 4'},svg);
+    mk('line',{x1:X(rx),y1:Y(ry),x2:X(0),y2:Y(ry),stroke:'#6C63B5','stroke-width':2.5,'stroke-dasharray':'6 4'},svg);
+  }
+  const pts=el.dataset.pts?JSON.parse(el.dataset.pts):[];
+  pts.forEach(p=>addPoint(svg,X,Y,p));
+  el.appendChild(svg);
+  const lbl=pts.length?pts.map(p=>p[2]).join(', '):'vazio';
+  svg.setAttribute('aria-label','Plano cartesiano de −4 a 4. Pontos: '+lbl);
+  return {svg,X,Y,u,pad,min,max};
+}
+function addPoint(svg,X,Y,p,color){
+  mk('circle',{cx:X(p[0]),cy:Y(p[1]),r:7,fill:color||'#E4694F',stroke:'#fff','stroke-width':2.5},svg);
+  mk('text',{x:X(p[0])+9,y:Y(p[1])-9,'font-size':17,'font-weight':800,fill:'#241F52'},svg,p[2]);
+}
+document.querySelectorAll('.plane').forEach(el=>{ if(!el.classList.contains('click')) drawPlane(el); });
+
+/* plano clicável */
+(function(){
+  const el=document.getElementById('plotPlane'); if(!el)return;
+  const targets=JSON.parse(el.dataset.targets);
+  const fb=document.getElementById('plotFb'), tg=document.getElementById('plotTarget');
+  const fmt=n=>n<0?'−'+(-n):''+n;
+  let P,k=0;
+  function start(){
+    el.innerHTML=''; P=drawPlane(el); k=0; fb.className='fb'; fb.textContent='';
+    show();
+    P.svg.addEventListener('click',ev=>{
+      if(k>=targets.length)return;
+      const pt=P.svg.createSVGPoint(); pt.x=ev.clientX; pt.y=ev.clientY;
+      const c=pt.matrixTransform(P.svg.getScreenCTM().inverse());
+      const x=Math.round((c.x-P.pad)/P.u+P.min), y=Math.round(P.max-(c.y-P.pad)/P.u);
+      if(x<P.min||x>P.max||y<P.min||y>P.max)return;
+      const t=targets[k];
+      if(x===t[0]&&y===t[1]){
+        addPoint(P.svg,P.X,P.Y,t);
+        fb.className='fb ok'; fb.textContent='✓ Isso! '+t[2]+' ('+fmt(t[0])+', '+fmt(t[1])+') está no lugar certo.';
+        k++; show();
+      }else{
+        let msg='↻ Quase! Você clicou em ('+fmt(x)+', '+fmt(y)+'). ';
+        if(x===t[1]&&y===t[0]&&x!==y) msg+='Parece que a ordem foi invertida: primeiro ande o x na horizontal, depois o y na vertical.';
+        else if(x!==t[0]) msg+='Revê o x: a partir da origem, ande '+Math.abs(t[0])+(t[0]<0?' para a esquerda.':t[0]>0?' para a direita.':' (x = 0: não ande na horizontal).');
+        else msg+='O x está certo. Revê o y: '+(t[1]<0?'negativo é para baixo.':t[1]>0?'positivo é para cima.':'y = 0: fique em cima do eixo x.');
+        fb.className='fb no'; fb.textContent=msg;
+      }
+    });
+  }
+  function show(){
+    if(k<targets.length){const t=targets[k]; tg.textContent=t[2]+' ('+fmt(t[0])+', '+fmt(t[1])+')';}
+    else{tg.textContent='Todos marcados! ✓';}
+  }
+  document.getElementById('plotReset').onclick=start;
+  start();
+})();
+
+/* ---------- gráfico de colunas ---------- */
+function drawBars(el){
+  const data=JSON.parse(el.dataset.bars), maxV=+el.dataset.max;
+  const W=440,H=250,L=60,B=210,T=20,bw=46,gap=(W-L-20-data.length*bw)/data.length;
+  const Y=v=>B-(v/maxV)*(B-T);
+  const svg=mk('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Gráfico de colunas: '+data.map(d=>d[0]+' '+d[1]).join(', ')});
+  const seen={};
+  data.forEach((d,i)=>{
+    const x=L+gap/2+i*(bw+gap);
+    mk('line',{x1:L,y1:Y(d[1]),x2:x,y2:Y(d[1]),stroke:'#5B5686','stroke-width':1.6,'stroke-dasharray':'6 4'},svg);
+    if(!seen[d[1]]){seen[d[1]]=1;mk('text',{x:L-8,y:Y(d[1])+5,'font-size':15,'font-weight':700,fill:'#241F52','text-anchor':'end'},svg,d[1]);}
+  });
+  data.forEach((d,i)=>{
+    const x=L+gap/2+i*(bw+gap);
+    mk('rect',{x,y:Y(d[1]),width:bw,height:B-Y(d[1]),fill:'#E6E1FA',stroke:'#6C63B5','stroke-width':2},svg);
+    mk('text',{x:x+bw/2,y:B+22,'font-size':15,'font-weight':700,fill:'#241F52','text-anchor':'middle'},svg,d[0]);
+  });
+  mk('line',{x1:L,y1:B,x2:W-8,y2:B,stroke:'#362F78','stroke-width':2.5},svg);
+  mk('line',{x1:L,y1:B,x2:L,y2:6,stroke:'#362F78','stroke-width':2.5},svg);
+  mk('polygon',{points:`${W-2},${B} ${W-12},${B-5} ${W-12},${B+5}`,fill:'#362F78'},svg);
+  mk('polygon',{points:`${L},2 ${L-5},12 ${L+5},12`,fill:'#362F78'},svg);
+  el.appendChild(svg);
+}
+document.querySelectorAll('.bars').forEach(drawBars);
+
+/* ---------- navegação ---------- */
+const secs=[...document.querySelectorAll('.section')];
+const tabs=document.getElementById('tabs'); let cur=0;
+secs.forEach((s,i)=>{const b=document.createElement('button');b.className='tab';b.textContent=(i+1)+'. '+s.dataset.name;b.onclick=()=>go(i);tabs.appendChild(b);});
+function go(i){
+  cur=i;
+  secs.forEach((s,j)=>s.classList.toggle('active',j===i));
+  [...tabs.children].forEach((t,j)=>{t.classList.toggle('active',j===i);t.setAttribute('aria-current',j===i?'page':'false')});
+  document.getElementById('fill').style.width=((i+1)/secs.length*100)+'%';
+  document.getElementById('plabel').textContent='Parte '+(i+1)+' de '+secs.length+' — '+secs[i].dataset.name;
+  document.getElementById('prev').disabled=i===0;
+  document.getElementById('next').disabled=i===secs.length-1;
+  window.scrollTo({top:0});
+}
+document.getElementById('prev').onclick=()=>cur>0&&go(cur-1);
+document.getElementById('next').onclick=()=>cur<secs.length-1&&go(cur+1);
+
+/* ---------- exemplos passo a passo ---------- */
+document.querySelectorAll('.worked').forEach(w=>{
+  const st=[...w.querySelectorAll('.step')], nx=w.querySelector('.nx'), all=w.querySelector('.all'); let k=0;
+  const upd=()=>{nx.disabled=k>=st.length;all.disabled=k>=st.length;nx.textContent=k===0?'Começar resolução →':'Próximo passo →';};
+  nx.onclick=()=>{if(k<st.length){st[k].classList.add('show');k++;upd();}};
+  all.onclick=()=>{st.forEach(s=>s.classList.add('show'));k=st.length;upd();};
+  upd();
+});
+
+/* ---------- try-boxes ---------- */
+const norm=v=>v.trim().replace(/\s/g,'').replace(/[−–]/g,'-').replace(/^R\$/i,'').replace(/%$/,'').replace(/\.(?=\d{3}(\D|$))/g,'').replace(',','.');
+document.querySelectorAll('.try').forEach(t=>{
+  if(t.id==='plot')return;
+  const btn=t.querySelector('.btn'), fb=t.querySelector('.fb'), ins=[...t.querySelectorAll('input')];
+  const check=()=>{
+    let ok;
+    if(t.dataset.text){ ok=ins[0].value.trim().toUpperCase()===t.dataset.text; }
+    else{
+      const ans=(t.dataset.answers||t.dataset.answer).split(',');
+      ok=ins.every((inp,i)=>{const v=norm(inp.value);return v!==''&&!isNaN(parseFloat(v))&&Math.abs(parseFloat(v)-parseFloat(ans[i]))<1e-9;});
+    }
+    fb.className='fb '+(ok?'ok':'no');
+    fb.textContent=(ok?'✓ ':'↻ ')+(ok?fb.dataset.ok:fb.dataset.no);
+  };
+  btn.onclick=check;
+  ins.forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')check();}));
+});
+
+/* ---------- quiz ---------- */
+const F=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const Q=[
+ {q:'Qual a coordenada do ponto B representado no plano cartesiano?<div class="plane" data-pts=\'[[-1,3,"B"]]\'></div>',
+  o:['B (1, 3)','B (−1, 3)','B (3, −1)','B (−1, −3)'],c:1,
+  e:'<b>Passo 1.</b> Desça reto de B até o eixo x: você chega no −1, então x = −1.<br><b>Passo 2.</b> Vá reto de B até o eixo y: você chega no 3, então y = 3.<br><b>Resposta:</b> <b>B (−1, 3)</b>.'},
+ {q:'Substituindo cada coordenada pela letra do ponto correspondente, qual palavra é formada pela sequência (1, 3); (−3, −1); (2, 1); (−2, 2)?<div class="plane" data-pts=\'[[1,3,"C"],[-2,2,"A"],[3,-2,"S"],[-3,-1,"O"],[2,1,"L"],[3,1,"M"],[-1,-3,"R"]]\'></div>',
+  o:['CASA','MOLA','COLA','SOLA'],c:2,
+  e:'<b>(1, 3)</b>: 1 à direita e 3 para cima → C.<br><b>(−3, −1)</b>: 3 à esquerda e 1 para baixo → O.<br><b>(2, 1)</b>: 2 à direita e 1 para cima → L.<br><b>(−2, 2)</b>: 2 à esquerda e 2 para cima → A.<br><b>Resposta:</b> <b>COLA</b>. (Quem inverte (1, 3) e lê (3, 1) começa com M.)'},
+ {q:'Um notebook custa R$ 3.200,00. Pagando no PIX, o cliente recebe 15% de desconto. Qual será o valor pago?',
+  o:['R$ 480,00','R$ 2.720,00','R$ 2.750,00','R$ 3.185,00'],c:1,
+  e:'<b>Passo 1.</b> 1% de 3.200 é 32, então 15% é 15 × 32 = 480 (desconto).<br><b>Passo 2.</b> Valor pago: 3.200 − 480 = <b>R$ 2.720,00</b>. (R$ 480,00 é só o desconto.)'},
+ {q:'Um pote de sorvete custa R$ 25,00. Na compra de 4 potes, o cliente ganha 15% de desconto no total. Quanto paga quem leva 4 potes?',
+  o:['R$ 96,25','R$ 85,00','R$ 75,00','R$ 15,00'],c:1,
+  e:'<b>Passo 1.</b> Total sem desconto: 4 × 25 = 100.<br><b>Passo 2.</b> 15% de 100 = 15.<br><b>Passo 3.</b> 100 − 15 = <b>R$ 85,00</b>. (R$ 96,25 aparece quando se tira o desconto de um pote só.)'},
+ {q:'O plano de celular de Lara custa R$ 60,00 por mês. Ela vai ganhar 7% de desconto. Qual será o novo valor mensal?',
+  o:['R$ 53,00','R$ 55,80','R$ 56,80','R$ 4,20'],c:1,
+  e:'<b>Passo 1.</b> 1% de 60 é 0,60, então 7% é 7 × 0,60 = 4,20.<br><b>Passo 2.</b> 60,00 − 4,20 = <b>R$ 55,80</b>. (R$ 53,00 seria tirar 7 reais, e não 7%.)'},
+ {q:'Cinco atletas completaram uma corrida nos tempos abaixo (em minutos): 42, 37, 51, 45 e 39. Qual a amplitude desses tempos?',
+  o:['3','9','14','51'],c:2,
+  e:'<b>Passo 1.</b> Maior tempo: 51. Menor tempo: 37.<br><b>Passo 2.</b> 51 − 37 = <b>14 minutos</b>.'},
+ {q:'Em uma rifa, a cada 20 bilhetes, 3 são premiados. Qual a probabilidade de um bilhete escolhido ao acaso ser premiado?',
+  o:['3%','15%','17%','20%'],c:1,
+  e:'<b>Passo 1.</b> P = '+F(3,20)+'.<br><b>Passo 2.</b> Multiplicando em cima e embaixo por 5: '+F(15,100)+' = <b>15%</b>.'},
+ {q:'Rui lançou um dado 20 vezes e anotou os resultados:<table class="t"><tr><th>Face</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr><tr><th>Frequência</th><td>2</td><td>4</td><td>3</td><td>6</td><td>1</td><td>4</td></tr></table>Considerando estes resultados, qual a probabilidade de sair um número maior que 4?',
+  o:['10%','25%','33%','50%'],c:1,
+  e:'<b>Passo 1.</b> Maiores que 4: faces 5 e 6. Frequências: 1 + 4 = 5.<br><b>Passo 2.</b> Total: 2 + 4 + 3 + 6 + 1 + 4 = 20.<br><b>Passo 3.</b> '+F(5,20)+' = '+F(25,100)+' = <b>25%</b>. (Usar o dado ideal, 2 de 6, daria cerca de 33%, mas a questão pede os resultados da tabela.)'},
+ {q:'O gráfico mostra quantos livros uma biblioteca emprestou em 4 meses. Qual a média mensal de empréstimos?<div class="bars" data-bars=\'[["Mar",120],["Abr",200],["Mai",160],["Jun",160]]\' data-max="240"></div>',
+  o:['160','170','200','640'],c:0,
+  e:'<b>Passo 1.</b> Valores: 120, 200, 160 e 160.<br><b>Passo 2.</b> Soma: 120 + 200 + 160 + 160 = 640.<br><b>Passo 3.</b> 640 ÷ 4 = <b>160 livros por mês</b>.'},
+ {q:'Para marcar o ponto (4, −2) no plano cartesiano, saindo da origem, você deve:',
+  o:['andar 4 para a direita e 2 para baixo','andar 4 para a esquerda e 2 para cima','andar 2 para a direita e 4 para baixo','andar 4 para a direita e 2 para cima'],c:0,
+  e:'<b>Passo 1.</b> O x é 4 (positivo): 4 para a direita.<br><b>Passo 2.</b> O y é −2 (negativo): 2 para baixo.'}
+];
+let score=0; const qz=document.getElementById('quiz'), sc=document.getElementById('score'); const L='ABCD';
+Q.forEach((it,n)=>{
+  const d=document.createElement('div'); d.className='q';
+  d.innerHTML=`<div><span class="qn">Questão ${n+1}.</span> ${it.q}</div><div class="opts"></div><div class="exp"></div>`;
+  d.querySelectorAll('.plane').forEach(drawPlane); d.querySelectorAll('.bars').forEach(drawBars);
+  const os=d.querySelector('.opts'), ex=d.querySelector('.exp');
+  it.o.forEach((t,i)=>{
+    const b=document.createElement('button'); b.className='opt';
+    b.innerHTML=`<span class="L">${L[i]}</span><span>${t}</span>`;
+    b.onclick=()=>{
+      const bs=[...os.children]; bs.forEach(x=>x.disabled=true);
+      bs[it.c].classList.add('right'); bs[it.c].querySelector('.L').textContent='✓ '+L[it.c];
+      if(i===it.c){score++;ex.innerHTML='<b>✓ Isso mesmo!</b><br>'+it.e;}
+      else{b.classList.add('wrong');b.querySelector('.L').textContent='↻ '+L[i];ex.innerHTML='<b>Quase! Revê os passos:</b><br>'+it.e;}
+      ex.classList.add('show'); sc.textContent='Acertos: '+score+' de '+Q.length;
+    };
+    os.appendChild(b);
+  });
+  qz.appendChild(d);
+});
+go(0);
+</script>
+</body>
+</html>
