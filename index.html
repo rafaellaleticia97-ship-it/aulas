@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Probabilidade e Frequência — 7º ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F4FC; --ind:#362F78; --ind-d:#241F52; --ind-s:#6C63B5;
+  --mint:#A9E5D0; --coral:#FFB3A0; --coral-d:#E4694F; --yel:#FFDD73;
+  --txt:#2A2650; --txt2:#5B5686; --line:#E3DEF7; --ok:#1E7A55; --okbg:#E3F6EE; --no:#B3402A; --nobg:#FFEDE8;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:'Atkinson Hyperlegible',system-ui,sans-serif;line-height:1.55;overflow-x:hidden}
+h1,h2,h3,.baloo{font-family:'Baloo 2',system-ui,sans-serif}
+h1{font-size:1.8rem;line-height:1.1;margin:.2rem 0 .3rem;color:var(--ind-d);font-weight:800}
+h2{font-size:1.45rem;line-height:1.15;margin:.3rem 0 .6rem;color:var(--ind-d);font-weight:800}
+h3{font-size:1.15rem;margin:1.1rem 0 .4rem;color:var(--ind);font-weight:700}
+p{margin:.5rem 0}
+b,strong{color:var(--ind-d)}
+
+/* fundo */
+.bg-sym{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-sym span{position:absolute;font-family:'Baloo 2';font-weight:700;color:var(--ind);opacity:.08;animation:drift 38s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(30px,-40px) rotate(14deg)}}
+@media (prefers-reduced-motion:reduce){.bg-sym span{animation:none}*{transition:none!important}}
+
+/* progresso */
+.progress{position:sticky;top:0;z-index:20;background:rgba(246,244,252,.95);backdrop-filter:blur(6px);padding:.45rem 1rem .4rem;border-bottom:1px solid var(--line)}
+.track{height:7px;border-radius:9px;background:var(--line);overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--ind-s),var(--ind));border-radius:9px;transition:width .35s}
+.plabel{font-family:'Baloo 2';font-weight:600;font-size:.8rem;color:var(--txt2);margin-top:.15rem}
+
+.wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:1rem 1rem 2rem}
+header .kicker{font-family:'Baloo 2';font-weight:700;color:var(--coral-d);font-size:.85rem;letter-spacing:.04em;text-transform:uppercase}
+header .sub{color:var(--txt2);margin:0 0 .6rem}
+
+.tabs{display:flex;flex-wrap:wrap;gap:5px;margin:.4rem 0 1rem}
+.tabs button{font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ind);cursor:pointer}
+.tabs button.active{background:var(--ind);border-color:var(--ind);color:#fff}
+.tabs button:focus-visible,.btn:focus-visible,.opt:focus-visible{outline:3px solid var(--yel);outline-offset:2px}
+
+section.part{display:none}
+section.part.active{display:block;animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.1rem 1.15rem;box-shadow:0 6px 22px rgba(54,47,120,.07);margin-bottom:1rem}
+.eyebrow{display:inline-block;font-family:'Baloo 2';font-weight:700;font-size:.78rem;padding:2px 11px;border-radius:99px;background:var(--mint);color:var(--ind-d);margin-bottom:.3rem}
+.eyebrow.rev{background:var(--yel)}
+.eyebrow.livro{background:var(--coral)}
+
+.think{background:#EEEBFA;border-radius:14px;padding:.8rem 1rem;margin:.9rem 0}
+.think .t{font-family:'Baloo 2';font-weight:700;color:var(--ind);font-size:1rem}
+.tip{background:#FFF8E6;border-left:7px solid var(--yel);border-radius:10px 14px 14px 10px;padding:.75rem 1rem;margin:.9rem 0}
+.tip .t{font-family:'Baloo 2';font-weight:700;color:#8A6400;font-size:1rem}
+.copy{border:2.5px dashed #3BA77A;background:#F3FBF7;border-radius:14px;padding:.8rem 1rem;margin:1rem 0}
+.copy .t{font-family:'Baloo 2';font-weight:700;color:#1E7A55;font-size:1rem}
+
+.steps{margin:.6rem 0;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;position:relative;padding:.35rem 0 .35rem 2.3rem}
+.steps li::before{content:counter(s);position:absolute;left:0;top:.35rem;width:1.65rem;height:1.65rem;border-radius:50%;background:var(--ind);color:#fff;font-family:'Baloo 2';font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-family:'Baloo 2';font-weight:700;line-height:1.05;margin:0 .15em}
+.frac span:first-child{border-bottom:2px solid currentColor;padding:0 .2em}
+.math{font-family:'Baloo 2';font-weight:600;font-size:1.12rem;color:var(--ind-d);text-align:center;margin:.6rem 0;line-height:1.9}
+.hl{background:var(--yel);border-radius:6px;padding:0 .25em}
+
+table.t{border-collapse:collapse;margin:.7rem auto;font-size:.95rem;min-width:220px}
+table.t th{background:var(--ind);color:#fff;font-family:'Baloo 2';font-weight:600;padding:.35rem .8rem}
+table.t td{border:1px solid var(--line);padding:.3rem .8rem;text-align:center;background:#fff}
+table.t tr.tot td{background:#EEEBFA;font-weight:700}
+table.t tr.mark td{background:#FFF1CC}
+table.book th{background:#D9F0E2;color:var(--txt);border:1px solid #9CCFB1}
+table.book td{border:1px solid #9CCFB1}
+table.book td.l{text-align:left}
+
+/* try-box */
+.try{border:2px dashed var(--ind-s);border-radius:16px;padding:.85rem 1rem;margin:1rem 0;background:#FCFBFF}
+.try .t{font-family:'Baloo 2';font-weight:700;color:var(--ind)}
+.try .row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.5rem}
+.try input{font:inherit;font-size:1.05rem;width:7.5rem;padding:.4rem .6rem;border:2px solid var(--line);border-radius:10px;color:var(--txt)}
+.try input:focus{outline:none;border-color:var(--ind-s)}
+.btn{font-family:'Baloo 2';font-weight:700;font-size:.95rem;border:none;border-radius:11px;padding:.42rem 1rem;cursor:pointer;background:var(--ind);color:#fff}
+.btn.sec{background:#fff;color:var(--ind);border:2px solid var(--ind-s)}
+.btn.coral{background:var(--coral-d)}
+.fb{margin-top:.5rem;border-radius:10px;padding:.5rem .75rem;display:none;font-size:.95rem}
+.fb.ok{display:block;background:var(--okbg);color:var(--ok)}
+.fb.no{display:block;background:var(--nobg);color:var(--no)}
+
+/* gancho */
+.choices{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
+.die-row{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin:.8rem 0}
+.die{width:52px;height:52px}
+
+/* quiz */
+.score{display:flex;justify-content:space-between;align-items:center;background:var(--ind);color:#fff;border-radius:14px;padding:.55rem 1rem;font-family:'Baloo 2';font-weight:700;margin-bottom:.8rem}
+.q{border-top:1px solid var(--line);padding:.9rem 0}
+.q:first-of-type{border-top:none}
+.q .n{font-family:'Baloo 2';font-weight:800;color:var(--coral-d)}
+.opts{display:grid;gap:.45rem;margin-top:.55rem}
+.opt{text-align:left;font:inherit;padding:.55rem .8rem;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--txt);cursor:pointer;display:flex;gap:.6rem;align-items:center}
+.opt .L{font-family:'Baloo 2';font-weight:800;color:var(--ind);min-width:1.2rem}
+.opt:hover:not([disabled]){border-color:var(--ind-s)}
+.opt.right{border-color:#3BA77A;background:var(--okbg)}
+.opt.wrong{border-color:var(--coral-d);background:var(--nobg)}
+.opt[disabled]{cursor:default}
+.expl{display:none;margin-top:.55rem;background:#F6F4FC;border-radius:12px;padding:.6rem .85rem;font-size:.95rem}
+.expl.show{display:block}
+
+/* livro */
+.ativ{border:1px solid var(--line);border-radius:14px;padding:.9rem 1rem;margin:.9rem 0;background:#fff}
+.num{display:inline-flex;align-items:center;justify-content:center;background:#F29A2E;color:#fff;font-family:'Baloo 2';font-weight:800;border-radius:4px;min-width:1.7rem;padding:0 .3rem;margin-right:.35rem}
+.ans{display:none;color:#1C8FC9;border-bottom:1px dotted #1C8FC9;margin-top:.35rem;padding-bottom:.2rem}
+.ans.show{display:block}
+.reveal{margin-top:.35rem;font-size:.85rem;padding:.25rem .8rem}
+.item{margin:.6rem 0}
+.flex{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;justify-content:center}
+
+/* simulador */
+.sim-btns{display:flex;flex-wrap:wrap;gap:.45rem;margin:.7rem 0}
+.bars{margin:.6rem 0}
+.bar{margin:.5rem 0}
+.bar .lab{font-family:'Baloo 2';font-weight:600;font-size:.95rem;display:flex;justify-content:space-between}
+.bar .trk{position:relative;height:22px;background:#EEEBFA;border-radius:8px;overflow:visible}
+.bar .f{height:100%;border-radius:8px;transition:width .4s}
+.bar .teo{position:absolute;top:-5px;bottom:-5px;width:3px;background:var(--ind-d);border-radius:2px}
+.legend{font-size:.85rem;color:var(--txt2)}
+.big{font-family:'Baloo 2';font-weight:800;font-size:1.5rem;color:var(--ind)}
+
+.nav{display:flex;justify-content:space-between;margin-top:1rem}
+.nav button{font-family:'Baloo 2';font-weight:600;font-size:11px;padding:4px 9px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ind);cursor:pointer}
+.nav button[disabled]{opacity:.35;cursor:default}
+
+.resumo p{text-align:justify}
+
+@media (max-width:600px){
+  table.t{font-size:.82rem;min-width:0;max-width:100%}
+  table.t th,table.t td{padding:.25rem .4rem}
+}
+@media (min-width:900px){
+  html{font-size:18px}
+  .wrap{max-width:980px;padding:1.4rem 2rem 3rem}
+  h1{font-size:2.3rem} h2{font-size:1.75rem}
+  .card{padding:1.5rem 1.8rem}
+  .die{width:66px;height:66px}
+  .opts{grid-template-columns:1fr 1fr}
+  .tabs button,.nav button{font-size:12px}
+}
+@media (min-width:1500px){
+  html{font-size:23px}
+  .wrap{max-width:1380px}
+  .die{width:90px;height:90px}
+  .tabs button,.nav button{font-size:15px;padding:5px 12px}
+  .track{height:10px}
+  .bar .trk{height:30px}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-sym" aria-hidden="true" id="bg"></div>
+
+<div class="progress" role="status" aria-live="polite">
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div class="plabel" id="plabel">Parte 1 de 8</div>
+</div>
+
+<div class="wrap">
+<header>
+  <div class="kicker">Matemática · 7º ano · Capítulo 10</div>
+  <h1>Probabilidade e frequência</h1>
+  <p class="sub">Como medir a chance de algo acontecer — pela conta e pelo que já aconteceu.</p>
+  <nav class="tabs" id="tabs" aria-label="Partes da aula"></nav>
+</header>
+
+<!-- PARTE 1 -->
+<section class="part" data-name="Começo">
+<div class="card">
+  <span class="eyebrow">Parte 1</span>
+  <h2>Qual é mais fácil?</h2>
+  <p>Você vai jogar um dado comum uma vez. Ele tem seis faces, numeradas de 1 a 6.</p>
+  <div class="die-row" aria-hidden="true" id="dice"></div>
+  <p><b>O que é mais fácil acontecer: sair o número 6 ou sair um número par?</b></p>
+  <div class="choices">
+    <button class="btn sec" onclick="hook(0)">Sair o 6</button>
+    <button class="btn sec" onclick="hook(1)">Sair um número par</button>
+    <button class="btn sec" onclick="hook(2)">Têm a mesma chance</button>
+  </div>
+  <div class="fb" id="hookfb"></div>
+  <div id="hookmore" style="display:none">
+    <p>Você acabou de comparar <b>chances</b>. Em matemática, a chance de algo acontecer se chama <b>probabilidade</b>. Nesta aula você vai aprender a dar um número para essa chance, e a escrever esse número em porcentagem.</p>
+  </div>
+</div>
+</section>
+
+<!-- PARTE 2 -->
+<section class="part" data-name="Revisão: fração em %">
+<div class="card">
+  <span class="eyebrow rev">Revisão</span>
+  <h2>Transformar fração em porcentagem</h2>
+  <p>No começo do capítulo você usou a regra de três para trabalhar com porcentagem. Vamos usar a mesma ideia agora, porque toda resposta de probabilidade pode ser escrita em porcentagem.</p>
+  <p>Porcentagem é uma fração com denominador 100. Então, para transformar uma fração em porcentagem, procuramos o número <b>x</b> que deixa as duas frações iguais:</p>
+  <h3>Exemplo: quanto é <span class="frac"><span>7</span><span>20</span></span> em porcentagem?</h3>
+  <ol class="steps">
+    <li>Monte a igualdade: <span class="frac"><span>x</span><span>100</span></span> = <span class="frac"><span>7</span><span>20</span></span></li>
+    <li>Multiplique cruzado: 20 · x = 7 · 100, ou seja, 20 · x = 700.</li>
+    <li>Descubra o x: x = 700 ÷ 20 = <b>35</b>.</li>
+    <li>Escreva a resposta: <span class="frac"><span>7</span><span>20</span></span> = <span class="hl">35%</span>.</li>
+  </ol>
+  <div class="tip">
+    <div class="t">💡 Dica: o atalho do 100</div>
+    <p>Quando o denominador cabe certinho em 100, dá para ir mais rápido. Como 20 × 5 = 100, multiplique em cima e embaixo por 5: <span class="frac"><span>7</span><span>20</span></span> = <span class="frac"><span>35</span><span>100</span></span> = 35%. Funciona com denominadores como 2, 4, 5, 10, 20, 25 e 50.</p>
+  </div>
+  <div class="try" data-ans="12">
+    <div class="t">Agora é sua vez</div>
+    <p>Quanto é <span class="frac"><span>3</span><span>25</span></span> em porcentagem?</p>
+    <div class="row"><input inputmode="decimal" aria-label="Resposta em porcentagem"> % <button class="btn">Conferir</button></div>
+    <div class="fb" data-hint="Quase! Como 25 × 4 = 100, multiplique o 3 também por 4."></div>
+  </div>
+  <div class="try" data-ans="45">
+    <div class="t">Mais uma</div>
+    <p>Quanto é <span class="frac"><span>9</span><span>20</span></span> em porcentagem?</p>
+    <div class="row"><input inputmode="decimal" aria-label="Resposta em porcentagem"> % <button class="btn">Conferir</button></div>
+    <div class="fb" data-hint="Revê esse passo: 20 × 5 = 100, então multiplique o 9 por 5."></div>
+  </div>
+</div>
+</section>
+
+<!-- PARTE 3 -->
+<section class="part" data-name="Probabilidade teórica">
+<div class="card">
+  <span class="eyebrow">Parte 3</span>
+  <h2>Probabilidade teórica: calcular pela conta</h2>
+  <p>Quando todos os resultados têm a mesma chance de acontecer, a probabilidade é a fração que compara o que você quer que aconteça com tudo o que pode acontecer.</p>
+  <div class="math">P = <span class="frac"><span>número de casos que eu quero</span><span>total de casos possíveis</span></span></div>
+  <p>Os casos que você quer são chamados de <b>casos favoráveis</b>. A letra <b>P</b> vem de "probabilidade", e entre parênteses escrevemos o que queremos que aconteça, como P(sair 6).</p>
+
+  <div class="think">
+    <div class="t">🧠 Pense assim</div>
+    <p>Uma rifa vendeu 100 bilhetes, e você comprou 3. Só um bilhete vai ser sorteado. Você tem 3 bilhetes entre 100 possíveis, então a sua chance é <span class="frac"><span>3</span><span>100</span></span>, ou seja, 3%. Se você tivesse comprado 50 bilhetes, sua chance seria 50%, metade da rifa.</p>
+  </div>
+
+  <h3>Voltando ao dado do começo</h3>
+  <p>O dado tem 6 resultados possíveis. Só uma face tem o 6, então P(sair 6) = <span class="frac"><span>1</span><span>6</span></span>. Já os números pares são 2, 4 e 6, que são 3 faces, então P(sair par) = <span class="frac"><span>3</span><span>6</span></span> = <span class="frac"><span>1</span><span>2</span></span> = 50%.</p>
+
+  <h3>Exemplo passo a passo</h3>
+  <p>Um pote tem 20 fichas: 8 azuis, 7 amarelas e 5 vermelhas. Uma ficha é sorteada sem olhar. Qual é a probabilidade de sair uma ficha amarela?</p>
+  <table class="t">
+    <tr><th>Cor</th><th>Quantidade</th></tr>
+    <tr><td>Azul</td><td>8</td></tr>
+    <tr class="mark"><td>Amarela ← a que eu quero</td><td>7</td></tr>
+    <tr><td>Vermelha</td><td>5</td></tr>
+    <tr class="tot"><td>Total</td><td>20</td></tr>
+  </table>
+  <ol class="steps">
+    <li>Conte os casos favoráveis: há <b>7</b> fichas amarelas.</li>
+    <li>Conte o total de casos possíveis: há <b>20</b> fichas no pote.</li>
+    <li>Monte a fração: P(amarela) = <span class="frac"><span>7</span><span>20</span></span>.</li>
+    <li>Transforme em porcentagem: <span class="frac"><span>7</span><span>20</span></span> = <span class="frac"><span>35</span><span>100</span></span> = <span class="hl">35%</span>.</li>
+  </ol>
+
+  <div class="tip">
+    <div class="t">💡 Dica: leia o que a pergunta quer</div>
+    <p>Quando a pergunta fala de um <b>grupo</b> de resultados, como "número par" ou "número maior que 4", primeiro liste todos os resultados desse grupo. Num dado, "maior que 4" são só o 5 e o 6 (o 4 não entra, porque 4 não é maior que 4). Então P(maior que 4) = <span class="frac"><span>2</span><span>6</span></span>.</p>
+  </div>
+
+  <div class="tip">
+    <div class="t">💡 Dica: "1 a cada…"</div>
+    <p>Frases como "1 a cada 10 peças tem defeito" já dão a fração pronta: são 1 caso favorável em 10. A probabilidade é <span class="frac"><span>1</span><span>10</span></span> = 10%. Cuidado para não responder 10% só porque apareceu o número 10: se fosse "1 a cada 50", a resposta seria <span class="frac"><span>1</span><span>50</span></span> = 2%.</p>
+  </div>
+
+  <div class="copy">
+    <div class="t">✏️ Copie no caderno</div>
+    <p><b>Probabilidade teórica</b> é a chance de um resultado acontecer, calculada sem fazer o experimento, quando todos os resultados têm a mesma chance. Ela é a fração entre o número de casos favoráveis (os que eu quero) e o número total de casos possíveis. Essa fração pode ser escrita em porcentagem.</p>
+    <p style="text-align:center"><b>P = casos favoráveis ÷ total de casos possíveis</b></p>
+  </div>
+
+  <div class="try" data-ans="30">
+    <div class="t">Agora é sua vez</div>
+    <p>Uma caixa tem 10 fichas numeradas de 1 a 10. Qual é a probabilidade de sortear um número que seja múltiplo de 3? Responda em porcentagem.</p>
+    <div class="row"><input inputmode="decimal" aria-label="Resposta em porcentagem"> % <button class="btn">Conferir</button></div>
+    <div class="fb" data-hint="Quase! Liste os múltiplos de 3 de 1 a 10: 3, 6 e 9. São quantos em 10?"></div>
+  </div>
+  <div class="try" data-ans="4">
+    <div class="t">Mais uma</div>
+    <p>Em uma fábrica de canetas, 1 a cada 25 canetas sai falhando. Qual é a probabilidade de uma caneta escolhida ao acaso sair falhando? Responda em porcentagem.</p>
+    <div class="row"><input inputmode="decimal" aria-label="Resposta em porcentagem"> % <button class="btn">Conferir</button></div>
+    <div class="fb" data-hint="Revê esse passo: a fração é 1/25. Como 25 × 4 = 100, multiplique o 1 também por 4."></div>
+  </div>
+</div>
+</section>
+
+<!-- PARTE 4 -->
+<section class="part" data-name="Frequência e probabilidade experimental">
+<div class="card">
+  <span class="eyebrow">Parte 4</span>
+  <h2>Frequência e probabilidade experimental</h2>
+  <p>Nem sempre dá para calcular a chance só pensando. Às vezes a gente precisa <b>repetir um experimento</b> várias vezes e anotar o que aconteceu.</p>
+  <p>O número de vezes que um resultado apareceu se chama <b>frequência</b>. Com as frequências, calculamos a <b>probabilidade experimental</b>:</p>
+  <div class="math">P = <span class="frac"><span>frequência do resultado</span><span>total de repetições</span></span></div>
+
+  <div class="think">
+    <div class="t">🧠 Pense assim</div>
+    <p>Ninguém consegue calcular pela conta a chance de um jogador de basquete acertar um lance livre. O que o técnico faz é olhar o que já aconteceu: se o jogador cobrou 40 lances e acertou 26, ele estima que a chance de acerto é <span class="frac"><span>26</span><span>40</span></span> = 65%. Isso é probabilidade experimental: uma estimativa feita a partir do que foi observado.</p>
+  </div>
+
+  <h3>Exemplo passo a passo</h3>
+  <p>Um dado foi lançado 50 vezes, e os resultados foram anotados nesta tabela de frequência:</p>
+  <table class="t">
+    <tr><th>Número</th><th>Frequência</th></tr>
+    <tr><td>1</td><td>9</td></tr>
+    <tr class="mark"><td>2</td><td>7</td></tr>
+    <tr><td>3</td><td>10</td></tr>
+    <tr class="mark"><td>4</td><td>8</td></tr>
+    <tr><td>5</td><td>6</td></tr>
+    <tr class="mark"><td>6</td><td>10</td></tr>
+    <tr class="tot"><td>Total</td><td>50</td></tr>
+  </table>
+  <p><b>Pergunta:</b> com base nesses resultados, qual é a probabilidade de sair um número par?</p>
+  <ol class="steps">
+    <li>Encontre na tabela os números pares: 2, 4 e 6 (as linhas destacadas).</li>
+    <li>Some as frequências deles: 7 + 8 + 10 = <b>25</b> vezes saiu número par.</li>
+    <li>Veja o total de lançamentos na última linha: <b>50</b>.</li>
+    <li>Monte a fração: P(par) = <span class="frac"><span>25</span><span>50</span></span>.</li>
+    <li>Transforme em porcentagem: <span class="frac"><span>25</span><span>50</span></span> = <span class="frac"><span>50</span><span>100</span></span> = <span class="hl">50%</span>.</li>
+  </ol>
+
+  <div class="tip">
+    <div class="t">💡 Dica: o denominador é o total de lançamentos, não 6</div>
+    <p>Quando a pergunta diz "considerando estes resultados" ou "com base na tabela", a conta usa a frequência. O denominador é o <b>total de repetições do experimento</b> (aqui, 50), e não as 6 faces do dado. Dividir por 6 seria calcular a probabilidade teórica, que é outra pergunta.</p>
+  </div>
+
+  <div class="tip">
+    <div class="t">💡 Dica: quando a tabela não traz o total</div>
+    <p>Algumas tabelas mostram "acertos" e "erros" separados, sem a linha de total. O total de tentativas é a soma dos dois. Quem acertou 12 e errou 28 fez 12 + 28 = 40 tentativas, então a probabilidade de acerto é <span class="frac"><span>12</span><span>40</span></span>, e não <span class="frac"><span>12</span><span>28</span></span>.</p>
+  </div>
+
+  <p>Quando só conseguimos encontrar a probabilidade observando os resultados de um experimento, ela também é chamada de <b>probabilidade frequentista</b>, porque depende da frequência com que cada resultado aparece.</p>
+
+  <div class="copy">
+    <div class="t">✏️ Copie no caderno</div>
+    <p><b>Frequência</b> é o número de vezes que um resultado aparece quando repetimos um experimento. <b>Probabilidade experimental</b> é a chance estimada a partir desses resultados: dividimos a frequência do resultado que queremos pelo total de repetições do experimento. Se o resultado que queremos é um grupo (por exemplo, "número par"), somamos as frequências de todos os resultados desse grupo antes de dividir.</p>
+    <p style="text-align:center"><b>P = frequência do resultado ÷ total de repetições</b></p>
+  </div>
+
+  <div class="try" data-ans="18">
+    <div class="t">Agora é sua vez</div>
+    <p>Usando a tabela dos 50 lançamentos acima, qual é a probabilidade experimental de sair o número 1? Responda em porcentagem.</p>
+    <div class="row"><input inputmode="decimal" aria-label="Resposta em porcentagem"> % <button class="btn">Conferir</button></div>
+    <div class="fb" data-hint="Quase! O 1 saiu 9 vezes em 50 lançamentos. Como 50 × 2 = 100, faça 9 × 2."></div>
+  </div>
+  <div class="try" data-ans="32">
+    <div class="t">Mais uma</div>
+    <p>Ainda com a mesma tabela, qual é a probabilidade experimental de sair um número maior que 4? Responda em porcentagem.</p>
+    <div class="row"><input inputmode="decimal" aria-label="Resposta em porcentagem"> % <button class="btn">Conferir</button></div>
+    <div class="fb" data-hint="Revê esse passo: maior que 4 são o 5 e o 6. Some 6 + 10 e divida por 50."></div>
+  </div>
+</div>
+</section>
+
+<!-- PARTE 5 -->
+<section class="part" data-name="Teórica × experimental">
+<div class="card">
+  <span class="eyebrow">Parte 5</span>
+  <h2>Teórica × experimental</h2>
+  <p>Em um saco há <b>4 bolinhas</b>: 3 vermelhas e 1 azul. A cada sorteio, uma bolinha é retirada sem olhar, a cor é anotada e ela volta para o saco.</p>
+  <div class="flex">
+    <svg viewBox="0 0 170 130" width="170" height="130" role="img" aria-label="Saco com 3 bolinhas vermelhas e 1 azul">
+      <path d="M45 30 Q30 120 85 122 Q140 120 125 30 Z" fill="#F1ECFF" stroke="#6C63B5" stroke-width="3"/>
+      <path d="M45 30 Q85 15 125 30" fill="none" stroke="#6C63B5" stroke-width="3"/>
+      <circle cx="68" cy="70" r="15" fill="#E4694F" stroke="#fff" stroke-width="2"/><text x="68" y="75" text-anchor="middle" font-size="13" fill="#fff" font-family="Baloo 2" font-weight="700">V</text>
+      <circle cx="102" cy="70" r="15" fill="#E4694F" stroke="#fff" stroke-width="2"/><text x="102" y="75" text-anchor="middle" font-size="13" fill="#fff" font-family="Baloo 2" font-weight="700">V</text>
+      <circle cx="68" cy="100" r="15" fill="#E4694F" stroke="#fff" stroke-width="2"/><text x="68" y="105" text-anchor="middle" font-size="13" fill="#fff" font-family="Baloo 2" font-weight="700">V</text>
+      <circle cx="102" cy="100" r="15" fill="#362F78" stroke="#fff" stroke-width="2"/><text x="102" y="105" text-anchor="middle" font-size="13" fill="#fff" font-family="Baloo 2" font-weight="700">A</text>
+    </svg>
+    <div>
+      <p style="margin:.2rem 0">Pela conta (probabilidade teórica):</p>
+      <p style="margin:.2rem 0">P(vermelha) = <span class="frac"><span>3</span><span>4</span></span> = <b>75%</b></p>
+      <p style="margin:.2rem 0">P(azul) = <span class="frac"><span>1</span><span>4</span></span> = <b>25%</b></p>
+    </div>
+  </div>
+  <p>Agora faça os sorteios e compare o que acontece de verdade com a conta. Observe o que muda quando o número de sorteios fica grande.</p>
+  <div class="sim-btns">
+    <button class="btn" onclick="sim(10)">+ 10 sorteios</button>
+    <button class="btn" onclick="sim(100)">+ 100 sorteios</button>
+    <button class="btn" onclick="sim(1000)">+ 1000 sorteios</button>
+    <button class="btn sec" onclick="simReset()">Recomeçar</button>
+  </div>
+  <p>Total de sorteios: <span class="big" id="simN">0</span></p>
+  <table class="t">
+    <tr><th>Cor</th><th>Frequência</th><th>Prob. experimental</th><th>Prob. teórica</th></tr>
+    <tr><td>Vermelha</td><td id="fV">0</td><td id="pV">—</td><td>75%</td></tr>
+    <tr><td>Azul</td><td id="fA">0</td><td id="pA">—</td><td>25%</td></tr>
+    <tr class="tot"><td>Total</td><td id="fT">0</td><td></td><td></td></tr>
+  </table>
+  <div class="bars" aria-hidden="true">
+    <div class="bar"><div class="lab"><span>Vermelha</span><span id="bVt">—</span></div><div class="trk"><div class="f" id="bV" style="width:0;background:#E4694F"></div><div class="teo" style="left:75%"></div></div></div>
+    <div class="bar"><div class="lab"><span>Azul</span><span id="bAt">—</span></div><div class="trk"><div class="f" id="bA" style="width:0;background:#362F78"></div><div class="teo" style="left:25%"></div></div></div>
+    <p class="legend">A barrinha escura vertical marca a probabilidade teórica.</p>
+  </div>
+  <div class="fb" id="simMsg"></div>
+
+  <p>Com poucos sorteios, a probabilidade experimental pode ficar bem longe da teórica. Com muitos sorteios, ela fica cada vez mais perto. Essa propriedade tem um nome:</p>
+  <div class="copy">
+    <div class="t">✏️ Copie no caderno</div>
+    <p><b>Lei dos grandes números:</b> quando um experimento aleatório é repetido muitas vezes, a probabilidade experimental de um resultado tende a ficar cada vez mais próxima da probabilidade teórica desse resultado.</p>
+  </div>
+  <div class="tip">
+    <div class="t">💡 Dica: probabilidade não é garantia</div>
+    <p>A probabilidade de sair cara numa moeda é 50%, mas isso não quer dizer que em 10 lançamentos vão sair exatamente 5 caras. Pode sair 3, pode sair 7. O que a lei dos grandes números diz é que, em muitos lançamentos, a porcentagem de caras vai ficar perto de 50%.</p>
+  </div>
+</div>
+</section>
+
+<!-- PARTE 6 QUIZ -->
+<section class="part" data-name="Quiz">
+<div class="card">
+  <span class="eyebrow">Parte 6 · Treino</span>
+  <h2>Quiz</h2>
+  <div class="score"><span>Acertos</span><span id="score">0 de 10</span></div>
+  <div id="quiz"></div>
+</div>
+</section>
+
+<!-- PARTE 7 LIVRO -->
+<section class="part" data-name="Direto do livro">
+<div class="card">
+  <span class="eyebrow livro">Direto do livro</span>
+  <h2>Atividades 17, 18 e 19</h2>
+
+  <div class="ativ">
+    <p><span class="num">17</span>Uma oficina mecânica verificou os pneus de 50 carros. A tabela a seguir mostra o resultado:</p>
+    <table class="t book">
+      <tr><td class="l"><b>Carros com pneus danificados</b></td><td>19</td></tr>
+      <tr><td class="l"><b>Carros com pneus em bom estado</b></td><td>31</td></tr>
+      <tr><td class="l" style="background:#D9F0E2"><b>Total</b></td><td style="background:#D9F0E2"><b>50</b></td></tr>
+    </table>
+    <p>Faça uma estimativa de qual a probabilidade de que o próximo carro a ser testado tenha pneus danificados.</p>
+    <button class="btn sec reveal">Ver resposta</button>
+    <div class="ans">P = <span class="frac"><span>19</span><span>50</span></span> = 0,38 = 38%</div>
+  </div>
+
+  <div class="ativ">
+    <p><span class="num">18</span>João, Patrícia e Cristiane estão tentando acertar um dado bem no centro do alvo. A tabela a seguir indica os resultados que cada um obteve praticando em uma manhã.</p>
+    <div class="flex">
+      <table class="t book">
+        <tr><th>Jogador</th><th>Acertos</th><th>Erros</th></tr>
+        <tr><td class="l">João</td><td>18</td><td>65</td></tr>
+        <tr><td class="l">Patrícia</td><td>22</td><td>79</td></tr>
+        <tr><td class="l">Cristiane</td><td>16</td><td>59</td></tr>
+      </table>
+      <svg viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Alvo de dardos">
+        <circle cx="60" cy="60" r="56" fill="#222"/><circle cx="60" cy="60" r="47" fill="#fff"/><circle cx="60" cy="60" r="38" fill="#222"/><circle cx="60" cy="60" r="29" fill="#fff"/><circle cx="60" cy="60" r="20" fill="#222"/><circle cx="60" cy="60" r="11" fill="#fff"/><circle cx="60" cy="60" r="4" fill="#E4694F"/>
+        <line x1="62" y1="57" x2="30" y2="35" stroke="#E4694F" stroke-width="3"/><polygon points="28,30 24,38 33,36" fill="#E4694F"/>
+      </svg>
+    </div>
+    <p>Com base nisso, faça o que se pede.</p>
+    <div class="item">
+      <p>a) Estime a probabilidade de acerto de cada jogador.</p>
+      <button class="btn sec reveal">Ver resposta</button>
+      <div class="ans">
+        P(João) = <span class="frac"><span>18</span><span>(18 + 65)</span></span> = <span class="frac"><span>18</span><span>83</span></span> ≈ 0,2169<br>
+        P(Patrícia) = <span class="frac"><span>22</span><span>(22 + 79)</span></span> = <span class="frac"><span>22</span><span>101</span></span> ≈ 0,2178<br>
+        P(Cristiane) = <span class="frac"><span>16</span><span>(16 + 59)</span></span> = <span class="frac"><span>16</span><span>75</span></span> ≈ 0,2133
+      </div>
+    </div>
+    <div class="item">
+      <p>b) Qual jogador teve o melhor desempenho?</p>
+      <button class="btn sec reveal">Ver resposta</button>
+      <div class="ans">Patrícia, pois sua probabilidade de acertos é a maior.</div>
+    </div>
+  </div>
+
+  <div class="ativ">
+    <p><span class="num">19</span>Para verificar se um dado é honesto, efetuaram-se 200 lançamentos com ele, observando quantas vezes cada um de seus números aparecia. Por meio deles se construiu a tabela:</p>
+    <table class="t book">
+      <tr><th>Número</th><th>Frequência</th></tr>
+      <tr><td>1</td><td>37</td></tr><tr><td>2</td><td>45</td></tr><tr><td>3</td><td>40</td></tr>
+      <tr><td>4</td><td>9</td></tr><tr><td>5</td><td>30</td></tr><tr><td>6</td><td>39</td></tr>
+      <tr><td style="background:#D9F0E2"><b>Total</b></td><td style="background:#D9F0E2"><b>200</b></td></tr>
+    </table>
+    <p>Com base nas informações apresentadas na tabela,</p>
+    <div class="item">
+      <p>a) o dado é equilibrado? Explique sua resposta.</p>
+      <button class="btn sec reveal">Ver resposta</button>
+      <div class="ans">Não parece ser equilibrado, pois a probabilidade de sair um 4 é muito menor que as outras.</div>
+    </div>
+    <div class="item">
+      <p>b) faça uma estimativa de se ter um número par no lançamento do dado.</p>
+      <button class="btn sec reveal">Ver resposta</button>
+      <div class="ans">Temos para um número par o total de 45 + 9 + 39 = 93. Logo, a probabilidade será de: <span class="frac"><span>93</span><span>200</span></span> = 0,465 = 46,5%</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PARTE 8 RESUMO -->
+<section class="part" data-name="Resumo pro caderno">
+<div class="card resumo">
+  <span class="eyebrow">Resumo pro caderno</span>
+  <h2>Probabilidade e frequência</h2>
+  <p>Probabilidade é a medida da chance de um resultado acontecer. Ela é sempre uma fração em que o número de cima conta os casos que nos interessam e o número de baixo conta o total, e essa fração pode ser escrita em porcentagem. Para transformar a fração em porcentagem, usamos a regra de três, montando a igualdade x/100 = fração; quando o denominador cabe certinho em 100, basta multiplicar em cima e embaixo pelo mesmo número até chegar a 100 embaixo.</p>
+  <p>A probabilidade teórica é calculada sem fazer o experimento, quando todos os resultados têm a mesma chance. Ela é igual ao número de casos favoráveis dividido pelo total de casos possíveis. Por exemplo, num dado comum há 6 resultados possíveis e 3 deles são pares (2, 4 e 6), então a probabilidade de sair um número par é 3/6, que é igual a 50%. Uma frase como "1 a cada 25 peças tem defeito" já mostra a fração 1/25, que é igual a 4%.</p>
+  <p>Frequência é o número de vezes que um resultado aparece quando repetimos um experimento. A probabilidade experimental é calculada dividindo a frequência do resultado que queremos pelo total de repetições do experimento. Se a pergunta pede um grupo de resultados, como "número par", somamos as frequências de todos os resultados do grupo antes de dividir. O denominador é sempre o total de vezes que o experimento foi feito, e não o número de faces do dado. Quando a tabela mostra acertos e erros separados, o total de tentativas é a soma dos dois.</p>
+  <p>A lei dos grandes números diz que, quando repetimos um experimento aleatório muitas vezes, a probabilidade experimental fica cada vez mais próxima da probabilidade teórica. Com poucas repetições, os resultados podem ficar longe do esperado, mas isso não significa que a conta está errada: probabilidade indica a chance, e não garante o que vai acontecer em poucas tentativas.</p>
+</div>
+</section>
+
+<div class="nav">
+  <button id="prev" onclick="go(cur-1)">← Voltar</button>
+  <button id="next" onclick="go(cur+1)">Avançar →</button>
+</div>
+</div>
+
+<script>
+/* fundo */
+(function(){
+  const s=['%','P','½','¾','÷','=','?','⅙','×','100'],bg=document.getElementById('bg');
+  for(let i=0;i<22;i++){const e=document.createElement('span');e.textContent=s[i%s.length];
+    e.style.left=(Math.random()*96)+'%';e.style.top=(Math.random()*96)+'%';
+    e.style.fontSize=(22+Math.random()*34)+'px';e.style.animationDelay=(-Math.random()*38)+'s';bg.appendChild(e);}
+})();
+
+/* dados do gancho */
+(function(){
+  const pips={1:[[50,50]],2:[[28,28],[72,72]],3:[[28,28],[50,50],[72,72]],4:[[28,28],[72,28],[28,72],[72,72]],5:[[28,28],[72,28],[50,50],[28,72],[72,72]],6:[[28,25],[72,25],[28,50],[72,50],[28,75],[72,75]]};
+  const box=document.getElementById('dice');
+  for(let n=1;n<=6;n++){
+    const even=n%2===0;
+    let c=pips[n].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="8" fill="#241F52"/>`).join('');
+    box.insertAdjacentHTML('beforeend',`<svg class="die" viewBox="0 0 100 100"><rect x="4" y="4" width="92" height="92" rx="18" fill="${even?'#FFF1CC':'#fff'}" stroke="#6C63B5" stroke-width="4" data-even="${even}"/>${c}</svg>`);
+  }
+})();
+function hook(i){
+  const fb=document.getElementById('hookfb');
+  if(i===1){fb.className='fb ok';fb.innerHTML='✓ Isso! Só uma face tem o 6, mas três faces têm número par: o 2, o 4 e o 6 (destacadas acima). Três chances são mais do que uma.';}
+  else{fb.className='fb no';fb.innerHTML='Quase! Olhe as faces destacadas: o 6 aparece em uma só face, mas os números pares (2, 4 e 6) aparecem em três faces.';}
+  document.querySelectorAll('#dice rect').forEach(r=>{if(r.dataset.even==='true')r.setAttribute('stroke','#E4694F')});
+  document.getElementById('hookmore').style.display='block';
+}
+
+/* navegação */
+const parts=[...document.querySelectorAll('section.part')];
+const tabs=document.getElementById('tabs');let cur=0;
+parts.forEach((p,i)=>{const b=document.createElement('button');b.textContent=(i+1)+'. '+p.dataset.name;b.onclick=()=>go(i);tabs.appendChild(b);});
+function go(i){
+  if(i<0||i>=parts.length)return;cur=i;
+  parts.forEach((p,j)=>p.classList.toggle('active',j===i));
+  [...tabs.children].forEach((b,j)=>{b.classList.toggle('active',j===i);b.setAttribute('aria-current',j===i?'step':'false')});
+  document.getElementById('fill').style.width=((i+1)/parts.length*100)+'%';
+  document.getElementById('plabel').textContent='Parte '+(i+1)+' de '+parts.length+' — '+parts[i].dataset.name;
+  document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===parts.length-1;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+go(0);
+
+/* try-boxes */
+function num(v){v=String(v).replace('%','').replace(/\s/g,'').replace(',','.');return v===''?NaN:Number(v);}
+document.querySelectorAll('.try').forEach(t=>{
+  const inp=t.querySelector('input'),btn=t.querySelector('button'),fb=t.querySelector('.fb'),ans=Number(t.dataset.ans);
+  const check=()=>{const v=num(inp.value);
+    if(isNaN(v)){fb.className='fb no';fb.textContent='Escreva um número para conferir.';return;}
+    if(Math.abs(v-ans)<0.01){fb.className='fb ok';fb.textContent='✓ Isso mesmo! A resposta é '+String(ans).replace('.',',')+'%.';}
+    else{fb.className='fb no';fb.textContent='↻ '+fb.dataset.hint;}};
+  btn.onclick=check;inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+});
+
+/* revelar respostas do livro */
+document.querySelectorAll('.reveal').forEach(b=>{b.onclick=()=>{const a=b.nextElementSibling;const s=a.classList.toggle('show');b.textContent=s?'Esconder resposta':'Ver resposta';};});
+
+/* simulador */
+let sV=0,sA=0;
+function pct(x){return (x*100).toFixed(1).replace('.',',')+'%';}
+function simDraw(){
+  const n=sV+sA;
+  document.getElementById('simN').textContent=n.toLocaleString('pt-BR');
+  document.getElementById('fV').textContent=sV;document.getElementById('fA').textContent=sA;document.getElementById('fT').textContent=n;
+  const pv=n?sV/n:0,pa=n?sA/n:0;
+  document.getElementById('pV').innerHTML=n?`${sV}/${n} = ${pct(pv)}`:'—';
+  document.getElementById('pA').innerHTML=n?`${sA}/${n} = ${pct(pa)}`:'—';
+  document.getElementById('bV').style.width=(pv*100)+'%';document.getElementById('bA').style.width=(pa*100)+'%';
+  document.getElementById('bVt').textContent=n?pct(pv):'—';document.getElementById('bAt').textContent=n?pct(pa):'—';
+  const m=document.getElementById('simMsg');
+  if(!n){m.className='fb';return;}
+  const d=Math.abs(pv-.75)*100;
+  m.className='fb ok';
+  m.textContent=n<50?`Com só ${n} sorteios, a vermelha ficou ${d.toFixed(1).replace('.',',')} pontos percentuais longe dos 75%. Faça mais sorteios e veja o que acontece.`
+    :`Com ${n.toLocaleString('pt-BR')} sorteios, a vermelha está a ${d.toFixed(1).replace('.',',')} pontos percentuais dos 75% da conta. Quanto mais sorteios, mais perto ela tende a ficar.`;
+}
+function sim(k){for(let i=0;i<k;i++){Math.random()<.75?sV++:sA++;}simDraw();}
+function simReset(){sV=0;sA=0;simDraw();}
+simDraw();
+
+/* quiz */
+const Q=[
+ {q:'Em uma fábrica de lâmpadas, foi observado que a cada 50 lâmpadas produzidas, 1 sai com defeito. Qual é a probabilidade de uma lâmpada escolhida ao acaso ter defeito?',o:['50%','5%','2%','1%'],c:2,
+  e:'A frase "1 a cada 50" dá a fração <b>1/50</b>. Como 50 × 2 = 100, multiplicamos em cima e embaixo por 2: 1/50 = 2/100 = <b>2%</b>.'},
+ {q:'Uma moeda foi lançada 50 vezes. Saiu cara 28 vezes e coroa 22 vezes. Considerando esses resultados, qual é a probabilidade experimental de sair coroa?',o:['22%','44%','50%','56%'],c:1,
+  e:'Coroa saiu 22 vezes em 50 lançamentos: P(coroa) = 22/50. Como 50 × 2 = 100: 22/50 = 44/100 = <b>44%</b>. A resposta 50% seria a probabilidade teórica, mas a pergunta pede a experimental.'},
+ {q:'Um dado comum foi lançado 25 vezes, com os resultados da tabela abaixo. Considerando esses resultados, qual é a probabilidade de sair um número ímpar?',
+  t:[[1,4],[2,6],[3,3],[4,5],[5,2],[6,5]],tot:25,o:['9%','36%','50%','64%'],c:1,
+  e:'Os ímpares são 1, 3 e 5. Somando as frequências: 4 + 3 + 2 = 9. O total de lançamentos é 25, então P(ímpar) = 9/25. Como 25 × 4 = 100: 9/25 = 36/100 = <b>36%</b>.'},
+ {q:'Um saco tem 3 bolinhas azuis, 5 verdes e 2 amarelas. Retirando uma bolinha sem olhar, qual é a probabilidade de ela ser verde?',o:['5%','20%','30%','50%'],c:3,
+  e:'Casos favoráveis: 5 verdes. Total: 3 + 5 + 2 = 10 bolinhas. P(verde) = 5/10 = 50/100 = <b>50%</b>.'},
+ {q:'Ao jogar um dado comum uma vez, qual é a probabilidade de sair um número maior que 4?',o:['1/6','2/6','3/6','4/6'],c:1,
+  e:'Os números maiores que 4 são só o <b>5 e o 6</b> (o 4 não é maior que ele mesmo). São 2 casos favoráveis em 6 possíveis: <b>2/6</b>.'},
+ {q:'Em uma loja, de cada 20 clientes que entram, 3 fazem uma compra. Qual é a probabilidade de um cliente que entra na loja fazer uma compra?',o:['15%','3%','20%','23%'],c:0,
+  e:'"3 de cada 20" dá a fração 3/20. Como 20 × 5 = 100: 3/20 = 15/100 = <b>15%</b>.'},
+ {q:'Um dado foi lançado 40 vezes, com os resultados da tabela abaixo. Considerando esses resultados, qual é a probabilidade de sair um número maior que 4?',
+  t:[[1,8],[2,5],[3,7],[4,6],[5,9],[6,5]],tot:40,o:['14%','33%','35%','40%'],c:2,
+  e:'Maior que 4 são o 5 e o 6. Somando as frequências: 9 + 5 = 14. P = 14/40. Regra de três: x/100 = 14/40 → 40 · x = 1400 → x = <b>35</b>. Então a resposta é 35%.'},
+ {q:'Uma turma de 20 alunos votou na fruta preferida: maçã teve 7 votos, banana 5 e uva 8. Sorteando um aluno dessa turma, qual é a probabilidade de ele preferir banana?',o:['5%','20%','25%','33%'],c:2,
+  e:'Casos favoráveis: 5 alunos que preferem banana. Total: 20 alunos. P = 5/20 = 25/100 = <b>25%</b>.'},
+ {q:'De cada 10 sementes plantadas em uma horta, 7 germinam. Qual é a probabilidade de uma semente plantada NÃO germinar?',o:['3%','10%','70%','30%'],c:3,
+  e:'Se 7 de cada 10 germinam, então 10 − 7 = <b>3</b> não germinam. P(não germinar) = 3/10 = 30/100 = <b>30%</b>. Cuidado com o "NÃO" no enunciado!'},
+ {q:'Ana lançou uma moeda 10 vezes e saiu cara 7 vezes. Se ela lançar a mesma moeda 1000 vezes, o que é mais provável acontecer?',
+  o:['Sair cara em cerca de 70% dos lançamentos','Sair cara em aproximadamente metade dos lançamentos','Sair cara exatamente 500 vezes','Não sair mais nenhuma cara'],c:1,
+  e:'Pela <b>lei dos grandes números</b>, com muitos lançamentos a probabilidade experimental se aproxima da teórica, que é 50%. Mas "aproximadamente" é importante: não há garantia de sair <i>exatamente</i> 500 caras.'}
+];
+let score=0,answered=0;
+const qz=document.getElementById('quiz');
+Q.forEach((it,i)=>{
+  const d=document.createElement('div');d.className='q';
+  let tb='';
+  if(it.t){tb='<table class="t"><tr><th>Número</th><th>Frequência</th></tr>'+it.t.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')+`<tr class="tot"><td>Total</td><td>${it.tot}</td></tr></table>`;}
+  d.innerHTML=`<p><span class="n">${i+1}.</span> ${it.q}</p>${tb}<div class="opts">${it.o.map((o,j)=>`<button class="opt" data-j="${j}"><span class="L">${'ABCD'[j]}</span><span>${o}</span></button>`).join('')}</div><div class="expl"></div>`;
+  qz.appendChild(d);
+  d.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const j=+b.dataset.j,ok=j===it.c,ex=d.querySelector('.expl');
+    d.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(+x.dataset.j===it.c){x.classList.add('right');x.querySelector('.L').textContent='✓';}});
+    if(!ok){b.classList.add('wrong');b.querySelector('.L').textContent='✗';}
+    if(ok)score++;answered++;
+    ex.innerHTML=(ok?'<b style="color:#1E7A55">✓ Isso mesmo!</b> ':'<b style="color:#B3402A">Quase! Veja o caminho:</b> ')+it.e;
+    ex.classList.add('show');
+    document.getElementById('score').textContent=score+' de '+Q.length+(answered===Q.length?' — fim do quiz!':'');
+  });
+});
+</script>
+</body>
+</html>
